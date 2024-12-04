@@ -1,0 +1,26 @@
+<!-- <app-login></app-login> -->
+<router-outlet></router-outlet>
+
+<div *ngIf="!(online$ | async)" class="container">
+
+    <div class="row">
+
+        <div class="col-md-12 ">
+
+            <div class="noInternet">
+
+                <!--Event start-->
+
+                <img src="assets/dist/img/logo.png" class="col-2" alt="">
+
+                <h4 class="my-4">Please check your internet connection or try again later !</h4>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet *ngIf="(online$ | async)"></router-outlet>
+
+
+<ngx-ui-loader></ngx-ui-loader>

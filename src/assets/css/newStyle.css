@@ -1,0 +1,122 @@
+#pagecontent{
+  background-color:white;
+}
+
+
+#aimaxlogo{
+    width: 150px;
+     height: 40px; 
+    /* float: right;
+    margin-left: 20px; */
+}
+
+#profileLogo{
+    width: 25px;
+    /* float: right; */
+}
+
+#sidebar{
+
+    background-color: #093f41;
+}
+#sidebarlist{
+    color: white;
+}
+
+
+
+  #speedmeter{
+    width: 25px;
+  }
+
+  #sidebarDashboard{
+    font-weight: bold;
+  }
+
+  #sidebar ul li.active{
+    background-color: #3c0008c4;
+    display: flex;
+  }
+
+  #sidebar ul li.active:before{
+    content:"";
+    display:block;
+    width:0;
+    border:10px solid #fff;
+    border-color:#fff  transparent transparent transparent;
+    position:relative;
+    top:100%;
+    left: 91%;
+    margin-left: -20px;
+    rotate: 90deg;
+}
+
+  .wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100%;
+}
+
+.main-body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 90vh;
+    display: flex;
+}
+
+#bodyheadertxt{
+  color: gray;
+  text-align: center;
+  width: 100%;
+
+}
+
+#bodyheadertxt:hover{
+  color: orange;
+}
+#bodyheadertxt:active{
+  color: orange;
+}
+
+#bodyheader1{
+  background-color:#80808008;
+}
+
+#maincontainer{
+  padding: 0 0 0 0;
+}
+
+#sidebarDashboard:hover{
+  background-color:#3c0008c4;
+}
+
+#view_graph{
+  color: orange;
+  text-decoration: none;
+  float: right;
+}
+ #sidebarDashboard1{
+    font-weight: bold;
+    font-size: 85%;
+  }
+  #sidebarDashboard1:hover{
+    background-color:#3c0008c4;
+  }
+
+
+ #header1{
+
+    height: 80px;
+
+  }
+  #user_icon{
+    float: right;
+  }
+ 
+  .graph{
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

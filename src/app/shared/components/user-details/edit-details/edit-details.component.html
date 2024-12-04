@@ -1,0 +1,581 @@
+
+<div style="color: black;">
+
+    <!------------------------------------------- Sidebar start---------------------------------------------->
+    <div class="wrapper d-flex align-items-stretch">
+      <app-admin-left-panel></app-admin-left-panel>
+        <!------------------------------------------- Sidebar end---------------------------------------------->
+
+
+
+
+
+        <!------------------------------------------ bodyheader start ----------------------------------------->
+        <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
+            <!-- class="p-4 p-md-5 "-->
+
+            <!------------------------------------------ bodyheader end ---------------------------------------->
+
+
+
+
+
+            <!------------------------------------------ Page Content -------------------------------------------->
+            <div class="container-fluid" id="pagecontent">
+                <div class="col-md-12" style="margin-top: 25px;">
+
+                    <h4> Registered Users Edit</h4>
+                </div>
+
+                <div class="card" id="uppercard">
+                    <form [formGroup]="registrationForm" (ngSubmit)="submitForm()">
+
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5><b>URN - {{getdata?.urn_no}}</b></h5>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Contact-Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>Title<span style="color: red;">*</span></label>
+                                    <select class="form-control" formControlName="title" [ngClass]="{
+                                        'is-invalid': submitted && f.title.errors
+                                      }">
+                                        <option value="{{getdata?.title}}" selected>{{getdata?.title}}</option>
+                                        <option value="" disabled>
+                                        Please select here
+                                          </option>
+                                          <option value="Mr.">Mr.</option>
+                                          <option value="Mrs.">Mrs.</option>
+                                          <option value="Miss">Miss</option>
+                                          <option value="Ms.">Ms.</option>
+                                          <option value="Dr.">Dr.</option>
+                                          <option value="Prof.">Prof.</option>
+                                          <option value="Capt.">Capt.</option>
+                                          <option value="Hon">Hon</option>
+                                          <option value="Lord">Lord</option>
+                                    </select>
+                                    <div *ngIf="
+                                      getcontrol('title')?.errors &&
+                                      getcontrol('title')?.touched
+                                    ">
+                                      <small class="text-danger" *ngIf="getcontrol('title')?.errors?.['required']">Title
+                                        is required</small>
+                                    </div>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>First Name<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="first_name" [ngClass]="{
+                                        'text-danger':
+                                          submitted && f.first_name.errors
+                                      }" >
+                                    <div class="text-danger" *ngIf="
+                                    getcontrol('first_name')?.errors &&
+                                    getcontrol('first_name')?.touched
+                                  ">
+                                    <small class="text-danger"
+                                      *ngIf="getcontrol('first_name')?.errors?.['required']">First name is
+                                      required</small>
+                                    <small class="text-danger"
+                                      *ngIf="getcontrol('first_name')?.errors?.['minlength']">First name must be at
+                                      least 3 characters
+                                      long.</small>
+                                  </div>
+                                  <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Last Name<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="last_name"  [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.last_name.errors
+                                      }">
+                                      <div *ngIf="
+                                      getcontrol('last_name')?.errors &&
+                                      getcontrol('last_name')?.touched
+                                    ">
+                                      <small class="text-danger"
+                                        *ngIf="getcontrol('last_name')?.errors?.['required']">Last name is
+                                        required</small>
+                                      <small class="text-danger"
+                                        *ngIf="getcontrol('last_name')?.errors?.['minlength']">Last name must be at
+                                        least 3 characters
+                                        long.</small>
+                                    </div>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Department</label>
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="department"  [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.department.errors
+                                      }" >
+                                      <div class="help-block with-errors"></div>
+
+                                    <div *ngIf="
+                                      getcontrol('department')?.errors &&
+                                      getcontrol('department')?.touched
+                                    ">
+                                      <small class="text-danger"
+                                        *ngIf="getcontrol('department')?.errors?.['minlength']">Department name must be
+                                        at least 3
+                                        characters long.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Designation<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="designation"  [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.designation.errors
+                                      }">
+                                      <div class="help-block with-errors"></div>
+                                    <div *ngIf="
+                                      getcontrol('designation')?.errors &&
+                                      getcontrol('designation')?.touched
+                                    ">
+                                      <small class="text-danger"
+                                        *ngIf="getcontrol('designation')?.errors?.['required']">Designation name is
+                                        required</small>
+                                      <small class="text-danger"
+                                        *ngIf="getcontrol('designation')?.errors?.['minlength']">Designation name must
+                                        be at least 3
+                                        characters long.</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Mobile Number<span style="color: red;">*</span></label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <select class="form-control" formControlName="country_code" >
+                                                <option value=" " disabled>Select here</option>
+                                                <option value="{{getdata?.country_code}}" selected>{{getdata?.country_code}}</option>
+
+                                                <option *ngFor="let code of code; let j = index" [value]="code.country_mobile_code">
+                                                    {{ code.country_mobile_code }}
+                                                  </option>
+                                            </select>
+                                        </div>
+                                        <div class="3">
+                                            <input type="text" class="form-control" id="" placeholder="" (keypress)="keyPressNumbers($event)" formControlName="mobile_number" [ngClass]="{ 'is-invalid': submitted && f['mobile_number'].errors }">
+                                            <div class="help-block with-errors"></div>
+                                            <div
+                                            *ngIf="getcontrol('mobile_number')?.errors && getcontrol('mobile_number')?.touched">
+                                            <small class="text-danger"
+                                                *ngIf="getcontrol('mobile_number')?.errors?.['required']">Mobile number
+                                                is required</small>
+                                            <small class="text-danger"
+                                                *ngIf="getcontrol('mobile_number')?.errors?.['minlength']">Mobile number must be at least 10 digit long.</small>
+                                                <small class="text-danger" *ngIf="getcontrol('mobile_number')?.errors?.['repeatingDigits']">
+                                                    Mobile number cannot contain repeating digits.
+                                                  </small>
+                                                  <small class="text-danger" *ngIf="getcontrol('mobile_number')?.errors?.['containsConsecutiveZeros']">
+                                                    cannot contain three or more consecutive zeros.
+                                                      </small>
+                                        </div>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>EmailId<span style="color: red;">*</span></label>
+                                    <input type="mail" class="form-control" id="" placeholder="" formControlName="email_id" [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.email_id.errors
+                                      }">
+                                      <div class="help-block with-errors"></div>
+                                      <div *ngIf="
+                                        getcontrol('email_id')?.errors &&
+                                        getcontrol('email_id')?.touched
+                                      ">
+                                        <small class="text-danger"
+                                          *ngIf="getcontrol('email_id')?.errors?.['required']">Email is Required.</small>
+                                        <small class="text-danger"
+                                          *ngIf="getcontrol('email_id')?.errors?.['pattern']">Please enter valid email
+                                          address.</small>
+                                      </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Company Name<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="company_name"  [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.company_name.errors
+                                      }">
+                                      <div class="help-block with-errors"></div>
+                                      <div *ngIf="
+                                        getcontrol('company_name')?.errors &&
+                                        getcontrol('company_name')?.touched
+                                      ">
+                                        <small class="text-danger"
+                                          *ngIf="getcontrol('company_name')?.errors?.['required']">Company Name is
+                                          Required.</small>
+                                        <small class="text-danger"
+                                          *ngIf="getcontrol('company_name')?.errors?.['minlength']">Company name must be at
+                                          least 3 characters
+                                          long.</small>
+                                      </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Company Address</label>
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="company_address" [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.company_address.errors
+                                      }" >
+                                      <div class="help-block with-errors"></div>
+                                      <div *ngIf="
+                                        getcontrol('company_address')?.errors &&
+                                        getcontrol('company_address')?.touched
+                                      ">
+                                        <small class="text-danger"
+                                          *ngIf="getcontrol('company_address')?.errors?.['minlength']">Company address must be
+                                          at least 5 characters
+                                          long.</small>
+                                      </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Address Line 1<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="address_line_1" [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.address_line_1.errors
+                                      }" >
+                                      <div class="help-block with-errors"></div>
+                                      <div *ngIf="
+                                        getcontrol('address_line_1')?.errors &&
+                                        getcontrol('address_line_1')?.touched
+                                      ">
+                                        <small class="text-danger"
+                                          *ngIf="getcontrol('address_line_1')?.errors?.['required']">Address Line 1 is
+                                          Required.</small>
+                                        <small class="text-danger"
+                                          *ngIf="getcontrol('address_line_1')?.errors?.['minlength']">
+                                          Address line 1 must be at least 5 characters
+                                          long.</small>
+                                      </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Address Line 2</label>
+                                    <input type="text" class="form-control" id="" placeholder=""formControlName="address_line_2" [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.address_line_2.errors
+                                      }" >
+                                      <div class="help-block with-errors"></div>
+                                <div *ngIf="
+                                  getcontrol('address_line_2')?.errors &&
+                                  getcontrol('address_line_2')?.touched
+                                ">
+                                  <!-- <small class="text-danger"
+                                                                    *ngIf="getcontrol('address_line_2')?.errors?.['required']">Address Line 2 is
+                                                                    Required.</small> -->
+                                  <small class="text-danger"
+                                    *ngIf="getcontrol('address_line_2')?.errors?.['minlength']">
+                                    Address line 2 must be at least 5 characters
+                                    long.</small>
+                                </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Address Line 3</label>
+                                    <input type="text" class="form-control" id="" placeholder=""formControlName="address_line_3" [ngClass]="{
+                                        'is-invalid':
+                                          submitted && f.address_line_3.errors
+                                      }">
+                                      <div class="help-block with-errors"></div>
+                                      <div *ngIf="
+                                        getcontrol('address_line_3')?.errors &&
+                                        getcontrol('address_line_3')?.touched
+                                      ">
+                                        <!-- <small class="text-danger"
+                                                                          *ngIf="getcontrol('address_line_3')?.errors?.['required']">Address Line 3 is
+                                                                          Required.</small> -->
+                                        <small class="text-danger"
+                                          *ngIf="getcontrol('address_line_3')?.errors?.['minlength']">
+                                          Address line 3 must be at least 5 characters
+                                          long.</small>
+                                      </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Country<span style="color: red;">*</span></label>
+                                    <!-- <input type="text" class="form-control" id="" placeholder="" formControlName="country"> -->
+                                    <select (change)="changeCountry($event)" class="form-control" formControlName="country"  [ngClass]="{
+                                        'is-invalid': submitted && f.country.errors
+                                      }"
+                                   >
+                                   <option value="{{getdata?.country}}" selected>{{getdata?.country_name}}</option>
+
+                                    <option value="" disabled>Select Country</option>
+                                    <!-- <option [value]="101" selected>India</option> -->
+                                    <option *ngFor="let country of countryData; let j = index" [value]="country.country_id">
+                                      {{ country.country_name }}
+                                    </option>
+                                  </select>
+                                  <div class="help-block with-errors"></div>
+                              <div *ngIf="
+                                getcontrol('country')?.errors &&
+                                getcontrol('country')?.touched
+                              ">
+                                <small class="text-danger" *ngIf="getcontrol('country')?.errors?.['required']">Country
+                                  is Required.</small>
+                              </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>State/Province<span style="color: red;">*</span></label>
+                                    <!-- <input type="text" class="form-control" id="" placeholder="" formControlName="state"> -->
+                                    <select (change)="changeStates($event)" class="form-control" formControlName="state"  [ngClass]="{
+                                        'is-invalid': submitted && f.state.errors
+                                      }"
+                                    >
+                                    <option value="{{getdata?.state}}" selected>{{getdata?.state_name}}</option>
+ 
+                                     <option value="" disabled>Select State</option>
+                                     <option *ngFor="let state of statesData; let j = index" [value]="state.state_id">
+                                        {{ state.state_name }}
+                                      </option>
+                                   </select>
+                                   <div *ngIf="
+                                getcontrol('state')?.errors &&
+                                getcontrol('state')?.touched
+                              ">
+                                <small class="text-danger" *ngIf="getcontrol('state')?.errors?.['required']">State is
+                                  Required.</small>
+                              </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>City<span style="color: red;">*</span></label>
+                                    <!-- <input type="text" class="form-control" id="" placeholder="" formControlName="city"> -->
+                                    <select  class="form-control"  formControlName="city"  [ngClass]="{
+                                        'is-invalid': submitted && f['city'].errors
+                                      }"
+                                    >
+                                    <option value="{{getdata?.city}}" selected>{{getdata?.city_name}}</option>
+ 
+                                     <option value="" disabled>Select city</option>
+<option *ngFor="let city of cityData; let k = index" [value]="city.city_id">
+                                  {{ city.city_name }}
+                                </option>
+                                                               </select>
+                                                               <div *ngIf="
+                                                               getcontrol('city')?.errors &&
+                                                               getcontrol('city')?.touched
+                                                             ">
+                                                               <small class="text-danger" *ngIf="getcontrol('city')?.errors?.['required']">City is
+                                                                 Required.</small>
+                                                             </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Pin Code<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="pin_code" maxlength="6" (keypress)="keyPressNumbers($event)" [ngClass]="{
+                                        'is-invalid': submitted && f.pin_code.errors
+                                      }">
+                                    <div class="help-block with-errors"></div>
+
+                                <div *ngIf="
+                                  getcontrol('pin_code')?.errors &&
+                                  getcontrol('pin_code')?.touched
+                                ">
+                                  <small class="text-danger" *ngIf="getcontrol('pin_code')?.errors?.['required']">Pin
+                                    Code is Required.</small>
+
+                                  <small class="text-danger" *ngIf="getcontrol('pin_code')?.errors?.['minlength']">Pin
+                                    code must be at least 6 digit
+                                    long.</small>
+                                  <small class="text-danger" *ngIf="
+                                    registrationForm
+                                      .get('pin_code')
+                                      .hasError('containsConsecutiveZeros')
+                                  ">
+                                    cannot contain three or more consecutive
+                                    zeros.
+                                  </small>
+                                </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Website</label>
+                                    <input type="text" [(ngModel)]="website" (keydown)="onKeyDown($event, website)"
+                                     class="form-control" id="" placeholder=""  formControlName="website"
+                                      [ngClass]="{
+                                        'is-invalid':
+                                          submitted &&
+                                          registrationForm.get('website').errors
+                                      }">
+                                      <div class="help-block with-errors"></div>
+                                      <div *ngIf="
+                                        getcontrol('website')?.errors &&
+                                        getcontrol('website')?.touched
+                                      ">
+                                        <!-- <small class="text-danger" *ngIf="getcontrol('website')?.errors?.['required']"> Website Url
+                                                                          is Required.</small> -->
+                                        <small class="text-danger" *ngIf="getcontrol('website')?.errors?.['pattern']">Please
+                                          enter valid URL.</small>
+                                      </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Which day would you like to attend conference on ?<span
+                                            style="color: red;">*</span></label>
+                                    <select class="form-control" formControlName="conference_day">
+                                        <option value="{{getdata?.conference_day}}" selected>{{getdata?.conference_day}}</option>
+                                        <option value="" disabled>
+                                            Please select here
+                                              </option>
+                                              <option>27-November 2023</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="card"  style="padding: 1%;">
+                        <div class="card-header">
+                            <h6>Demographics</h6>
+                        </div>
+                        <div class="card-body">
+                            <h6 style="font-weight: 600;">To help us Deliver the best output & improve your experience
+                                at Pharma pre-connect 2023,
+                                we would like to know a few more details about you, your role and company. The
+                                information is used purely for analytical purposes.</h6>
+                        </div>
+                        <div class="row" style="margin-left: 1%;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="I understand the purpose of the questions and their importance to my event experience" id="" formControlName="events">
+                                <label class="form-check-label">
+                                    I understand the purpose of the questions and their importance to my event
+                                    experience
+                                </label>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>What is your purpose of attending this conference?<span
+                                        style="color: red;">*</span></label>
+                                <select class="form-control" formControlName="attending_purpose">
+                                    <option value="{{getdata?.attending_purpose}}" selected>{{getdata?.attending_purpose}}</option>
+
+                                    <option selected value="" disabled>
+                                        --Please select--
+                                      </option>
+                                      <option value="Knowledge">Knowledge</option>
+                                      <option value="Networking">Networking</option>
+                                      <option value="solution">solution</option>
+                                      <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Are you looking for specific solution?<span style="color: red;">*</span></label>
+                                <select class="form-control" formControlName="specific_solution">
+                                    <option value="{{getdata?.specific_solution}}" selected>{{getdata?.specific_solution}}</option>
+
+                                    <option selected value="" disabled>
+                                        --Please select--
+                                      </option>
+                                      <option value="Yes">Yes.</option>
+                                      <option value="No">No.</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Have you attended Pharma pre-connect in the past?<span
+                                        style="color: red;">*</span></label>
+                                <select class="form-control"  formControlName="attended_innopack">
+                                    <option value="{{getdata?.attended_innopack}}" selected>{{getdata?.attended_innopack}}</option>
+
+                                    <option selected value="" disabled>
+                                        --Please select--
+                                      </option>
+                                      <option value="Yes">Yes.</option>
+                                      <option value="No">No.</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+
+
+                    <div class="card" style="padding: 1%;">
+                        <div class="card-header">
+                            <h6>Consent</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" id="" formControlName="is_whatsapp_number">
+                                    <label class="form-check-label">
+                                        <span style="color: red;">*</span>I Confirm that my Whatsapp number is same as
+                                        the mobile number registered above. I also provide my consent to Informa Markets
+                                        India Pvt Ltd for sending messages/notifications on my whatsapp number.
+                                    </label>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"  value="yes" id=""  formControlName="terms_condition">
+                                    <label class="form-check-label">
+                                        <span style="color: red;">*</span>I accept the Visitor Terms & Conditions and
+                                        Privacy Terms.By continuing to register, you accept that Informa Markets in
+                                        India may contact you with updates, relevant promotions, and information about
+                                        future events provided by Informa Markets. Your details may be shared with the
+                                        event sponsors, who may contact you about their products and services.
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <br>
+                            <div class="row">
+                              <div class="col-md-1">
+                                 
+                              <button class="btn btn-outline-light" type="submit" id="exportbtn">
+                                 Submit</button>
+                           </div>
+                            <div class="col-md-1">
+                              <button class="btn bg-danger" type="submit" id="exportbtn"  routerLink="/user/viewdetails/{{getdata?.user_id}}" [queryParams]="{ refer: 'registered-user' }">
+                                  Cancel</button>
+                          </div>
+                          <div class="col-md-10">
+                           
+                        </div>
+                        </div> </div>
+
+
+                    </div>
+
+
+</form>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <!------------------------------------------- Page Content end ----------------------------------------->
+    </div>
+    </div>
+   

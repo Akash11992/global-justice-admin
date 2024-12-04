@@ -1,0 +1,92 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+    <app-admin-left-panel></app-admin-left-panel>
+    <!------------------------------------------- Sidebar end---------------------------------------------->
+
+
+
+
+
+    <!------------------------------------------ bodyheader start ----------------------------------------->
+    <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
+
+        <!------------------------------------------ Page Content -------------------------------------------->
+        <div class="container-fluid" id="pagecontent">
+            <div class="col-md-12" style="margin-top: 25px;">
+
+                <h4>Add Tracking Link List</h4>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form class="row g-3" [formGroup]="form" (ngSubmit)="submitForm()">
+
+                                <div class="col-md-2 mt-4">
+                                    <label for="input" class="form-label">Select Form</label><span
+                                        class="required">*</span></div>
+                                        <div class="col-md-10 mt-4" >
+                                    <select formControlName="selectform" id="input" style="font-size: 14px;"
+                                        class="form-control" (change)="updateTrackingURL()">
+                                        <option selected value="">Select here</option>
+                                        <option *ngFor="let ref of formsdata" value="{{ref.form_id}}">
+                                            {{ref.form_name}}</option>
+                                    </select>
+                                    <div class="error-message"
+                                        *ngIf="form.get('selectform').hasError('required') && form.get('selectform').touched || form.get('selectform').hasError('required') && submitted">
+                                        form is required.
+                                    </div>
+
+                                </div>
+                              
+                                
+                                <div class="col-md-2 mt-4">
+                                    <label for="input" class="form-label">Reference</label><span
+                                        class="required">*</span></div>
+                                        <div class="col-md-10 mt-4">    
+                                    <input formControlName="reference" type="text" style="font-size: 14px;"
+                                        class="form-control" id="input" placeholder="Reference"  (input)="updateTrackingKey()">
+                                        <div class="error-message"
+                                        *ngIf="form.get('reference').hasError('required') && form.get('reference').touched || form.get('reference').hasError('required') && submitted">
+                                        reference is required.
+                                    </div>
+
+                                </div> 
+                               
+                                <div class="col-md-2 mt-4">
+                                    <label for="inputCity" class="form-label" >Tracking Key</label></div>
+                                    <div class="col-md-10 mt-4"> <input type="text" formControlName="tracking_key" readonly class="form-control" id="inputCity" placeholder="">
+                                </div>
+
+                                <div class="col-md-2 mt-4">
+                                    <label for="input" class="form-label">Tracking URL</label></div>
+                                    <div class="col-md-10 mt-4">
+                                    <input type="text"  class="form-control" formControlName="tracking_url" readonly id="input" placeholder="">
+                                </div>
+
+                              
+
+
+                                <br><br><br><br>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                    <button class="btn" type="submit" id="exportbtn">
+                                        Submit</button></div>
+                                        <div class="col-md-7">
+                                            <button class="btn bg-danger" type="submit" id="exportbtn" routerLink="/dashboard/tracking-link">
+                                                Cancel</button>
+                                        </div>
+                                    </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!------------------------------------------- Page Content end ----------------------------------------->
+</div>

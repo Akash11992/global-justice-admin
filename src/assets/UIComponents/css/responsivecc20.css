@@ -1,0 +1,205 @@
+
+
+
+/* Extra small devices (portrait phones, less than 576px)*/
+@media only screen 
+and (min-device-width : 200px) 
+and (max-device-width : 480px) 
+ {
+    body{font-size:12px; line-height:1.5;  }
+      h2, h1{font-size:20px!important;}
+          h4{font-size:15px!important;}
+          h3, .h3{font-size:15px;}
+      h5{font-size:13px!important;}
+    .headervenue{font-size:11px; padding-top:10px;}
+    .navbar-header{margin-top:0px; background:none;}
+    .navbar.navbar-default {margin-top:0px; background: #000000d6; border-radius: 0; text-align: left;}
+    .navbar-default .navbar-nav>li>a{color:#ffffff!important; border-top: 1px solid #ccc!important; background: none!important;margin: 0px!important;}
+    .navbar-nav{margin:0px;}
+    .navbar{min-height:0;}
+    .nav.navbar-nav.pull-right{float:none!important;}
+    .navbar-toggle{border-color:#cccccc; background:#d2232a; margin-top:15px;}
+    .navbar-toggle .icon-bar{background:#fff;}
+    .logo img{height:50px;}
+    #header.affix{margin-bottom:5px;}
+    #header.affix .logo{margin-top: 10px;}
+
+
+    #main-slider{padding-top:50px;}
+    .carousel-caption{top:0px; display:none;}
+    #abouttxt{font-size:14px; padding:20px 0;}
+    #abouttxt .btn-danger{font-size:10px;}
+    .section1 img, .section2 img, .section3 img, .section4 img, .section5 img{top:-27px;}
+    .imgboxleft{width:34%;}
+    .imgbox1{width:50%;}
+    .imgboxleft2{width:23%;}
+    .imgboxleft3{width:17%;}
+    .imgboxleft4 {width: 25%;}
+    .boardmemberbox{width:45%;}
+    #advisoryboardmember{font-size:10px;}
+    .memberdetails{padding:5px; min-height:130px;}
+    .boardmemberbox img{height:100px;}
+    #ourspeakers ul li:first-child{width: 25%;padding:10px 2px; font-size: 12px;}
+    #ourspeakers ul li{width:25%;}
+    #ourspeakers ul li img{width:auto;height:auto; max-width: 100%;}
+    .btnpass{margin-bottom:5px;}
+    #testimonials img{width: 100px;height: 100px;}
+    .partner img{margin:3px; max-width:42%;}
+    .pcocktail{text-align:center;}
+    .pmedia{text-align:center; margin-top:20px;}
+    .pmedia img{max-width:43%;}
+    #footer{font-size:13px;}
+    .fivebosex{width:50%;}
+    .contentbox{text-align:left;}
+    .slidertext{padding:9px;}
+    .slidertext i{margin-right:3px;}
+   .keyobjimagecurve{display:none;}
+   .objectiveright{margin-top:30px;}
+     .sectiondetails{font-size:17px;}
+   
+    
+      .speakersections .speakerimage {padding-left:0px; text-align:center;}
+      .speakersections .spkname {position: relative; text-align:left;}
+      .speakersections .spkname br{display:none;}
+      .team-section .team-member .desc{min-height:100px;}
+      .shouldattend ul li{height:auto;}
+      .carousel-indicators{display:none;}
+      .contactholding{display:none; visibility:hidden;}
+      #MainContent_Step1 .text-right{text-align:left!important;}
+
+
+      .nextrow{clear: both; margin-top: 15px;}
+
+      .displayflex {
+    display: block!important;
+}
+.delregbuttonbox{position:relative; bottom:0px;}
+
+
+      #footer h3{margin: 20px 0 10px 0; }
+      #footer h3 br{ display:none; }
+      .footerbottom{line-height:1.5;}
+
+      .footerLogo-container{width:33%!important;}
+  .copyright-section{font-size:11px!important; line-height:1!important; float:left;}
+  .copyright-text-container{width: 62.66667%!important;padding:35px 0!important;right:0px!important;}
+  .copyright-text{line-height: 1!important; font-size: 11px!important;}
+  .copyright-section .footerLogo img {width: 100%!important; float: left; margin: 40px 0!important; height:auto;}
+  .footerBottombg .nav-informa li + li::before {padding-right: 9px!important;  padding-left: 5px!important;  }
+  .footerBottombg .nav-informa li{line-height: 15px!important;}
+  .footerBottombg .nav-informa .informa-link-list-item .informa-link-list-link{padding: 0px 0!important; font-size: 10px!important;line-height: 1!important;}
+  .nav-informa{width:100%!important;}
+
+
+}
+
+
+/*  Small devices (landscape phones, less than 768px)*/
+@media only screen 
+and (min-device-width : 480px) 
+and (max-device-width : 768px) 
+ {
+    body{font-size:12px; line-height:1.5;  }
+      h2, h1{font-size:20px!important;}
+          h4{font-size:15px!important;}
+          h3, .h3{font-size:15px;}
+      h5{font-size:13px!important;}
+    .headervenue{font-size:11px; padding-top:10px;}
+    .navbar-header{margin-top:0px; background:none;}
+    .navbar.navbar-default {margin-top:0px; background: #000000d6; border-radius: 0; text-align: left;}
+    .navbar-default .navbar-nav>li>a{color:#ffffff!important; border-top: 1px solid #ccc!important; background: none!important;margin: 0px!important;}
+    .navbar-nav{margin:0px;}
+    .navbar{min-height:0;}
+    .nav.navbar-nav.pull-right{float:none!important;}
+    .navbar-toggle{border-color:#cccccc; background:#d2232a; margin-top:15px;}
+    .navbar-toggle .icon-bar{background:#fff;}
+    .logo img{height:50px;}
+    #header.affix{margin-bottom:5px;}
+    #header.affix .logo{margin-top: 10px;}
+
+
+    #main-slider{padding-top:50px;}
+    .carousel-caption{top:0px; display:none;}
+    #abouttxt{font-size:14px; padding:20px 0;}
+    #abouttxt .btn-danger{font-size:10px;}
+    .section1 img, .section2 img, .section3 img, .section4 img, .section5 img{top:-27px;}
+    .imgboxleft{width:34%;}
+    .imgbox1{width:50%;}
+    .imgboxleft2{width:23%;}
+    .imgboxleft3{width:17%;}
+    .imgboxleft4 {width: 25%;}
+    .boardmemberbox{width:45%;}
+    #advisoryboardmember{font-size:10px;}
+    .memberdetails{padding:5px; min-height:130px;}
+    .boardmemberbox img{height:100px;}
+    #ourspeakers ul li:first-child{width: 25%;padding:10px 2px; font-size: 12px;}
+    #ourspeakers ul li{width:25%;}
+    #ourspeakers ul li img{width:auto;height:auto; max-width: 100%;}
+    .btnpass{margin-bottom:5px;}
+    #testimonials img{width: 100px;height: 100px;}
+    .partner img{margin:3px; max-width:42%;}
+    .pcocktail{text-align:center;}
+    .pmedia{text-align:center; margin-top:20px;}
+    .pmedia img{max-width:43%;}
+    #footer{font-size:13px;}
+    .fivebosex{width:50%;}
+     .sectiondetails{font-size:17px;}
+
+    .contentbox{text-align:left;}
+    .slidertext{padding:9px;}
+    .slidertext i{margin-right:3px;}
+   .keyobjimagecurve{display:none;}
+   .objectiveright{margin-top:30px;}
+     .nextrow{clear: both; margin-top: 15px;}
+    .displayflex {display: block!important;}
+.delregbuttonbox{position:relative; bottom:0px;}
+    
+      .speakersections .speakerimage {padding-left:0px; text-align:center;}
+      .speakersections .spkname {position: relative; text-align:left;}
+      .speakersections .spkname br{display:none;}
+      .team-section .team-member .desc{min-height:100px;}
+      .shouldattend ul li{height:auto;}
+      .carousel-indicators{display:none;}
+      .contactholding{display:none; visibility:hidden;}
+      #MainContent_Step1 .text-right{text-align:left!important;}
+
+
+      #footer h3{margin: 20px 0 10px 0; }
+      #footer h3 br{ display:none; }
+      .footerbottom{line-height:1.5;}
+
+      .footerLogo-container{width:33%!important;}
+  .copyright-section{font-size:11px!important; line-height:1!important; float:left;}
+  .copyright-text-container{width: 62.66667%!important;padding:35px 0!important;right:0px!important;}
+  .copyright-text{line-height: 1!important; font-size: 11px!important;}
+  .copyright-section .footerLogo img {width: 100%!important; float: left; margin: 40px 0!important; height:auto;}
+  .footerBottombg .nav-informa li + li::before {padding-right: 9px!important;  padding-left: 5px!important;  }
+  .footerBottombg .nav-informa li{line-height: 15px!important;}
+  .footerBottombg .nav-informa .informa-link-list-item .informa-link-list-link{padding: 0px 0!important; font-size: 10px!important;line-height: 1!important;}
+  .nav-informa{width:100%!important;}
+
+
+}
+
+
+/*  Large devices (desktops, less than 992px)*/
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+ {
+     
+   
+  
+}
+
+/*  Extra large devices (large desktops, less than 1200px)*/
+@media only screen 
+and (min-device-width : 1025px) 
+and (max-device-width : 2000px) 
+ {
+
+}
+
+img{
+    max-width:100%;
+}

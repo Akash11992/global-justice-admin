@@ -1,0 +1,12 @@
+/* CSS for error messages */
+.error-message {
+    color: red; /* Red color for error messages */
+    font-size: 12px; /* Smaller font size for error messages */
+  }
+  .form-label{
+    color: black;
+  }
+  .required{
+    color: red; /* Red color for error messages */
+
+  }

@@ -1,0 +1,46 @@
+
+    
+    <div id="id01" >
+      
+        <form class="modal-content animate" [formGroup]="loginForm" novalidate (ngSubmit)="postapi()"  method="post">
+          <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal" [routerLink]="['/login']">&times;</span>
+            <img src="assets/img/nonregisteruse.png"  [routerLink]="['/login']">
+          </div>
+          
+          <div class="container">
+
+            <div class="pt-4 pb-2">
+                <h5 class="card-title text-center pb-0 fs-4">Forget password</h5>
+                <p class="text-center small"> Enter your email here</p>
+              </div>
+              <div class="col-12">
+                <span class="fa fa-user p-2"></span>  <label for="yourUsername" class="form-label">Enter Email</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text" id="inputGroupPrepend">@</span>
+                  <input type="text" name="Enter email" class="form-control" id="yourUsername"  formControlName="email" maxlength="35" [ngClass]="{errors:getcontrol('email')?.errors && getcontrol('email')?.touched}">
+                  <!-- <div class="invalid-feedback">Please enter your username.</div> -->
+                </div>
+                <div *ngIf="getcontrol('email')?.errors && getcontrol('email')?.touched">
+                  <small class="text-danger" *ngIf="getcontrol('email')?.errors?.['required']">Email is Required.</small>
+                  <small class="text-danger" *ngIf="getcontrol('email')?.errors?.['email']">Please insert a valid email address.</small>
+                 </div>
+              </div>  
+            <a ><button type="submit" [disabled]="!loginForm.valid" >Send-OTP</button></a>
+          </div>
+  
+        
+        </form>
+      </div>
+      
+      <script>
+      // Get the modal
+      var modal = document.getElementById('id01');
+      
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+      }
+      </script>

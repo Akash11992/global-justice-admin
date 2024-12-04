@@ -1,0 +1,9 @@
+.active_color{
+   
+    background-color: #8c8e91;
+    color: #fff !important;
+    height: 43px;
+    width: 139px;
+    border-radius: 10px;
+    text-align: center;
+}

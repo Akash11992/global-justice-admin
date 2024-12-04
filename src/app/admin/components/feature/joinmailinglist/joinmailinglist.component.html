@@ -1,0 +1,96 @@
+
+    <!------------------------------------------- Sidebar start---------------------------------------------->
+    <div class="wrapper d-flex align-items-stretch">
+        <app-admin-left-panel></app-admin-left-panel>
+<div id="content" style="overflow-y: auto ;overflow-x: hidden;">
+<div class="container-fluid" id="pagecontent">
+    <div class="col-md-12" style="margin-top: 25px;">
+        <img src="assets/images/user (1).png" id="userimg">
+        <h4 style="display: inline-flex;"> Join Mailing List</h4>
+    </div>
+
+    <div class="card" id="uppercard">
+        <div class="card-body">
+            <div class="row" id="outermargin">
+                <div class="col-md-6">
+                  
+                </div>
+                <div class="col-md-6" id="exportcolmd">
+                    <button class="btn btn-outline-light" type="button" id="exportbtn" (click)="export()" ><i
+                            class="bi bi-file-earmark-excel"></i> Export</button>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <form class="d-flex"  [formGroup]="searchForm">
+                        <input class="form-control" type="search" id="inputsearch" placeholder="Search..." formControlName="searchInput"
+                            aria-label="Search">
+                        <button class="btn btn-outline-light" type="submit" id="btncolor"  (click)="SearchSpeakerUser()" >Search</button>
+                        &nbsp; &nbsp;
+                        <button class="btn btn-outline-light" type="button" id="btncolor"   (click)="resetForm()" >Reset</button>
+                    </form>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>S.no.</th>     
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Company</th>
+                                    <th>Designation</th>
+                                    <th>Created At</th>
+                                    <th>Action</th>   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let all of nonregist let i = index;">
+                                    <td><input type="checkbox" id="checkbox"></td>
+                                    <td>{{i+1}}</td>
+                                    <td>{{all.title}} {{all.first_name}} {{all.last_name}}</td>                                                
+                                    <td>{{all.email}} <i class="bi bi-person-fill"></i></td>
+                                    <td>{{all.mobile}}</td>
+                                    <td>{{all.company_name}}</td>
+                                    <td>{{all.designation}}</td>
+                                    <td>{{all.created_date | date :'short'}}</td>
+                                    <td>
+                                        <div class="dropdown dropstart">
+                                            <button class="btn" type="button" id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <img src="assets/images/orangemenuicon.png"
+                                                    id="hamburgericon">
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                               
+                                                <li><a class="dropdown-item"   (click)="deleteUser(all.mail_id)">
+                                                        <i class="bi bi-trash3-fill"></i> Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <h5 style="text-align: center;"><span *ngIf="notFound">No Data Found</span></h5>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

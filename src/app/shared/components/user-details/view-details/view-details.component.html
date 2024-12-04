@@ -1,0 +1,280 @@
+
+
+<div style="color: black;">
+
+
+    <!------------------------------------------- Sidebar start---------------------------------------------->
+    <div class="wrapper d-flex align-items-stretch">
+        <app-admin-left-panel></app-admin-left-panel>
+        <!------------------------------------------- Sidebar end---------------------------------------------->
+
+
+
+
+
+        <!------------------------------------------ bodyheader start ----------------------------------------->
+        <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
+            <!-- class="p-4 p-md-5 "-->
+           
+            <!------------------------------------------ bodyheader end ---------------------------------------->
+
+
+
+            <!------------------------------------------ Page Content -------------------------------------------->
+            <div class="container-fluid" id="pagecontent">
+                <div class="col-md-12" style="margin-top: 25px;">
+                    <h4 *ngIf="is_registered_user; else nonRegisteredUserDetail">Registered User Detail</h4>
+                    <ng-template #nonRegisteredUserDetail><h4>Non-Registered User Detail</h4></ng-template>
+                    <!-- <h4 *ngIf="is_registered_user?'Registered User Detail':'Non-Registered User Detail'"> Registered User Detail</h4> -->
+                </div>
+
+                <div class="card" id="uppercard">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12" *ngIf="is_registered_user">
+                                <button class="btn btn-outline-light" type="button" id="exportbtn"
+                                    style="float: right;"  routerLink="/user/editdetails/{{getdata?.user_id}}" [queryParams]="{ refer: 'registered-user' }">
+                                    <i class="bi bi-pencil-fill"></i> Edit Details</button>
+                            </div>
+                        </div>
+                        <hr *ngIf="is_registered_user">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 style="color: orange;"><b>&nbsp;{{getdata?.title}} {{getdata?.first_name}} {{getdata?.last_name}}</b></h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <span>
+                                    <i class="bi bi-envelope"></i>&nbsp;{{getdata?.email_id}} &nbsp;
+                                </span>
+                                <span>
+                                    <i class="bi bi-telephone-fill"></i>&nbsp;{{country_codemb}} {{getdata?.mobile_number}}
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <span *ngIf="is_registered_user"
+                                    style="background-color: green; color: white; padding: 2%; border-radius: 5px;">REGISTERED</span>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h6>URN No.</h6>
+                            </div>
+                            <div class="col-md-2">
+                                <h6>Department</h6>
+                            </div>
+                            <div class="col-md-2">
+                                <h6>Designation</h6>
+                            </div>
+                            <div class="col-md-2">
+                                <h6>Created Date</h6>
+                            </div>
+                            <div class="col-md-2">
+                                <h6>Registered Date</h6>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p>{{getdata?.urn_no}}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p>{{getdata?.department}}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p>{{getdata?.designation}}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p>{{getdata?.created_date | date:'short'}}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p>{{getdata?.updated_date| date:'short'}}</p>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+                        </div>
+
+                        <!-- <div class="row">
+                             <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445); padding: 1%;">
+                                <h6>Date Of Birth</h6>
+                            </div> 
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>12/20/1986</span>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Company Name</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.company_name}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Company Address</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.company_address}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Address Line 1</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.address_line_1}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Address Line 2</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.address_line_2}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Address Line 3</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.address_line_3}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Country</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.country_name}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>State</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.state_name}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>City</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.city_name}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Pin Code</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.pin_code}}</span>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Telephone No.</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.city}}</span>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Website</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.website}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Which day would you like to attend conference on ?</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.conference_day}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>I understand the purpose of the questions and their importance to my event experience</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.events?'Yes':'No'}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>What is your purpose of attending this conference?</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.attending_purpose}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Are you looking for specific solution?</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.specific_solution}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>Have you attended Pharma pre-connect in the past? </h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.attended_innopack}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>I accept the Visitor Terms & Conditions and Privacy Terms.By continuing to register,
+                                    you accept that Informa Markets in India may contact you with updates, relevant
+                                    promotions, and information about future events provided by Informa Markets. Your
+                                    details may be shared with the event sponsors, who may contact you about their
+                                    products and services.</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.terms_condition?'Yes':'No'}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <h6>I Confirm that my Whatsapp number is same as the mobile number registered above. I
+                                    also provide my consent to Informa Markets India Pvt Ltd for sending
+                                    messages/notifications on my whatsapp number.</h6>
+                            </div>
+                            <div class="col-md-9" style="border: 1px solid rgba(128, 128, 128, 0.445);padding: 1%;">
+                                <span>{{getdata?.is_whatsapp_number?'Yes':'No'}}</span>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <!-- <div class="card-body">
+
+                    </div> -->
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <!------------------------------------------- Page Content end ----------------------------------------->
+    </div>
+    </div>
+  
