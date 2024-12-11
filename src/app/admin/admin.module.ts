@@ -15,6 +15,8 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { JoinmailinglistComponent } from './components/feature/joinmailinglist/joinmailinglist.component';
 import { SalesBroucherComponent } from './components/feature/sales-broucher/sales-broucher.component';
 import { BroucherComponent } from './components/feature/broucher/broucher.component';
+import { PeacekeeperUserComponent } from './components/peacekeeper-user/peacekeeper-user.component';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -25,7 +27,9 @@ import { BroucherComponent } from './components/feature/broucher/broucher.compon
     ViewTrackingListComponent,
     JoinmailinglistComponent,
     SalesBroucherComponent,
-    BroucherComponent
+    BroucherComponent,
+    PeacekeeperUserComponent,
+    ContactUsComponent
   ],
   imports: [
     SharedModule,
