@@ -20,6 +20,8 @@ export class Constants {
     public readonly API_ENDPOINT_getSpeaker: string = 'registration/speaker/non-registered'
 
     public readonly API_ENDPOINT_getApprovedDelegate: string = 'registration/delegate/approved'
+    public readonly API_ENDPOINT_getContactUs: string = 'getAllContactUsData'
+    public readonly API_ENDPOINT_getPeacekeeper: string = 'getAllpeacekeeper'
     public readonly API_ENDPOINT_getApprovedPartner: string = 'registration/partner/approved'
     public readonly API_ENDPOINT_getApprovedSpeaker: string = 'registration/speaker/approved'
 

@@ -60,9 +60,9 @@ export class PeacekeeperUserComponent implements OnInit {
     });
   }
   allPeacekeeper() {
-    this.AdminService.getApprovedDelegate().subscribe((data: any) => {
-      console.log("data",data.data[0]);
-      this.peacekeeperList= data.data[0]
+    this.AdminService.getPeacekeeper().subscribe((data: any) => {
+      console.log("data",data.data);
+      this.peacekeeperList= data.data
       if(this.peacekeeperList.length===0){
         this.notFound=true;
       } else{
@@ -364,24 +364,16 @@ export() {
   
     console.log("created date...........",item.created_date);
     // Assuming item.created_date is a valid date string or Date object
-let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
+let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
 let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
 
     return {
-      'urn_no':  item.urn_no, 
-      'title': item.title, 
-      'first_name': item.first_name, 
-      'last_name': item.last_name, 
-      // 'department':  item.department, 
-      // 'designation':  item.designation,
-      'country_code':  item.country_code,
+      'full_name': item.full_name, 
+      'DOB':  item.dob,
+      'country':  item.country,
       'mobile_number':  item.mobile_number,  
       'email_id':  item.email_id, 
-      'address':  item.address, 
-      // 'address_line_2':  item.address_line_2, 
-      // 'address_line_3':  item.address_line_3, 
      'created_date':  created_date, 
-     'updated_date':  updated_date, 
     };
   });
   

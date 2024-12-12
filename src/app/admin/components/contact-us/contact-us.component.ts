@@ -64,9 +64,9 @@ export class ContactUsComponent implements OnInit {
   }
   allContactUs() {
     // this.ngxService.start();
-    this.AdminService.getApprovedDelegate().subscribe((data: any) => {
-      console.log("data",data.data[0]);
-      this.contactUsList= data.data[0]
+    this.AdminService.getContactUsApi().subscribe((data: any) => {
+      console.log("data",data.data);
+      this.contactUsList= data.data
       if(this.contactUsList.length===0){
         this.notFound=true;
       } else{
@@ -369,19 +369,17 @@ export() {
   
     console.log("created date...........",item.created_date);
     // Assuming item.created_date is a valid date string or Date object
-let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
+let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
 let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
 
     return {
-      'urn_no':  item.urn_no, 
-      'title': item.title, 
-      'first_name': item.first_name, 
-      'last_name': item.last_name, 
-      'mobile_number':  item.mobile_number,  
-      'email_id':  item.email_id,  
-      'query':  item.email_id,  
-     'created_date':  created_date, 
-     'updated_date':  updated_date, 
+      'SN':  item.CONTACT_ID, 
+      'TITLE': item.TITLE, 
+      'FIRST_NAME': item.FIRST_NAME, 
+      'LAST_NAME': item.LAST_NAME, 
+      'PHONE_NUMBER':  item.PHONE_NUMBER,  
+      'EMAIL':  item.EMAIL,  
+      'query':  item.YOUR_QUESTION,  
     };
   });
   
@@ -392,10 +390,10 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
 
   // You can set additional properties if needed, e.g., a title:
   wb.Props = {
-    Title: 'Peacekeeper Users - ' + this.form,
+    Title: 'Contact_Us - ' + this.form,
   };
 
-  XLSX.writeFile(wb, 'Peacekeeper_Users.xlsx');
+  XLSX.writeFile(wb, 'Contact_Us.xlsx');
 
   // Add your success message or any other functionality here.
   this.SharedService.ToastPopup('Table has exported successfully', '', 'success');

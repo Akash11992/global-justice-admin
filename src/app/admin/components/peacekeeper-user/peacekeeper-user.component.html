@@ -77,9 +77,9 @@
                           <tr *ngFor="let all of peacekeeperList let i = index;">
                             <!-- <td><input type="checkbox" id="singlecheckbox" (change)="updateSelectedUsers(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)"></td> -->
                             <td>{{i+1}}</td>
-                            <td>{{all.title}} {{all.first_name}} {{all.last_name}}</td>  
-                            <td>{{all.designation}}</td>
-                            <td>{{all.designation}}</td>
+                            <td>{{all.full_name}}</td>  
+                            <td>{{all.dob | date : 'dd/MM/yyyy'}}</td>
+                            <td>{{all.country}}</td>
                             <td>{{all.email_id}} <i class="bi bi-person-fill"></i></td>
                             <td>{{all.mobile_number}}</td>
                             <!-- <td>{{all.company_name}}</td>

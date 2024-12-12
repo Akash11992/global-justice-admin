@@ -29,6 +29,18 @@ getApprovedDelegate() {
   return this._apiHttpService.get(this._apiEndpointsService.getApprovedDelegateEndpoint());
 }
 
+getContactUsApi() {
+  return this._apiHttpService.get(this._apiEndpointsService.getContactUsEndpoint());
+}
+
+
+
+getPeacekeeper() {
+  return this._apiHttpService.get(this._apiEndpointsService.getPeacekeeperEndpoint());
+}
+
+
+
 getApprovedPartner() {
   return this._apiHttpService.get(this._apiEndpointsService.getApprovedPartnerEndpoint());
 }
