@@ -65,10 +65,11 @@
                             <th>Name</th>
                             <th>DOB</th>
                             <th>Country</th>
-                            <th>Email</th>
                             <th>Mobile</th>
-                            <!-- <th>Department</th>
-                            <th>Reference</th>
+                            <th>Email</th>
+                            <th>Peacekeeper ID</th>
+                           <th>Created Date</th>
+                             <!-- <th>Reference</th>
                             <th>Registered At</th> -->
                             <!-- <th>Action</th> -->
                           </tr>
@@ -80,10 +81,11 @@
                             <td>{{all.full_name}}</td>  
                             <td>{{all.dob | date : 'dd/MM/yyyy'}}</td>
                             <td>{{all.country}}</td>
-                            <td>{{all.email_id}} <i class="bi bi-person-fill"></i></td>
                             <td>{{all.mobile_number}}</td>
-                            <!-- <td>{{all.company_name}}</td>
-                            <td>{{all.designation}}</td>
+                            <td>{{all.email_id}} <i class="bi bi-person-fill"></i></td>
+                            <td>{{all.Id_no}}</td>
+                           <td>{{all.created_at | date : 'dd/MM/yyyy'}}</td>
+                             <!-- <td>{{all.designation}}</td>
   
                             <td>{{all.department}}</td>
                             <td>{{all.refrence}}</td>
