@@ -1,0 +1,62 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto; overflow-x: hidden">
+    <!-- class="p-4 p-md-5 "-->
+
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="col-md-12" style="margin-top: 25px">
+        <img src="assets/images/user (1).png" id="userimg" />
+        <h4 style="display: inline-flex">Add Discount Coupon</h4>
+      </div>
+
+      <div class="col-md-12">
+        <div class="card" id="uppercard">
+          <div class="card-body">
+            <form class="row g-3">
+              <div class="col-md-6 my-lg-2 my-2">
+                <label for="inputtext" class="form-label">Name</label>
+                <input type="text" class="form-control" id="inputtext">
+              </div>
+              <div class="col-md-6 my-lg-2 my-2">
+                <label for="inputEmail4" class="form-label">Email</label>
+                <input type="email" class="form-control" id="inputEmail4">
+              </div>
+              <div class="col-md-6 my-lg-2 my-2">
+                <label for="inputtext" class="form-label">Country</label>
+                <select name="" id="" class="form-control">
+                  <option value="" selected disabled>Select Country</option>
+                  <option value="">India</option>
+                  <option value="">Others</option>
+                </select>
+              </div>
+              <div class="col-md-6 my-lg-2 my-2">
+                <label for="mobile" class="form-label">Mobile no.</label>
+                <input type="tel" class="form-control" id="mobile">
+              </div>
+              <div class="col-md-6 my-lg-2 my-2">
+                <label for="coupan" class="form-label">Coupan Code</label>
+                <input type="number" class="form-control" id="coupan">
+              </div>
+              <div class="col-md-6 my-lg-2 my-2">
+                <label for="QR" class="form-label">QR. COde</label>
+                <textarea type="tel" class="form-control" id="QR"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary" routerLink="/dashboard/discount-coupon-master">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    
+    </div>
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>

@@ -17,6 +17,8 @@ import { SalesBroucherComponent } from './components/feature/sales-broucher/sale
 import { BroucherComponent } from './components/feature/broucher/broucher.component';
 import { PeacekeeperUserComponent } from './components/peacekeeper-user/peacekeeper-user.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
+import { DiscountCoupanMasterComponent } from './components/discount-coupan-master/discount-coupan-master.component';
+import { AddDiscountCoupanComponent } from './components/add-discount-coupan/add-discount-coupan.component';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -29,7 +31,9 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
     SalesBroucherComponent,
     BroucherComponent,
     PeacekeeperUserComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    DiscountCoupanMasterComponent,
+    AddDiscountCoupanComponent
   ],
   imports: [
     SharedModule,
