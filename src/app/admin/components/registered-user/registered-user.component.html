@@ -102,10 +102,11 @@
                           <th>URN</th>
                           <th>Name</th>
                           <th>Email</th>
-                          <th>Mobile</th>
-                          <th>Company</th>
-                          <th>Designation</th>
-                          <th>Department</th>
+                          <th>Mobile</th>                  
+                          <th>Country</th>                   
+                          <th>Profession</th>
+                          <th>Organization Name</th>
+                          <!-- <th>Company</th> -->
                           <th>Reference</th>
                           <th>Registered At</th>
                           <th>Action</th>
@@ -118,10 +119,10 @@
                           <td>{{all.title}} {{all.first_name}} {{all.last_name}}</td>                                                
                           <td>{{all.email_id}} <i class="bi bi-person-fill"></i></td>
                           <td>{{all.mobile_number}}</td>
-                          <td>{{all.company_name}}</td>
-                          <td>{{all.designation}}</td>
-
-                          <td>{{all.department}}</td>
+                          <td>{{all.country}}</td>
+                          <td>{{all.profession_1}}</td>
+                          <td>{{all.organization_name}}</td>
+                          <!-- <td>{{all.company_name}}</td> -->
                           <td>{{all.refrence}}</td>
                           <td>{{all.created_date | date :'short'}}</td>
                           
@@ -139,7 +140,7 @@
                                               <i class="bi bi-check2-square"></i> Approve, Register
                                               & Generate URN</a></li>-->
 
-                                              <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
+                                              <!-- <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
                                                 <i class="fa fa-eye" aria-hidden="true" ></i> View Details</a>
                                             </li>
                                               <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/editdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
@@ -151,7 +152,7 @@
                                       <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
                                               <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li>
                                               <li><a class="dropdown-item" style="cursor: pointer;"   (click)="Generate_Badge(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
-                                                <i  class="bi bi-file-earmark-pdf-fill"></i> Regenerate Badge</a></li>
+                                                <i  class="bi bi-file-earmark-pdf-fill"></i> Regenerate Badge</a></li> -->
 
 
                                               <li><a class="dropdown-item" style="cursor: pointer;"  (click)="updateAndUnapprovethroughDropdown(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">

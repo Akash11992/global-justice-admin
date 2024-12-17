@@ -12,6 +12,8 @@ import { JoinmailinglistComponent } from './components/feature/joinmailinglist/j
 import { BroucherComponent } from './components/feature/broucher/broucher.component';
 import { ViewDetailsComponent } from '../shared/components/user-details/view-details/view-details.component';
 import { EditDetailsComponent } from '../shared/components/user-details/edit-details/edit-details.component';
+import { PeacekeeperUserComponent } from './components/peacekeeper-user/peacekeeper-user.component';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 const routes: Routes = [
  
@@ -46,7 +48,10 @@ const routes: Routes = [
     component: AdminMainComponent,
 
     children:[
+
       {path:'registered-user',component:RegisteredUserComponent},
+      {path:'peacekeeper',component:PeacekeeperUserComponent},
+      {path:'contact-us',component:ContactUsComponent},
       // {path:'reset-password',component:ResetPasswordComponent},
       {path:'', redirectTo:'registered-user', pathMatch:'full'}
     ]

@@ -199,6 +199,15 @@ export class ApiEndpointsService {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedDelegate);
   }
 
+  public getContactUsEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_getContactUs);
+  }
+
+
+  public getPeacekeeperEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_getPeacekeeper);
+  }
+
   public getApprovedPartnerEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedPartner);
   }
