@@ -1,0 +1,115 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto; overflow-x: hidden">
+    <!-- class="p-4 p-md-5 "-->
+
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="col-md-12" style="margin-top: 25px">
+        <img src="assets/images/user (1).png" id="userimg" />
+        <h4 style="display: inline-flex">Discount Coupon Master</h4>
+      </div>
+
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <form class="d-flex">
+                <input
+                  class="form-control"
+                  formControlName="searchInput"
+                  type="search"
+                  id="inputsearch"
+                  placeholder="Search..."
+                  aria-label="Search"
+                />
+                &nbsp; &nbsp;&nbsp;
+                <button class="btn" id="btncolor">Search</button>
+                &nbsp; &nbsp;
+                <button class="btn" type="reset" id="btncolor">Reset</button>
+              </form>
+            </div>
+            <div class="col-md-6 text-right">
+              <a class="btn" id="btncolor" routerLink="/dashboard/add-discount-coupon">Add Discount Coupon</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input type="checkbox" id="checkbox" />
+                      </th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Country</th>
+                      <th class="text-center">Mobile</th>
+                      <th class="text-center">Coupan Code</th>
+                      <th class="text-center">QR Code</th>
+                      <th class="text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>Kumar Saurabh</td>
+                      <td>saurabh@gmail.com</td>
+                      <td>India</td>
+                      <td class="text-center">8602288504</td>
+                      <td class="text-center">12345678</td>
+                      <td class="text-center"></td>
+                      <td class="text-right">
+                        <div class="dropdown dropstart">
+                          <button
+                            class="btn btn-outline-success"
+                            type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <img
+                              src="/assets/images/orangemenuicon.png"
+                              id="hamburgericon"
+                            />
+                          </button>
+                          <ul
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton1"
+                          >
+                            <li>
+                              <a class="dropdown-item" style="cursor: pointer">
+                                <i class="bi bi-trash3-fill"></i> Delete</a
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- <h5 style="text-align: center">
+                <span >No Data Found</span>
+              </h5> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>
