@@ -20,12 +20,12 @@
           <div class="card-body">
             <form class="row g-3">
               <div class="col-md-6 my-lg-2 my-2">
-                <label for="inputtext" class="form-label">Name</label>
-                <input type="text" class="form-control" id="inputtext">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" />
               </div>
               <div class="col-md-6 my-lg-2 my-2">
-                <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" id="inputEmail4">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" />
               </div>
               <div class="col-md-6 my-lg-2 my-2">
                 <label for="inputtext" class="form-label">Country</label>
@@ -36,26 +36,47 @@
                 </select>
               </div>
               <div class="col-md-6 my-lg-2 my-2">
+                <label for="inputEmail4" class="form-label">Email</label>
+                <input type="email" class="form-control" id="inputEmail4" />
+              </div>
+              <div class="col-md-6 my-lg-2 my-2">
                 <label for="mobile" class="form-label">Mobile no.</label>
-                <input type="tel" class="form-control" id="mobile">
+                <input type="tel" class="form-control" id="mobile" />
+              </div>
+              <div class="col-md-2 my-lg-2 my-2">
+                <label for="discount" class="form-label">discount %</label>
+                <span class="d-flex">
+                  <input
+                    type="number"
+                    class="form-control w-75"
+                    id="discount"
+                    value="7"
+                  />
+                  <img src="assets/images/percent.svg" alt="" />
+                </span>
+              </div>
+              <div class="col-md-4 my-lg-2 my-2">
+                <label for="coupan" class="form-label">Coupon Code</label>
+                <input type="number" class="form-control" id="coupan" />
               </div>
               <div class="col-md-6 my-lg-2 my-2">
-                <label for="coupan" class="form-label">Coupan Code</label>
-                <input type="number" class="form-control" id="coupan">
-              </div>
-              <div class="col-md-6 my-lg-2 my-2">
-                <label for="QR" class="form-label">QR. COde</label>
+                <label for="QR" class="form-label">QR. Code</label>
                 <textarea type="tel" class="form-control" id="QR"></textarea>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary" routerLink="/dashboard/discount-coupon-master">Save</button>
+                <button class="btn btn-primary">Generate QR</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary mx-3"
+                  routerLink="/dashboard/discount-coupon-master"
+                >
+                  Save
+                </button>
               </div>
             </form>
           </div>
         </div>
       </div>
-
-    
     </div>
   </div>
   <!------------------------------------------- Page Content end ----------------------------------------->
