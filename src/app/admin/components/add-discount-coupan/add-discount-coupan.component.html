@@ -18,60 +18,49 @@
       <div class="col-md-12">
         <div class="card" id="uppercard">
           <div class="card-body">
-            <form class="row g-3">
+            <form [formGroup]="couponForm" class="row g-3">
               <div class="col-md-6 my-lg-2 my-2">
                 <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="firstName" />
+                <input type="text" class="form-control" id="firstName" formControlName="firstName" />
               </div>
               <div class="col-md-6 my-lg-2 my-2">
                 <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lastName" />
+                <input type="text" class="form-control" id="lastName" formControlName="lastName" />
               </div>
               <div class="col-md-6 my-lg-2 my-2">
-                <label for="inputtext" class="form-label">Country</label>
-                <select name="" id="" class="form-control">
+                <label for="country" class="form-label">Country</label>
+                <select class="form-control" formControlName="country">
                   <option value="" selected disabled>Select Country</option>
-                  <option value="">India</option>
-                  <option value="">Others</option>
+                  <option value="India">India</option>
+                  <option value="Others">Others</option>
                 </select>
               </div>
               <div class="col-md-6 my-lg-2 my-2">
                 <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" id="inputEmail4" />
+                <input type="email" class="form-control" id="inputEmail4" formControlName="email" />
               </div>
               <div class="col-md-6 my-lg-2 my-2">
                 <label for="mobile" class="form-label">Mobile no.</label>
-                <input type="tel" class="form-control" id="mobile" />
+                <input type="tel" class="form-control" maxlength="10" id="mobile" formControlName="mobile" />
               </div>
               <div class="col-md-2 my-lg-2 my-2">
-                <label for="discount" class="form-label">discount %</label>
+                <label for="discount" class="form-label">Discount %</label>
                 <span class="d-flex">
-                  <input
-                    type="number"
-                    class="form-control w-75"
-                    id="discount"
-                    value="7"
-                  />
+                  <input type="number" class="form-control w-75" id="discount" formControlName="discount" />
                   <img src="assets/images/percent.svg" alt="" />
                 </span>
               </div>
               <div class="col-md-4 my-lg-2 my-2">
-                <label for="coupan" class="form-label">Coupon Code</label>
-                <input type="number" class="form-control" id="coupan" />
+                <label for="couponCode" class="form-label">Coupon Code</label>
+                <input type="text" class="form-control" id="couponCode" formControlName="couponCode" readonly />
               </div>
               <div class="col-md-6 my-lg-2 my-2">
-                <label for="QR" class="form-label">QR. Code</label>
-                <textarea type="tel" class="form-control" id="QR"></textarea>
+                <label for="qrCode" class="form-label">QR. Code</label>
+                <textarea class="form-control" id="qrCode" formControlName="qrCode"></textarea>
               </div>
               <div class="col-12">
-                <button class="btn btn-primary">Generate QR</button>
-                <button
-                  type="submit"
-                  class="btn btn-primary mx-3"
-                  routerLink="/dashboard/discount-coupon-master"
-                >
-                  Save
-                </button>
+                <button type="button" class="btn btn-primary" (click)="onGenerateQR()">Generate QR</button>
+                <button type="button" class="btn btn-primary mx-3" (click)="onSave()">Save</button>
               </div>
             </form>
           </div>

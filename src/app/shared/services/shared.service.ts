@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiEndpointsService } from 'src/app/core/services/api-endpoints.service';
 import { ApiHttpService } from 'src/app/core/services/api-http.service';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Observer } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -15,7 +15,9 @@ export class SharedService {
   permissionData : any;
 
   private refreshPermissionSubject = new Subject<boolean>();
+  private refreshPeacekeeperSubject = new Subject<boolean>();
   refresh$ = this.refreshPermissionSubject.asObservable();
+  refreshPeacekeeper$ = this.refreshPeacekeeperSubject.asObservable();
 
 
   constructor(
@@ -48,6 +50,9 @@ export class SharedService {
     }
   }
 
+  refreshTicker() {
+    this.refreshPeacekeeperSubject.next(true);
+  }
 
   registration(data:any) {
     return this._apiHttpService.post(this._apiEndpointsService.registrationEndpoint(),data

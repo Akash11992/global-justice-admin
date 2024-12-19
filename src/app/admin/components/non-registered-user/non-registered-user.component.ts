@@ -46,6 +46,9 @@ selectedUserNumbers: string[] = [];
   checkedList: any;
   checked: any;
   form:any;
+  private intervalId: any;
+  RefreshInterval: any;
+
   constructor(private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
     this.masterSelected = false;
   }
@@ -53,7 +56,30 @@ selectedUserNumbers: string[] = [];
     this.allDelegate();
     this.createForm();
 
+    this.getInterval();
+
+
   }
+
+  async getInterval() {
+  
+        this.RefreshInterval = 10000;
+
+        if (this.RefreshInterval) {
+          this.intervalId = setInterval(async () => {
+            console.log('refreshing......')
+            this.allDelegate();
+          }, this.RefreshInterval);
+        }
+   
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
+ 
+  
+  }
+
   createForm() {
     this.searchForm = this.fb.group({
       searchInput: [''] // Initialize with an empty string
