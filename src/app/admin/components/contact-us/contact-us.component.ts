@@ -35,7 +35,8 @@ export class ContactUsComponent implements OnInit {
   // title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
   masterSelected:boolean | undefined;
   singleSelected:boolean=false;
-
+  private intervalId: any;
+  RefreshInterval: any;
 
   checkedList:any;
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
@@ -54,6 +55,27 @@ export class ContactUsComponent implements OnInit {
     // this.allPartner()
     // this.allSpeaker()
     
+    this.getInterval();
+
+
+  }
+
+  async getInterval() {
+  
+        this.RefreshInterval = 10000;
+
+        if (this.RefreshInterval) {
+          this.intervalId = setInterval(async () => {
+            console.log('refreshing......')
+            this.allContactUs();
+          }, this.RefreshInterval);
+        }
+   
+  }
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
+ 
+  
   }
 
 

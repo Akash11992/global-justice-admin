@@ -9,6 +9,8 @@ import { ExportToCsv } from 'export-to-csv';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
+import { interval, Subject, Subscription } from 'rxjs';
+
 
 
 @Component({
@@ -27,12 +29,15 @@ export class PeacekeeperUserComponent implements OnInit {
   peacekeeperList: any[] = [];
   searchForm:any= FormGroup;
   peacekeeper:boolean=false;
+  private intervalId: any;
+  RefreshInterval: any;
 
   form:any;
   userNumber:any;
   // title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
   masterSelected:boolean | undefined;
   singleSelected:boolean=false;
+  private refreshSubscription: Subscription;
 
 
   checkedList:any;
@@ -41,6 +46,9 @@ export class PeacekeeperUserComponent implements OnInit {
   {
     this.masterSelected = false;
     
+    this.refreshSubscription = this.SharedService.refreshPeacekeeper$.subscribe(async () => {
+      await this.allPeacekeeper();
+    });
     // this.getCheckedItemList();
   }
 
@@ -49,8 +57,22 @@ export class PeacekeeperUserComponent implements OnInit {
     this.allPeacekeeper();
 
     this.createForm();
+    this.getInterval();
 
-    
+
+  }
+
+  async getInterval() {
+  
+        this.RefreshInterval = 10000;
+
+        if (this.RefreshInterval) {
+          this.intervalId = setInterval(async () => {
+            console.log('refreshing......')
+            this.allPeacekeeper();
+          }, this.RefreshInterval);
+        }
+   
   }
 
 
@@ -393,6 +415,16 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
   this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
 
 }
+
+ngOnDestroy() {
+  clearInterval(this.intervalId);
+
+  if (this.refreshSubscription)
+    this.refreshSubscription.unsubscribe();
+
+
+}
+
 
 }
 

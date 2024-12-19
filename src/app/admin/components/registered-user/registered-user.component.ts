@@ -36,6 +36,8 @@ export class RegisteredUserComponent {
   masterSelected:boolean | undefined;
   singleSelected:boolean=false;
 
+  private intervalId: any;
+  RefreshInterval: any;
 
   checkedList:any;
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
@@ -53,9 +55,28 @@ export class RegisteredUserComponent {
     this.createForm();
     // this.allPartner()
     // this.allSpeaker()
-    
+    this.getInterval();
+
+
   }
 
+  async getInterval() {
+  
+        this.RefreshInterval = 10000;
+
+        if (this.RefreshInterval) {
+          this.intervalId = setInterval(async () => {
+            console.log('refreshing......')
+            this.allDelegate();
+          }, this.RefreshInterval);
+        }
+   
+  }
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
+ 
+  
+  }
 
   createForm(){
     this.searchForm = this.fb.group({
