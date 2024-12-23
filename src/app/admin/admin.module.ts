@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,  NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -19,6 +19,8 @@ import { PeacekeeperUserComponent } from './components/peacekeeper-user/peacekee
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { DiscountCoupanMasterComponent } from './components/discount-coupan-master/discount-coupan-master.component';
 import { AddDiscountCoupanComponent } from './components/add-discount-coupan/add-discount-coupan.component';
+import { QRCodeModule } from 'angularx-qrcode';
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -42,7 +44,10 @@ import { AddDiscountCoupanComponent } from './components/add-discount-coupan/add
     ReactiveFormsModule,
     AdminRoutingModule,
     CanvasJSAngularChartsModule,
+    QRCodeModule
 
-  ]
+  ],
+  schemas: [NO_ERRORS_SCHEMA], // Add this line
+
 })
 export class AdminModule { }

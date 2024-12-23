@@ -71,7 +71,7 @@
                            <th>Created Date</th>
                              <!-- <th>Reference</th>
                             <th>Registered At</th> -->
-                            <!-- <th>Action</th> -->
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -91,7 +91,7 @@
                             <td>{{all.refrence}}</td>
                             <td>{{all.created_date | date :'short'}}</td> -->
                             
-                            <!-- <td>
+                            <td>
                                 <div class="dropdown dropstart">
                                     <button class="btn btn-outline-success" type="button" id="dropdownMenuButton1"
                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -100,7 +100,7 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                    
-                                             <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
+                                             <!-- <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
                                                   <i class="fa fa-eye" aria-hidden="true" ></i> View Details</a>
                                               </li>
                                                  <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/editdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
@@ -108,22 +108,21 @@
                                               </li>
                                                 <li><a class="dropdown-item" style="cursor: pointer;" (click)="downloadBadge(all.filepath,all.urn_no)">
                                                   <i class="bi bi-download"></i> Download Badge</a>
-                                              </li>
+                                              </li> -->
+                                              <li><a class="dropdown-item" style="cursor: pointer;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"  (click)="Generate_Badge(all.user_id,all.full_name,all.full_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.country_code,all.country)" >
+                                                <i  class="bi bi-file-earmark-pdf-fill"></i> Regenerate Badge</a></li>
                                         <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
                                                 <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li>
-                                                <li><a class="dropdown-item" style="cursor: pointer;"   (click)="Generate_Badge(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
-                                                  <i  class="bi bi-file-earmark-pdf-fill"></i> Regenerate Badge</a></li>
+
   
   
-                                                <li><a class="dropdown-item" style="cursor: pointer;"  (click)="updateAndUnapprovethroughDropdown(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">
-                                                  <i class="bi bi-x-lg"></i> Unapprove Registration</a>
-                                              </li> 
+                                            
                                         <li><a class="dropdown-item" style="cursor: pointer;" (click)="deleteUser(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">
                                                 <i class="bi bi-trash3-fill"></i> Delete</a></li>
                                                 
                                     </ul>
                                 </div>
-                            </td> -->
+                            </td>
                         </tr>
                          
                         </tbody>
@@ -142,3 +141,96 @@
         <!------------------------------------------- Page Content end ----------------------------------------->
       </div>
       
+        <!------------------------------------------- Page modal start ----------------------------------------->
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="col-md-12" style="margin-top: 25px">
+          <img src="assets/images/user (1).png" id="userimg" />
+          <h4 style="display: inline-flex">Add Discount Coupon</h4>
+        </div>        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid" id="pagecontent">
+       
+    
+          <div class="col-md-12">
+            <div class="card" id="uppercard">
+              <div class="card-body">
+                <form [formGroup]="couponForm" class="row g-3">
+                  <div class="col-md-6 my-lg-2 my-2">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" formControlName="firstName" />
+                  </div>
+                  <div class="col-md-6 my-lg-2 my-2">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" formControlName="lastName" />
+                  </div>
+                  <div class="col-md-6 my-lg-2 my-2">
+                    <label for="country" class="form-label">Country</label>
+                    <select class="form-control" formControlName="country">
+                      <option value="" selected disabled>Select Country</option>
+                      <option value="India">India</option>
+                      <option value="Others">Others</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 my-lg-2 my-2">
+                    <label for="inputEmail4" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="inputEmail4" formControlName="email" />
+                  </div>
+                  <div class="col-md-6 my-lg-2 my-2">
+                    <label for="mobile" class="form-label">Mobile no.</label>
+                    <input type="tel" class="form-control" maxlength="10" id="mobile" formControlName="mobile" />
+                  </div>
+                  <div class="col-md-2 my-lg-2 my-2">
+                    <label for="discount" class="form-label">Discount %</label>
+                    <span class="d-flex">
+                      <input type="number" class="form-control w-75" id="discount" formControlName="discount" />
+                      <img src="assets/images/percent.svg" alt="" />
+                    </span>
+                  </div>
+                  <div class="col-md-4 my-lg-2 my-2">
+                    <label for="couponCode" class="form-label">Coupon Code</label>
+                    <input type="text" class="form-control" id="couponCode" formControlName="couponCode" readonly />
+                  </div>
+                  <div class="col-md-6 my-lg-2 my-2">
+                    <label for="qrCode" class="form-label">QR. Code</label>
+                    <textarea class="form-control" id="qrCode" formControlName="qrCode" readonly></textarea>
+                  </div>
+    
+                  <div class="qr-code-section" *ngIf="qrCodeData">
+                    <h3>QR Code:</h3>
+                    <!-- QR Code Component -->
+                    <qrcode [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+                    <!-- <ngx-qrcode
+                    [qrc-value]="qrCodeData"
+                    [qrc-element-type]="qrCodeData"
+                    [qrc-error-correction-level]="'L'"
+                    [qrc-margin]="10"
+                    [qrc-scale]="4"
+                ></ngx-qrcode> -->
+                  </div>
+                 
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="generateQRCode()">Generate QR</button>
+        <button type="button" class="btn btn-primary mx-3" (click)="onSave()">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

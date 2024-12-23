@@ -1,5 +1,6 @@
 import { Component ,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-add-discount-coupan',
   templateUrl: './add-discount-coupan.component.html',
@@ -7,7 +8,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AddDiscountCoupanComponent implements OnInit {
   couponForm: FormGroup;
+  code:any
+  qrCodeData: string | null = null;
 
+referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
   constructor(private fb: FormBuilder) {
     this.couponForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
@@ -23,6 +27,7 @@ export class AddDiscountCoupanComponent implements OnInit {
 
   ngOnInit(): void {
     this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
+
   }
 
   generateCouponCode(): void {
@@ -31,7 +36,6 @@ export class AddDiscountCoupanComponent implements OnInit {
     const country = this.couponForm.get('country')?.value ;
     const email = this.couponForm.get('email')?.value ;
     const mobile = this.couponForm.get('mobile')?.value ;
-debugger
     // Generate parts of the coupon code
     const firstChar = firstName.charAt(0).toUpperCase();
     const lastChar = lastName.charAt(0).toUpperCase();
@@ -42,16 +46,21 @@ debugger
 console.log(mobile.length,'mobile');
 
     // Combine the parts into a 16-character code
-    if(firstName!==""&&lastName!==""&&country!==""&&email!==""&&mobile!==""&&mobile.length>9){
+    if(firstName!==""&&lastName!==""&&country!==""&&email!==""&&mobile!==""&&mobile.length>9&&!this.couponForm.get('qrCode')?.value){
       const randomChars = this.generateRandomChars(16 - (firstChar.length + lastChar.length + mobileStart.length + mobileEnd.length + countryChars.length + emailChars.length ));
       const couponCode = `${firstChar}${lastChar}${mobileStart}${mobileEnd}${countryChars}${emailChars}${randomChars}`;
+      this.couponForm.get('qrCode')?.setValue(this.referralUrl+couponCode);
       this.couponForm.get('couponCode')?.setValue(couponCode);
 
     }
-
+    
     // Update the coupon code field
   }
-
+  generateQRCode() {
+    debugger
+    const qrCodeValue = this.couponForm.get('qrCode')?.value;
+    this.qrCodeData = qrCodeValue ? `MECARD:QR:${qrCodeValue};` : null;
+  }
   generateRandomChars(length: number): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let result = '';

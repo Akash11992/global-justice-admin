@@ -23,6 +23,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { AdminModule } from './admin/admin.module';
+import { QRCodeModule } from 'angularx-qrcode';
 
 // import { HeaderComponent } from './shared/components/header/header.component';
 @NgModule({
@@ -45,7 +46,9 @@ import { AdminModule } from './admin/admin.module';
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
     AppRoutingModule,
-    FormsModule, ReactiveFormsModule,SharedModule
+    FormsModule, ReactiveFormsModule,SharedModule,
+    QRCodeModule
+
 
   ],
 

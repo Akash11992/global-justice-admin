@@ -56,10 +56,23 @@
               </div>
               <div class="col-md-6 my-lg-2 my-2">
                 <label for="qrCode" class="form-label">QR. Code</label>
-                <textarea class="form-control" id="qrCode" formControlName="qrCode"></textarea>
+                <textarea class="form-control" id="qrCode" formControlName="qrCode" readonly></textarea>
+              </div>
+
+              <div class="qr-code-section" *ngIf="qrCodeData">
+                <h3>QR Code:</h3>
+                <!-- QR Code Component -->
+                <!-- <qrcode [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode> -->
+                <!-- <ngx-qrcode
+                [qrc-value]="qrCodeData"
+                [qrc-element-type]="qrCodeData"
+                [qrc-error-correction-level]="'L'"
+                [qrc-margin]="10"
+                [qrc-scale]="4"
+            ></ngx-qrcode> -->
               </div>
               <div class="col-12">
-                <button type="button" class="btn btn-primary" (click)="onGenerateQR()">Generate QR</button>
+                <button type="button" class="btn btn-primary" (click)="generateQRCode()">Generate QR</button>
                 <button type="button" class="btn btn-primary mx-3" (click)="onSave()">Save</button>
               </div>
             </form>

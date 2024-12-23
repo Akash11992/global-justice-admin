@@ -38,12 +38,26 @@ export class PeacekeeperUserComponent implements OnInit {
   masterSelected:boolean | undefined;
   singleSelected:boolean=false;
   private refreshSubscription: Subscription;
+  couponForm: FormGroup;
+  code:any
+  qrCodeData: string | null = null;
 
+referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
 
   checkedList:any;
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
-   
+
   {
+    this.couponForm = this.fb.group({
+      firstName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
+      lastName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
+      country: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      mobile: ['', [Validators.required, Validators.pattern(/^\\d{10}$/)]],
+      discount: [7, [Validators.required, Validators.min(1), Validators.max(100)]],
+      couponCode: [{ value: '', disabled: true }], // Disabled for read-only
+      qrCode: ['', Validators.required],
+    });
     this.masterSelected = false;
     
     this.refreshSubscription = this.SharedService.refreshPeacekeeper$.subscribe(async () => {
@@ -55,6 +69,7 @@ export class PeacekeeperUserComponent implements OnInit {
   
    ngOnInit(): void {
     this.allPeacekeeper();
+    this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
 
     this.createForm();
     this.getInterval();
@@ -73,6 +88,63 @@ export class PeacekeeperUserComponent implements OnInit {
           }, this.RefreshInterval);
         }
    
+  }
+
+
+  generateCouponCode(): void {
+    const firstName = this.couponForm.get('firstName')?.value ;
+    const lastName = this.couponForm.get('lastName')?.value ;
+    const country = this.couponForm.get('country')?.value ;
+    const email = this.couponForm.get('email')?.value ;
+    const mobile = this.couponForm.get('mobile')?.value ;
+    // Generate parts of the coupon code
+    const firstChar = firstName.charAt(0).toUpperCase();
+    const lastChar = lastName.charAt(0).toUpperCase();
+    const countryChars = country.substring(0, 2).toUpperCase();
+    const emailChars = email.substring(0, 2).toUpperCase();
+    const mobileStart = mobile.substring(0, 2);
+    const mobileEnd = mobile.slice(-2);
+console.log(mobile.length,'mobile');
+
+    // Combine the parts into a 16-character code
+    if(firstName!==""&&lastName!==""&&country!==""&&email!==""&&mobile!==""&&mobile.length>9&&!this.couponForm.get('qrCode')?.value){
+      const randomChars = this.generateRandomChars(16 - (firstChar.length + lastChar.length + mobileStart.length + mobileEnd.length + countryChars.length + emailChars.length ));
+      const couponCode = `${firstChar}${lastChar}${mobileStart}${mobileEnd}${countryChars}${emailChars}${randomChars}`;
+      this.couponForm.get('qrCode')?.setValue(this.referralUrl+couponCode);
+      this.couponForm.get('couponCode')?.setValue(couponCode);
+
+    }
+    
+    // Update the coupon code field
+  }
+  generateQRCode() {
+    debugger
+    const qrCodeValue = this.couponForm.get('qrCode')?.value;
+    this.qrCodeData = qrCodeValue ? qrCodeValue: null;
+    console.log(this.qrCodeData, 'QRcode');
+  }
+  generateRandomChars(length: number): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
+
+  onGenerateQR(): void {
+    const qrData = this.couponForm.value;
+    console.log('QR Data:', qrData);
+    // Logic to generate QR code can go here.
+  }
+
+  onSave(): void {
+    if (this.couponForm.valid) {
+      console.log('Form Data:', this.couponForm.value);
+      // Logic to save the data can go here.
+    } else {
+      console.log('Form is invalid');
+    }
   }
 
 
@@ -308,9 +380,16 @@ sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,ur
 
 }
 
-Generate_Badge(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,designation:any,company:any){
-
-
+Generate_Badge(userId: number,first_name:any,last_name:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,country_code:any,country_name:any){
+debugger
+console.log(this.peacekeeperList);
+this.couponForm.patchValue({
+  firstName: first_name,
+  lastName: last_name,
+  country:country_name,
+  email: userEmail,
+  mobile: userNumber,
+})
   switch (true) {
     case this.peacekeeper === true:
       console.log("active tab name delegate", this.peacekeeper);
@@ -319,41 +398,40 @@ Generate_Badge(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:
 
   }
   // Prepare the payload with selected user IDs and status 0.
-  const payload = {
-    user_id:userId,
-    user_name:userName,
-    user_email:userEmail,
-    user_number:userNumber,
-    qr_code:qr_code,
-    urn_no:urn_no,
-    designation:designation,
-    company:company,
-    form_name:this.form_name
-  };
-  console.log("payload", payload);
-  this.ngxService.start();
-  this.AdminService.Generate_Badge(payload).subscribe((data: any) => {
-    this.ngxService.stop();
-    this.SharedService.ToastPopup('', data.message, 'success')
-    // this.allPeacekeeper();
-    setTimeout(() => {
-      this.router.navigate(['dashboard/peacekeeper']);
-      console.log("active tab name delegate", this.peacekeeper);
+  // const payload = {
+  //   user_id:userId,
+  //   user_name:userName,
+  //   user_email:userEmail,
+  //   user_number:userNumber,
+  //   qr_code:qr_code,
+  //   urn_no:urn_no,
+  //   designation:designation,
+  //   company:company,
+  //   form_name:this.form_name
+  // };
+  // console.log("payload", payload);
+  // this.ngxService.start();
+  // this.AdminService.Generate_Badge(payload).subscribe((data: any) => {
+  //   this.ngxService.stop();
+  //   this.SharedService.ToastPopup('', data.message, 'success')
+  //   setTimeout(() => {
+  //     this.router.navigate(['dashboard/peacekeeper']);
+  //     console.log("active tab name delegate", this.peacekeeper);
 
 
-          this.allPeacekeeper();
+  //         this.allPeacekeeper();
  
 
 
-    }, 2000); // 2000 milliseconds (2 seconds) delay
+  //   }, 2000); // 2000 milliseconds (2 seconds) delay
 
-  },
-  (error: any) => {
-    // Handle the error here
-    console.error("Error while sending email:", error);
-    // You can also display an error message or take appropriate action.
-  }
-  );
+  // },
+  // (error: any) => {
+  //   // Handle the error here
+  //   console.error("Error while sending email:", error);
+  //   // You can also display an error message or take appropriate action.
+  // }
+  // );
 
 }
 
