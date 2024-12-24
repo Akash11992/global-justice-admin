@@ -32,6 +32,7 @@ export class PeacekeeperUserComponent implements OnInit {
   peacekeeperList: any[] = [];
   searchForm:any= FormGroup;
   peacekeeper:boolean=false;
+  peacekeeperID:any;
   private intervalId: any;
   RefreshInterval: any;
 
@@ -56,9 +57,9 @@ referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code
       lastName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
       country: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      mobile: ['', [Validators.required, Validators.pattern(/^\\d{10}$/)]],
+      mobile: ['', [Validators.required]],
       discount: [7, [Validators.required, Validators.min(1), Validators.max(100)]],
-      couponCode: [{ value: '', disabled: true }], // Disabled for read-only
+      couponCode: [{ value: '' }], // Disabled for read-only
       qrCode: ['', Validators.required],
     });
     this.masterSelected = false;
@@ -99,7 +100,7 @@ referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code
   generateCouponCode(): void {
     const firstName = this.couponForm.get('firstName')?.value ;
     const nameParts = firstName.trim().split(' ');  // Split name by space and trim any extra spaces
-    const lastName = this.couponForm.get('lastName')?.value ;
+    const lastName = this.couponForm.get('lastName')?.value || this.couponForm.get('firstName')?.value;
     const country = this.couponForm.get('country')?.value ;
     const email = this.couponForm.get('email')?.value ;
     const mobile = this.couponForm.get('mobile')?.value ;
@@ -107,7 +108,7 @@ referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code
     
     // Generate parts of the coupon code
     const firstChar = nameParts[0].charAt(0).toUpperCase();
-    const lastChar = nameParts.slice(1).join(' ').charAt(0).toUpperCase();
+    const lastChar = lastName.charAt(0).toUpperCase();
     const countryChars = country.substring(0, 2).toUpperCase();
     const emailChars = email.substring(0, 2).toUpperCase();
     const mobileStart = mobile.split(' ')[1]?.substring(0, 2) || mobile.substring(0, 2);
@@ -148,12 +149,37 @@ console.log(mobile.length,'mobile');
   }
 
   onSave(): void {
+    debugger
+    console.log('Form Data:', this.couponForm.value);
     if (this.couponForm.valid) {
-      console.log('Form Data:', this.couponForm.value);
       // Logic to save the data can go here.
     } else {
       console.log('Form is invalid');
     }
+
+    const payload = {
+      peace_id:  this.peacekeeperID,
+      coupon_discount:  this.couponForm.get('discount')?.value,
+      QR_CODE:  this.couponForm.get('qrCode')?.value,
+      coupon_code:  this.couponForm.get('couponCode')?.value
+    };
+    console.log("payload", payload);
+    this.ngxService.start();
+    this.AdminService.postPeacekeeper(payload).subscribe((data: any) => {
+      this.ngxService.stop();  
+      this.SharedService.ToastPopup('Generated QR', 'data saved successfully', 'success');
+
+      this.generateQRCode();
+      // if(this.peacekeeperList.length===0){
+      //   this.notFound=true;
+      // } else{
+      //   this.notFound = false;
+      //   console.log("false");
+      // }
+      setTimeout(() => {
+        this.allPeacekeeper();
+      }, 2000); // 2000 milliseconds (2 seconds) delay
+    })
   }
 
 
@@ -389,8 +415,9 @@ sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,ur
 
 }
 
-Generate_QRcode(userId: number,first_name:any,last_name:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,country_code:any,country_name:any){
+Generate_QRcode(peaceID: number,first_name:any,last_name:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,country_code:any,country_name:any){
 console.log(this.peacekeeperList);
+this.peacekeeperID = peaceID;
 const nameParts = first_name.trim().split(' ');  // Split name by space and trim any extra spaces
 
 const firstName = nameParts[0];  // First name
@@ -485,6 +512,10 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
       'country':  item.country,
       'mobile_number':  item.mobile_number,  
       'email_id':  item.email_id, 
+      'Peacekeeper_ID':  item.Id_no, 
+      'Coupan_Discount':  item.coupon_discount, 
+      'Coupan_Code':  item.coupon_code, 
+      'QR_URL':  item.QR_CODE, 
      'created_date':  created_date, 
     };
   });

@@ -367,3 +367,9 @@ margin-top:.25rem;
 	font-size: 80%;
 	color: #dc3545
 }
+
+.disabled-item {
+    pointer-events: none; /* Prevent clicking */
+    opacity: 0.5; /* Optional: Make it look visually disabled */
+  }
+  

@@ -199,14 +199,6 @@ export class ApiEndpointsService {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedDelegate);
   }
 
-  public getContactUsEndpoint(): string {
-    return this.createUrl(this._constants.API_ENDPOINT_getContactUs);
-  }
-
-
-  public getPeacekeeperEndpoint(): string {
-    return this.createUrl(this._constants.API_ENDPOINT_getPeacekeeper);
-  }
 
   public getApprovedPartnerEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedPartner);
@@ -380,4 +372,20 @@ export class ApiEndpointsService {
   public update_user_details(): string {
     return this.createUrl(this._constants.API_ENDPOINT_update_user_details);
   }
+
+  public getContactUsEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_getContactUs);
+  }
+
+
+  public getPeacekeeperEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_getPeacekeeper);
+  }
+
+  public postPeacekeeperEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_PEACE_UPDATE_GENERATE_QR);
+  }
+
+
+
 }

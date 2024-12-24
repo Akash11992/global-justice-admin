@@ -29,16 +29,6 @@ getApprovedDelegate() {
   return this._apiHttpService.get(this._apiEndpointsService.getApprovedDelegateEndpoint());
 }
 
-getContactUsApi() {
-  return this._apiHttpService.get(this._apiEndpointsService.getContactUsEndpoint());
-}
-
-
-
-getPeacekeeper() {
-  return this._apiHttpService.get(this._apiEndpointsService.getPeacekeeperEndpoint());
-}
-
 
 
 getApprovedPartner() {
@@ -204,4 +194,20 @@ TrackingLink(body:any) {
   update_user_details(body:any) {
     return this._apiHttpService.put(this._apiEndpointsService.update_user_details(),body);
   }
+
+
+  getContactUsApi() {
+    return this._apiHttpService.get(this._apiEndpointsService.getContactUsEndpoint());
+  }
+  
+  
+  
+  getPeacekeeper() {
+    return this._apiHttpService.get(this._apiEndpointsService.getPeacekeeperEndpoint());
+  }
+  
+  postPeacekeeper(body:any) {
+    return this._apiHttpService.post(this._apiEndpointsService.postPeacekeeperEndpoint(),body);
+  }
+  
 }
