@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormControlName, FormBuilder, FormArray, } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router,ActivatedRoute } from '@angular/router';
@@ -19,6 +19,9 @@ import { interval, Subject, Subscription } from 'rxjs';
   styleUrls: ['./peacekeeper-user.component.css']
 })
 export class PeacekeeperUserComponent implements OnInit {
+
+  @ViewChild('qrCodeCanvas') qrCodeCanvasRef: ElementRef | undefined;
+
   form_name:any;
   notFound:boolean=false;
   activeTab: string = 'delegate'; // Default active tab is 'delegate'
@@ -503,6 +506,130 @@ ngOnDestroy() {
 
 }
 
+downloadQRCode() {
+  debugger
+  const canvas = document.querySelector('#qrcode') as HTMLCanvasElement;
+  if (!canvas) {
+    throw new Error('<canvas> not found in the DOM');
+  }
 
+  const pngUrl = canvas
+    .toDataURL('image/png')
+    .replace('image/png', 'image/octet-stream');
+  
+  const downloadLink = document.createElement('a');
+  downloadLink.href = pngUrl;
+  downloadLink.download = 'QR code.png';
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}
+
+
+// downloadQRCode(parent: any) {
+//   if (!parent || !parent.el) {
+//     console.error("QR code component is not available.");
+//     return;
+//   }
+
+//   try {
+//     const parentElement = parent.el.nativeElement.querySelector("img").src;
+//     if (!parentElement) {
+//       console.error("QR code image not found.");
+//       return;
+//     }
+
+//     // Convert base64 image to Blob
+//     const blobData = this.convertBase64ToBlob(parentElement);
+
+//     // Create a Blob from the base64 data
+//     const blob = new Blob([blobData], { type: "image/png" });
+//     const url = window.URL.createObjectURL(blob);
+
+//     // Create a temporary download link and trigger click to start download
+//     const link = document.createElement('a');
+//     link.href = url;
+//     link.download = 'Qrcode.png';
+//     link.click();
+
+//     // Clean up the created URL object
+//     window.URL.revokeObjectURL(url);
+//   } catch (error) {
+//     console.error("Error downloading QR code:", error);
+//   }
+// }
+
+// convertBase64ToBlob(base64: string): Blob {
+//   const byteCharacters = atob(base64.split(',')[1]);
+//   const byteArrays = [];
+
+//   for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+//     const slice = byteCharacters.slice(offset, offset + 1024);
+//     const byteNumbers = new Array(slice.length);
+
+//     for (let i = 0; i < slice.length; i++) {
+//       byteNumbers[i] = slice.charCodeAt(i);
+//     }
+
+//     const byteArray = new Uint8Array(byteNumbers);
+//     byteArrays.push(byteArray);
+//   }
+
+//   return new Blob(byteArrays, { type: 'image/png' });
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+qrdata = 'Initial QR code data string';
+
+saveAsImage(parent:any): void {
+  const imgElement = document.querySelector('#qrcode'); // Modify the selector based on your QR code component
+  if (imgElement) {
+    const base64Image = imgElement;
+    let blobData = this.convertBase64ToBlob(base64Image);
+
+    const blob = new Blob([blobData], { type: 'image/png' });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Qrcode.png';
+    link.click();
+
+    window.URL.revokeObjectURL(url);
+  } else {
+    console.error('QR code image not found.');
+  }
+}
+
+private convertBase64ToBlob(Base64Image: any) {
+  // SPLIT INTO TWO PARTS
+  const parts = Base64Image.split(';base64,');
+  // HOLD THE CONTENT TYPE
+  const imageType = parts[0].split(':')[1];
+  // DECODE BASE64 STRING
+  const decodedData = window.atob(parts[1]);
+  // CREATE UNIT8ARRAY OF SIZE SAME AS ROW DATA LENGTH
+  const uInt8Array = new Uint8Array(decodedData.length);
+  // INSERT ALL CHARACTER CODE INTO UINT8ARRAY
+  for (let i = 0; i < decodedData.length; ++i) {
+    uInt8Array[i] = decodedData.charCodeAt(i);
+  }
+  // RETURN BLOB IMAGE AFTER CONVERSION
+  return new Blob([uInt8Array], { type: imageType });
+}
 }
 
