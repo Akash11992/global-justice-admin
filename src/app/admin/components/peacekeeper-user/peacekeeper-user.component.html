@@ -109,7 +109,8 @@
                                                 <li><a class="dropdown-item" style="cursor: pointer;" (click)="downloadBadge(all.filepath,all.urn_no)">
                                                   <i class="bi bi-download"></i> Download Badge</a>
                                               </li> -->
-                                              <li><a class="dropdown-item" style="cursor: pointer;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"  (click)="Generate_Badge(all.user_id,all.full_name,all.full_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.country_code,all.country)" >
+                                              <li><a class="dropdown-item" style="cursor: pointer;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                  (click)="Generate_QRcode(all.user_id,all.full_name,all.full_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.country_code,all.country)" >
                                                 <i  class="bi bi-qr-code"></i> Generate QR</a></li>
                                         <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
                                                 <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li>
@@ -197,26 +198,23 @@
                       <img src="assets/images/percent.svg" alt="" />
                     </span>
                   </div>
-                  <div class="col-md-6 my-lg-2 my-2">
+                  <div class="col-md-12 my-lg-2 my-2">
                     <label for="couponCode" class="form-label">Coupon Code</label>
                     <input type="text" class="form-control" id="couponCode" formControlName="couponCode" readonly />
                   </div>
-                  <div class="col-md-6 my-lg-2 my-2">
+                  <div class="col-md-12 my-lg-2 my-2">
                     <label for="qrCode" class="form-label">QR. Code</label>
                     <textarea class="form-control" id="qrCode" formControlName="qrCode" readonly></textarea>
                   </div>
     
-                  <div class="qr-code-section" *ngIf="qrCodeData">
+                  <div class="col-12 text-center qr-code-section" *ngIf="qrCodeData">
                     <h3>QR Code:</h3>
+                    <qrcode #parent  [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
                     <!-- QR Code Component -->
-                    <qrcode #qrcode  [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-                
-                <div>
-                  <canvas id="qrcode" >
-                   
-
-                  </canvas>
-                  <a (click)="downloadQRCode()">Download QR Code</a>
+                    
+                    <div>
+                 
+                  <a style="color: #0056b3;" (click)="downloadQRCode(parent)">Download QR Code</a>
                 </div>
                   </div>
                  
