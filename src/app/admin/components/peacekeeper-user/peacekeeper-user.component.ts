@@ -44,8 +44,8 @@ export class PeacekeeperUserComponent implements OnInit {
   couponForm: FormGroup;
   code:any
   qrCodeData: string | null = null;
-
 referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
+// referralUrl:any ='https://www.justice-love-peace.com/delegate-registration?code='
 
   checkedList:any;
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
@@ -71,6 +71,8 @@ referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code
 
   
    ngOnInit(): void {
+    // console.log(window.location.origin);
+    
     this.allPeacekeeper();
     this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
 
