@@ -110,7 +110,7 @@
                                                   <i class="bi bi-download"></i> Download Badge</a>
                                               </li> -->
                                               <li><a class="dropdown-item" style="cursor: pointer;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"  (click)="Generate_Badge(all.user_id,all.full_name,all.full_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.country_code,all.country)" >
-                                                <i  class="bi bi-file-earmark-pdf-fill"></i> Regenerate Badge</a></li>
+                                                <i  class="bi bi-qr-code"></i> Generate QR</a></li>
                                         <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
                                                 <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li>
 
@@ -160,9 +160,9 @@
         <div class="container-fluid" id="pagecontent">
        
     
-          <div class="col-md-12">
-            <div class="card" id="uppercard">
-              <div class="card-body">
+          <!-- <div class="col-md-12"> -->
+            <!-- <div class="card" id="uppercard">
+              <div class="card-body"> -->
                 <form [formGroup]="couponForm" class="row g-3">
                   <div class="col-md-6 my-lg-2 my-2">
                     <label for="firstName" class="form-label">First Name</label>
@@ -174,11 +174,13 @@
                   </div>
                   <div class="col-md-6 my-lg-2 my-2">
                     <label for="country" class="form-label">Country</label>
-                    <select class="form-control" formControlName="country">
+                    <input type="email" class="form-control"  formControlName="country" />
+
+                    <!-- <select class="form-control" formControlName="country">
                       <option value="" selected disabled>Select Country</option>
                       <option value="India">India</option>
                       <option value="Others">Others</option>
-                    </select>
+                    </select> -->
                   </div>
                   <div class="col-md-6 my-lg-2 my-2">
                     <label for="inputEmail4" class="form-label">Email</label>
@@ -188,14 +190,14 @@
                     <label for="mobile" class="form-label">Mobile no.</label>
                     <input type="tel" class="form-control" maxlength="10" id="mobile" formControlName="mobile" />
                   </div>
-                  <div class="col-md-2 my-lg-2 my-2">
+                  <div class="col-md-6 my-lg-2 my-2">
                     <label for="discount" class="form-label">Discount %</label>
                     <span class="d-flex">
                       <input type="number" class="form-control w-75" id="discount" formControlName="discount" />
                       <img src="assets/images/percent.svg" alt="" />
                     </span>
                   </div>
-                  <div class="col-md-4 my-lg-2 my-2">
+                  <div class="col-md-6 my-lg-2 my-2">
                     <label for="couponCode" class="form-label">Coupon Code</label>
                     <input type="text" class="form-control" id="couponCode" formControlName="couponCode" readonly />
                   </div>
@@ -207,20 +209,21 @@
                   <div class="qr-code-section" *ngIf="qrCodeData">
                     <h3>QR Code:</h3>
                     <!-- QR Code Component -->
-                    <qrcode [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-                    <!-- <ngx-qrcode
-                    [qrc-value]="qrCodeData"
-                    [qrc-element-type]="qrCodeData"
-                    [qrc-error-correction-level]="'L'"
-                    [qrc-margin]="10"
-                    [qrc-scale]="4"
-                ></ngx-qrcode> -->
+                    <qrcode #qrcode  [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+                
+                <div>
+                  <canvas id="qrcode" >
+                   
+
+                  </canvas>
+                  <a (click)="downloadQRCode()">Download QR Code</a>
+                </div>
                   </div>
                  
                 </form>
-              </div>
-            </div>
-          </div>
+              <!-- </div>
+            </div> -->
+          <!-- </div> -->
         </div>
 
 
