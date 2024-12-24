@@ -20,18 +20,17 @@ export class Constants {
     public readonly API_ENDPOINT_getSpeaker: string = 'registration/speaker/non-registered'
 
     public readonly API_ENDPOINT_getApprovedDelegate: string = 'registration/delegate/approved'
-    public readonly API_ENDPOINT_getContactUs: string = 'getAllContactUsData'
-    public readonly API_ENDPOINT_getPeacekeeper: string = 'getAllpeacekeeper'
+
     public readonly API_ENDPOINT_getApprovedPartner: string = 'registration/partner/approved'
     public readonly API_ENDPOINT_getApprovedSpeaker: string = 'registration/speaker/approved'
 
 
     public readonly API_ENDPOINT_ApprovedRegistration: string = 'registration/status'
     // public readonly API_ENDPOINT_addpartnerr: string = 'partner/create'
-    public readonly API_ENDPOINT_GET_getAllCountrycode:string = 'getAll/countrycode'
-    public readonly API_ENDPOINT_GET_ALL_COUNTRY:string = 'getcountry'
-    public readonly API_ENDPOINT_GET_ALL_STATES:string = 'getstate'
-    public readonly API_ENDPOINT_GET_ALL_CITIES:string = 'getcity'
+    public readonly API_ENDPOINT_GET_getAllCountrycode: string = 'getAll/countrycode'
+    public readonly API_ENDPOINT_GET_ALL_COUNTRY: string = 'getcountry'
+    public readonly API_ENDPOINT_GET_ALL_STATES: string = 'getstate'
+    public readonly API_ENDPOINT_GET_ALL_CITIES: string = 'getcity'
     public readonly API_ENDPOINT_DeleteUser: string = 'registration/delete'
     public readonly API_ENDPOINT_DeleteUserBroucher: string = 'brochure/delete'
 
@@ -62,10 +61,10 @@ export class Constants {
     public readonly API_ENDPOINT_GetAllForms: string = 'Tracking/getAll/forms'
     public readonly API_ENDPOINT_GetAllRefrence: string = 'Tracking/getAll/refrence'
 
-    
+
     public readonly API_ENDPOINT_deleteTracking: string = 'Tracking/delete'
-    
-    
+
+
     public readonly API_ENDPOINT_SearchTracking: string = 'Tracking/search'
     public readonly API_ENDPOINT_getTrackingList: string = 'Tracking/getAll'
 
@@ -78,7 +77,7 @@ export class Constants {
     public readonly API_ENDPOINT_getDelegatePieChart: string = 'delegate/piechart'
     public readonly API_ENDPOINT_getPartnerPieChart: string = 'partner/piechart'
     public readonly API_ENDPOINT_getSpeakerPieChart: string = 'speaker/piechart'
-    
+
     public readonly API_ENDPOINT_getDelegateVerticalBarChartChart: string = 'delegate/piechart/currentDate'
     public readonly API_ENDPOINT_getPartnerVerticalBarChartChart: string = 'partner/piechart/currentDate'
     public readonly API_ENDPOINT_getSpeakerVerticalBarChartChart: string = 'speaker/piechart/currentDate'
@@ -90,7 +89,7 @@ export class Constants {
 
     public readonly API_ENDPOINT_getSpeakerRefrencePieChart: string = 'speaker/refrence/piechart'
 
-    
+
     public readonly API_ENDPOINT_getSalesBroucher: string = 'sales_brochure/getAll'
     public readonly API_ENDPOINT_getBroucher: string = 'brochure/getAll'
     public readonly API_ENDPOINT_getJoinMailingList: string = 'subscriber/getAll'
@@ -101,6 +100,11 @@ export class Constants {
     public readonly API_ENDPOINT_Download_Badge: string = 'registration/download_badge'
     public readonly API_ENDPOINT_getUserByid: string = 'registration/user_byid'
     public readonly API_ENDPOINT_update_user_details: string = 'registration/updateDetails'
+
+
+    public readonly API_ENDPOINT_getContactUs: string = 'getAllContactUsData'
+    public readonly API_ENDPOINT_getPeacekeeper: string = 'getAllpeacekeeper'
+    public readonly API_ENDPOINT_PEACE_UPDATE_GENERATE_QR: string = 'update_peacekeeper'
 
 }
 
