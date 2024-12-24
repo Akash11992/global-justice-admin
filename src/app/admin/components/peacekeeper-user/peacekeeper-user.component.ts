@@ -96,16 +96,19 @@ referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code
 
   generateCouponCode(): void {
     const firstName = this.couponForm.get('firstName')?.value ;
+    const nameParts = firstName.trim().split(' ');  // Split name by space and trim any extra spaces
     const lastName = this.couponForm.get('lastName')?.value ;
     const country = this.couponForm.get('country')?.value ;
     const email = this.couponForm.get('email')?.value ;
     const mobile = this.couponForm.get('mobile')?.value ;
+
+    
     // Generate parts of the coupon code
-    const firstChar = firstName.charAt(0).toUpperCase();
-    const lastChar = lastName.charAt(0).toUpperCase();
+    const firstChar = nameParts[0].charAt(0).toUpperCase();
+    const lastChar = nameParts.slice(1).join(' ').charAt(0).toUpperCase();
     const countryChars = country.substring(0, 2).toUpperCase();
     const emailChars = email.substring(0, 2).toUpperCase();
-    const mobileStart = mobile.substring(0, 2);
+    const mobileStart = mobile.split(' ')[1]?.substring(0, 2) || mobile.substring(0, 2);
     const mobileEnd = mobile.slice(-2);
 console.log(mobile.length,'mobile');
 
@@ -120,6 +123,7 @@ console.log(mobile.length,'mobile');
     
     // Update the coupon code field
   }
+
   generateQRCode() {
     debugger
     const qrCodeValue = this.couponForm.get('qrCode')?.value;
@@ -383,12 +387,15 @@ sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,ur
 
 }
 
-Generate_Badge(userId: number,first_name:any,last_name:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,country_code:any,country_name:any){
-debugger
+Generate_QRcode(userId: number,first_name:any,last_name:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,country_code:any,country_name:any){
 console.log(this.peacekeeperList);
+const nameParts = first_name.trim().split(' ');  // Split name by space and trim any extra spaces
+
+const firstName = nameParts[0];  // First name
+const lastName = nameParts.slice(1).join(' '); 
 this.couponForm.patchValue({
-  firstName: first_name,
-  lastName: last_name,
+  firstName: firstName,
+  lastName: lastName,
   country:country_name,
   email: userEmail,
   mobile: userNumber,
@@ -506,114 +513,42 @@ ngOnDestroy() {
 
 }
 
-downloadQRCode() {
-  debugger
-  const canvas = document.querySelector('#qrcode') as HTMLCanvasElement;
-  if (!canvas) {
-    throw new Error('<canvas> not found in the DOM');
-  }
-
-  const pngUrl = canvas
-    .toDataURL('image/png')
-    .replace('image/png', 'image/octet-stream');
-  
-  const downloadLink = document.createElement('a');
-  downloadLink.href = pngUrl;
-  downloadLink.download = 'QR code.png';
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
-}
 
 
-// downloadQRCode(parent: any) {
-//   if (!parent || !parent.el) {
-//     console.error("QR code component is not available.");
-//     return;
-//   }
+downloadQRCode(parent:any) {
+  // debugger
+console.log(parent);
 
-//   try {
-//     const parentElement = parent.el.nativeElement.querySelector("img").src;
-//     if (!parentElement) {
-//       console.error("QR code image not found.");
-//       return;
-//     }
+  let parentElement = null
 
-//     // Convert base64 image to Blob
-//     const blobData = this.convertBase64ToBlob(parentElement);
-
-//     // Create a Blob from the base64 data
-//     const blob = new Blob([blobData], { type: "image/png" });
-//     const url = window.URL.createObjectURL(blob);
-
-//     // Create a temporary download link and trigger click to start download
-//     const link = document.createElement('a');
-//     link.href = url;
-//     link.download = 'Qrcode.png';
-//     link.click();
-
-//     // Clean up the created URL object
-//     window.URL.revokeObjectURL(url);
-//   } catch (error) {
-//     console.error("Error downloading QR code:", error);
-//   }
-// }
-
-// convertBase64ToBlob(base64: string): Blob {
-//   const byteCharacters = atob(base64.split(',')[1]);
-//   const byteArrays = [];
-
-//   for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-//     const slice = byteCharacters.slice(offset, offset + 1024);
-//     const byteNumbers = new Array(slice.length);
-
-//     for (let i = 0; i < slice.length; i++) {
-//       byteNumbers[i] = slice.charCodeAt(i);
-//     }
-
-//     const byteArray = new Uint8Array(byteNumbers);
-//     byteArrays.push(byteArray);
-//   }
-
-//   return new Blob(byteArrays, { type: 'image/png' });
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-qrdata = 'Initial QR code data string';
-
-saveAsImage(parent:any): void {
-  const imgElement = document.querySelector('#qrcode'); // Modify the selector based on your QR code component
-  if (imgElement) {
-    const base64Image = imgElement;
-    let blobData = this.convertBase64ToBlob(base64Image);
-
-    const blob = new Blob([blobData], { type: 'image/png' });
-    const url = window.URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Qrcode.png';
-    link.click();
-
-    window.URL.revokeObjectURL(url);
+  if (parent.elementType === "canvas") {
+    // fetches base 64 data from canvas
+    parentElement = parent.qrcElement.nativeElement
+      .querySelector("canvas")
+      .toDataURL("image/png")
+  } else if (this.qrCodeData === "img" || this.qrCodeData === "url") {
+    // fetches base 64 data from image
+    // parentElement contains the base64 encoded image src
+    // you might use to store somewhere
+    parentElement = parent.qrcElement.nativeElement.querySelector("img").src
   } else {
-    console.error('QR code image not found.');
+    alert("Set elementType to 'canvas', 'img' or 'url'.")
+  }
+
+  if (parentElement) {
+    // converts base 64 encoded image to blobData
+    let blobData = this.convertBase64ToBlob(parentElement)
+    // saves as image
+    const blob = new Blob([blobData], { type: "image/png" })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    // name of the file
+    link.download = "qrcode"
+    link.click()
   }
 }
+
 
 private convertBase64ToBlob(Base64Image: any) {
   // SPLIT INTO TWO PARTS
@@ -631,5 +566,7 @@ private convertBase64ToBlob(Base64Image: any) {
   // RETURN BLOB IMAGE AFTER CONVERSION
   return new Blob([uInt8Array], { type: imageType });
 }
+
+
 }
 
