@@ -45,7 +45,9 @@ export class PeacekeeperUserComponent implements OnInit {
   couponForm: FormGroup;
   code:any
   qrCodeData: string | null = null;
-referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
+  isGenerateQR:boolean=false;
+  referralUrl:any ='';
+// referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
 // referralUrl:any ='https://www.justice-love-peace.com/delegate-registration?code='
 
   checkedList:any;
@@ -75,7 +77,7 @@ referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code
     // console.log(window.location.origin);
     
     this.allPeacekeeper();
-    this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
+    // this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
 
     this.createForm();
     this.getInterval();
@@ -89,7 +91,6 @@ referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code
 
         if (this.RefreshInterval) {
           this.intervalId = setInterval(async () => {
-            console.log('refreshing......')
             this.allPeacekeeper();
           }, this.RefreshInterval);
         }
@@ -119,9 +120,8 @@ console.log(mobile.length,'mobile');
     if(firstName!==""&&lastName!==""&&country!==""&&email!==""&&mobile!==""&&mobile.length>9&&!this.couponForm.get('qrCode')?.value){
       const randomChars = this.generateRandomChars(16 - (firstChar.length + lastChar.length + mobileStart.length + mobileEnd.length + countryChars.length + emailChars.length ));
       const couponCode = `${firstChar}${lastChar}${mobileStart}${mobileEnd}${countryChars}${emailChars}${randomChars}`;
-      this.couponForm.get('qrCode')?.setValue(this.referralUrl+couponCode);
+      this.couponForm.get('qrCode')?.setValue((this.referralUrl?this.referralUrl:'https://www.justice-love-peace.com')+'/delegate-registration?code='+couponCode);
       this.couponForm.get('couponCode')?.setValue(couponCode);
-
     }
     
     // Update the coupon code field
@@ -132,6 +132,8 @@ console.log(mobile.length,'mobile');
     const qrCodeValue = this.couponForm.get('qrCode')?.value;
     this.qrCodeData = qrCodeValue ? qrCodeValue: null;
     console.log(this.qrCodeData, 'QRcode');
+
+
   }
   generateRandomChars(length: number): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -168,6 +170,7 @@ console.log(mobile.length,'mobile');
     this.AdminService.postPeacekeeper(payload).subscribe((data: any) => {
       this.ngxService.stop();  
       this.SharedService.ToastPopup('Generated QR', 'data saved successfully', 'success');
+      this.isGenerateQR = true;
 
       this.generateQRCode();
       // if(this.peacekeeperList.length===0){
@@ -182,6 +185,9 @@ console.log(mobile.length,'mobile');
     })
   }
 
+  close(){   
+    this.couponForm.reset();
+  }
 
   createForm(){
     this.searchForm = this.fb.group({
@@ -190,7 +196,6 @@ console.log(mobile.length,'mobile');
   }
   allPeacekeeper() {
     this.AdminService.getPeacekeeper().subscribe((data: any) => {
-      console.log("data",data.data);
       this.peacekeeperList= data.data
       if(this.peacekeeperList.length===0){
         this.notFound=true;
@@ -385,7 +390,6 @@ sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,ur
     form_name:this.form_name
 
   };
-  console.log("payload", payload);
   this.ngxService.start();
   this.AdminService.Send_Email(payload).subscribe((data: any) => {
     this.ngxService.stop();
@@ -415,8 +419,11 @@ sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,ur
 
 }
 
-Generate_QRcode(peaceID: number,first_name:any,last_name:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,country_code:any,country_name:any){
+Generate_QRcode(peaceID: number,first_name:any,last_name:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,country_code:any,country_name:any,url:any){
 console.log(this.peacekeeperList);
+this.referralUrl = url;
+this.qrCodeData = null
+this.isGenerateQR = false;
 this.peacekeeperID = peaceID;
 const nameParts = first_name.trim().split(' ');  // Split name by space and trim any extra spaces
 
@@ -429,13 +436,17 @@ this.couponForm.patchValue({
   email: userEmail,
   mobile: userNumber,
 })
+
   switch (true) {
     case this.peacekeeper === true:
       console.log("active tab name delegate", this.peacekeeper);
     this.form_name="delegate"
+    this.generateCouponCode()
       break;
 
   }
+
+  
   // Prepare the payload with selected user IDs and status 0.
   // const payload = {
   //   user_id:userId,
@@ -471,6 +482,7 @@ this.couponForm.patchValue({
   //   // You can also display an error message or take appropriate action.
   // }
   // );
+  // this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
 
 }
 
