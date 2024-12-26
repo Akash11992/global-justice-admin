@@ -601,5 +601,10 @@ private convertBase64ToBlob(Base64Image: any) {
 }
 
 
+myOptions = {
+  'placement': 'top',
+  'showDelay': 500
+}
+
 }
 

@@ -68,7 +68,7 @@
                             <th>Mobile</th>
                             <th>Email</th>
                             <th>Peacekeeper ID</th>
-                            <th>Coupan Discount</th>
+                            <th>Coupan Discount%</th>
                            <th>Coupan Code</th>
                            <th>QR URL</th>
                            <th>Created Date</th>
@@ -83,14 +83,25 @@
                             <td>{{all.dob | date : 'dd/MM/yyyy'}}</td>
                             <td>{{all.country}}</td>
                             <td>{{all.mobile_number}}</td>
-                            <td>{{all.email_id}} <i class="bi bi-person-fill"></i></td>
+                            <td style="
+                            display: block;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            width: 230px;
+                           ">{{all.email_id}} <i class="bi bi-person-fill"></i></td>
                             <td>{{all.Id_no}}</td>
-                            <td>{{all.coupon_discount}}</td>
+                            <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
                             <td>{{all.coupon_code}}</td>
-                            <td>{{all.QR_CODE}}</td>
+                            <td tooltip="{{all.QR_CODE}}" [options]="myOptions" style="
+                            display: block;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            width: 250px;
+                           " >{{all.QR_CODE}}</td>
                            <td>{{all.created_at | date : 'dd/MM/yyyy'}}</td>
                              <!-- <td>{{all.designation}}</td>
-  
                             <td>{{all.department}}</td>
                             <td>{{all.refrence}}</td>
                             <td>{{all.created_date | date :'short'}}</td> -->
@@ -116,14 +127,14 @@
                                               <li [class.disabled-item]="all.coupon_code" [attr.aria-disabled]="all.coupon_code ? true : null"><a class="dropdown-item" style="cursor: pointer;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                                   (click)="Generate_QRcode(all.peacekeeper_id,all.full_name,all.full_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.country_code,all.country)" >
                                                 <i  class="bi bi-qr-code"></i> Generate QR</a></li>
-                                        <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
-                                                <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li>
+                                        <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
+                                                <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li> -->
 
   
   
                                             
-                                        <li><a class="dropdown-item" style="cursor: pointer;" (click)="deleteUser(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">
-                                                <i class="bi bi-trash3-fill"></i> Delete</a></li>
+                                        <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="deleteUser(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">
+                                                <i class="bi bi-trash3-fill"></i> Delete</a></li> -->
                                                 
                                     </ul>
                                 </div>
