@@ -177,9 +177,7 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.getSalesBroucherEndpoint());
   }
 
-  Send_Email(body:any) {
-    return this._apiHttpService.post(this._apiEndpointsService.Send_Email(),body);
-  }
+
   Generate_Badge(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.Generate_Badge(),body);
   }
@@ -210,4 +208,7 @@ TrackingLink(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.postPeacekeeperEndpoint(),body);
   }
   
+  Send_Email(body:any) {
+    return this._apiHttpService.post(this._apiEndpointsService.Send_Email(),body);
+  }
 }

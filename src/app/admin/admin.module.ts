@@ -20,6 +20,7 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 import { DiscountCoupanMasterComponent } from './components/discount-coupan-master/discount-coupan-master.component';
 import { AddDiscountCoupanComponent } from './components/add-discount-coupan/add-discount-coupan.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { QRCodeModule } from 'angularx-qrcode';
     ReactiveFormsModule,
     AdminRoutingModule,
     CanvasJSAngularChartsModule,
-    QRCodeModule
+    QRCodeModule,
+    TooltipModule
 
   ],
   schemas: [NO_ERRORS_SCHEMA], // Add this line
