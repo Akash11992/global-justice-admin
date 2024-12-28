@@ -173,6 +173,9 @@ console.log(mobile.length,'mobile');
       this.isGenerateQR = true;
 
       this.generateQRCode();
+      if(this.peacekeeperID){
+        this.sendmail(this.peacekeeperID);
+      }
       // if(this.peacekeeperList.length===0){
       //   this.notFound=true;
       // } else{
@@ -368,27 +371,11 @@ searchUsers() {
 
 
 
-sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,designation:any,company:any){
+sendmail(userId: number){
 
-  switch (true) {
-    case this.peacekeeper === true:
-      console.log("active tab name delegate", this.peacekeeper);
-    this.form_name="delegate"
-      break;
-  
-  }
-  // Prepare the payload with selected user IDs and status 0.
+   // Prepare the payload with selected user IDs and status 0.
   const payload = {
-    user_id:userId,
-    user_name:userName,
-    user_email:userEmail,
-    user_number:userNumber,
-    qr_code:qr_code,
-    urn_no:urn_no,
-    designation:designation,
-    company:company,
-    form_name:this.form_name
-
+      id:userId,
   };
   this.ngxService.start();
   this.AdminService.Send_Email(payload).subscribe((data: any) => {
@@ -398,14 +385,7 @@ sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,ur
     setTimeout(() => {
       this.router.navigate(['dashboard/peacekeeper']);
       console.log("active tab name delegate", this.peacekeeper);
-
-      switch (true) {
-        case this.peacekeeper === true:
-          console.log("active tab name delegate", this.peacekeeper);
-          this.allPeacekeeper();
-          break;
- 
-      }
+      this.allPeacekeeper();
 
     }, 2000); // 2000 milliseconds (2 seconds) delay
 

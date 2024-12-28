@@ -96,7 +96,7 @@ export class Constants {
 
 
     public readonly API_ENDPOINT_Generate_Badge: string = 'registration/generate_badge'
-    public readonly API_ENDPOINT_Send_Email: string = 'registration/sendemail'
+    public readonly API_ENDPOINT_SEND_EMAIL: string = 'resend_email'
     public readonly API_ENDPOINT_Download_Badge: string = 'registration/download_badge'
     public readonly API_ENDPOINT_getUserByid: string = 'registration/user_byid'
     public readonly API_ENDPOINT_update_user_details: string = 'registration/updateDetails'

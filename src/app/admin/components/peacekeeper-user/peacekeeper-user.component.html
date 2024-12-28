@@ -127,8 +127,8 @@
                                               <li [class.disabled-item]="all.coupon_code" [attr.aria-disabled]="all.coupon_code ? true : null"><a class="dropdown-item" style="cursor: pointer;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                                   (click)="Generate_QRcode(all.peacekeeper_id,all.full_name,all.full_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.country_code,all.country,all.url)" >
                                                 <i  class="bi bi-qr-code"></i> Generate QR</a></li>
-                                        <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
-                                                <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li> -->
+                                        <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.peacekeeper_id)" >
+                                                <i class="bi bi-envelope-fill"></i> Resend Reg. Mail</a></li>
 
   
   
