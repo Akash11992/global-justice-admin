@@ -384,6 +384,10 @@ export class ApiEndpointsService {
     return this.createUrl(this._constants.API_ENDPOINT_PEACE_UPDATE_GENERATE_QR);
   }
 
+  public deletePeacekeeperEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_DELETE_PEACEKEEPER);
+  }
+
   public Send_Email(): string {
     return this.createUrl(this._constants.API_ENDPOINT_SEND_EMAIL);
   }

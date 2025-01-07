@@ -36,10 +36,10 @@ export class PeacekeeperUserComponent implements OnInit {
   private intervalId: any;
   RefreshInterval: any;
 
+
   form:any;
   userNumber:any;
   // title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
-  masterSelected:boolean | undefined;
   singleSelected:boolean=false;
   private refreshSubscription: Subscription;
   couponForm: FormGroup;
@@ -47,6 +47,10 @@ export class PeacekeeperUserComponent implements OnInit {
   qrCodeData: string | null = null;
   isGenerateQR:boolean=false;
   referralUrl:any ='';
+
+  masterSelected: boolean = false;
+  selectedIds: string = '';
+  isAnySelected: boolean = false;
 // referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
 // referralUrl:any ='https://www.justice-love-peace.com/delegate-registration?code='
 
@@ -64,7 +68,6 @@ export class PeacekeeperUserComponent implements OnInit {
       couponCode: [{ value: '' }], // Disabled for read-only
       qrCode: ['', Validators.required],
     });
-    this.masterSelected = false;
     
     this.refreshSubscription = this.SharedService.refreshPeacekeeper$.subscribe(async () => {
       await this.allPeacekeeper();
@@ -151,38 +154,19 @@ console.log(mobile.length,'mobile');
   }
 
   onSave(): void {
-    debugger
-    console.log('Form Data:', this.couponForm.value);
-    if (this.couponForm.valid) {
-      // Logic to save the data can go here.
-    } else {
-      console.log('Form is invalid');
-    }
-
     const payload = {
       peace_id:  this.peacekeeperID,
-      coupon_discount:  this.couponForm.get('discount')?.value,
-      QR_CODE:  this.couponForm.get('qrCode')?.value,
-      coupon_code:  this.couponForm.get('couponCode')?.value
+      // coupon_discount:  this.couponForm.get('discount')?.value,
+      // QR_CODE:  this.couponForm.get('qrCode')?.value,
+      // coupon_code:  this.couponForm.get('couponCode')?.value
     };
     console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.postPeacekeeper(payload).subscribe((data: any) => {
       this.ngxService.stop();  
-      this.SharedService.ToastPopup('Generated QR', 'data saved successfully', 'success');
-      this.isGenerateQR = true;
+      this.SharedService.ToastPopup('resent successfully', 'Badge', 'success');
 
-      this.generateQRCode();
-      if(this.peacekeeperID){
-        this.sendmail(this.peacekeeperID);
-      }
-      // if(this.peacekeeperList.length===0){
-      //   this.notFound=true;
-      // } else{
-      //   this.notFound = false;
-      //   console.log("false");
-      // }
-      setTimeout(() => {
+         setTimeout(() => {
         this.allPeacekeeper();
       }, 2000); // 2000 milliseconds (2 seconds) delay
     })
@@ -200,11 +184,15 @@ console.log(mobile.length,'mobile');
   allPeacekeeper() {
     this.AdminService.getPeacekeeper().subscribe((data: any) => {
       this.peacekeeperList= data.data
+      if(this.masterSelected){
+        this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
+      }
+
       if(this.peacekeeperList.length===0){
         this.notFound=true;
       } else{
         this.notFound = false;
-        console.log("false");
+        console.log("false1111");
       }
       this.searchForm.reset();
       this.peacekeeper=true
@@ -283,34 +271,7 @@ console.log(mobile.length,'mobile');
     this.unapproveSelected();
   }
 
-  deleteUser(userId: number,userName:any,userEmail:any,userNumber:any): void {
-    this.updateSelectedUsers(userId,userName,userEmail,userNumber);
-    console.log("delete called",userId);
-    
-    const payload = {
-      user_id:userId 
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.DeleteUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      // this.allPeacekeeper();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        switch (true) {
-          case this.peacekeeper === true:
-            console.log("active tab name delegate", this.peacekeeper);
-            this.allPeacekeeper();
-            break;
 
-        }
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-
-
-    })
-}
 searchDelegateUser(): void {
   const searchValue = this.searchForm.get('searchInput').value;
   console.log("search called", searchValue);
@@ -466,6 +427,14 @@ this.couponForm.patchValue({
 
 }
 
+resendBadge(peaceID: number,url:any){
+  console.log(this.peacekeeperList);
+  this.referralUrl = url;
+  this.peacekeeperID = peaceID;
+   this.onSave();
+  
+  }
+
 downloadBadge(filepath:any,urn_no:any) {
 
   const payload = {
@@ -496,7 +465,6 @@ export() {
     console.log("created date...........",item.created_date);
     // Assuming item.created_date is a valid date string or Date object
 let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
-let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
 
     return {
       'full_name': item.full_name, 
@@ -593,10 +561,106 @@ private convertBase64ToBlob(Base64Image: any) {
 }
 
 
+deleteUser(userId: number,userName:any,userEmail:any,userNumber:any): void {
+  this.updateSelectedUsers(userId,userName,userEmail,userNumber);
+  console.log("delete called",userId);
+  
+  const payload = {
+    user_id:userId 
+  };
+  console.log("payload", payload);
+  this.ngxService.start();
+  this.AdminService.DeleteUser(payload).subscribe((data: any) => {
+    this.ngxService.stop();
+    this.SharedService.ToastPopup('', data.message, 'success')
+    // this.allPeacekeeper();
+    setTimeout(() => {
+      this.router.navigate(['dashboard/peacekeeper']);
+      switch (true) {
+        case this.peacekeeper === true:
+          console.log("active tab name delegate", this.peacekeeper);
+          this.allPeacekeeper();
+          break;
+
+      }
+    }, 2000); // 2000 milliseconds (2 seconds) delay
+
+
+
+  })
+}
+
+
+ // Master Checkbox Logic
+ checkUncheckAll(): void {
+  this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
+  this.updateSelectedIds();
+}
+
+// Check if All Selected
+isAllSelected(): void {
+  this.masterSelected = this.peacekeeperList.every(item => item.selected);
+  this.updateSelectedIds();
+}
+
+// Update Selected IDs
+updateSelectedIds(): void {
+  this.selectedIds = this.peacekeeperList
+    .filter(item => item.selected)
+    .map(item => item.peacekeeper_id).join(',');
+
+}
+
+// Delete Single Row
+deletePeacekeeper(peacekeeperId: number): void {
+  console.log('1 check',peacekeeperId );
+  console.log('all check', this.selectedIds);
+  let payload
+  if(this.selectedIds){
+     payload = { p_peace_id: this.selectedIds }
+     
+  }else{
+     payload = { p_peace_id: peacekeeperId.toString() };
+  }
+  
+  const confirmDelete = confirm('Are you sure you want to delete this row?');
+  if (!confirmDelete) return;
+
+  this.AdminService.deletePeacekeeperApi(payload).subscribe(
+    (response: any) => {
+      this.SharedService.ToastPopup('Row deleted successfully!', '', 'success');
+      this.allPeacekeeper(); // Refresh the list
+    },
+    (error: any) => {
+      this.SharedService.ToastPopup('Error deleting row.', '', 'error');
+    }
+  );
+}
+
+// Delete Selected Rows
+deleteSelected(): void {
+  const confirmDelete = confirm('Are you sure you want to delete the selected rows?');
+  if (!confirmDelete) return;
+
+  const payload = { ids: this.selectedIds };
+
+  this.AdminService.deletePeacekeeperApi(payload).subscribe(
+    (response: any) => {
+      this.SharedService.ToastPopup('Rows deleted successfully!', '', 'success');
+      this.allPeacekeeper(); // Refresh the list
+    },
+    (error: any) => {
+      this.SharedService.ToastPopup('Error deleting rows.', '', 'error');
+    }
+  );
+}
+
+
 myOptions = {
   'placement': 'top',
   'showDelay': 500
 }
+
 
 }
 
