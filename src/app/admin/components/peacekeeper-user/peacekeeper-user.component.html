@@ -34,6 +34,12 @@
                 <div class="col-md-12" id="exportcolmd">
                   <button class="btn " type="button" id="exportbtn" (click)="export()"><i
                       class="bi bi-file-earmark-excel"></i> Export</button>
+
+                      <!-- <button  class="btn btn-danger ml-2" 
+                      (click)="deleteSelected()" 
+                      [disabled]="!selectedIds.length" type="button" ><i
+                        class="bi bi-trash3-fill"></i>  Delete Selected</button> -->
+
                 </div>
     
                 <div class="row">
@@ -60,7 +66,13 @@
                       <table class="table">
                         <thead>
                           <tr>
-                            <!-- <th>#</th> -->
+                            <!-- <th>
+                              <input 
+                                type="checkbox" 
+                                [(ngModel)]="masterSelected" 
+                                (change)="checkUncheckAll()"
+                              />
+                            </th> -->
                             <th>SN</th>
                             <th>Name</th>
                             <th>DOB</th>
@@ -70,6 +82,7 @@
                             <th>Peacekeeper ID</th>
                             <th>Coupan Discount%</th>
                            <th>Coupan Code</th>
+                           <th>Image</th>
                            <th>QR URL</th>
                            <th>Created Date</th>
                             <th>Action</th>
@@ -77,10 +90,16 @@
                         </thead>
                         <tbody>
                           <tr *ngFor="let all of peacekeeperList let i = index;">
-                            <!-- <td><input type="checkbox" id="singlecheckbox" (change)="updateSelectedUsers(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)"></td> -->
+                             <!--<td>
+                              <input 
+                                type="checkbox" 
+                                [(ngModel)]="all.selected" 
+                                (change)="isAllSelected()"
+                              />
+                            </td> -->
                             <td>{{i+1}}</td>
                             <td>{{all.full_name}}</td>  
-                            <td>{{all.dob | date : 'dd/MM/yyyy'}}</td>
+                            <td>{{all.dob !==null? all.dob :'' | date : 'dd/MM/yyyy'}}</td>
                             <td>{{all.country}}</td>
                             <td>{{all.mobile_number}}</td>
                             <td style="
@@ -93,6 +112,7 @@
                             <td>{{all.Id_no}}</td>
                             <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
                             <td>{{all.coupon_code}}</td>
+                            <td class="p-0"><img class="p-0" [src]="all.file_name" width="50px" alt=""></td>
                             <td tooltip="{{all.QR_CODE}}" [options]="myOptions" style="
                             display: block;
                             text-overflow: ellipsis;
@@ -124,17 +144,20 @@
                                                 <li><a class="dropdown-item" style="cursor: pointer;" (click)="downloadBadge(all.filepath,all.urn_no)">
                                                   <i class="bi bi-download"></i> Download Badge</a>
                                               </li> -->
-                                              <li [class.disabled-item]="all.coupon_code" [attr.aria-disabled]="all.coupon_code ? true : null"><a class="dropdown-item" style="cursor: pointer;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                              <!-- <li [class.disabled-item]="all.coupon_code" [attr.aria-disabled]="all.coupon_code ? true : null"><a class="dropdown-item" style="cursor: pointer;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                                   (click)="Generate_QRcode(all.peacekeeper_id,all.full_name,all.full_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.country_code,all.country,all.url)" >
-                                                <i  class="bi bi-qr-code"></i> Generate QR</a></li>
-                                        <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.peacekeeper_id)" >
-                                                <i class="bi bi-envelope-fill"></i> Resend Reg. Mail</a></li>
+                                                <i  class="bi bi-qr-code"></i> Generate QR</a></li> -->
+                                                <li ><a class="dropdown-item" style="cursor: pointer;" type="button"
+                                                  (click)="resendBadge(all.peacekeeper_id,all.url)" >
+                                                <i  class="bi bi-envelope-fill"></i> Resend Badge</a></li>
+                                        <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.peacekeeper_id)" >
+                                                <i class="bi bi-envelope-fill"></i> Resend Reg. Mail</a></li> -->
 
   
   
                                             
-                                        <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="deleteUser(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">
-                                                <i class="bi bi-trash3-fill"></i> Delete</a></li> -->
+                                        <li><a class="dropdown-item" style="cursor: pointer;" (click)="deletePeacekeeper(all.peacekeeper_id)">
+                                                <i class="bi bi-trash3-fill"></i> Delete</a></li>
                                                 
                                     </ul>
                                 </div>

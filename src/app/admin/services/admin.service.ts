@@ -208,6 +208,11 @@ TrackingLink(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.postPeacekeeperEndpoint(),body);
   }
   
+  deletePeacekeeperApi(body:any) {
+    return this._apiHttpService.post(this._apiEndpointsService.deletePeacekeeperEndpoint(),body);
+  }
+
+
   Send_Email(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.Send_Email(),body);
   }
