@@ -376,8 +376,17 @@ export class ApiEndpointsService {
   }
 
 
-  public getPeacekeeperEndpoint(): string {
-    return this.createUrl(this._constants.API_ENDPOINT_getPeacekeeper);
+  public getPeacekeeperEndpoint(
+    searchParams:string,
+    pagesize: string,
+    pagenumber: string
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_getPeacekeeper,
+      (qs: QueryStringParameters) => {
+        qs.push('searchText', searchParams);
+        qs.push('pagesize', pagesize);
+        qs.push('pagenumber', pagenumber);
+      });
   }
 
   public postPeacekeeperEndpoint(): string {

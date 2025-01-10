@@ -31,34 +31,61 @@
     
             <div class="card" id="uppercard">
               <div class="card-body">
-                <div class="col-md-12" id="exportcolmd">
+                <!-- <div class="col-md-12" id="exportcolmd">
                   <button class="btn " type="button" id="exportbtn" (click)="export()"><i
                       class="bi bi-file-earmark-excel"></i> Export</button>
 
-                      <!-- <button  class="btn btn-danger ml-2" 
+                      <button  class="btn btn-danger ml-2" 
                       (click)="deleteSelected()" 
                       [disabled]="!selectedIds.length" type="button" ><i
-                        class="bi bi-trash3-fill"></i>  Delete Selected</button> -->
+                        class="bi bi-trash3-fill"></i>  Delete Selected</button>
 
-                </div>
+                </div> -->
     
                 <div class="row">
                   <div class="col-md-6">
                     <form class="d-flex" [formGroup]="searchForm">
-                      <!-- <input class="form-control" formControlName="searchInput" type="search" id="inputsearch" placeholder="Search..."
+                      <input class="form-control" formControlName="searchInput" type="search" id="inputsearch" placeholder="Search..."
                         aria-label="Search">&nbsp;&nbsp;
                       <button class="btn " (click)="searchUsers()" id="btncolor">Search</button>
                       &nbsp; &nbsp;
-                      <button class="btn " (click)="resetForm()" type="reset" id="btncolor">Reset</button> -->
+                      <!-- <button class="btn " (click)="resetForm()" type="reset" id="btncolor">Reset</button> -->
                     </form>
                   </div>
-                  <div class="col-md-6"></div>
+                  <div class="col-md-6 "  id="exportcolmd">                  <button class="btn " type="button" id="exportbtn" (click)="export()"><i
+                    class="bi bi-file-earmark-excel"></i> Export</button></div>
                 </div>
     
               </div>
             </div>
     
             <div class="row">
+              <div class="col-md-12 row">
+                <div class="col-sm-10"></div>
+                <div class="col-sm-2">
+                <div class="showData dropdown">
+                  <h4 class="m-0">
+                    <a class="" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span class="group-by" style="font-size: 15px;">{{ this.pageSize }} per page  </span>
+                      <img src="assets/images/arrow-down-blue.svg" alt="" width="20px" class="pl-2 pt-1" />
+                    </a>
+      
+                    <div class="dropdown-menu p-0" style="    position: absolute;
+                    transform: translate3d(747px, -126px, 0px);
+                    top: 0px;
+                    left: 0px;
+                    will-change: transform;
+                ">
+                      <a (click)="fnPaging(list.name)" class="dropdown-item groupdpdn-item" *ngFor="
+                                          let list of groupByPerpage;
+                                        ">
+                        {{ list.name }}
+                      </a>
+                    </div>
+                  </h4>
+                </div>
+                </div>
+              </div>
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
@@ -171,6 +198,31 @@
   
                   </div>
                 </div>
+                <div class="row pt-3 justify-content-center">
+                  <div class="datatable_rgt">
+                    <div class="pagination" *ngIf="this.totalitems !== undefined && peacekeeperList.length !== 0">
+                      <a (click)="previousPage()" *ngIf="this.activeItem !== 1" [attr.disabled]="page === 1">
+                        <img src="../../../../../assets/images/arrow-left-blue.svg" alt="" />
+                        Previous
+                      </a>
+                      <ng-container *ngFor="
+                          let item of totalitems
+                            | slice : (page - 1) * itemsPerPage : page * itemsPerPage;
+                          let ind = index
+                        ">
+                        <a [class.active]="item === activeItem" (click)="setActiveItem(item)">
+                          {{ item }}
+                        </a>
+                      </ng-container>
+                      <a (click)="nextPage()" *ngIf="this.totalitems.length !== this.activeItem"
+                        [attr.disabled]="page === numberOfPages">
+                        Next
+                        <img src="../../../../../assets/images/arrow-right-blue.svg" alt="" />
+                      </a>
+                    </div>
+    
+                  </div>
+              </div>
               </div>
             </div>
           </div>

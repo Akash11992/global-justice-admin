@@ -200,8 +200,8 @@ TrackingLink(body:any) {
   
   
   
-  getPeacekeeper() {
-    return this._apiHttpService.get(this._apiEndpointsService.getPeacekeeperEndpoint());
+  getPeacekeeper(searchParams:string,pagesize:string,pagenumber:string) {
+    return this._apiHttpService.get(this._apiEndpointsService.getPeacekeeperEndpoint(searchParams,pagesize,pagenumber));
   }
   
   postPeacekeeper(body:any) {

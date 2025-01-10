@@ -9,7 +9,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
-import { interval, Subject, Subscription } from 'rxjs';
+import { debounceTime , interval, Subject, Subscription } from 'rxjs';
 
 
 
@@ -47,7 +47,25 @@ export class PeacekeeperUserComponent implements OnInit {
   qrCodeData: string | null = null;
   isGenerateQR:boolean=false;
   referralUrl:any ='';
-
+  peaceSearchList: any[] = [];
+  filteredPeace: any[] = [];
+  totalSelected: number = 0;
+  selectAll: boolean = false; // Tracks the "select all" checkbox state
+  searchParams: string = '';
+  pageSize:any = 25;
+  paging:any =1;
+  totalRecords: number = 0;
+  totalitems: any;
+  itemsPerPage = 10;
+  itemsPageTo = 10;
+  page = 1;
+  numberOfPages: number = 0;
+  activeItem: number = 1;
+  groupByPerpage: any = [];
+  currentPage: any;
+  totalcount: any;
+  globalPageNumber: number = 0;
+  private searchSubject = new Subject<string>();
   masterSelected: boolean = false;
   selectedIds: string = '';
   isAnySelected: boolean = false;
@@ -58,6 +76,22 @@ export class PeacekeeperUserComponent implements OnInit {
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
 
   {
+
+    this.groupByPerpage = [
+      { name: "10" },
+      { name: "25" },
+      { name: "50" },
+      { name: "100" },
+    ];
+
+    // this.searchSubject.pipe(debounceTime(300)).subscribe((searchText) => {
+    //   if (searchText.length >= 3) {
+    //     this.filterClients(searchText);
+    //   } else {
+    //     this.filteredClients = [];
+    //   }
+    // });
+
     this.couponForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
       lastName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
@@ -77,6 +111,13 @@ export class PeacekeeperUserComponent implements OnInit {
 
   
    ngOnInit(): void {
+
+    this.groupByPerpage = [
+      { name: "10" },
+      { name: "25" },
+      { name: "50" },
+      { name: "100" },
+    ];
     // console.log(window.location.origin);
     
     this.allPeacekeeper();
@@ -182,12 +223,26 @@ console.log(mobile.length,'mobile');
     });
   }
   allPeacekeeper() {
-    this.AdminService.getPeacekeeper().subscribe((data: any) => {
+    debugger
+    this.AdminService.getPeacekeeper(this.searchParams,this.pageSize, this.paging).subscribe((data: any) => {
       this.peacekeeperList= data.data
       if(this.masterSelected){
         this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
       }
+      this.totalRecords = this.peacekeeperList.length;
 
+      console.log(this.totalRecords, 'totalRecords');
+
+
+      let pag = Math.ceil(this.totalRecords / this.pageSize);
+
+      this.totalitems = Array(pag)
+        .fill(0)
+        .map((x, i) => i + 1);
+
+      this.numberOfPages = Math.ceil(
+        this.totalRecords / this.pageSize
+      );
       if(this.peacekeeperList.length===0){
         this.notFound=true;
       } else{
@@ -201,6 +256,57 @@ console.log(mobile.length,'mobile');
     });
   }
 
+
+  
+  previousPage() {
+    if (this.activeItem > 1) {
+      this.activeItem--; // Move to the previous item
+      
+      // If activeItem is at the start of the page range, update the page and range
+      if (this.activeItem < this.itemsPageTo - 9) {
+        this.itemsPageTo -= 10; // Update the range to the previous set
+        this.page--; // Decrement the page
+      }
+    }
+    this.globalPageNumber = (this.activeItem - 1) * this.itemsPerPage;
+    this.peacekeeperList = [];
+    this.allPeacekeeper();
+  }
+
+  nextPage() {
+    if(this.activeItem == this.itemsPageTo){
+      this.itemsPageTo = (this.itemsPageTo+10);
+      this.page++
+    }
+    this.activeItem++;
+    this.globalPageNumber = (this.activeItem * 10 - 10);
+    this.peacekeeperList = [];
+
+    this.allPeacekeeper();
+  }
+  async fnPaging(obj:any) {
+
+
+    this.globalPageNumber = 0;
+    this.pageSize = obj;
+
+    this.peacekeeperList = [];
+
+
+    await  this.allPeacekeeper();
+
+
+  }
+  setActiveItem(item: any) {
+
+
+    this.activeItem = item;
+
+    this.globalPageNumber = (item * 10 - 10);
+
+    this.allPeacekeeper();
+
+  }
 
   // Function to update selectedUserIds array when a row is clicked
   updateSelectedUsers(userId: any,userName:any,userEmail:any,userNumber:any) {
@@ -317,17 +423,11 @@ resetForm(): void {
   }
 }
 searchUsers() {
-  
-  console.log("active tab name delegate",this.peacekeeper);
-
-
-  switch (true) {
-    case this.peacekeeper === true:
-      this.searchDelegateUser();
-      break;
-
-  }
-  
+  this.searchParams = this.searchForm.get('searchInput').value;
+  // this.peacekeeperList = this.peacekeeperList.filter((peaceName) =>
+  //   peaceName.full_name.toLowerCase().includes(this.searchParams.toLowerCase())
+  // );
+      this.allPeacekeeper();
 }
 
 
