@@ -216,4 +216,8 @@ TrackingLink(body:any) {
   Send_Email(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.Send_Email(),body);
   }
+
+  ApprovedUnapproveStatus(body:any) {
+    return this._apiHttpService.post(this._apiEndpointsService.ApprovedRegistrationEndpoint(),body);
+  }
 }

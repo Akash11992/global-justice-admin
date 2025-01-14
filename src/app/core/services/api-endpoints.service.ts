@@ -400,5 +400,8 @@ export class ApiEndpointsService {
   public Send_Email(): string {
     return this.createUrl(this._constants.API_ENDPOINT_SEND_EMAIL);
   }
+  public ApprovedRegistrationEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ApprovedDelegate);
+  }
 
 }

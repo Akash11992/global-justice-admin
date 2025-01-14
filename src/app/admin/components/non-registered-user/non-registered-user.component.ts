@@ -390,12 +390,33 @@ selectedUserNumbers: string[] = [];
     this.unapproveSelected();
   }
 
-  updateAndApprovethroughDropdown(userId: number, userName: any, userEmail: any, company: any, designation: any,urn:any,qr_code:any,user_number:any): void {
+  updateAndApprovethroughDropdown(peaceId: number): void {
     // Update the selected users
-    this.updateSelectedUsers(userId, userName, userEmail, company, designation,urn,qr_code,user_number);
+    let payload ={
+      p_peace_id  : peaceId
+    }
+    this.AdminService.ApprovedUnapproveStatus(payload).subscribe((data: any) => {
+      this.ngxService.stop();
+      this.SharedService.ToastPopup('', data.message, 'success')
+       // Clear the selected arrays after successful unapprove
+ this.selectedUserIds = [];
+ this.selectedUserNames = [];
+ this.selectedUserEmails = [];
+ this.selectedCompanies = [];
+ this.selectedDesignations = [];
+ this.selectedURNs = [];
+ this.selectedQRCodes = [];
+ this.selectedUserNumbers = [];
+ setTimeout(() => {
+      this.router.navigate(['dashboard/non-registered-user']);
+  
+        this.allDelegate();
+    }, 2000); // 2000 milliseconds (2 seconds) delay
+    });
+    // this.updateSelectedUsers(userId, userName, userEmail, company, designation,urn,qr_code,user_number);
 
     // Now, call the unapproveSelected function
-    this.approveAndRegisterSelected();
+    // this.approveAndRegisterSelected();
   }
   deleteUser(userId: number, userName: any, userEmail: any, company: any, designation: any,urn:any,qr_code:any,user_number:any): void {
     this.updateSelectedUsers(userId, userName, userEmail, company, designation,urn,qr_code,user_number);

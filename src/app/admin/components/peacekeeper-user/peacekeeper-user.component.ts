@@ -124,7 +124,7 @@ export class PeacekeeperUserComponent implements OnInit {
     // this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
 
     this.createForm();
-    this.getInterval();
+    // this.getInterval();
 
 
   }
@@ -223,7 +223,7 @@ console.log(mobile.length,'mobile');
     });
   }
   allPeacekeeper() {
-    debugger
+
     this.AdminService.getPeacekeeper(this.searchParams,this.pageSize, this.paging).subscribe((data: any) => {
       this.peacekeeperList= data.data
       if(this.masterSelected){
@@ -423,11 +423,11 @@ resetForm(): void {
   }
 }
 searchUsers() {
-  this.searchParams = this.searchForm.get('searchInput').value;
+  // this.searchParams = this.searchForm.get('searchInput').value;
   // this.peacekeeperList = this.peacekeeperList.filter((peaceName) =>
   //   peaceName.full_name.toLowerCase().includes(this.searchParams.toLowerCase())
   // );
-      this.allPeacekeeper();
+  this.searchDelegateUser();
 }
 
 
