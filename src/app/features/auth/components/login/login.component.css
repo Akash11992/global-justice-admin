@@ -14,17 +14,17 @@ input[type=text], input[type=password] {
   #cent{
       margin-top: 20px;
       
-     margin-left: 530px;
-     height: 200px;
+     /* margin-left: 530px;
+     height: 200px; */
   }
   #cent1{
-      margin-left: 600px;
+      /* margin-left: 600px; */
    }
   /* Set a style for all buttons */
   button {
     background-color:#1ead8a;
     color: white;
-    padding: 14px 20px;
+    padding: 10px 48px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
@@ -55,9 +55,9 @@ input[type=text], input[type=password] {
     border-radius: 50%;
   }
   
-  .container {
+  /* .container {
     padding: 50px;
-  }
+  } */
   
   span.psw {
     float: right;
