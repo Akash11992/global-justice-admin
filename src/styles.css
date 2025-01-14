@@ -372,4 +372,81 @@ margin-top:.25rem;
     pointer-events: none; /* Prevent clicking */
     opacity: 0.5; /* Optional: Make it look visually disabled */
   }
+
   
+  /* pagination */
+.datatable_rgt {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-flow: row wrap;
+    padding-right: 30px;
+  
+  }
+  
+  .pagination {
+    display: inline-block;
+  }
+  
+  .pagination a {
+    color: #357EBD !important;
+    float: left;
+    padding: 4px 8px;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .pagination a.active {
+    /* background-color: #112260 !important; */
+    border-radius: 20%;
+    color: #357EBD !important;
+    border-bottom: solid  #357EBD !important; ;
+  }
+  
+  .pagination a:hover:not(.active) {
+    background-color: #cccdd3 !important;
+    border-radius: 10%;
+    color: #357EBD !important;
+  }
+  
+  .showData {
+    color: #357EBD;
+    padding: 5px;
+    float: inline-end;
+  }
+  .showData h4 a{
+  text-decoration: none;
+  }
+  
+  .showData .group-by {
+    color: #008dd1;
+  }
+  
+  
+  .pagination ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .pagination li {
+    margin: 0 5px;
+  }
+  
+  
+  
+  
+  .pagination a.disabled {
+    cursor: not-allowed;
+    color: #999;
+    border-color: #ddd;
+  }
+  
+  .pagination li:first-child a,
+  .pagination li:last-child a {
+    border-radius: 5px;
+  }
+  .dropdown .dropdown-menu {
+    min-width: 6rem;
+  }
