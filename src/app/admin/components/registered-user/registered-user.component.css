@@ -1,0 +1,9 @@
+.success{
+    font-weight: 600;
+    color: #128940;
+}
+
+.pending{
+    font-weight: 600;
+    color: #FFB137;
+}
