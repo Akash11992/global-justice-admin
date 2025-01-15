@@ -17,56 +17,13 @@
         <!------------------------------------------ bodyheader start ----------------------------------------->
         <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
             <!-- class="p-4 p-md-5 "-->
-            <nav class="navbar navbar-expand-lg p-3" id="bodyheader1">
-                <div class="container-fluid">
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <div class="col-md-2">
-                            <a class="navbar-brand"
-                                id="bodyheadertxt" style="cursor:pointer" [ngClass]="this.delegate?'active-col-list':''" (click)="allDelegate()">Delegate
-                            <button class="navbar-toggler"  type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                                <span class="" routerLinkActive="active-col-list"></span>
-                            </button>
-                        </a>
-                        </div>
-                        <!-- <div class="col-md-2">
-                            <a class="navbar-brand"  style="cursor:pointer" [ngClass]="this.partner?'active-col-list':''" (click)="allPartner()"  id="bodyheadertxt">Partners
-                            <button class="navbar-toggler"  type="button" data-bs-toggle="collapse" 
-                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </a>
-
-                        </div>
-                        <div class="col-md-2">
-                            <a class="navbar-brand" style="cursor:pointer" id="bodyheadertxt" [ngClass]="this.speaker?'active-col-list':''" (click)="allSpeaker()">Speakers
-                            <button class="navbar-toggler"  type="button" data-bs-toggle="collapse" 
-                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                                <span class="" routerLinkActive="active-col-list"></span>
-                            </button>
-                        </a>
-                        </div> -->
-                        <div class="col-md-6"></div>
-                    </div>
-                </div>
-            </nav>
+            
             <!------------------------------------------ bodyheader end ---------------------------------------->
             <!------------------------------------------ Page Content -------------------------------------------->
             <div class="container-fluid" id="pagecontent">
-                <div class="col-md-12" style="margin-top: 25px;">
+                <div class="col-md-12" style="padding-top: 25px;">
                     <img src="assets/images/user (1).png" id="userimg">
-                    <h4 style="display: inline-flex;"> Non-Registered User</h4>
+                    <h4 style="display: inline-flex;"> Non - Approved Users</h4>
                 </div>
 
                 <div class="card" id="uppercard">
@@ -74,9 +31,11 @@
                         <div class="row" id="outermargin">
                             <div class="col-md-6">
                                 <button class="btn " type="button" id="exportbtn" (click)="approveAndRegisterSelected()"><i
-                                        class="bi bi-check-lg"></i> Approve & Register Selected</button>
+                                        class="bi bi-check-lg"></i> Approve & share Payment link</button>
                                         &nbsp;   <button class="btn " type="button" id="exportbtn" (click)="unapproveSelected()"><i
-                                        class="bi bi-x"></i> Unapproved Selected</button>
+                                        class="bi bi-x"></i> Reject</button>
+                                        &nbsp;   <button class="btn " type="button" id="exportbtn" ><i
+                                            class="bi bi-trash3-fill"></i> Delete</button>
                             </div> 
                             <div class="col-md-6" id="exportcolmd">
                                 <button class="btn " type="button" id="exportbtn"  (click)="export()"><i
@@ -149,10 +108,10 @@
                                                                 <i class="fa fa-eye" aria-hidden="true" ></i> View Details</a>
                                                             </li> -->
                                                             <li><a class="dropdown-item" style="cursor: pointer;" (click)="updateAndApprovethroughDropdown(all.id)">
-                                                                    <i class="bi bi-check2-square"></i> Approve
+                                                                    <i class="bi bi-check2-square"></i> Approve & share Payment link
                                                                     </a></li>
                                                             <li><a class="dropdown-item" style="cursor: pointer;" (click)="updateAndUnapprovethroughDropdown(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.company_name,all.designation,all.urn_no,all.qr_code,all.mobile_number)">
-                                                                <i class="bi bi-x-lg"></i> Unapprove Registration</a>
+                                                                <i class="bi bi-x-lg"></i> Reject</a>
                                                             </li>
                                                             <li><a class="dropdown-item" style="cursor: pointer;" (click)="deleteUser(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.company_name,all.designation,all.urn_no,all.qr_code,all.mobile_number)">
                                                                     <i class="bi bi-trash3-fill"></i> Delete</a></li>

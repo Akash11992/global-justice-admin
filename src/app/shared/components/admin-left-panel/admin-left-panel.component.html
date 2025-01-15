@@ -10,24 +10,28 @@
             &nbsp; <span>Dashboard</span></a>
         </li>
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a routerLink="/dashboard/peacekeeper" id="sidebarDashboard"><img src="assets/img/usericon.png"
+              id="speedmeter">
+            &nbsp;<span>Registered Peacekeeper</span></a>
+        </li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a routerLink="/dashboard/non-registered-user" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
+              id="speedmeter">
+            &nbsp; <span>Non - Approved Users </span></a>
+        </li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a  routerLink="/dashboard/registered-user"id="sidebarDashboard"><img src="assets/img/usericon.png" id="speedmeter">
-            &nbsp;<span>Delegate Users</span></a>
+            <!-- &nbsp;<span>Delegate Users</span> -->
+            &nbsp;<span>Approved (Delegate Users) </span>
+          </a>
         </li>
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a  routerLink="/dashboard/discount-coupon-master" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png" id="speedmeter">
             &nbsp;<span>Discount Coupon Master</span></a>
         </li>
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a routerLink="/dashboard/non-registered-user" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
-              id="speedmeter">
-            &nbsp; <span>Non Registered Delegate User </span></a>
-        </li>
+        
 
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a routerLink="/dashboard/peacekeeper" id="sidebarDashboard"><img src="assets/img/usericon.png"
-              id="speedmeter">
-            &nbsp;<span>Peacekeeper</span></a>
-        </li>
+        
 
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a routerLink="/dashboard/contact-us" id="sidebarDashboard"><img src="assets/img/usericon.png"
