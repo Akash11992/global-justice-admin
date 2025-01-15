@@ -107,6 +107,9 @@ export class Constants {
     public readonly API_ENDPOINT_DELETE_PEACEKEEPER: string = 'delete_peacekeeper'
     public readonly API_ENDPOINT_PEACE_UPDATE_GENERATE_QR: string = 'update_peacekeeper'
 
+    public readonly API_ENDPOINT_ApprovedDelegate: string = 'mail_discount_code'
+
+
 }
 
 

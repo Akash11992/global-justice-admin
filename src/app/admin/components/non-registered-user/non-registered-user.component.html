@@ -105,9 +105,9 @@
                                                             <!-- <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'non-registered-user' }">
                                                                 <i class="fa fa-eye" aria-hidden="true" ></i> View Details</a>
                                                             </li> -->
-                                                            <li><a class="dropdown-item" style="cursor: pointer;" (click)="updateAndApprovethroughDropdown(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.company_name,all.designation,all.urn_no,all.qr_code,all.mobile_number)">
-                                                                    <i class="bi bi-check2-square"></i> Approve, Register
-                                                                    & Generate URN</a></li>
+                                                            <li><a class="dropdown-item" style="cursor: pointer;" (click)="updateAndApprovethroughDropdown(all.id)">
+                                                                    <i class="bi bi-check2-square"></i> Approve
+                                                                    </a></li>
                                                             <li><a class="dropdown-item" style="cursor: pointer;" (click)="updateAndUnapprovethroughDropdown(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.company_name,all.designation,all.urn_no,all.qr_code,all.mobile_number)">
                                                                 <i class="bi bi-x-lg"></i> Unapprove Registration</a>
                                                             </li>
