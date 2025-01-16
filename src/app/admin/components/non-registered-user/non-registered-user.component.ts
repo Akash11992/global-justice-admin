@@ -17,23 +17,23 @@ import { DatePipe } from '@angular/common';
 export class NonRegisteredUserComponent {
   searchForm: any = FormGroup;
   notFound: boolean = false;
-  form_name:any;
+  form_name: any;
   userName: any;
   userEmail: any;
-  urn_no:any;
+  urn_no: any;
   company: any;
-  qr_code:any;
-  user_number:any;
+  qr_code: any;
+  user_number: any;
   designation: any;
   selectAll: boolean = false;
   selectedUserIds: number[] = [];
   selectedUserNames: string[] = [];
-selectedQRCodes: string[] = [];
-selectedURNs: string[] = [];
-selectedDesignations: string[] = [];
-selectedCompanies: string[] = [];
-selectedUserEmails: string[] = [];
-selectedUserNumbers: string[] = [];
+  selectedQRCodes: string[] = [];
+  selectedURNs: string[] = [];
+  selectedDesignations: string[] = [];
+  selectedCompanies: string[] = [];
+  selectedUserEmails: string[] = [];
+  selectedUserNumbers: string[] = [];
 
   nonregist: any[] = [];
   checklist: any[] = [];
@@ -45,11 +45,17 @@ selectedUserNumbers: string[] = [];
   singleSelected: boolean = false;
   checkedList: any;
   checked: any;
-  form:any;
+  form: any;
   private intervalId: any;
   RefreshInterval: any;
 
-  constructor(private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
+  constructor(private datePipe: DatePipe, private fb: FormBuilder,
+    private AdminService: AdminService,
+    private SharedService: SharedService,
+    private ngxService: NgxUiLoaderService,
+    private router: Router,
+    private ActivatedRoute: ActivatedRoute,
+    private httpClient: HttpClient,) {
     this.masterSelected = false;
   }
   ngOnInit(): void {
@@ -62,22 +68,22 @@ selectedUserNumbers: string[] = [];
   }
 
   async getInterval() {
-  
-        this.RefreshInterval = 10000;
 
-        if (this.RefreshInterval) {
-          this.intervalId = setInterval(async () => {
-            console.log('refreshing......')
-            this.allDelegate();
-          }, this.RefreshInterval);
-        }
-   
+    this.RefreshInterval = 10000;
+
+    if (this.RefreshInterval) {
+      this.intervalId = setInterval(async () => {
+        console.log('refreshing......')
+        this.allDelegate();
+      }, this.RefreshInterval);
+    }
+
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalId);
- 
-  
+
+
   }
 
   createForm() {
@@ -91,9 +97,9 @@ selectedUserNumbers: string[] = [];
       console.log("data", data.data[0]);
       this.nonregist = data.data[0]
       // this.ngxService.stop();
-      if(this.nonregist.length===0){
-        this.notFound=true;
-      } else{
+      if (this.nonregist.length === 0) {
+        this.notFound = true;
+      } else {
         this.notFound = false;
         console.log("false");
       }
@@ -101,7 +107,7 @@ selectedUserNumbers: string[] = [];
       this.delegate = true
       this.partner = false
       this.speaker = false
-  
+
     });
   }
   allPartner() {
@@ -110,9 +116,9 @@ selectedUserNumbers: string[] = [];
       console.log("data", data.data[0]);
       this.nonregist = data.data[0]
       // this.ngxService.stop();
-      if(this.nonregist.length===0){
-        this.notFound=true;
-      } else{
+      if (this.nonregist.length === 0) {
+        this.notFound = true;
+      } else {
         this.notFound = false;
         console.log("false");
       }
@@ -129,9 +135,9 @@ selectedUserNumbers: string[] = [];
       console.log("data", data.data[0]);
       this.nonregist = data.data[0]
       // this.ngxService.stop();
-      if(this.nonregist.length===0){
-        this.notFound=true;
-      } else{
+      if (this.nonregist.length === 0) {
+        this.notFound = true;
+      } else {
         this.notFound = false;
         console.log("false");
       }
@@ -143,16 +149,16 @@ selectedUserNumbers: string[] = [];
   }
 
   // Function to update selectedUserIds array when a row is clicked
-  updateSelectedUsers(userId: any, userName: any, userEmail: any, company: any, designation: any,urn:any,qr_code:any,user_number:any) {
+  updateSelectedUsers(userId: any, userName: any, userEmail: any, company: any, designation: any, urn: any, qr_code: any, user_number: any) {
     // Check if the user ID is already selected, and toggle selection
     console.log(userId, userName, userEmail);
     this.userName = userName;
     this.userEmail = userEmail;
     this.company = company;
     this.designation = designation;
-    this.urn_no=urn;
-    this.qr_code=qr_code;
-    this.user_number=user_number
+    this.urn_no = urn;
+    this.qr_code = qr_code;
+    this.user_number = user_number
     // Convert userId to a number
     const id = Number(userId);
 
@@ -179,21 +185,21 @@ selectedUserNumbers: string[] = [];
     }
 
     console.log('selectedUserIds:', this.selectedUserIds);
-  console.log('selectedUserNames:', this.selectedUserNames);
-  
-  console.log('selectedUserEmails:', this.selectedUserEmails);
-  console.log('selectedCompanies:', this.selectedCompanies);
-  
-  console.log('selectedDesignations:', this.selectedDesignations);
-  console.log('selectedURNs:', this.selectedURNs);
-  
-  console.log('selectedQRCodes:', this.selectedQRCodes);
-  console.log('selectedUserNumbers:', this.selectedUserNumbers);
+    console.log('selectedUserNames:', this.selectedUserNames);
+
+    console.log('selectedUserEmails:', this.selectedUserEmails);
+    console.log('selectedCompanies:', this.selectedCompanies);
+
+    console.log('selectedDesignations:', this.selectedDesignations);
+    console.log('selectedURNs:', this.selectedURNs);
+
+    console.log('selectedQRCodes:', this.selectedQRCodes);
+    console.log('selectedUserNumbers:', this.selectedUserNumbers);
   }
 
   approveAndRegisterSelected(): void {
     if (this.selectedUserIds.length === 0) {
-      this.SharedService.ToastPopup('',"please select record!" , 'error')
+      this.SharedService.ToastPopup('', "please select record!", 'error')
 
       // Handle the case when no users are selected.
       return;
@@ -202,16 +208,16 @@ selectedUserNumbers: string[] = [];
     switch (true) {
       case this.delegate === true:
         console.log("active tab name delegate", this.delegate);
-      this.form_name="delegate"
+        this.form_name = "delegate"
         break;
       case this.partner === true:
         console.log("active tab name partner", this.partner);
-        this.form_name="partner"
+        this.form_name = "partner"
         break;
       case this.speaker === true:
         console.log("active tab name speaker", this.speaker,);
-        this.form_name="speaker"
-  
+        this.form_name = "speaker"
+
         break;
     }
     // Prepare the payload with selected user IDs and status 0.
@@ -229,12 +235,12 @@ selectedUserNumbers: string[] = [];
 
       user_name: this.selectedUserNames.join(','),
       user_email: this.selectedUserEmails.join(','),
-      company:this.selectedCompanies.join(','),
-      designation:  this.selectedDesignations.join(','),
-      urn_no:this.selectedURNs.join(','),
-      qr_code:this.selectedQRCodes.join('|'),
-      user_number:this.selectedUserNumbers.join(','),
-      form_name:this.form_name
+      company: this.selectedCompanies.join(','),
+      designation: this.selectedDesignations.join(','),
+      urn_no: this.selectedURNs.join(','),
+      qr_code: this.selectedQRCodes.join('|'),
+      user_number: this.selectedUserNumbers.join(','),
+      form_name: this.form_name
 
     };
     console.log("payload", payload);
@@ -242,58 +248,58 @@ selectedUserNumbers: string[] = [];
     this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('', data.message, 'success')
-       // Clear the selected arrays after successful unapprove
- this.selectedUserIds = [];
- this.selectedUserNames = [];
- this.selectedUserEmails = [];
- this.selectedCompanies = [];
- this.selectedDesignations = [];
- this.selectedURNs = [];
- this.selectedQRCodes = [];
- this.selectedUserNumbers = [];
- setTimeout(() => {
-      this.router.navigate(['dashboard/non-registered-user']);
-      console.log("active tab name delegate", this.delegate);
-      console.log("active tab name partner", this.partner);
-      console.log("active tab name speaker", this.speaker,);
-      switch (true) {
-        case this.delegate === true:
-          console.log("active tab name delegate", this.delegate);
-          this.allDelegate();
-          break;
-        case this.partner === true:
-          console.log("active tab name partner", this.partner);
-          this.allPartner();
-          break;
-        case this.speaker === true:
-          console.log("active tab name speaker", this.speaker,);
-          this.allSpeaker();
-          break;
-      }
-    }, 2000); // 2000 milliseconds (2 seconds) delay
+      // Clear the selected arrays after successful unapprove
+      this.selectedUserIds = [];
+      this.selectedUserNames = [];
+      this.selectedUserEmails = [];
+      this.selectedCompanies = [];
+      this.selectedDesignations = [];
+      this.selectedURNs = [];
+      this.selectedQRCodes = [];
+      this.selectedUserNumbers = [];
+      setTimeout(() => {
+        this.router.navigate(['dashboard/non-registered-user']);
+        console.log("active tab name delegate", this.delegate);
+        console.log("active tab name partner", this.partner);
+        console.log("active tab name speaker", this.speaker,);
+        switch (true) {
+          case this.delegate === true:
+            console.log("active tab name delegate", this.delegate);
+            this.allDelegate();
+            break;
+          case this.partner === true:
+            console.log("active tab name partner", this.partner);
+            this.allPartner();
+            break;
+          case this.speaker === true:
+            console.log("active tab name speaker", this.speaker,);
+            this.allSpeaker();
+            break;
+        }
+      }, 2000); // 2000 milliseconds (2 seconds) delay
     });
   }
 
   unapproveSelected(): void {
     if (this.selectedUserIds.length === 0) {
       // Handle the case when no users are selected.
-      this.SharedService.ToastPopup('',"please select record!" , 'error')
+      this.SharedService.ToastPopup('', "please select record!", 'error')
 
       return;
     }
     switch (true) {
       case this.delegate === true:
         console.log("active tab name delegate", this.delegate);
-      this.form_name="delegate"
+        this.form_name = "delegate"
         break;
       case this.partner === true:
         console.log("active tab name partner", this.partner);
-        this.form_name="partner"
+        this.form_name = "partner"
         break;
       case this.speaker === true:
         console.log("active tab name speaker", this.speaker,);
-        this.form_name="speaker"
-  
+        this.form_name = "speaker"
+
         break;
     }
     // Prepare the payload with selected user IDs and status 0.
@@ -310,12 +316,12 @@ selectedUserNumbers: string[] = [];
       // user_number:this.user_number,
       user_name: this.selectedUserNames.join(','),
       user_email: this.selectedUserEmails.join(','),
-      company:this.selectedCompanies.join(','),
-      designation:  this.selectedDesignations.join(','),
-      urn_no:this.selectedURNs.join(','),
-      qr_code:this.selectedQRCodes.join('|'),
-      user_number:this.selectedUserNumbers.join(','),
-      form_name:this.form_name
+      company: this.selectedCompanies.join(','),
+      designation: this.selectedDesignations.join(','),
+      urn_no: this.selectedURNs.join(','),
+      qr_code: this.selectedQRCodes.join('|'),
+      user_number: this.selectedUserNumbers.join(','),
+      form_name: this.form_name
 
 
     };
@@ -323,24 +329,24 @@ selectedUserNumbers: string[] = [];
     console.log("active tab name delegate", this.delegate);
     console.log("active tab name partner", this.partner);
     console.log("active tab name speaker", this.speaker,);
-    
+
     console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('', data.message, 'success');
       console.log(data.message);
-      
- // Clear the selected arrays after successful unapprove
- this.selectedUserIds = [];
- this.selectedUserNames = [];
- this.selectedUserEmails = [];
- this.selectedCompanies = [];
- this.selectedDesignations = [];
- this.selectedURNs = [];
- this.selectedQRCodes = [];
- this.selectedUserNumbers = [];
-      
+
+      // Clear the selected arrays after successful unapprove
+      this.selectedUserIds = [];
+      this.selectedUserNames = [];
+      this.selectedUserEmails = [];
+      this.selectedCompanies = [];
+      this.selectedDesignations = [];
+      this.selectedURNs = [];
+      this.selectedQRCodes = [];
+      this.selectedUserNumbers = [];
+
       setTimeout(() => {
         this.router.navigate(['dashboard/non-registered-user']);
         this.selectAll = false;
@@ -360,7 +366,7 @@ selectedUserNumbers: string[] = [];
             this.allSpeaker();
             break;
         }
-    
+
       }, 2000); // 2000 milliseconds (2 seconds) delay
     })
   }
@@ -382,9 +388,9 @@ selectedUserNumbers: string[] = [];
     }
   }
 
-  updateAndUnapprovethroughDropdown(userId: number, userName: any, userEmail: any, company: any, designation: any,urn:any,qr_code:any,user_number:any): void {
+  updateAndUnapprovethroughDropdown(userId: number, userName: any, userEmail: any, company: any, designation: any, urn: any, qr_code: any, user_number: any): void {
     // Update the selected users
-    this.updateSelectedUsers(userId, userName, userEmail, company, designation,urn,qr_code,user_number);
+    this.updateSelectedUsers(userId, userName, userEmail, company, designation, urn, qr_code, user_number);
 
     // Now, call the unapproveSelected function
     this.unapproveSelected();
@@ -392,34 +398,34 @@ selectedUserNumbers: string[] = [];
 
   updateAndApprovethroughDropdown(peaceId: number): void {
     // Update the selected users
-    let payload ={
-      p_peace_id  : peaceId
+    let payload = {
+      p_peace_id: peaceId
     }
     this.AdminService.ApprovedUnapproveStatus(payload).subscribe((data: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('', data.message, 'success')
-       // Clear the selected arrays after successful unapprove
- this.selectedUserIds = [];
- this.selectedUserNames = [];
- this.selectedUserEmails = [];
- this.selectedCompanies = [];
- this.selectedDesignations = [];
- this.selectedURNs = [];
- this.selectedQRCodes = [];
- this.selectedUserNumbers = [];
- setTimeout(() => {
-      this.router.navigate(['dashboard/non-registered-user']);
-  
+      // Clear the selected arrays after successful unapprove
+      this.selectedUserIds = [];
+      this.selectedUserNames = [];
+      this.selectedUserEmails = [];
+      this.selectedCompanies = [];
+      this.selectedDesignations = [];
+      this.selectedURNs = [];
+      this.selectedQRCodes = [];
+      this.selectedUserNumbers = [];
+      setTimeout(() => {
+        this.router.navigate(['dashboard/non-registered-user']);
+
         this.allDelegate();
-    }, 2000); // 2000 milliseconds (2 seconds) delay
+      }, 2000); // 2000 milliseconds (2 seconds) delay
     });
     // this.updateSelectedUsers(userId, userName, userEmail, company, designation,urn,qr_code,user_number);
 
     // Now, call the unapproveSelected function
     // this.approveAndRegisterSelected();
   }
-  deleteUser(userId: number, userName: any, userEmail: any, company: any, designation: any,urn:any,qr_code:any,user_number:any): void {
-    this.updateSelectedUsers(userId, userName, userEmail, company, designation,urn,qr_code,user_number);
+  deleteUser(userId: number, userName: any, userEmail: any, company: any, designation: any, urn: any, qr_code: any, user_number: any): void {
+    this.updateSelectedUsers(userId, userName, userEmail, company, designation, urn, qr_code, user_number);
     console.log("delete called", userId);
     const payload = {
       user_id: userId
@@ -473,9 +479,9 @@ selectedUserNumbers: string[] = [];
       if (this.nonregist.length === 0) {
         this.notFound = true;
         console.log("true");
-        
+
       }
-      else{
+      else {
         this.notFound = false;
         console.log("false");
       }
@@ -505,7 +511,7 @@ selectedUserNumbers: string[] = [];
       this.nonregist = data.data[0]
       if (this.nonregist.length === 0) {
         this.notFound = true;
-      } else{
+      } else {
         this.notFound = false;
         console.log("false");
       }
@@ -534,7 +540,7 @@ selectedUserNumbers: string[] = [];
       console.log("array length", this.nonregist.length);
       if (this.nonregist.length === 0) {
         this.notFound = true;
-      } else{
+      } else {
         this.notFound = false;
         console.log("false");
       }
@@ -548,9 +554,9 @@ selectedUserNumbers: string[] = [];
 
     this.searchForm.reset();
 
-    console.log("active tab name delegate",this.delegate);
-    console.log("active tab name partner",this.partner);
-    console.log("active tab name speaker",this.speaker,);
+    console.log("active tab name delegate", this.delegate);
+    console.log("active tab name partner", this.partner);
+    console.log("active tab name speaker", this.speaker,);
     switch (true) {
       case this.delegate === true:
         this.allDelegate();
@@ -605,7 +611,7 @@ selectedUserNumbers: string[] = [];
   //     useTextFile: false,
   //     useBom: true,
   //     headers: [
-        
+
   //       'title',
   //       'first_name',
   //       'last_name',
@@ -616,15 +622,15 @@ selectedUserNumbers: string[] = [];
   //       'email_id',
   //       'website',
   //     ],
-      
+
   //   };
-    
+
   //   const csvExporter = new ExportToCsv(options);
   //   csvExporter.generateCsv(this.nonregist);
-  
+
   //   this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
   // }
-  
+
 
   export() {
     switch (true) {
@@ -638,91 +644,104 @@ selectedUserNumbers: string[] = [];
         this.form = 'Speakers';
         break;
     }
-  
- // Select the columns you want to export
- const columnsToExport = this.nonregist.map(item => {
-  // Replace 'columnName' with the actual keys of the columns you want to export
-  let modifiedRegistrationType = item.registration_type; // Initialize with the original value
 
-  // Check if you want to change the 'registration_type' for specific items
-  if (item.registration_type==="1") {
-    // Modify 'registration_type' based on your condition
-    modifiedRegistrationType = 'Delegate' /* Set the new value here */;
-  } else if (item.registration_type==="2") {
-    // Modify 'registration_type' based on your condition
-    modifiedRegistrationType = 'Partner' /* Set the new value here */;
-  }else{
-    modifiedRegistrationType = 'Speaker' /* Set the new value here */;
+    // Select the columns you want to export
+    const columnsToExport = this.nonregist.map(item => {
+      // Replace 'columnName' with the actual keys of the columns you want to export
+      let modifiedRegistrationType = item.registration_type; // Initialize with the original value
 
-  }
-  let modifiedstatus = item.status; // Initialize with the original value
-console.log(modifiedstatus==="1");
-console.log(typeof modifiedstatus);
+      // Check if you want to change the 'registration_type' for specific items
+      if (item.registration_type === "1") {
+        // Modify 'registration_type' based on your condition
+        modifiedRegistrationType = 'Delegate' /* Set the new value here */;
+      } else if (item.registration_type === "2") {
+        // Modify 'registration_type' based on your condition
+        modifiedRegistrationType = 'Partner' /* Set the new value here */;
+      } else {
+        modifiedRegistrationType = 'Speaker' /* Set the new value here */;
 
-  if (item.status==="1") {
-    // Modify 'registration_type' based on your condition
-    modifiedstatus = 'Registered User' /* Set the new value here */;
-  }else{
-    modifiedstatus = 'Non-Registered User' /* Set the new value here */;
+      }
+      let modifiedstatus = item.status; // Initialize with the original value
+      console.log(modifiedstatus === "1");
+      console.log(typeof modifiedstatus);
 
-  }
+      if (item.status === "1") {
+        // Modify 'registration_type' based on your condition
+        modifiedstatus = 'Registered User' /* Set the new value here */;
+      } else {
+        modifiedstatus = 'Non-Registered User' /* Set the new value here */;
 
-  let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
-let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
-  return {
-    'urn_no':  item.urn_no, 
-    'registration_type': modifiedRegistrationType, // Use the modified value
-    'title': item.title, 
-    'first_name': item.first_name, 
-    'last_name': item.last_name, 
-    'department':  item.department, 
-    'designation':  item.designation,
-    'country_code':  item.country_code,
-    'mobile_number':  item.mobile_number,  
-    'email_id':  item.email_id, 
-    'company_name':  item.company_name, 
-    'company_address':  item.company_address, 
-    'address_line_1':  item.address_line_1, 
-    'address_line_2':  item.address_line_2, 
-    'address_line_3':  item.address_line_3, 
-    'country_name':  item.country_name, 
-    'state_name':  item.state_name, 
-    'city_name':  item.city_name, 
-    'website':  item.website, 
-    'conference_day':  item.conference_day, 
-    'attending_purpose':  item.attending_purpose, 
-    'specific_solution':  item.specific_solution, 
-    'attended_innopack':  item.attended_innopack, 
-    'is_active':  item.is_active, 
-    'refrence_url':  item.refrence_url, 
-    'refrence':  item.refrence, 
-    'is_whatsapp_number':  item.is_whatsapp_number, 
-    'terms_condition':  item.terms_condition, 
-   'events':  item.events, 
-   'created_date':created_date, 
-   'updated_date':updated_date, 
-   'status':  modifiedstatus, 
-  };
-});
+      }
 
-const ws = XLSX.utils.json_to_sheet(columnsToExport);
+      let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
+      let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
+      return {
+        'title': item.title, 
+        'first_name': item.first_name, 
+        'last_name': item.last_name, 
+        'email_id':  item.email_id, 
+        'country_code':  item.country_code,
+        'mobile_number':  item.mobile_number,  
+        'country_name':  item.country_name, 
+        'profession':  item.profession_1, 
+        'address':  item.address, 
+        'organization_name':  item.organization_name, 
+        'refrence':  item.reference_no, 
+        'created_date':  created_date, 
+
+        // 'urn_no': item.urn_no,
+        // 'registration_type': modifiedRegistrationType, // Use the modified value
+        // 'title': item.title,
+        // 'first_name': item.first_name,
+        // 'last_name': item.last_name,
+        // 'department': item.department,
+        // 'designation': item.designation,
+        // 'country_code': item.country_code,
+        // 'mobile_number': item.mobile_number,
+        // 'email_id': item.email_id,
+        // 'company_name': item.company_name,
+        // 'company_address': item.company_address,
+        // 'address_line_1': item.address_line_1,
+        // 'address_line_2': item.address_line_2,
+        // 'address_line_3': item.address_line_3,
+        // 'country_name': item.country_name,
+        // 'state_name': item.state_name,
+        // 'city_name': item.city_name,
+        // 'website': item.website,
+        // 'conference_day': item.conference_day,
+        // 'attending_purpose': item.attending_purpose,
+        // 'specific_solution': item.specific_solution,
+        // 'attended_innopack': item.attended_innopack,
+        // 'is_active': item.is_active,
+        // 'refrence_url': item.refrence_url,
+        // 'refrence': item.refrence,
+        // 'is_whatsapp_number': item.is_whatsapp_number,
+        // 'terms_condition': item.terms_condition,
+        // 'events': item.events,
+        // 'created_date': created_date,
+        // 'updated_date': updated_date,
+        // 'status': modifiedstatus,
+      };
+    });
+
+    const ws = XLSX.utils.json_to_sheet(columnsToExport);
     // const ws = XLSX.utils.json_to_sheet(this.nonregist);
     const wb = XLSX.utils.book_new();
-     // Truncate the title if it exceeds 31 characters
+    // Truncate the title if it exceeds 31 characters
 
-    XLSX.utils.book_append_sheet(wb, ws,this.form);
-  
+    XLSX.utils.book_append_sheet(wb, ws, this.form);
+
     // You can set additional properties if needed, e.g., a title:
     wb.Props = {
       Title: 'Non registered Users - ' + this.form,
     };
-  
+
     XLSX.writeFile(wb, 'Non_Registered_Users.xlsx');
-  
+
     // Add your success message or any other functionality here.
     this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
 
   }
-  
+
 }
 
