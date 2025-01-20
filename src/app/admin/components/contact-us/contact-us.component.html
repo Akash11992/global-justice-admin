@@ -1,90 +1,86 @@
-  
-  
-  
-    <!------------------------------------------- Sidebar start---------------------------------------------->
-    <div class="wrapper d-flex align-items-stretch">
-        <app-admin-left-panel></app-admin-left-panel>
-        <!------------------------------------------- Sidebar end---------------------------------------------->
-    
-    
-    
-    
-    
-        <!------------------------------------------ bodyheader start ----------------------------------------->
-        <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
-          <!-- class="p-4 p-md-5 "-->
-  
-          <!------------------------------------------ bodyheader end ---------------------------------------->
-    
-    
-    
-    
-    
-          <!------------------------------------------ Page Content -------------------------------------------->
-          <div class="container-fluid" id="pagecontent">
-            <div class="col-md-12" style="margin-top: 25px;">
-              <img src="assets/images/user (1).png" id="userimg">
-              <h4 style="display: inline-flex;"> Contact Us List</h4>
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto; overflow-x: hidden">
+    <!-- class="p-4 p-md-5 "-->
+
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="col-md-12" style="margin-top: 25px">
+        <img src="assets/images/user (1).png" id="userimg" />
+        <h4 style="display: inline-flex">Contact Us List</h4>
+      </div>
+
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <form class="d-flex">
+                <input
+                  class="form-control"
+                  formControlName="searchInput"
+                  type="search"
+                  id="inputsearch"
+                  placeholder="Search..."
+                  aria-label="Search"
+                />
+                &nbsp; &nbsp;&nbsp;
+                <button class="btn" id="btncolor">Search</button>
+                &nbsp; &nbsp;
+                <button class="btn" type="reset" id="btncolor">Reset</button>
+              </form>
             </div>
-    
-            <div class="card" id="uppercard">
-              <div class="card-body">
-                <div class="col-md-12" id="exportcolmd">
-                  <button class="btn " type="button" id="exportbtn" (click)="export()"><i
-                      class="bi bi-file-earmark-excel"></i> Export</button>
-                </div>
-    
-                <div class="row">
-                  <div class="col-md-6">
-                    <form class="d-flex" [formGroup]="searchForm">
-                      <!-- <input class="form-control" formControlName="searchInput" type="search" id="inputsearch" placeholder="Search..."
-                        aria-label="Search">&nbsp;&nbsp;
-                      <button class="btn " (click)="searchUsers()" id="btncolor">Search</button>
-                      &nbsp; &nbsp;
-                      <button class="btn " (click)="resetForm()" type="reset" id="btncolor">Reset</button> -->
-                    </form>
-                  </div>
-                  <div class="col-md-6"></div>
-                </div>
-    
-              </div>
+            <div class="col-md-6" id="exportcolmd">
+              <button class="btn" type="button" id="exportbtn" (click)="export()">
+                <i class="bi bi-file-earmark-excel"></i> Export
+              </button>
             </div>
-    
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="table-responsive"  *ngIf="contactUsList.length > 0; ">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <!-- <th>#</th> -->
-                            <th>SN</th>
-                            <th>Name</th>
-                            <th>Mobile</th>
-                            <th>Email</th>
-                            <th>Query</th>
-                            <!-- <th>Department</th>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive" *ngIf="contactUsList.length > 0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <!-- <th>#</th> -->
+                      <th>SN</th>
+                      <th>Name</th>
+                      <th>Mobile</th>
+                      <th>Email</th>
+                      <th>Query</th>
+                      <!-- <th>Department</th>
                             <th>Registered At</th> -->
-                            <!-- <th>Action</th> -->
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let all of contactUsList let i = index;">
-                            <!-- <td><input type="checkbox" id="singlecheckbox" (change)="updateSelectedUsers(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)"></td> -->
-                            <td>{{i+1}}</td>
-                            <td>{{all.TITLE}} {{all.FIRST_NAME}} {{all.LAST_NAME}}</td>  
-                            <td>{{all.PHONE_NUMBER}}</td>
-                            <td>{{all.EMAIL}} <i class="bi bi-person-fill"></i></td>
-                            <td>{{all.YOUR_QUESTION}}</td>
-                            <!-- <td>{{all.company_name}}</td>
+                      <!-- <th>Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let all of contactUsList; let i = index">
+                      <!-- <td><input type="checkbox" id="singlecheckbox" (change)="updateSelectedUsers(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)"></td> -->
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        {{ all.TITLE }} {{ all.FIRST_NAME }} {{ all.LAST_NAME }}
+                      </td>
+                      <td>{{ all.PHONE_NUMBER }}</td>
+                      <td>{{ all.EMAIL }} <i class="bi bi-person-fill"></i></td>
+                      <td>{{ all.YOUR_QUESTION }}</td>
+                      <!-- <td>{{all.company_name}}</td>
                             <td>{{all.designation}}</td>
   
                             <td>{{all.department}}</td>
                             <td>{{all.refrence}}</td>
                             <td>{{all.created_date | date :'short'}}</td> -->
-                            
-                            <!-- <td>
+
+                      <!-- <td>
                                 <div class="dropdown dropstart">
                                     <button class="btn btn-outline-success" type="button" id="dropdownMenuButton1"
                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -118,21 +114,18 @@
                                     </ul>
                                 </div>
                             </td> -->
-                        </tr>
-                         
-                        </tbody>
-                      </table>
-                    </div>
-                    <h5 style="text-align: center;"><span *ngIf="notFound">No Data Found</span></h5>
-  
-                  </div>
-                </div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
+              <h5 style="text-align: center">
+                <span *ngIf="notFound">No Data Found</span>
+              </h5>
             </div>
           </div>
-    
-    
         </div>
-        <!------------------------------------------- Page Content end ----------------------------------------->
       </div>
-      
+    </div>
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>
