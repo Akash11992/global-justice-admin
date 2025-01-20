@@ -24,7 +24,7 @@
     
           <!------------------------------------------ Page Content -------------------------------------------->
           <div class="container-fluid" id="pagecontent">
-            <div class="col-md-12" style="margin-top: 25px;">
+            <div class="col-md-12 py-3" >
               <img src="assets/images/user (1).png" id="userimg">
               <h4 style="display: inline-flex;"> Registered Peacekeeper</h4>
             </div>
@@ -129,13 +129,13 @@
                             <td>{{all.dob !==null? all.dob :'' | date : 'dd/MM/yyyy'}}</td>
                             <td>{{all.country}}</td>
                             <td>{{all.mobile_number}}</td>
-                            <td style="
-                            display: block;
-                            text-overflow: ellipsis;
-                            overflow: hidden;
-                            white-space: nowrap;
-                            width: 230px;
-                           ">{{all.email_id}} <i class="bi bi-person-fill"></i></td>
+                            <td ><span style="
+                              display: block;
+                              text-overflow: ellipsis;
+                              overflow: hidden;
+                              white-space: nowrap;
+                              width: 230px;
+                             ">{{all.email_id}} <i class="bi bi-person-fill"></i></span></td>
                             <td>{{all.Id_no}}</td>
                             <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
                             <td>{{all.coupon_code}}</td>

@@ -1,136 +1,274 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
 
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto; overflow-x: hidden">
+    <!-- class="p-4 p-md-5 "-->
 
-   
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="col-md-12 px-0" style="padding-top: 25px">
+        <img src="assets/images/user (1).png" id="userimg" />
+        <h4 style="display: inline-flex">Non - Approved Users</h4>
+      </div>
 
-
-
-
-    <!------------------------------------------- Sidebar start---------------------------------------------->
-    <div class="wrapper d-flex align-items-stretch">
-        <app-admin-left-panel></app-admin-left-panel>
-        <!------------------------------------------- Sidebar end---------------------------------------------->
-
-
-
-
-
-        <!------------------------------------------ bodyheader start ----------------------------------------->
-        <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
-            <!-- class="p-4 p-md-5 "-->
-            
-            <!------------------------------------------ bodyheader end ---------------------------------------->
-            <!------------------------------------------ Page Content -------------------------------------------->
-            <div class="container-fluid" id="pagecontent">
-                <div class="col-md-12" style="padding-top: 25px;">
-                    <img src="assets/images/user (1).png" id="userimg">
-                    <h4 style="display: inline-flex;"> Non - Approved Users</h4>
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <div class="row" id="outermargin">
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-md-5 col-12 my-1">
+                  <button
+                    class="btn w-100"
+                    type="button"
+                    id="exportbtn"
+                    (click)="approveAndRegisterSelected()"
+                  >
+                    <i class="bi bi-check-lg"></i> Approve & share Payment link
+                  </button>
+                </div>
+                <div class="col-md-2 col-4 my-1">
+                  <button
+                    class="btn w-100"
+                    type="button"
+                    id="exportbtn"
+                    (click)="unapproveSelected()"
+                  >
+                    <i class="bi bi-x"></i> Reject
+                  </button>
                 </div>
 
-                <div class="card" id="uppercard">
-                    <div class="card-body">
-                        <div class="row" id="outermargin">
-                            <div class="col-md-6">
-                                <button class="btn " type="button" id="exportbtn" (click)="approveAndRegisterSelected()"><i
-                                        class="bi bi-check-lg"></i> Approve & share Payment link</button>
-                                        &nbsp;   <button class="btn " type="button" id="exportbtn" (click)="unapproveSelected()"><i
-                                        class="bi bi-x"></i> Reject</button>
-                                        &nbsp;   <button class="btn " type="button" id="exportbtn" ><i
-                                            class="bi bi-trash3-fill"></i> Delete</button>
-                            </div> 
-                            <div class="col-md-6" id="exportcolmd">
-                                <button class="btn " type="button" id="exportbtn"  (click)="export()"><i
-                                        class="bi bi-file-earmark-excel"></i> Export</button>
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <form class="d-flex" [formGroup]="searchForm">
-                                    <input class="form-control" formControlName="searchInput" type="search" id="inputsearch" placeholder="Search..."
-                                        aria-label="Search"> &nbsp; &nbsp;&nbsp;
-                                    <button class="btn " (click)="searchUsers()" id="btncolor">Search</button>
-                                    &nbsp; &nbsp;
-                                    <button class="btn " (click)="resetForm()" type="reset" id="btncolor">Reset</button>
-                                </form>
-                            </div>
-                            <div class="col-md-6"></div>
-                        </div>
-
-                    </div>
+                <div class="col-md-3 col-4 my-1">
+                  <button class="btn w-100" type="button" id="exportbtn">
+                    <i class="bi bi-trash3-fill"></i> Delete
+                  </button>
                 </div>
+                <!-- <div class="col-md-6" id="exportcolmd"> -->
+                <div class="col-md-6 col-4 my-1">
+                  <button
+                    class="btn d-md-none d-inline w-100"
+                    type="button"
+                    id="exportbtn"
+                    (click)="export()"
+                  >
+                    <i class="bi bi-file-earmark-excel"></i> Export
+                  </button>
+                </div>
+                <!-- </div> -->
+              </div>
+            </div>
+          </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th><input type="checkbox" id="checkbox"   [disabled]="nonregist.length === 0"  [checked]="selectAll" (click)="toggleSelectAll()" ></th>
-                                                <th>#</th>                                                
-                                                <th>Name</th>
-                                                <th>Email</th>                                          
-                                                <th>Mobile</th>                  
-                                                <th>Country</th>                   
-                                                <th>Profession</th>
-                                                <th>Organization Name</th>
-                                                <!-- <th>Company</th> -->
-                                                <th>Reference</th>
-                                                <th>Registered At</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody  *ngFor="let all of nonregist let i = index;">
-                                            <tr [ngClass]="all.status == '2'?'bg-color-red':''">
-                                                <td><input type="checkbox" id="singlecheckbox" (change)="updateSelectedUsers(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.company_name,all.designation,all.urn_no,all.qr_code,all.mobile_number)" [checked]="selectedUserIds.includes(all.user_id)"></td>
-                                                <td>{{i+1}}</td>
-                                                <td>{{all.title}} {{all.first_name}} {{all.last_name}}</td>                                                
-                                                <td>{{all.email_id}} <i class="bi bi-person-fill"></i></td>
-                                                <td>{{all.mobile_number}}</td>
-                                                <td>{{all.country}}</td>
-                                                <td>{{all.profession_1}}</td>
-                                                <td>{{all.organization_name}}</td>
-                                                <!-- <td>{{all.company_name}}</td> -->
-                                                <td>{{all.reference_no}}</td>
-                                                <td>{{all.created_date | date: 'dd/MM/yyyy hh:mm a'}}</td>
-                                                
-                                                <td>
-                                                    <div class="dropdown dropstart">
-                                                        <button class="btn btn-outline-success" type="button" id="dropdownMenuButton1"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <img src="/assets/images/orangemenuicon.png"
-                                                                id="hamburgericon">
-                                                        </button>
-                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                            <!-- <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'non-registered-user' }">
+          <div class="row">
+            <div class="col-md-6">
+              <form class="d-flex" [formGroup]="searchForm">
+                <input
+                  class="form-control m-1"
+                  formControlName="searchInput"
+                  type="search"
+                  id="inputsearch"
+                  placeholder="Search..."
+                  aria-label="Search"
+                />
+
+                <button class="btn m-1" (click)="searchUsers()" id="btncolor">
+                  Search
+                </button>
+                <!-- <button
+                  class="btn"
+                  (click)="resetForm()"
+                  type="reset"
+                  id="btncolor"
+                >
+                  Reset
+                </button> -->
+              </form>
+            </div>
+            <div class="col-md-6 d-none d-md-block" id="exportcolmd">
+              <button
+                class="btn"
+                type="button"
+                id="exportbtn"
+                (click)="export()"
+              >
+                <i class="bi bi-file-earmark-excel"></i> Export
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input
+                          type="checkbox"
+                          id="checkbox"
+                          [disabled]="nonregist.length === 0"
+                          [checked]="selectAll"
+                          (click)="toggleSelectAll()"
+                        />
+                      </th>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Mobile</th>
+                      <th>Country</th>
+                      <th>Profession</th>
+                      <th>Organization Name</th>
+                      <!-- <th>Company</th> -->
+                      <th>Reference</th>
+                      <th>Registered At</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let all of nonregist; let i = index">
+                    <tr [ngClass]="all.status == '2' ? 'bg-color-red' : ''">
+                      <td>
+                        <input
+                          type="checkbox"
+                          id="singlecheckbox"
+                          (change)="
+                            updateSelectedUsers(
+                              all.user_id,
+                              all.title +
+                                ' ' +
+                                all.first_name +
+                                ' ' +
+                                all.last_name,
+                              all.email_id,
+                              all.company_name,
+                              all.designation,
+                              all.urn_no,
+                              all.qr_code,
+                              all.mobile_number
+                            )
+                          "
+                          [checked]="selectedUserIds.includes(all.user_id)"
+                        />
+                      </td>
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        {{ all.title }} {{ all.first_name }} {{ all.last_name }}
+                      </td>
+                      <td>
+                        {{ all.email_id }} <i class="bi bi-person-fill"></i>
+                      </td>
+                      <td>{{ all.mobile_number }}</td>
+                      <td>{{ all.country }}</td>
+                      <td>{{ all.profession_1 }}</td>
+                      <td>{{ all.organization_name }}</td>
+                      <!-- <td>{{all.company_name}}</td> -->
+                      <td>{{ all.reference_no }}</td>
+                      <td>
+                        {{ all.created_date | date : "dd/MM/yyyy hh:mm a" }}
+                      </td>
+
+                      <td>
+                        <div class="dropdown dropstart">
+                          <button
+                            class="btn btn-outline-success"
+                            type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <img
+                              src="/assets/images/orangemenuicon.png"
+                              id="hamburgericon"
+                            />
+                          </button>
+                          <ul
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton1"
+                          >
+                            <!-- <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'non-registered-user' }">
                                                                 <i class="fa fa-eye" aria-hidden="true" ></i> View Details</a>
                                                             </li> -->
-                                                            <li><a class="dropdown-item" style="cursor: pointer;" (click)="updateAndApprovethroughDropdown(all.id)">
-                                                                    <i class="bi bi-check2-square"></i> Approve & share Payment link
-                                                                    </a></li>
-                                                            <li><a class="dropdown-item" style="cursor: pointer;" (click)="updateAndUnapprovethroughDropdown(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.company_name,all.designation,all.urn_no,all.qr_code,all.mobile_number)">
-                                                                <i class="bi bi-x-lg"></i> Reject</a>
-                                                            </li>
-                                                            <li><a class="dropdown-item" style="cursor: pointer;" (click)="deleteUser(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.company_name,all.designation,all.urn_no,all.qr_code,all.mobile_number)">
-                                                                    <i class="bi bi-trash3-fill"></i> Delete</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <h5 style="text-align: center;"><span *ngIf="notFound">No Data Found</span></h5>
-
-                            </div>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                style="cursor: pointer"
+                                (click)="
+                                  updateAndApprovethroughDropdown(all.id)
+                                "
+                              >
+                                <i class="bi bi-check2-square"></i> Approve &
+                                share Payment link
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                style="cursor: pointer"
+                                (click)="
+                                  updateAndUnapprovethroughDropdown(
+                                    all.user_id,
+                                    all.title +
+                                      ' ' +
+                                      all.first_name +
+                                      ' ' +
+                                      all.last_name,
+                                    all.email_id,
+                                    all.company_name,
+                                    all.designation,
+                                    all.urn_no,
+                                    all.qr_code,
+                                    all.mobile_number
+                                  )
+                                "
+                              >
+                                <i class="bi bi-x-lg"></i> Reject</a
+                              >
+                            </li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                style="cursor: pointer"
+                                (click)="
+                                  deleteUser(
+                                    all.user_id,
+                                    all.title +
+                                      ' ' +
+                                      all.first_name +
+                                      ' ' +
+                                      all.last_name,
+                                    all.email_id,
+                                    all.company_name,
+                                    all.designation,
+                                    all.urn_no,
+                                    all.qr_code,
+                                    all.mobile_number
+                                  )
+                                "
+                              >
+                                <i class="bi bi-trash3-fill"></i> Delete</a
+                              >
+                            </li>
+                          </ul>
                         </div>
-                    </div>
-                </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <h5 style="text-align: center">
+                <span *ngIf="notFound">No Data Found</span>
+              </h5>
             </div>
-
-
+          </div>
         </div>
-        <!------------------------------------------- Page Content end ----------------------------------------->
+      </div>
     </div>
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>
