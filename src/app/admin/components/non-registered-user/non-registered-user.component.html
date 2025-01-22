@@ -11,16 +11,16 @@
     <!------------------------------------------ Page Content -------------------------------------------->
     <div class="container-fluid" id="pagecontent">
       <div class="col-md-12 px-0" style="padding-top: 25px">
-        <img src="assets/images/user (1).png" id="userimg" />
+        <img src="assets/images/user (1).png" id="userimg" />&nbsp;  &nbsp;
         <h4 style="display: inline-flex">Non - Approved Users</h4>
       </div>
 
       <div class="card" id="uppercard">
         <div class="card-body">
           <div class="row" id="outermargin">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <div class="row">
-                <div class="col-md-5 col-12 my-1">
+                <div class="col-xl-4 col-lg-6 col-md-5 col-12 my-1">
                   <button
                     class="btn w-100"
                     type="button"
@@ -30,7 +30,7 @@
                     <i class="bi bi-check-lg"></i> Approve & share Payment link
                   </button>
                 </div>
-                <div class="col-md-2 col-4 my-1">
+                <div class="col-xl-2 col-lg-2 col-md-2 col-4 my-1">
                   <button
                     class="btn w-100"
                     type="button"
@@ -41,15 +41,15 @@
                   </button>
                 </div>
 
-                <div class="col-md-3 col-4 my-1">
+                <div class="col-xl-2 col-lg-3 col-md-3 col-4 my-1">
                   <button class="btn w-100" type="button" id="exportbtn">
                     <i class="bi bi-trash3-fill"></i> Delete
                   </button>
                 </div>
                 <!-- <div class="col-md-6" id="exportcolmd"> -->
-                <div class="col-md-6 col-4 my-1">
+                <div class="col-md-6 col-4 my-1 d-md-none d-inline">
                   <button
-                    class="btn d-md-none d-inline w-100"
+                    class="btn  w-100"
                     type="button"
                     id="exportbtn"
                     (click)="export()"
@@ -62,7 +62,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="row align-items-center">
             <div class="col-md-6">
               <form class="d-flex" [formGroup]="searchForm">
                 <input
@@ -104,7 +104,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body p-0">
               <div class="table-responsive">
                 <table class="table">
                   <thead>
