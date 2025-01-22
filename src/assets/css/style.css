@@ -1756,8 +1756,8 @@ pre code {
 }
 .table th,
 .table td {
-  /* padding: 0.75rem; */
-  padding: 0;
+  padding: 0 0.75rem;
+  /* padding: 0; */
   vertical-align: middle;
   border-top: 1px solid #dee2e6;
 }
@@ -4965,7 +4965,7 @@ input[type="button"].btn-block {
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  padding: .7rem;
+  padding: 0.7rem;
 }
 
 .card-title {
@@ -10922,6 +10922,8 @@ a[data-toggle="collapse"] {
   display: block;
   transition: 0.3s;
   border-bottom: 1px solid gray;
+  display: flex;
+  align-items: center;
 }
 
 .sidenav a:hover {
@@ -10934,6 +10936,7 @@ a[data-toggle="collapse"] {
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
+  border: 0;
 }
 
 /* Main content default styles */
@@ -10951,11 +10954,12 @@ a[data-toggle="collapse"] {
   #main {
     margin-left: 0; /* Reset margin */
   }
-  .btn{
-    font-size: .75rem;
-    }
-    h4, .h4 {
-      font-size: .99rem !important;
+  .btn {
+    font-size: 0.75rem;
+  }
+  h4,
+  .h4 {
+    font-size: 0.99rem !important;
   }
 }
 
@@ -10967,5 +10971,7 @@ a[data-toggle="collapse"] {
   .sidenav a {
     font-size: 12px;
   }
- 
+  /* #main {
+    margin-left: 0 !important;
+  } */
 }
