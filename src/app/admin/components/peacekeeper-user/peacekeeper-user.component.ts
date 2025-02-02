@@ -124,7 +124,7 @@ export class PeacekeeperUserComponent implements OnInit {
     // this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
 
     this.createForm();
-    // this.getInterval();
+    this.getInterval();
 
 
   }
@@ -412,6 +412,7 @@ searchDelegateUser(): void {
 
 resetForm(): void {
   this.searchForm.reset();
+  this.getInterval();
   
   console.log("active tab name delegate",this.peacekeeper);
 
@@ -427,6 +428,7 @@ searchUsers() {
   // this.peacekeeperList = this.peacekeeperList.filter((peaceName) =>
   //   peaceName.full_name.toLowerCase().includes(this.searchParams.toLowerCase())
   // );
+  clearInterval(this.intervalId);
   this.searchDelegateUser();
 }
 
