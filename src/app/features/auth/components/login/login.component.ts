@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AdminService } from 'src/app/admin/services/admin.service';
+import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,6 +16,9 @@ export class LoginComponent {
   type: string = "password";
   isText: boolean = false;
   eyeIcon: string = "fa-eye-slash"
+  private readonly AUTH_KEY = 'isLoggedIn';
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+
 
 
 
@@ -25,9 +29,15 @@ export class LoginComponent {
     private router: Router,
     private SharedService: SharedService,
     private ngxService: NgxUiLoaderService,
-  ) { }
+  ) { 
+    const isLoggedIn = localStorage.getItem(this.AUTH_KEY) === 'true';
+    this.isAuthenticatedSubject.next(isLoggedIn);
+  }
+
+
   ngOnInit(): void {
     // Set up form configurations
+    localStorage.clear();
     this._preConfig();
   }
 
@@ -72,10 +82,11 @@ export class LoginComponent {
     // Call the ProfileService to post the OTP and password data
     this.adminService.login(loginData).subscribe((res: any) => {
       this.ngxService.stop();
-
+      // localStorage.setItem(this.AUTH_KEY, 'true');
+      localStorage.setItem('authToken', res.token);
       // Display success message after successful OTP submission
       this.SharedService.ToastPopup('You have logged in successfully!', '', 'success');
-
+      this.isAuthenticatedSubject.next(true);
       // Redirect to the login page after a delay
       setTimeout(() => {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['/dashboard']));
@@ -87,6 +98,9 @@ export class LoginComponent {
       this.SharedService.ToastPopup('User not found!', '', 'error');
     })
   }
+
+  
+
 
 
 }

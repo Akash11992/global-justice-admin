@@ -21,17 +21,17 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: AdminMainComponent,
-
+    canActivate: [AuthGuard],
     children: [
       { path: "", component: DashboardComponent },
-      { path: "joinmailinglist", component: JoinmailinglistComponent },
-      { path: "broucher", component: BroucherComponent },
-      { path: "sales-broucher", component: SalesBroucherComponent },
+      { path: "joinmailinglist", component: JoinmailinglistComponent ,canActivate: [AuthGuard],},
+      { path: "broucher", component: BroucherComponent ,canActivate: [AuthGuard],},
+      { path: "sales-broucher", component: SalesBroucherComponent ,canActivate: [AuthGuard],},
       {
         path: "discount-coupon-master",
-        component: DiscountCoupanMasterComponent,
+        component: DiscountCoupanMasterComponent , canActivate: [AuthGuard],
       },
-      {path:'add-discount-coupon',component:AddDiscountCoupanComponent},
+      {path:'add-discount-coupon',component:AddDiscountCoupanComponent , canActivate: [AuthGuard],},
       // {path:'reset-password',component:ResetPasswordComponent},
       //  {path:'non-registered-user',component:NonRegisteredUserComponent},
 
@@ -41,9 +41,9 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: AdminMainComponent,
-
+    canActivate: [AuthGuard],
     children: [
-      { path: "non-registered-user", component: NonRegisteredUserComponent },
+      { path: "non-registered-user", component: NonRegisteredUserComponent,canActivate: [AuthGuard], },
       // {path:'reset-password',component:ResetPasswordComponent},
       { path: "", redirectTo: "non-registered-user", pathMatch: "full" },
     ],
@@ -51,11 +51,11 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: AdminMainComponent,
-
+    canActivate: [AuthGuard],
     children: [
-      { path: "registered-user", component: RegisteredUserComponent },
-      { path: "peacekeeper", component: PeacekeeperUserComponent },
-      { path: "contact-us", component: ContactUsComponent },
+      { path: "registered-user", component: RegisteredUserComponent,canActivate: [AuthGuard], },
+      { path: "peacekeeper", component: PeacekeeperUserComponent,canActivate: [AuthGuard], },
+      { path: "contact-us", component: ContactUsComponent,canActivate: [AuthGuard], },
       // {path:'reset-password',component:ResetPasswordComponent},
       { path: "", redirectTo: "registered-user", pathMatch: "full" },
     ],
@@ -65,10 +65,11 @@ const routes: Routes = [
     component: AdminMainComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: "tracking-link", component: ViewTrackingListComponent },
+      { path: "tracking-link", component: ViewTrackingListComponent ,canActivate: [AuthGuard], },
       {
         path: "tracking-link/add-tracking-link",
         component: AddTrackingListComponent,
+        canActivate: [AuthGuard],
       },
       // {path:'reset-password',component:ResetPasswordComponent},
       { path: "", redirectTo: "tracking-link", pathMatch: "full" },
@@ -79,8 +80,8 @@ const routes: Routes = [
     component: AdminMainComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: "viewdetails/:user_id", component: ViewDetailsComponent },
-      { path: "editdetails/:user_id", component: EditDetailsComponent },
+      { path: "viewdetails/:user_id", component: ViewDetailsComponent ,canActivate: [AuthGuard],},
+      { path: "editdetails/:user_id", component: EditDetailsComponent ,canActivate: [AuthGuard],},
 
       // {path:'reset-password',component:ResetPasswordComponent},
       { path: "", redirectTo: "viewdetails", pathMatch: "full" },

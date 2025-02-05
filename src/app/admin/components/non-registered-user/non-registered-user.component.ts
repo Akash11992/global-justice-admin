@@ -69,7 +69,7 @@ export class NonRegisteredUserComponent {
 
   async getInterval() {
 
-    this.RefreshInterval = 10000;
+    this.RefreshInterval = 60000;
 
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
