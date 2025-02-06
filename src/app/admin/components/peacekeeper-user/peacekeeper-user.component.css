@@ -1,0 +1,7 @@
+table>tbody>tr>td img {
+    border-radius: 5px;
+    transition: transform 0.2s;
+  }
+  table>tbody>tr>td img:hover {
+    transform: scale(1.1);
+  }

@@ -24,6 +24,7 @@ import { SharedModule } from './shared/shared.module';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { AdminModule } from './admin/admin.module';
 import { QRCodeModule } from 'angularx-qrcode';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // import { HeaderComponent } from './shared/components/header/header.component';
 @NgModule({
@@ -47,7 +48,8 @@ import { QRCodeModule } from 'angularx-qrcode';
     NgxUiLoaderModule,
     AppRoutingModule,
     FormsModule, ReactiveFormsModule,SharedModule,
-    QRCodeModule
+    QRCodeModule,
+    FontAwesomeModule,
 
 
   ],

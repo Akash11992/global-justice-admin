@@ -21,6 +21,7 @@ import { DiscountCoupanMasterComponent } from './components/discount-coupan-mast
 import { AddDiscountCoupanComponent } from './components/add-discount-coupan/add-discount-coupan.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import { TooltipModule } from 'ng2-tooltip-directive';
     AdminRoutingModule,
     CanvasJSAngularChartsModule,
     QRCodeModule,
-    TooltipModule
+    TooltipModule,
+    FontAwesomeModule,
+    
 
   ],
   schemas: [NO_ERRORS_SCHEMA], // Add this line

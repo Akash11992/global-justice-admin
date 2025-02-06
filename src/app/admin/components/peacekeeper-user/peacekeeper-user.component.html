@@ -1,37 +1,32 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
 
-  
-  
-  
-  
-    <!------------------------------------------- Sidebar start---------------------------------------------->
-    <div class="wrapper d-flex align-items-stretch">
-        <app-admin-left-panel></app-admin-left-panel>
-        <!------------------------------------------- Sidebar end---------------------------------------------->
-    
-    
-    
-    
-    
-        <!------------------------------------------ bodyheader start ----------------------------------------->
-        <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
-          <!-- class="p-4 p-md-5 "-->
-  
-          <!------------------------------------------ bodyheader end ---------------------------------------->
-    
-    
-    
-    
-    
-          <!------------------------------------------ Page Content -------------------------------------------->
-          <div class="container-fluid" id="pagecontent">
-            <div class="col-md-12 py-3" >
-              <img src="assets/images/user (1).png" id="userimg">&nbsp;  &nbsp;
-              <h4 style="display: inline-flex;"> Registered Peacekeeper</h4>
-            </div>
-    
-            <div class="card" id="uppercard">
-              <div class="card-body">
-                <!-- <div class="col-md-12" id="exportcolmd">
+
+
+
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
+    <!-- class="p-4 p-md-5 "-->
+
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+
+
+
+
+
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="col-md-12 py-3">
+        <img src="assets/images/user (1).png" id="userimg">&nbsp; &nbsp;
+        <h4 style="display: inline-flex;"> Registered Peacekeeper</h4>
+      </div>
+
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <!-- <div class="col-md-12" id="exportcolmd">
                   <button class="btn " type="button" id="exportbtn" (click)="export()"><i
                       class="bi bi-file-earmark-excel"></i> Export</button>
 
@@ -41,31 +36,31 @@
                         class="bi bi-trash3-fill"></i>  Delete Selected</button>
 
                 </div> -->
-    
-                <div class="row">
-                  <div class="col-md-6">
-                    <form class="d-flex" [formGroup]="searchForm">
-                      <input class="form-control" formControlName="searchInput" type="search" id="inputsearch" placeholder="Search..."
-                        aria-label="Search">&nbsp;&nbsp;
-                      <button class="btn " (click)="searchUsers()" id="btncolor">Search</button>
-                      &nbsp; &nbsp;
-                      <button class="btn " (click)="resetForm()" type="reset" id="btncolor">Reset</button>
-                    </form>
-                  </div>
-                  <div class="col-md-6 "  id="exportcolmd">                  <button class="btn " type="button" id="exportbtn" (click)="export()"><i
-                    class="bi bi-file-earmark-excel"></i> Export</button></div>
-                </div>
-    
-              </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <form class="d-flex" [formGroup]="searchForm">
+                <input class="form-control" formControlName="searchInput" type="search" id="inputsearch"
+                  placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
+                <button class="btn " (click)="searchUsers()" id="btncolor">Search</button>
+                &nbsp; &nbsp;
+                <button class="btn " (click)="resetForm()" type="reset" id="btncolor">Reset</button>
+              </form>
             </div>
-    
-            <div class="row m-1" *ngIf="peacekeeperList.length > 0;">
-              <p>
-                * Data will be auto refreshed in every 60 secs
-              </p>
-            </div>
-            <div class="row">
-              <!-- <div class="col-md-12 row">
+            <div class="col-md-6 " id="exportcolmd"> <button class="btn " type="button" id="exportbtn"
+                (click)="export()"><i class="bi bi-file-earmark-excel"></i> Export</button></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row m-1" *ngIf="peacekeeperList.length > 0;">
+        <p>
+          * Data will be auto refreshed in every 60 secs
+        </p>
+      </div>
+      <div class="row">
+        <!-- <div class="col-md-12 row">
                 <div class="col-sm-10"></div>
                 <div class="col-sm-2">
                 <div class="showData dropdown">
@@ -91,120 +86,123 @@
                 </div>
                 </div>
               </div> -->
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body p-0">
-                    <div class="table-responsive"  *ngIf="peacekeeperList.length > 0; ">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <!-- <th>
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body p-0">
+              <div class="table-responsive" *ngIf="peacekeeperList.length > 0; ">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <!-- <th>
                               <input 
                                 type="checkbox" 
                                 [(ngModel)]="masterSelected" 
                                 (change)="checkUncheckAll()"
                               />
                             </th> -->
-                            <th>SN</th>
-                            <th>Name</th>
-                            <th>DOB</th>
-                            <th>Country</th>
-                            <th>Mobile</th>
-                            <th>Email</th>
-                            <th>Peacekeeper ID</th>
-                            <th>Coupan Discount%</th>
-                           <th>Coupan Code</th>
-                           <th>Image</th>
-                           <th>QR URL</th>
-                           <th>Created Date</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let all of peacekeeperList let i = index;">
-                             <!--<td>
+                      <th>SN</th>
+                      <th>Name</th>
+                      <th>DOB</th>
+                      <th>Country</th>
+                      <th>Mobile</th>
+                      <th>Email</th>
+                      <th>Peacekeeper ID</th>
+                      <th>Coupon <br>Discount%</th>
+                      <th>Coupon Code</th>
+                      <th>Image</th>
+                      <th>QR URL</th>
+                      <th>Created Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let all of peacekeeperList let i = index;">
+                      <!--<td>
                               <input 
                                 type="checkbox" 
                                 [(ngModel)]="all.selected" 
                                 (change)="isAllSelected()"
                               />
                             </td> -->
-                            <td>{{i+1}}</td>
-                            <td>{{all.full_name}}</td>  
-                            <td>{{all.dob !==null? all.dob :'' | date : 'dd/MM/yyyy'}}</td>
-                            <td>{{all.country}}</td>
-                            <td>{{all.mobile_number}}</td>
-                            <td ><span style="
+                      <td>{{i+1}}</td>
+                      <td>{{all.full_name}}</td>
+                      <td>{{all.dob !==null? all.dob :'' | date : 'dd/MM/yyyy'}}</td>
+                      <td>{{all.country}}</td>
+                      <td> {{ isVisible[i] ? all.mobile_number : maskMobileNumber(all.mobile_number) }}
+                        <fa-icon [icon]="isVisible[i] ? faEye : faEyeSlash " (click)="toggleVisibility(i)"></fa-icon>
+                      </td>
+                      <td><span style="
                               display: block;
                               text-overflow: ellipsis;
                               overflow: hidden;
                               white-space: nowrap;
                               width: 230px;
                              ">{{all.email_id}} <i class="bi bi-person-fill"></i></span></td>
-                            <td>{{all.Id_no}}</td>
-                            <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
-                            <td>{{all.coupon_code}}</td>
-                            <td class="p-0"><img class="p-0" [src]="all.file_name" width="50px" alt=""></td>
-                            <td tooltip="{{all.QR_CODE}}" [options]="myOptions" style="
+                      <td>{{all.Id_no}}</td>
+                      <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
+                      <td>{{all.coupon_code}}</td>
+                      <td class="p-0"><img class="p-1" [src]="all.file_name"  (click)="openImage(all.file_name)" width="50px" alt=""></td>
+                      <td tooltip="{{all.QR_CODE}}" [options]="myOptions" style="
                             display: block;
                             text-overflow: ellipsis;
                             overflow: hidden;
-                            white-space: nowrap;
+                            white-space: pre-wrap;
+                            font: -webkit-control;
                             width: 250px;
-                           " >{{all.QR_CODE}}</td>
-                           <td>{{all.created_at | date : 'dd/MM/yyyy'}}</td>
-                             <!-- <td>{{all.designation}}</td>
+                           "><a href="{{all.QR_CODE}}">{{all.QR_CODE}}</a></td>
+                      <td>{{all.created_at | date : 'dd/MM/yyyy'}}</td>
+                      <!-- <td>{{all.designation}}</td>
                             <td>{{all.department}}</td>
                             <td>{{all.refrence}}</td>
                             <td>{{all.created_date | date :'short'}}</td> -->
-                            
-                            <td>
-                                <div class="dropdown dropstart">
-                                    <button class="btn btn-outline-success" type="button" id="dropdownMenuButton1"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="/assets/images/orangemenuicon.png"
-                                            id="hamburgericon">
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                   
-                                             <!-- <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
+
+                      <td>
+                        <div class="dropdown dropstart">
+                          <button class="btn btn-outline-success" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/assets/images/orangemenuicon.png" id="hamburgericon">
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                            <!-- <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
                                                   <i class="fa fa-eye" aria-hidden="true" ></i> View Details</a>
                                               </li>
                                                  <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/editdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
                                                   <i class="bi bi-pencil-fill"></i> Edit Details</a>
                                               </li>
-                                                <li><a class="dropdown-item" style="cursor: pointer;" (click)="downloadBadge(all.filepath,all.urn_no)">
-                                                  <i class="bi bi-download"></i> Download Badge</a>
+                                          
                                               </li> -->
-                                              <!-- <li [class.disabled-item]="all.coupon_code" [attr.aria-disabled]="all.coupon_code ? true : null"><a class="dropdown-item" style="cursor: pointer;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                  (click)="Generate_QRcode(all.peacekeeper_id,all.full_name,all.full_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.country_code,all.country,all.url)" >
-                                                <i  class="bi bi-qr-code"></i> Generate QR</a></li> -->
-                                                <li ><a class="dropdown-item" style="cursor: pointer;" type="button"
-                                                  (click)="resendBadge(all.peacekeeper_id,all.url)" >
-                                                <i  class="bi bi-envelope-fill"></i> Resend Badge</a></li>
-                                        <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.peacekeeper_id)" >
+                            
+                            <li><a class="dropdown-item" style="cursor: pointer;" type="button"
+                                (click)="resendBadge(all.peacekeeper_id,all.url)">
+                                <i class="bi bi-envelope-fill"></i> Resend Badge</a></li>
+                            <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.peacekeeper_id)" >
                                                 <i class="bi bi-envelope-fill"></i> Resend Reg. Mail</a></li> -->
 
-  
-  
-                                            
-                                        <li><a class="dropdown-item" style="cursor: pointer;" (click)="deletePeacekeeper(all.peacekeeper_id)">
-                                                <i class="bi bi-trash3-fill"></i> Delete</a></li>
-                                                
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                         
-                        </tbody>
-                      </table>
-                    </div>
-                    <h5 style="text-align: center;"><span *ngIf="notFound">No Data Found</span></h5>
-  
-                  </div>
-                </div>
-                <div class="row pt-3 justify-content-center">
-                  <!-- <div class="datatable_rgt">
+
+
+
+                            <li><a class="dropdown-item" style="cursor: pointer;"
+                                (click)="deletePeacekeeper(all.peacekeeper_id)">
+                                <i class="bi bi-trash3-fill"></i> Delete</a></li>
+
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+                <!-- Image Viewer -->
+                <ngx-image-viewer *ngIf="isViewerOpen" [src]="selectedImage" (close)="isViewerOpen = false">
+                </ngx-image-viewer>
+              </div>
+              <h5 style="text-align: center;"><span *ngIf="notFound">No Data Found</span></h5>
+
+            </div>
+          </div>
+          <div class="row pt-3 justify-content-center">
+            <!-- <div class="datatable_rgt">
                     <div class="pagination" *ngIf="this.totalitems !== undefined && peacekeeperList.length !== 0">
                       <a (click)="previousPage()" *ngIf="this.activeItem !== 1" [attr.disabled]="page === 1">
                         <img src="../../../../../assets/images/arrow-left-blue.svg" alt="" />
@@ -227,17 +225,17 @@
                     </div>
     
                   </div> -->
-              </div>
-              </div>
-            </div>
           </div>
-    
-    
         </div>
-        <!------------------------------------------- Page Content end ----------------------------------------->
       </div>
-      
-        <!------------------------------------------- Page modal start ----------------------------------------->
+    </div>
+
+
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>
+
+<!------------------------------------------- Page modal start ----------------------------------------->
 
 
 
@@ -250,71 +248,71 @@
         <div class="col-md-12" style="margin-top: 25px">
           <img src="assets/images/user (1).png" id="userimg" />
           <h4 style="display: inline-flex">Add Discount Coupon</h4>
-        </div>        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="container-fluid" id="pagecontent">
-       
-    
-          <!-- <div class="col-md-12"> -->
-            <!-- <div class="card" id="uppercard">
-              <div class="card-body"> -->
-                <form [formGroup]="couponForm" class="row g-3">
-                  <div class="col-md-6 my-lg-2 my-2">
-                    <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" formControlName="firstName" />
-                  </div>
-                  <div class="col-md-6 my-lg-2 my-2">
-                    <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" formControlName="lastName" />
-                  </div>
-                  <div class="col-md-6 my-lg-2 my-2">
-                    <label for="country" class="form-label">Country</label>
-                    <input type="email" class="form-control"  formControlName="country" />
 
-                    <!-- <select class="form-control" formControlName="country">
+
+          <!-- <div class="col-md-12"> -->
+          <!-- <div class="card" id="uppercard">
+              <div class="card-body"> -->
+          <form [formGroup]="couponForm" class="row g-3">
+            <div class="col-md-6 my-lg-2 my-2">
+              <label for="firstName" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="firstName" formControlName="firstName" />
+            </div>
+            <div class="col-md-6 my-lg-2 my-2">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="lastName" formControlName="lastName" />
+            </div>
+            <div class="col-md-6 my-lg-2 my-2">
+              <label for="country" class="form-label">Country</label>
+              <input type="email" class="form-control" formControlName="country" />
+
+              <!-- <select class="form-control" formControlName="country">
                       <option value="" selected disabled>Select Country</option>
                       <option value="India">India</option>
                       <option value="Others">Others</option>
                     </select> -->
-                  </div>
-                  <div class="col-md-6 my-lg-2 my-2">
-                    <label for="inputEmail4" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" formControlName="email" />
-                  </div>
-                  <div class="col-md-6 my-lg-2 my-2">
-                    <label for="mobile" class="form-label">Mobile no.</label>
-                    <input type="tel" class="form-control" maxlength="10" id="mobile" formControlName="mobile" />
-                  </div>
-                  <div class="col-md-6 my-lg-2 my-2">
-                    <label for="discount" class="form-label">Discount %</label>
-                    <span class="d-flex">
-                      <input type="number" class="form-control w-75" id="discount" formControlName="discount" />
-                      <img src="assets/images/percent.svg" alt="" />
-                    </span>
-                  </div>
-                  <div class="col-md-12 my-lg-2 my-2">
-                    <label for="couponCode" class="form-label">Coupon Code</label>
-                    <input type="text" class="form-control" id="couponCode" formControlName="couponCode" readonly />
-                  </div>
-                  <div class="col-md-12 my-lg-2 my-2">
-                    <label for="qrCode" class="form-label">QR. Code</label>
-                    <textarea class="form-control" id="qrCode" formControlName="qrCode" readonly></textarea>
-                  </div>
-    
-                  <div class="col-12 text-center qr-code-section" *ngIf="qrCodeData">
-                    <h3>QR Code:</h3>
-                    <qrcode #parent  [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-                    <!-- QR Code Component -->
-                    
-                    <div>
-                 
-                  <a style="color: #0056b3;" (click)="downloadQRCode(parent)">Download QR Code</a>
-                </div>
-                  </div>
-                 
-                </form>
-              <!-- </div>
+            </div>
+            <div class="col-md-6 my-lg-2 my-2">
+              <label for="inputEmail4" class="form-label">Email</label>
+              <input type="email" class="form-control" id="inputEmail4" formControlName="email" />
+            </div>
+            <div class="col-md-6 my-lg-2 my-2">
+              <label for="mobile" class="form-label">Mobile no.</label>
+              <input type="tel" class="form-control" maxlength="10" id="mobile" formControlName="mobile" />
+            </div>
+            <div class="col-md-6 my-lg-2 my-2">
+              <label for="discount" class="form-label">Discount %</label>
+              <span class="d-flex">
+                <input type="number" class="form-control w-75" id="discount" formControlName="discount" />
+                <img src="assets/images/percent.svg" alt="" />
+              </span>
+            </div>
+            <div class="col-md-12 my-lg-2 my-2">
+              <label for="couponCode" class="form-label">Coupon Code</label>
+              <input type="text" class="form-control" id="couponCode" formControlName="couponCode" readonly />
+            </div>
+            <div class="col-md-12 my-lg-2 my-2">
+              <label for="qrCode" class="form-label">QR. Code</label>
+              <textarea class="form-control" id="qrCode" formControlName="qrCode" readonly></textarea>
+            </div>
+
+            <div class="col-12 text-center qr-code-section" *ngIf="qrCodeData">
+              <h3>QR Code:</h3>
+              <qrcode #parent [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+              <!-- QR Code Component -->
+
+              <div>
+
+                <a style="color: #0056b3;" (click)="downloadQRCode(parent)">Download QR Code</a>
+              </div>
+            </div>
+
+          </form>
+          <!-- </div>
             </div> -->
           <!-- </div> -->
         </div>
@@ -324,7 +322,37 @@
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary" (click)="generateQRCode()">Generate QR</button> -->
-        <button type="button" class="btn btn-primary mx-3" [disabled]="isGenerateQR" (click)="onSave()">Save and Generate QR</button>
+        <button type="button" class="btn btn-primary mx-3" [disabled]="isGenerateQR" (click)="onSave()">Save and
+          Generate QR</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isViewerOpen" [ngStyle]="{ display: display }"
+class="modal"
+closeLabel="Close"
+id="trustUntrust_alert"
+#trustUntrust_alert
+tabindex="-1"
+role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="col-md-12" style="margin-top: 25px">
+          
+<img [src]="selectedImage" width="100%" (close)="isViewerOpen = false" alt="">
+          <!-- </div>
+            </div> -->
+          <!-- </div> -->
+        </div>
+
+
+
+      </div>
+      <div class="modal-footer">
+       
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Close</button>
       </div>
     </div>
