@@ -36,10 +36,12 @@
     "ng2-tooltip-directive": "^2.10.3",
     "ngx-csv": "^0.3.2",
     "ngx-csv-parser": "^1.3.1",
+    "ngx-image-viewer": "^1.0.13",
     "ngx-toastr": "^15.2.2",
     "ngx-ui-loader": "^13.0.0",
     "papaparse": "^5.4.1",
     "rxjs": "~7.8.0",
+    "screenfull": "^6.0.2",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
     "zone.js": "~0.12.0"

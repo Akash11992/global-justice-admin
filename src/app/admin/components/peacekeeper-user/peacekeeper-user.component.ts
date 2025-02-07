@@ -75,7 +75,7 @@ export class PeacekeeperUserComponent implements OnInit {
   faEyeSlash = faEyeSlash;
 
   isViewerOpen = false;
-  selectedImage: string | null = null;
+  selectedImage: string = '';
   // referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
   // referralUrl:any ='https://www.justice-love-peace.com/delegate-registration?code='
 
@@ -793,12 +793,13 @@ export class PeacekeeperUserComponent implements OnInit {
 
 
   openImage(imageUrl: string) {
-    debugger
     this.selectedImage = imageUrl;
     this.isViewerOpen = true;
-    this.display = 'block';
   }
 
+  closeViewer() {
+    this.isViewerOpen = false;
+  }
 
   myOptions = {
     'placement': 'top',

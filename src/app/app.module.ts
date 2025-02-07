@@ -25,7 +25,7 @@ import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { AdminModule } from './admin/admin.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
+import { ImageViewerModule } from 'ngx-image-viewer'
 // import { HeaderComponent } from './shared/components/header/header.component';
 @NgModule({
   declarations: [
@@ -50,7 +50,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule, ReactiveFormsModule,SharedModule,
     QRCodeModule,
     FontAwesomeModule,
-
+    ImageViewerModule.forRoot()
 
   ],
 

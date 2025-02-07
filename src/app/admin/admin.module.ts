@@ -22,6 +22,7 @@ import { AddDiscountCoupanComponent } from './components/add-discount-coupan/add
 import { QRCodeModule } from 'angularx-qrcode';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ImageViewerModule } from 'ngx-image-viewer';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     QRCodeModule,
     TooltipModule,
     FontAwesomeModule,
-    
+    ImageViewerModule.forRoot()
 
   ],
   schemas: [NO_ERRORS_SCHEMA], // Add this line

@@ -193,9 +193,7 @@
 
                   </tbody>
                 </table>
-                <!-- Image Viewer -->
-                <ngx-image-viewer *ngIf="isViewerOpen" [src]="selectedImage" (close)="isViewerOpen = false">
-                </ngx-image-viewer>
+              
               </div>
               <h5 style="text-align: center;"><span *ngIf="notFound">No Data Found</span></h5>
 
@@ -330,31 +328,15 @@
   </div>
 </div>
 
-<div *ngIf="isViewerOpen" [ngStyle]="{ display: display }"
-class="modal"
-closeLabel="Close"
-id="trustUntrust_alert"
-#trustUntrust_alert
-tabindex="-1"
-role="dialog">
-  <div class="modal-dialog">
+  <!-- Image Viewer -->
+
+  <div *ngIf="isViewerOpen" class="image-modal">
     <div class="modal-content">
-      <div class="modal-header">
-        <div class="col-md-12" style="margin-top: 25px">
-          
-<img [src]="selectedImage" width="100%" (close)="isViewerOpen = false" alt="">
-          <!-- </div>
-            </div> -->
-          <!-- </div> -->
-        </div>
-
-
-
-      </div>
-      <div class="modal-footer">
-       
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Close</button>
-      </div>
+         <!-- Close Button -->
+    <button class="close-btn" (click)="closeViewer()">✖</button>
+      <ngx-image-viewer  [fullscreen]="false" 
+        [src]="[selectedImage]" 
+        (close)="isViewerOpen = false">
+      </ngx-image-viewer>
     </div>
   </div>
-</div>
