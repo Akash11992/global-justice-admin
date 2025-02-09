@@ -10,7 +10,7 @@ import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
 import { debounceTime, interval, Subject, Subscription } from 'rxjs';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -76,6 +76,14 @@ export class PeacekeeperUserComponent implements OnInit {
 
   isViewerOpen = false;
   selectedImage: string = '';
+
+  sortColumn: string = ''; // Column currently being sorted
+  sortDirection: boolean = true; // True = Ascending, False = Descending
+
+  // FontAwesome icons for sorting
+  faSort = faSort;
+  faSortUp = faSortUp;
+  faSortDown = faSortDown;
   // referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
   // referralUrl:any ='https://www.justice-love-peace.com/delegate-registration?code='
 
@@ -385,7 +393,7 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
 
-  searchDelegateUser(): void {
+  searchPeacekeeperUser(): void {
     const searchValue = this.searchForm.get('searchInput').value;
     console.log("search called", searchValue);
     if (searchValue === null || searchValue.trim() === '') {
@@ -397,21 +405,38 @@ export class PeacekeeperUserComponent implements OnInit {
       search: searchValue
     };
     console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-      this.peacekeeperList = data.data[0]
-      if (this.peacekeeperList.length === 0) {
-        this.notFound = true;
-      } else {
-        this.notFound = false;
-        console.log("false");
-      }
-      // setTimeout(() => {
-      //   this.router.navigate(['dashboard/peacekeeper']);
-      // }, 2000); // 2000 milliseconds (2 seconds) delay
-    })
+
+
+    const search = searchValue.toLowerCase();
+
+    this.peacekeeperList = this.peacekeeperList.filter(item => 
+      item.full_name.toLowerCase().includes(search) ||
+      item.country.toLowerCase().includes(search) ||
+      item.mobile_number.includes(search) ||
+      item.email_id.toLowerCase().includes(search) ||
+      item.created_at.includes(search)
+    );
+
+
+
+
+
+    // this.ngxService.start();
+    // this.AdminService.SearchPeacekeeperUser(payload).subscribe((data: any) => {
+      // this.ngxService.stop();
+    //   this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
+    //   this.peacekeeperList = data.data[0]
+    //   if (this.peacekeeperList.length === 0) {
+    //     this.notFound = true;
+    //   } else {
+    //     this.notFound = false;
+    //     console.log("false");
+    //   }
+ 
+    // })
+
+
+
   }
 
 
@@ -436,7 +461,7 @@ export class PeacekeeperUserComponent implements OnInit {
     //   peaceName.full_name.toLowerCase().includes(this.searchParams.toLowerCase())
     // );
     clearInterval(this.intervalId);
-    this.searchDelegateUser();
+    this.searchPeacekeeperUser();
   }
 
 
@@ -469,72 +494,6 @@ export class PeacekeeperUserComponent implements OnInit {
 
   }
 
-  Generate_QRcode(peaceID: number, first_name: any, last_name: any, userEmail: any, userNumber: any, qr_code: any, urn_no: any, country_code: any, country_name: any, url: any) {
-    console.log(this.peacekeeperList);
-    this.referralUrl = url;
-    this.qrCodeData = null
-    this.isGenerateQR = false;
-    this.peacekeeperID = peaceID;
-    const nameParts = first_name.trim().split(' ');  // Split name by space and trim any extra spaces
-
-    const firstName = nameParts[0];  // First name
-    const lastName = nameParts.slice(1).join(' ');
-    this.couponForm.patchValue({
-      firstName: firstName,
-      lastName: lastName,
-      country: country_name,
-      email: userEmail,
-      mobile: userNumber,
-    })
-
-    switch (true) {
-      case this.peacekeeper === true:
-        console.log("active tab name delegate", this.peacekeeper);
-        this.form_name = "delegate"
-        this.generateCouponCode()
-        break;
-
-    }
-
-
-    // Prepare the payload with selected user IDs and status 0.
-    // const payload = {
-    //   user_id:userId,
-    //   user_name:userName,
-    //   user_email:userEmail,
-    //   user_number:userNumber,
-    //   qr_code:qr_code,
-    //   urn_no:urn_no,
-    //   designation:designation,
-    //   company:company,
-    //   form_name:this.form_name
-    // };
-    // console.log("payload", payload);
-    // this.ngxService.start();
-    // this.AdminService.Generate_Badge(payload).subscribe((data: any) => {
-    //   this.ngxService.stop();
-    //   this.SharedService.ToastPopup('', data.message, 'success')
-    //   setTimeout(() => {
-    //     this.router.navigate(['dashboard/peacekeeper']);
-    //     console.log("active tab name delegate", this.peacekeeper);
-
-
-    //         this.allPeacekeeper();
-
-
-
-    //   }, 2000); // 2000 milliseconds (2 seconds) delay
-
-    // },
-    // (error: any) => {
-    //   // Handle the error here
-    //   console.error("Error while sending email:", error);
-    //   // You can also display an error message or take appropriate action.
-    // }
-    // );
-    // this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
-
-  }
 
   resendBadge(peaceID: number, url: any) {
     console.log(this.peacekeeperList);
@@ -799,6 +758,27 @@ export class PeacekeeperUserComponent implements OnInit {
 
   closeViewer() {
     this.isViewerOpen = false;
+  }
+
+
+  // Sorting Function
+  sortData(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = !this.sortDirection; // Toggle direction
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = true; // Default Ascending
+    }
+
+    this.peacekeeperList.sort((a, b) => {
+      let valA = a[column] || ''; // Handle null values
+      let valB = b[column] || '';
+
+      if (typeof valA === 'string') valA = valA.toLowerCase();
+      if (typeof valB === 'string') valB = valB.toLowerCase();
+
+      return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+    });
   }
 
   myOptions = {

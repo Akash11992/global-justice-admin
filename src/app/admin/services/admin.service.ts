@@ -204,6 +204,10 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.getPeacekeeperEndpoint(searchParams,pagesize,pagenumber));
   }
   
+  SearchPeacekeeperUser(body:any) {
+    return this._apiHttpService.post(this._apiEndpointsService.SearchPeacekeeperUserEndpoint(),body);
+  }
+
   postPeacekeeper(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.postPeacekeeperEndpoint(),body);
   }

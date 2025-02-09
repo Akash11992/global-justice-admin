@@ -101,17 +101,17 @@
                               />
                             </th> -->
                       <th>SN</th>
-                      <th>Name</th>
+                      <th (click)="sortData('full_name')">Name <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>DOB</th>
-                      <th>Country</th>
+                      <th (click)="sortData('country')">Country  <fa-icon [icon]="sortColumn === 'country' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>Mobile</th>
-                      <th>Email</th>
+                      <th (click)="sortData('email_id')">Email  <fa-icon [icon]="sortColumn === 'email_id' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>Peacekeeper ID</th>
                       <th>Coupon <br>Discount%</th>
                       <th>Coupon Code</th>
                       <th>Image</th>
                       <th>QR URL</th>
-                      <th>Created Date</th>
+                      <th (click)="sortData('created_at')">Created Date  <fa-icon [icon]="sortColumn === 'created_at' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>Action</th>
                     </tr>
                   </thead>

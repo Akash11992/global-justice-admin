@@ -9,6 +9,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
+import { faEye, faEyeSlash, faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -28,8 +29,6 @@ export class RegisteredUserComponent {
   nonregist: any[] = [];
   searchForm:any= FormGroup;
   delegate:boolean=false;
-  partner:boolean=false;
-  speaker:boolean=false
   form:any;
   userNumber:any;
   // title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
@@ -40,6 +39,15 @@ export class RegisteredUserComponent {
   RefreshInterval: any;
 
   checkedList:any;
+
+  
+    sortColumn: string = ''; // Column currently being sorted
+    sortDirection: boolean = true; // True = Ascending, False = Descending
+  
+    // FontAwesome icons for sorting
+    faSort = faSort;
+    faSortUp = faSortUp;
+    faSortDown = faSortDown;
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
    
   {
@@ -92,55 +100,10 @@ export class RegisteredUserComponent {
         this.notFound=true;
       } else{
         this.notFound = false;
-        console.log("false");
       }
       this.searchForm.reset();
       // this.ngxService.stop();
       this.delegate=true
-      this.partner=false
-      this.speaker=false
-
-    });
-  }
-
-
-  allPartner() {
-    // this.ngxService.start();
-    this.AdminService.getApprovedPartner().subscribe((data: any) => {
-    console.log("data",data.data[0]);
-    this.nonregist= data.data[0]
-    // this.ngxService.stop();
-    if(this.nonregist.length===0){
-      this.notFound=true;
-    } else{
-      this.notFound = false;
-      console.log("false");
-    }
-    this.searchForm.reset();
-    this.partner=true;
-    this.delegate=false
-    this.speaker=false
-
-    });
-  }
-
-  allSpeaker() {
-    // this.ngxService.start();
-    this.AdminService.getApprovedSpeaker().subscribe((data: any) => {
-      
-      console.log("data",data.data[0]);
-      this.nonregist= data.data[0]
-      // this.ngxService.stop();
-      if(this.nonregist.length===0){
-        this.notFound=true;
-      } else{
-        this.notFound = false;
-        console.log("false");
-      }
-      this.searchForm.reset();
-      this.speaker=true
-      this.delegate=false
-      this.partner=false;
     });
   }
   // Function to update selectedUserIds array when a row is clicked
@@ -188,25 +151,8 @@ export class RegisteredUserComponent {
       // this.allDelegate();
       setTimeout(() => {
         this.router.navigate(['dashboard/registered-user']);
-        console.log("active tab name delegate", this.delegate);
-        console.log("active tab name partner", this.partner);
-        console.log("active tab name speaker", this.speaker,);
-        switch (true) {
-          case this.delegate === true:
-            console.log("active tab name delegate", this.delegate);
-            this.allDelegate();
-            break;
-          case this.partner === true:
-            console.log("active tab name partner", this.partner);
-            this.allPartner();
-            break;
-          case this.speaker === true:
-            console.log("active tab name speaker", this.speaker,);
-            this.allSpeaker();
-            break;
-        }
-  
-      }, 2000); // 2000 milliseconds (2 seconds) delay
+        this.allDelegate();
+     }, 2000); // 2000 milliseconds (2 seconds) delay
 
 
 
@@ -235,21 +181,8 @@ export class RegisteredUserComponent {
       // this.allDelegate();
       setTimeout(() => {
         this.router.navigate(['dashboard/registered-user']);
-        switch (true) {
-          case this.delegate === true:
-            console.log("active tab name delegate", this.delegate);
-            this.allDelegate();
-            break;
-          case this.partner === true:
-            console.log("active tab name partner", this.partner);
-            this.allPartner();
-            break;
-          case this.speaker === true:
-            console.log("active tab name speaker", this.speaker,);
-            this.allSpeaker();
-            break;
-        }
-      }, 2000); // 2000 milliseconds (2 seconds) delay
+        this.allDelegate();
+         }, 2000); // 2000 milliseconds (2 seconds) delay
 
 
 
@@ -284,148 +217,15 @@ searchDelegateUser(): void {
   })
 }
 
-
-SearchPartnerUser(): void {
-  const searchValue = this.searchForm.get('searchInput').value;
-  console.log("search called", searchValue);
-  if (searchValue===null ||searchValue.trim() === '') {
-    // Display an error toaster here
-    this.SharedService.ToastPopup('',"Search value cannot be empty", 'error')
-    return; // Exit the function
-  }
-  const payload = {
-    search: searchValue
-  };
-  console.log("payload", payload);
-  this.ngxService.start();
-  this.AdminService.SearchPartnerUser(payload).subscribe((data: any) => {
-    this.ngxService.stop();  
-    this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-    this.nonregist= data.data[0]
-    if(this.nonregist.length===0){
-      this.notFound=true;
-    } else{
-      this.notFound = false;
-      console.log("false");
-    }
-    // setTimeout(() => {
-    //   this.router.navigate(['dashboard/registered-user']);
-    // }, 2000); // 2000 milliseconds (2 seconds) delay
-  })
-}
-SearchSpeakerUser(): void {
-  const searchValue = this.searchForm.get('searchInput').value;
-  console.log("search called", searchValue);
-  if ( searchValue===null ||searchValue.trim() === '' ) {
-    // Display an error toaster here
-    this.SharedService.ToastPopup('',"Search value cannot be empty", 'error')
-    return; // Exit the function
-  }
-  const payload = {
-    search: searchValue
-  };
-  console.log("payload", payload);
-  this.ngxService.start();
-  this.AdminService.SearchSpeakerUser(payload).subscribe((data: any) => {
-    this.ngxService.stop();  
-    this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-    this.nonregist= data.data[0]
-    if(this.nonregist.length===0){
-      this.notFound=true;
-    } else{
-      this.notFound = false;
-      console.log("false");
-    }
-    // setTimeout(() => {
-    //   this.router.navigate(['dashboard/registered-user']);
-    // }, 2000); // 2000 milliseconds (2 seconds) delay
-  })
-}
-
-
-
 resetForm(): void {
   this.searchForm.reset();
-  
-  console.log("active tab name delegate",this.delegate);
-  console.log("active tab name partner",this.partner);
-  console.log("active tab name speaker",this.speaker,);
-  switch (true) {
-    case this.delegate === true:
-      this.allDelegate();
-      break;
-    case this.partner === true:
-      this.allPartner();
-      break;
-    case this.speaker === true:
-      this.allSpeaker();
-      break;
-  }
+  this.allDelegate();
+
 }
 searchUsers() {
-  
-  console.log("active tab name delegate",this.delegate);
-  console.log("active tab name partner",this.partner);
-  console.log("active tab name speaker",this.speaker,);
+  this.searchDelegateUser();
 
-  switch (true) {
-    case this.delegate === true:
-      this.searchDelegateUser();
-      break;
-    case this.partner === true:
-      this.SearchPartnerUser();
-      break;
-    case this.speaker === true:
-      this.SearchSpeakerUser();
-      break;
-  }
-  
 }
-// export() {
-
-//   switch (true) {
-//     case this.delegate === true:
-//       this.form="Delegate Form";
-//       break;
-//     case this.partner === true:
-//       this.form="Partner Form";
-//       break;
-//     case this.speaker === true:
-//       this.form="Speaker Form";
-//       break;
-//   }
-  
-//   const options = {
-//     fieldSeparator: ',',
-//     quoteStrings: '"',
-//     decimalSeparator: '.',
-//     showLabels: true,
-//     showTitle: true,
-//     title: 'Registered Users - '+this.form,
-//     useTextFile: false,
-//     useBom: true,
-//     headers: [
-      
-//       'title',
-//       'first_name',
-//       'last_name',
-//       'department',
-//       'company_name',
-//       'designation',
-//       'mobile_number',
-//       'email_id',
-//       'website',
-//     ],
-    
-//   };
-  
-
-
-//   const csvExporter = new ExportToCsv(options);
-//   csvExporter.generateCsv(this.nonregist);
-
-//   this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
-// }
 
 
 sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,urn_no:any,designation:any,company:any){
@@ -435,15 +235,7 @@ sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,ur
       console.log("active tab name delegate", this.delegate);
     this.form_name="delegate"
       break;
-    case this.partner === true:
-      console.log("active tab name partner", this.partner);
-      this.form_name="partner"
-      break;
-    case this.speaker === true:
-      console.log("active tab name speaker", this.speaker,);
-      this.form_name="speaker"
-
-      break;
+  
   }
   // Prepare the payload with selected user IDs and status 0.
   const payload = {
@@ -466,25 +258,8 @@ sendmail(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:any,ur
     // this.allDelegate();
     setTimeout(() => {
       this.router.navigate(['dashboard/registered-user']);
-      console.log("active tab name delegate", this.delegate);
-      console.log("active tab name partner", this.partner);
-      console.log("active tab name speaker", this.speaker,);
-      switch (true) {
-        case this.delegate === true:
-          console.log("active tab name delegate", this.delegate);
-          this.allDelegate();
-          break;
-        case this.partner === true:
-          console.log("active tab name partner", this.partner);
-          this.allPartner();
-          break;
-        case this.speaker === true:
-          console.log("active tab name speaker", this.speaker,);
-          this.allSpeaker();
-          break;
-      }
-
-    }, 2000); // 2000 milliseconds (2 seconds) delay
+      this.allDelegate();
+        }, 2000); // 2000 milliseconds (2 seconds) delay
 
   },
   (error: any) => {
@@ -504,15 +279,7 @@ Generate_Badge(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:
       console.log("active tab name delegate", this.delegate);
     this.form_name="delegate"
       break;
-    case this.partner === true:
-      console.log("active tab name partner", this.partner);
-      this.form_name="partner"
-      break;
-    case this.speaker === true:
-      console.log("active tab name speaker", this.speaker,);
-      this.form_name="speaker"
-
-      break;
+  
   }
   // Prepare the payload with selected user IDs and status 0.
   const payload = {
@@ -534,24 +301,8 @@ Generate_Badge(userId: number,userName:any,userEmail:any,userNumber:any,qr_code:
     // this.allDelegate();
     setTimeout(() => {
       this.router.navigate(['dashboard/registered-user']);
-      console.log("active tab name delegate", this.delegate);
-      console.log("active tab name partner", this.partner);
-      console.log("active tab name speaker", this.speaker,);
-      switch (true) {
-        case this.delegate === true:
-          console.log("active tab name delegate", this.delegate);
-          this.allDelegate();
-          break;
-        case this.partner === true:
-          console.log("active tab name partner", this.partner);
-          this.allPartner();
-          break;
-        case this.speaker === true:
-          console.log("active tab name speaker", this.speaker,);
-          this.allSpeaker();
-          break;
-      }
-
+      this.allDelegate();
+     
     }, 2000); // 2000 milliseconds (2 seconds) delay
 
   },
@@ -590,43 +341,12 @@ export() {
     case this.delegate === true:
       this.form = 'Delegates';
       break;
-    case this.partner === true:
-      this.form = 'Partners';
-      break;
-    case this.speaker === true:
-      this.form = 'Speakers';
-      break;
+    
   }
-
+debugger
   // Select the columns you want to export
   const columnsToExport = this.nonregist.map(item => {
-    // Replace 'columnName' with the actual keys of the columns you want to export
-    let modifiedRegistrationType = item.registration_type; // Initialize with the original value
-  
-    // Check if you want to change the 'registration_type' for specific items
-    if (item.registration_type==="1") {
-      // Modify 'registration_type' based on your condition
-      modifiedRegistrationType = 'Delegate' /* Set the new value here */;
-    } else if (item.registration_type==="2") {
-      // Modify 'registration_type' based on your condition
-      modifiedRegistrationType = 'Partner' /* Set the new value here */;
-    }else{
-      modifiedRegistrationType = 'Speaker' /* Set the new value here */;
-
-    }
-    let modifiedstatus = item.status; // Initialize with the original value
-console.log(modifiedstatus==="1");
-console.log(typeof modifiedstatus);
-
-    if (item.status==="1") {
-      // Modify 'registration_type' based on your condition
-      modifiedstatus = 'Registered User' /* Set the new value here */;
-    }else{
-      modifiedstatus = 'Non-Registered User' /* Set the new value here */;
-
-    }
-  
-    console.log("created date...........",item.created_date);
+   
     // Assuming item.created_date is a valid date string or Date object
 let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
 let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
@@ -638,7 +358,7 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
       'email_id':  item.email_id, 
       'country_code':  item.country_code,
       'mobile_number':  item.mobile_number,  
-      'country_name':  item.country_name, 
+      'country_name':  item.country, 
       'profession':  item.profession_1, 
       'address':  item.address, 
       'organization_name':  item.organization_name, 
@@ -646,23 +366,7 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
       'payment_transaction':  item.TUD_TRANSCATION_ID, 
       'refrence':  item.reference_no, 
       'created_date':  created_date, 
-    //   'department':  item.department, 
-    //   'designation':  item.designation,
-    //   'address_line_2':  item.address_line_2, 
-    //   'address_line_3':  item.address_line_3, 
-    //   'state_name':  item.state_name, 
-    //   'city_name':  item.city_name, 
-    //   'website':  item.website, 
-    //   'conference_day':  item.conference_day, 
-    //   'attending_purpose':  item.attending_purpose, 
-    //   'specific_solution':  item.specific_solution, 
-    //   'attended_innopack':  item.attended_innopack, 
-    //   'is_active':  item.is_active, 
-    //   'refrence_url':  item.refrence_url, 
-    //   'is_whatsapp_number':  item.is_whatsapp_number, 
-    //   'terms_condition':  item.terms_condition, 
-    //  'events':  item.events, 
-    //  'updated_date':  updated_date, 
+
     };
   });
   
@@ -683,5 +387,24 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
 
 }
 
+  // Sorting Function
+  sortData(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = !this.sortDirection; // Toggle direction
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = true; // Default Ascending
+    }
+
+    this.nonregist.sort((a, b) => {
+      let valA = a[column] || ''; // Handle null values
+      let valB = b[column] || '';
+
+      if (typeof valA === 'string') valA = valA.toLowerCase();
+      if (typeof valB === 'string') valB = valB.toLowerCase();
+
+      return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+    });
+  }
 }
 

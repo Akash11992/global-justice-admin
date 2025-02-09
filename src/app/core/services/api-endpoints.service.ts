@@ -389,6 +389,10 @@ export class ApiEndpointsService {
       });
   }
 
+  public SearchPeacekeeperUserEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_SEARCH_PEACEKEEPER_USER);
+  }
+
   public postPeacekeeperEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_PEACE_UPDATE_GENERATE_QR);
   }

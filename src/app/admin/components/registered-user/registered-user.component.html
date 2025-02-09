@@ -65,16 +65,16 @@
                         id="checkbox"
                       /></th>
                       <th>SN</th>
-                      <th>Name</th>
-                      <th>Email</th>
+                      <th (click)="sortData('first_name')">Name <fa-icon [icon]="sortColumn === 'first_name' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
+                      <th (click)="sortData('email_id')">Email <fa-icon [icon]="sortColumn === 'email_id' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>Mobile</th>
-                      <th>Country</th>
+                      <th (click)="sortData('country')">Country <fa-icon [icon]="sortColumn === 'country' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>Profession</th>
                       <th>Organization Name</th>
                       <th>Payment Status</th>
                       <th>Payment Transaction Id</th>
                       <th>Reference</th>
-                      <th>Registered At</th>
+                      <th (click)="sortData('created_date')">Registered At <fa-icon [icon]="sortColumn === 'created_date' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -84,18 +84,7 @@
                         <input
                           type="checkbox"
                           id="singlecheckbox"
-                          (change)="
-                            updateSelectedUsers(
-                              all.user_id,
-                              all.title +
-                                ' ' +
-                                all.first_name +
-                                ' ' +
-                                all.last_name,
-                              all.email_id,
-                              all.mobile_number
-                            )
-                          "
+                          
                         />
                       </td>
                       <td>{{ i + 1 }}</td>
