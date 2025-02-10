@@ -1,0 +1,115 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto; overflow-x: hidden">
+    <!-- class="p-4 p-md-5 "-->
+
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-12 border-bottom mb-3">
+                <h4 style="display: inline-flex">Add Sponsorship</h4>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="SN" class="form-label">Sponsership Name</label>
+                <input type="text" class="form-control" id="SN" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="SN" class="form-label">POC Name</label>
+                <input type="text" class="form-control" id="SN" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="PMN" class="form-label">POC Mobile NO</label>
+                <input type="text" class="form-control" id="PMN" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="PE" class="form-label">POC Email</label>
+                <input type="text" class="form-control" id="PE" aria-describedby="emailHelp">
+                <p class="text-danger"><small>Enter Valid Email ID</small></p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="Country" class="form-label">Country</label>
+                <!-- <input type="text" class="form-control" id="Country" aria-describedby="emailHelp"> -->
+                <select class="form-control" aria-label="Default select example">
+                  <option selected>Select Country</option>
+                  <option value="1">India</option>
+                  <option value="2">US</option>
+                  <option value="3">Others</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="State" class="form-label">State</label>
+                <select class="form-control" aria-label="Default select example">
+                  <option selected>Select State</option>
+                  <option value="1">Delhi</option>
+                  <option value="2">Mumbai</option>
+                  <option value="3">Others</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="City" class="form-label">City</label>
+                <select class="form-control" aria-label="Default select example">
+                  <option selected>Select City</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="Address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="Address" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="Ref_by" class="form-label">Ref by</label>
+                <select class="form-control" aria-label="Default select example">
+                  <option selected>Ref by</option>
+                  <option value="1">Peacekeeper</option>
+                  <option value="2">Others</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="Ref_by" class="form-label">Select Peacekeeper</label>
+                <select class="form-control" aria-label="Default select example">
+                  <option selected>Ref Peacekeeper</option>
+                  <option value="1">Piyush</option>
+                  <option value="2">Saurabh</option>
+                  <option value="2">Nadeem</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="Name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="Name" aria-describedby="emailHelp">
+              </div>
+              <!-- <div class="col-md-6 mb-3">
+                <label for="Delegate_Allowed" class="form-label">Delegate Allowed</label>
+                <input type="text" class="form-control" id="Delegate_Allowed" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="text" class="form-control" id="amount" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="QR_Code" class="form-label">QR Code</label>
+                <input type="text" class="form-control" id="QR_Code" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="coupan" class="form-label">Discount Coupon</label>
+                <input type="text" class="form-control" id="coupan" aria-describedby="emailHelp">
+              </div> -->
+              <div class="col-md-12 mb-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-danger mx-3">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>

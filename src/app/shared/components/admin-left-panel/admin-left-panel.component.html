@@ -1,7 +1,5 @@
-
-
-  <!------------------------------------------- Sidebar start---------------------------------------------->
-  <!-- <div class="wrapper d-flex align-items-stretch">
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<!-- <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
       <br><br>
       <ul class="list-unstyled components mb-5">
@@ -46,54 +44,103 @@
       </ul>
     </nav>
     </div> -->
-    <!------------------------------------------- Sidebar end---------------------------------------------->
+<!------------------------------------------- Sidebar end---------------------------------------------->
 
-    
-
-    <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-      <ul class="list-unstyled components mb-5">
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a routerLink="/dashboard" id="sidebarDashboard"><img src="assets/img/speedmeter.png" id="speedmeter">
-            &nbsp;  &nbsp; <span>Dashboard</span></a>
-        </li>
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a routerLink="/dashboard/peacekeeper" id="sidebarDashboard"><img src="assets/img/usericon.png"
-              id="speedmeter">
-              &nbsp;  &nbsp;<span>Registered Peacekeeper</span></a>
-        </li>
-        <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()"
+    >&times;</a
+  >
+  <ul class="list-unstyled components mb-5">
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard" id="sidebarDashboard"
+        ><img src="assets/img/speedmeter.png" id="speedmeter" /> &nbsp; &nbsp;
+        <span>Dashboard</span></a
+      >
+    </li>
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard/peacekeeper" id="sidebarDashboard"
+        ><img src="assets/img/usericon.png" id="speedmeter" /> &nbsp;
+        &nbsp;<span>Registered Peacekeeper</span></a
+      >
+    </li>
+    <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a routerLink="/dashboard/non-registered-user" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
               id="speedmeter">
               &nbsp;  &nbsp;<span>Non - Approved Users </span></a>
         </li> -->
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a  routerLink="/dashboard/registered-user"id="sidebarDashboard"><img src="assets/img/usericon.png" id="speedmeter">
-            
-            &nbsp;  &nbsp;<span>Approved (Delegate Users) </span>
-          </a>
-        </li>
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a  routerLink="/dashboard/discount-coupon-master" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png" id="speedmeter">
-            &nbsp;  &nbsp;<span>Discount Coupon Master</span></a>
-        </li>
-        
- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a routerLink="/dashboard/sponsorship" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
-              id="speedmeter">
-              &nbsp;  &nbsp;<span>Sponsorship</span></a>
-        </li>
-        
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard/registered-user" id="sidebarDashboard"
+        ><img src="assets/img/usericon.png" id="speedmeter" />
 
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a routerLink="/dashboard/contact-us" id="sidebarDashboard"><img src="assets/img/usericon.png"
-              id="speedmeter">
-              &nbsp;  &nbsp;<span>Contact Us</span></a>
-        </li>
+        &nbsp; &nbsp;<span>Approved (Delegate Users) </span>
+      </a>
+    </li>
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard/discount-coupon-master" id="sidebarDashboard"
+        ><img src="assets/img/nonregisteruse.png" id="speedmeter" /> &nbsp;
+        &nbsp;<span>Discount Coupon Master</span></a
+      >
+    </li>
 
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a routerLink="/login" id="sidebarDashboard">
-            <i class="fa fa-sign-out" aria-hidden="true" style="font-size: 25px;"></i>&nbsp;  &nbsp;<span>Logout</span></a>
-        </li>
-      </ul>
-    </div>
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard/sponsorship" id="sidebarDashboard"
+        ><img src="assets/img/nonregisteruse.png" id="speedmeter" /> &nbsp;
+        &nbsp;<span>Sponsorship</span></a
+      >
+    </li>
+    <!-- <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard/delegate" id="sidebarDashboard"
+        ><img src="assets/img/nonregisteruse.png" id="speedmeter" /> &nbsp;
+        &nbsp;<span>Delegate</span></a
+      >
+    </li> -->
+
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard/collaborator" id="sidebarDashboard"
+        ><img src="assets/img/nonregisteruse.png" id="speedmeter" /> &nbsp;
+        &nbsp;<span>Collaborator</span></a
+      >
+    </li>
+
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard/contact-us" id="sidebarDashboard"
+        ><img src="assets/img/usericon.png" id="speedmeter" /> &nbsp;
+        &nbsp;<span>Contact Us</span></a
+      >
+    </li>
+
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/login" id="sidebarDashboard">
+        <i class="fa fa-sign-out" aria-hidden="true" style="font-size: 25px"></i
+        >&nbsp; &nbsp;<span>Logout</span></a
+      >
+    </li>
+  </ul>
+</div>

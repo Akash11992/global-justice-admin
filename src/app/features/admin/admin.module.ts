@@ -11,7 +11,7 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { AddTrackingListComponent } from './components/tracking-list/add-tracking-list/add-tracking-list.component';
 import { ViewTrackingListComponent } from './components/tracking-list/view-tracking-list/view-tracking-list.component';
-import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+// import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { JoinmailinglistComponent } from './components/feature/joinmailinglist/joinmailinglist.component';
 import { SalesBroucherComponent } from './components/feature/sales-broucher/sales-broucher.component';
 import { BroucherComponent } from './components/feature/broucher/broucher.component';
@@ -24,6 +24,14 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ImageViewerModule } from 'ngx-image-viewer';
 import { SponsorshipComponent } from './components/sponsorship/sponsorship.component';
+import { AddSponsorshipComponent } from './components/add-sponsorship/add-sponsorship.component';
+import { CollaboratorComponent } from './components/collaborator/collaborator.component';
+import { AddCollaboratorComponent } from './components/add-collaborator/add-collaborator.component';
+import { DelegateComponent } from './components/delegate/delegate.component';
+import { AddDelegateComponent } from './components/add-delegate/add-delegate.component';
+import { AddDelegateByFileComponent } from './components/add-delegate-by-file/add-delegate-by-file.component';
+import { UploadContactComponent } from './components/upload-contact/upload-contact.component';
+import { ReviewContactComponent } from './components/review-contact/review-contact.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +48,15 @@ import { SponsorshipComponent } from './components/sponsorship/sponsorship.compo
     ContactUsComponent,
     DiscountCoupanMasterComponent,
     AddDiscountCoupanComponent,
-    SponsorshipComponent
+    SponsorshipComponent,
+    AddSponsorshipComponent,
+    CollaboratorComponent,
+    AddCollaboratorComponent,
+    DelegateComponent,
+    AddDelegateComponent,
+    AddDelegateByFileComponent,
+    UploadContactComponent,
+    ReviewContactComponent
   ],
   imports: [
     SharedModule,
@@ -48,7 +64,7 @@ import { SponsorshipComponent } from './components/sponsorship/sponsorship.compo
     FormsModule,
     ReactiveFormsModule,
     AdminRoutingModule,
-    CanvasJSAngularChartsModule,
+    // CanvasJSAngularChartsModule,
     QRCodeModule,
     TooltipModule,
     FontAwesomeModule,

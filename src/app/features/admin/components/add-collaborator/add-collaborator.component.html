@@ -1,0 +1,76 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto; overflow-x: hidden">
+    <!-- class="p-4 p-md-5 "-->
+
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <form>
+            <div class="row align-items-end">
+              <div class="col-md-12 border-bottom mb-3">
+                <h4 style="display: inline-flex">Add Collaborator</h4>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="fullname" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="fullname" class="form-label">DOB</label>
+                <input type="date" class="form-control" id="fullname" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="fullname" class="form-label">DOB</label>
+                <input type="date" class="form-control" id="fullname" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="Country" class="form-label">Country</label>
+                <!-- <input type="text" class="form-control" id="Country" aria-describedby="emailHelp"> -->
+                <select class="form-control" aria-label="Default select example">
+                  <option selected>Select Country</option>
+                  <option value="1">India</option>
+                  <option value="2">US</option>
+                  <option value="3">Others</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="mobile" class="form-label">Mobile No.</label>
+                <input type="mobile" class="form-control" id="mobile" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="image" class="form-label">Logo Upload</label>
+                <input type="file" class="form-control" id="image" aria-describedby="emailHelp">
+              </div>
+              <div class="col-md-6 mb-3">
+                <!-- <label for="image" class="form-label">Generate QR</label> -->
+                <input type="button" class="form-control btn btn-primary col-5" id="image" aria-describedby="emailHelp" value="Generate QR Code" />&nbsp;
+                <input type="button" class="form-control btn btn-primary col-5" id="image" aria-describedby="emailHelp" value="Generate Badge" />
+              </div>
+              <!-- <div class="col-md-6 mb-3">
+                <label for="image" class="form-label">Generate Badge</label>
+                <input type="button" class="form-control" id="image" aria-describedby="emailHelp">
+              </div> -->
+              <div class="col-md-12 mb-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-danger mx-3">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>

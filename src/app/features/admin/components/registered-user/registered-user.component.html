@@ -44,6 +44,22 @@
               </form>
             </div>
             <div class="col-md-6" id="exportcolmd">
+              <button
+                class="btn"
+                type="button"
+                id="exportbtn"
+                routerLink="/dashboard/add-delegate"
+              >
+                <i class="bi bi-plus"></i> Add Delegate
+              </button> &nbsp;
+              <!-- <button
+                class="btn"
+                type="button"
+                id="exportbtn"
+                routerLink="/dashboard/add-delegate-by-file"
+              >
+                <i class="bi bi-plus"></i> Add delegate by file
+              </button> &nbsp; -->
               <button class="btn" type="button" id="exportbtn" (click)="export()">
                 <i class="bi bi-file-earmark-excel"></i> Export
               </button>
@@ -164,7 +180,16 @@
                                               <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li>
                                               <li><a class="dropdown-item" style="cursor: pointer;"   (click)="Generate_Badge(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
                                                 <i  class="bi bi-file-earmark-pdf-fill"></i> Regenerate Badge</a></li> -->
-
+                                                <li>
+                                                  <a 
+                                                    class="dropdown-item"
+                                                    style="cursor: pointer"
+                                                    routerLink="/dashboard/add-delegate"
+                                                  >
+                                                    <i class="bi bi-pencil-fill"></i> Edit Delegate
+                                                    </a
+                                                  >
+                                                </li>
                             <li>
                               <a
                                 class="dropdown-item"

@@ -1759,7 +1759,7 @@ pre code {
   padding: 0 0.75rem;
   /* padding: 0; */
   vertical-align: middle;
-  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
 }
 .table thead th {
   vertical-align: bottom;
@@ -2067,6 +2067,7 @@ pre code {
 .table-responsive {
   display: block;
   width: 100%;
+  min-height: 50vh;
   max-height: 66vh;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -5219,14 +5220,14 @@ input[type="button"].btn-block {
   color: #6c757d;
 }
 
-.pagination {
+/* .pagination {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   padding-left: 0;
   list-style: none;
   border-radius: 0.25rem;
-}
+} */
 
 .page-link {
   position: relative;
