@@ -93,13 +93,13 @@
                 <table class="table">
                   <thead>
                     <tr>
-                      <!-- <th>
+                      <th>
                               <input 
                                 type="checkbox" 
                                 [(ngModel)]="masterSelected" 
                                 (change)="checkUncheckAll()"
                               />
-                            </th> -->
+                            </th>
                       <th>SN</th>
                       <th (click)="sortData('full_name')">Name <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>DOB</th>
@@ -117,13 +117,13 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let all of peacekeeperList let i = index;">
-                      <!--<td>
+                      <td>
                               <input 
                                 type="checkbox" 
                                 [(ngModel)]="all.selected" 
                                 (change)="isAllSelected()"
                               />
-                            </td> -->
+                            </td>
                       <td>{{i+1}}</td>
                       <td>{{all.full_name}}</td>
                       <td>{{all.dob !==null? all.dob :'' | date : 'dd/MM/yyyy'}}</td>

@@ -26,15 +26,16 @@ export class RegisteredUserComponent {
   userId:any;
   userName:any;
   selectedUserIds: number[] = [];
-  nonregist: any[] = [];
+  registeredDelegateList: any[] = [];
   searchForm:any= FormGroup;
   delegate:boolean=false;
   form:any;
   userNumber:any;
   // title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
-  masterSelected:boolean | undefined;
   singleSelected:boolean=false;
-
+  masterSelected: boolean = false;
+  selectedIds: string = '';
+  isAnySelected: boolean = false;
   private intervalId: any;
   RefreshInterval: any;
 
@@ -95,8 +96,8 @@ export class RegisteredUserComponent {
     // this.ngxService.start();
     this.AdminService.getApprovedDelegate().subscribe((data: any) => {
       console.log("data",data.data[0]);
-      this.nonregist= data.data[0]
-      if(this.nonregist.length===0){
+      this.registeredDelegateList= data.data[0]
+      if(this.registeredDelegateList.length===0){
         this.notFound=true;
       } else{
         this.notFound = false;
@@ -106,6 +107,29 @@ export class RegisteredUserComponent {
       this.delegate=true
     });
   }
+
+
+
+  // Master Checkbox Logic
+  checkUncheckAll(): void {
+    this.registeredDelegateList.forEach(item => (item.selected = this.masterSelected));
+    this.updateSelectedIds();
+  }
+
+  // Check if All Selected
+  isAllSelected(): void {
+    this.masterSelected = this.registeredDelegateList.every(item => item.selected);
+    this.updateSelectedIds();
+  }
+
+  // Update Selected IDs
+  updateSelectedIds(): void {
+    this.selectedIds = this.registeredDelegateList
+      .filter(item => item.selected)
+      .map(item => item.peacekeeper_id).join(',');
+
+  }
+
   // Function to update selectedUserIds array when a row is clicked
   updateSelectedUsers(userId: any,userName:any,userEmail:any,userNumber:any) {
     // Check if the user ID is already selected, and toggle selection
@@ -204,8 +228,8 @@ searchDelegateUser(): void {
   this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
     this.ngxService.stop();  
     this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-    this.nonregist= data.data[0]
-    if(this.nonregist.length===0){
+    this.registeredDelegateList= data.data[0]
+    if(this.registeredDelegateList.length===0){
       this.notFound=true;
     } else{
       this.notFound = false;
@@ -345,7 +369,7 @@ export() {
   }
 debugger
   // Select the columns you want to export
-  const columnsToExport = this.nonregist.map(item => {
+  const columnsToExport = this.registeredDelegateList.map(item => {
    
     // Assuming item.created_date is a valid date string or Date object
 let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
@@ -371,7 +395,7 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
   });
   
   const ws = XLSX.utils.json_to_sheet(columnsToExport);
-  // const ws = XLSX.utils.json_to_sheet(this.nonregist);
+  // const ws = XLSX.utils.json_to_sheet(this.registeredDelegateList);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, this.form);
 
@@ -396,7 +420,7 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
       this.sortDirection = true; // Default Ascending
     }
 
-    this.nonregist.sort((a, b) => {
+    this.registeredDelegateList.sort((a, b) => {
       let valA = a[column] || ''; // Handle null values
       let valB = b[column] || '';
 

@@ -9,6 +9,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
+import { faEye, faEyeSlash, faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -39,6 +40,15 @@ export class ContactUsComponent implements OnInit {
   RefreshInterval: any;
 
   checkedList:any;
+
+  sortColumn: string = ''; // Column currently being sorted
+  sortDirection: boolean = true; // True = Ascending, False = Descending
+
+  // FontAwesome icons for sorting
+  faSort = faSort;
+  faSortUp = faSortUp;
+  faSortDown = faSortDown;
+
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
    
   {
@@ -55,7 +65,7 @@ export class ContactUsComponent implements OnInit {
     // this.allPartner()
     // this.allSpeaker()
     
-    this.getInterval();
+    // this.getInterval();
 
 
   }
@@ -421,6 +431,32 @@ let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm 
   this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
 
 }
+
+ // Sorting Function
+ sortData(column: string) {
+  if (this.sortColumn === column) {
+    this.sortDirection = !this.sortDirection; // Toggle direction
+  } else {
+    this.sortColumn = column;
+    this.sortDirection = true; // Default Ascending
+  }
+
+  this.contactUsList.sort((a, b) => {
+    let valA = a[column] || ''; // Handle null values
+    let valB = b[column] || '';
+
+    if (typeof valA === 'string') valA = valA.toLowerCase();
+    if (typeof valB === 'string') valB = valB.toLowerCase();
+
+    return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+  });
+}
+
+myOptions = {
+  'placement': 'top',
+  'showDelay': 500
+}
+
 
 }
 

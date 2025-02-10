@@ -51,18 +51,24 @@
           </div>
         </div>
       </div>
+      <div class="row m-1" *ngIf="registeredDelegateList.length > 0;">
+        <p>
+          * Data will be auto refreshed in every 60 secs
+        </p>
+      </div>
 
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-0">
-              <div class="table-responsive" *ngIf="nonregist.length > 0">
+              <div class="table-responsive" *ngIf="registeredDelegateList.length > 0">
                 <table class="table">
                   <thead>
                     <tr>
                       <th><input
-                        type="checkbox"
-                        id="checkbox"
+                        type="checkbox" 
+                                [(ngModel)]="masterSelected" 
+                                (change)="checkUncheckAll()"
                       /></th>
                       <th>SN</th>
                       <th (click)="sortData('first_name')">Name <fa-icon [icon]="sortColumn === 'first_name' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
@@ -79,12 +85,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let all of nonregist; let i = index">
+                    <tr *ngFor="let all of registeredDelegateList; let i = index">
                       <td>
                         <input
-                          type="checkbox"
-                          id="singlecheckbox"
-                          
+                        type="checkbox" 
+                        [(ngModel)]="all.selected" 
+                        (change)="isAllSelected()"
                         />
                       </td>
                       <td>{{ i + 1 }}</td>
@@ -92,7 +98,13 @@
                         {{ all.title }} {{ all.first_name }} {{ all.last_name }}
                       </td>
                       <td>
-                        {{ all.email_id }} <i class="bi bi-person-fill"></i>
+                        <span style="
+                              display: block;
+                              text-overflow: ellipsis;
+                              overflow: hidden;
+                              white-space: nowrap;
+                              width: 230px;
+                             ">{{all.email_id}} <i class="bi bi-person-fill"></i></span>
                       </td>
                       <td>{{ all.mobile_number }}</td>
                       <td>{{ all.country }}</td>

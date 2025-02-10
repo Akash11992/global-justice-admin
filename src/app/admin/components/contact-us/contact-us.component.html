@@ -54,12 +54,11 @@
                     <tr>
                       <!-- <th>#</th> -->
                       <th>SN</th>
-                      <th>Name</th>
+                      <th (click)="sortData('FIRST_NAME')">Name <fa-icon [icon]="sortColumn === 'FIRST_NAME' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>Mobile</th>
-                      <th>Email</th>
+                      <th  (click)="sortData('EMAIL')">Email <fa-icon [icon]="sortColumn === 'EMAIL' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
                       <th>Query</th>
-                      <!-- <th>Department</th>
-                            <th>Registered At</th> -->
+                      <!--   <th>Registered At</th> -->
                       <!-- <th>Action</th> -->
                     </tr>
                   </thead>
@@ -72,13 +71,14 @@
                       </td>
                       <td>{{ all.PHONE_NUMBER }}</td>
                       <td>{{ all.EMAIL }} <i class="bi bi-person-fill"></i></td>
-                      <td>{{ all.YOUR_QUESTION }}</td>
-                      <!-- <td>{{all.company_name}}</td>
-                            <td>{{all.designation}}</td>
-  
-                            <td>{{all.department}}</td>
-                            <td>{{all.refrence}}</td>
-                            <td>{{all.created_date | date :'short'}}</td> -->
+                      <td  tooltip="{{all.YOUR_QUESTION}}"><span style="
+                        display: block;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        width: 250px;
+                       "> {{ all.YOUR_QUESTION }}</span></td>
+                      <!--    <td>{{all.created_date | date :'short'}}</td> -->
 
                       <!-- <td>
                                 <div class="dropdown dropstart">
