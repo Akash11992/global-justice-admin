@@ -10,8 +10,8 @@ import { AddTrackingListComponent } from "./components/tracking-list/add-trackin
 import { SalesBroucherComponent } from "./components/feature/sales-broucher/sales-broucher.component";
 import { JoinmailinglistComponent } from "./components/feature/joinmailinglist/joinmailinglist.component";
 import { BroucherComponent } from "./components/feature/broucher/broucher.component";
-import { ViewDetailsComponent } from "../shared/components/user-details/view-details/view-details.component";
-import { EditDetailsComponent } from "../shared/components/user-details/edit-details/edit-details.component";
+import { ViewDetailsComponent } from "../../shared/components/user-details/view-details/view-details.component";
+import { EditDetailsComponent } from "../../shared/components/user-details/edit-details/edit-details.component";
 import { PeacekeeperUserComponent } from "./components/peacekeeper-user/peacekeeper-user.component";
 import { ContactUsComponent } from "./components/contact-us/contact-us.component";
 import { DiscountCoupanMasterComponent } from "./components/discount-coupan-master/discount-coupan-master.component";

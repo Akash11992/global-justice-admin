@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AdminService } from 'src/app/admin/services/admin.service';
+import { AdminService } from 'src/app/features/admin/services/admin.service';
 import { ExportToCsv } from 'export-to-csv';
 import { FormGroup, FormControl, Validators, FormControlName, FormBuilder, FormArray, } from '@angular/forms';
 import { SharedService } from 'src/app/shared/services/shared.service';
@@ -10,48 +10,49 @@ import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-sales-broucher',
-  templateUrl: './sales-broucher.component.html',
-  styleUrls: ['./sales-broucher.component.css']
+  selector: 'app-joinmailinglist',
+  templateUrl: './joinmailinglist.component.html',
+  styleUrls: ['./joinmailinglist.component.css']
 })
-export class SalesBroucherComponent {
-  salesbroucherdata:any[]=[];
-  notFound:boolean=false;
+export class JoinmailinglistComponent {
+
+  joinmailingdata: any[] = [];
+  notFound: boolean = false;
 
   nonregist: any[] = [];
   form: any;
   searchForm: any = FormGroup;
 
   ngOnInit(): void {
-    this.allsalesbroucherdata();
+    this.getJoinMailingList();
     this.createForm()
-    
+
   }
+
+
   constructor(private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
 
   }
 
-  allsalesbroucherdata() {
+  getJoinMailingList() {
     // this.ngxService.start();
-    this.AdminService.getSalesBroucherEndpoint().subscribe((data: any) => {
-      console.log("data",data.data);
-      this.salesbroucherdata= data.data
-console.log("this.salesbroucherdata",this.salesbroucherdata);
+    this.AdminService.getJoinMailingListEndpoint().subscribe((data: any) => {
+      console.log("data", data.data);
+      this.nonregist = data.data
+      console.log("this.joinmailingdata", this.joinmailingdata);
+      if (this.nonregist.length > 0) {
+        this.notFound = false;
 
-if(this.salesbroucherdata.length>0){
-  this.notFound = false;
+      } else {
+        this.notFound = true;
 
-} else{
-  this.notFound=true;
-
-  console.log("false");
-}
+        console.log("false");
+      }
     });
   }
 
-
-
   createForm() {
+
     this.searchForm = this.fb.group({
       searchInput: [''] // Initialize with an empty string
     });
@@ -65,24 +66,20 @@ if(this.salesbroucherdata.length>0){
   //     decimalSeparator: '.',
   //     showLabels: true,
   //     showTitle: true,
-  //     title: 'Sales Broucher Users',
+  //     title: 'join-mailing Users',
   //     useTextFile: false,
   //     useBom: true,
   //     headers: [
 
-  //       'sales_brochure_id',
+  //       'mail_id',
+  //       'title',
   //       'first_name',
   //       'last_name',
   //       'designation',
-  //       'department',
+  //       'mobile',
+  //       'email',
   //       'company_name',
-  //       'work_email',
-  //       'work_phone_number',
-  //       'city',
-  //       'state',
   //       'country',
-  //       'postcode'
-
   //     ],
 
   //   };
@@ -90,46 +87,43 @@ if(this.salesbroucherdata.length>0){
 
 
   //   const csvExporter = new ExportToCsv(options);
-  //   csvExporter.generateCsv(this.salesbroucherdata);
+  //   csvExporter.generateCsv(this.nonregist);
 
   //   this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
   // }
 
-
   export() {
     // Select the columns you want to export
-const columnsToExport = this.salesbroucherdata.map(item => {
+const columnsToExport = this.nonregist.map(item => {
   let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
   return {
-    'sales_brochure_id':  item.sales_brochure_id, 
-    'first_name': item.first_name, // Use the modified value
+    'id':  item.mail_id, 
+    'title': item.title, // Use the modified value
+    'first_name': item.first_name, 
     'last_name': item.last_name, 
     'designation': item.designation, 
-    'department': item.department, 
-    'company_name':  item.company_name, 
-    'work_email':  item.work_email,
-    'work_phone_number':  item.work_phone_number,
-    'country_name':  item.country_name,
-    'state_name':  item.state_name,
-    'city_name':  item.city_name,
-    'postcode':  item.postcode,  
-    'check_whatsaap_number':  item.check_whatsaap_number, 
-    'check_details':  item.check_details, 
+    'country':  item.country, 
+    'mobile':  item.mobile, 
+    'email':  item.email,
+    'company_name':  item.company_name,
+    'whatsaap_number_check':  item.whatsaap_number_check,  
+    'informa_market_check':  item.informa_market_check, 
     'created_date':  created_date, 
   };
 });
 
 const ws = XLSX.utils.json_to_sheet(columnsToExport);
-    // const ws = XLSX.utils.json_to_sheet(this.salesbroucherdata);
+
+    // const ws = XLSX.utils.json_to_sheet(this.nonregist);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sales Brouchers');
+    XLSX.utils.book_append_sheet(wb, ws, 'Join Mailing Users');
   
     // You can set additional properties if needed, e.g., a title:
     wb.Props = {
-      Title: 'Sales Broucher Users',
+      Title: 'Join Mailing Users',
     };
   
-    XLSX.writeFile(wb, 'Sales_Brouchers.xlsx');
+    XLSX.writeFile(wb, 'Join_Mailing_Users.xlsx');
   
     // Add your success message or any other functionality here.
     this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
@@ -138,7 +132,7 @@ const ws = XLSX.utils.json_to_sheet(columnsToExport);
 
   resetForm(): void {
     this.searchForm.reset();
-    this.allsalesbroucherdata();
+    this.getJoinMailingList();
 
   }
 
@@ -156,11 +150,11 @@ const ws = XLSX.utils.json_to_sheet(columnsToExport);
     };
     console.log("payload", payload);
     this.ngxService.start();
-    this.AdminService.Searchsalesbroucher(payload).subscribe((data: any) => {
+    this.AdminService.Searchjoinmail(payload).subscribe((data: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-      this.salesbroucherdata = data.data[0]
-      if (this.salesbroucherdata.length === 0) {
+      this.nonregist = data.data[0]
+      if (this.nonregist.length === 0) {
         this.notFound = true;
       } else {
         this.notFound = false;
@@ -173,16 +167,15 @@ const ws = XLSX.utils.json_to_sheet(columnsToExport);
   }
 
 
+  deleteUser(mail_id: number): void {
 
-  deleteUser(sales_brochure_id: number): void {
-
-    console.log("delete called", sales_brochure_id);
+    console.log("delete called", mail_id);
     const payload = {
-      sales_brochure_id: sales_brochure_id
+      mail_id: mail_id
     };
     console.log("payload", payload);
     this.ngxService.start();
-    this.AdminService.deletesalesbroucher(payload).subscribe((data: any) => {
+    this.AdminService.Deletejoinmailinglist(payload).subscribe((data: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('', data.message, 'success')
       // this.allDelegate();
@@ -191,6 +184,9 @@ const ws = XLSX.utils.json_to_sheet(columnsToExport);
   this.resetForm();
     })
   }
+
+
+
 
 
 

@@ -7,7 +7,7 @@ import { RegisteredUserComponent } from './components/registered-user/registered
 import { NonRegisteredUserComponent } from './components/non-registered-user/non-registered-user.component';
 
 import { AdminMainComponent } from './components/admin-main/admin-main.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { AddTrackingListComponent } from './components/tracking-list/add-tracking-list/add-tracking-list.component';
 import { ViewTrackingListComponent } from './components/tracking-list/view-tracking-list/view-tracking-list.component';

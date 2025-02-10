@@ -66,7 +66,6 @@ export class RegisteredUserComponent {
     // this.allSpeaker()
     this.getInterval();
 
-
   }
 
   async getInterval() {

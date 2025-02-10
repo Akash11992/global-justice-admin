@@ -22,7 +22,7 @@ import { Constants } from './config/constant';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
-import { AdminModule } from './admin/admin.module';
+import { AdminModule } from './features/admin/admin.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ImageViewerModule } from 'ngx-image-viewer'

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AdminService } from 'src/app/admin/services/admin.service';
+import { AdminService } from 'src/app/features/admin/services/admin.service';
 import { ExportToCsv } from 'export-to-csv';
 import { FormGroup, FormControl, Validators, FormControlName, FormBuilder, FormArray, } from '@angular/forms';
 import { SharedService } from 'src/app/shared/services/shared.service';

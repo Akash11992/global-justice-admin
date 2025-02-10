@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormControlName, FormBuilder, FormArray,AbstractControl  } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router,ActivatedRoute } from '@angular/router';
-import { AdminService } from 'src/app/admin/services/admin.service';
+import { AdminService } from 'src/app/features/admin/services/admin.service';
 import { HttpClient } from '@angular/common/http';
 import { SharedService } from 'src/app/shared/services/shared.service';
 @Component({
