@@ -23,6 +23,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ImageViewerModule } from 'ngx-image-viewer';
+import { SponsorshipComponent } from './components/sponsorship/sponsorship.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ImageViewerModule } from 'ngx-image-viewer';
     PeacekeeperUserComponent,
     ContactUsComponent,
     DiscountCoupanMasterComponent,
-    AddDiscountCoupanComponent
+    AddDiscountCoupanComponent,
+    SponsorshipComponent
   ],
   imports: [
     SharedModule,

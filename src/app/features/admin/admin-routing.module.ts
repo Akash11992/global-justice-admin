@@ -16,6 +16,7 @@ import { PeacekeeperUserComponent } from "./components/peacekeeper-user/peacekee
 import { ContactUsComponent } from "./components/contact-us/contact-us.component";
 import { DiscountCoupanMasterComponent } from "./components/discount-coupan-master/discount-coupan-master.component";
 import { AddDiscountCoupanComponent } from "./components/add-discount-coupan/add-discount-coupan.component";
+import { SponsorshipComponent } from "./components/sponsorship/sponsorship.component";
 
 const routes: Routes = [
   {
@@ -55,6 +56,7 @@ const routes: Routes = [
     children: [
       { path: "registered-user", component: RegisteredUserComponent,canActivate: [AuthGuard], },
       { path: "peacekeeper", component: PeacekeeperUserComponent,canActivate: [AuthGuard], },
+      { path: "sponsorship", component: SponsorshipComponent,canActivate: [AuthGuard], },
       { path: "contact-us", component: ContactUsComponent,canActivate: [AuthGuard], },
       // {path:'reset-password',component:ResetPasswordComponent},
       { path: "", redirectTo: "registered-user", pathMatch: "full" },
