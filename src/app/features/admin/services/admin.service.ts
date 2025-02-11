@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ApiEndpointsService } from "src/app/core/services/api-endpoints.service";
 import { ApiHttpService } from "src/app/core/services/api-http.service";
 
@@ -224,4 +225,43 @@ TrackingLink(body:any) {
   ApprovedUnapproveStatus(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.ApprovedRegistrationEndpoint(),body);
   }
+
+  //sponsorship
+  createSponsership(bodyParams:any): Observable<any> {
+    return this._apiHttpService.post(this._apiEndpointsService.addSponsorshipEndpoint(),bodyParams);
+  }
+  
+  updateSponsorship(id: string, data: any): Observable<any> {
+    return this._apiHttpService.put(this._apiEndpointsService.editSponsorshipByIdEndpoint(id), data);
+  }
+
+  deleteSponsorship(id: string): Observable<any> {
+    return this._apiHttpService.delete(this._apiEndpointsService.deleteSponsorshipByIdEndpoint(id));
+  }
+
+  getSponsorship(id: string): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getSponsorshipByIdEndpoint(id));
+  }
+
+  listSponsorship(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listSponsorshipByPaginationAndSearchAndSortingEndpoint(queryParamsObj));
+  }
+
+  listPeaceKeeper(): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listPeaceKeeperEndpoint());
+  }
+
+  listCountry(): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listCountryEndpoint());
+  }
+
+  getStateById(id: string): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getStateByIdEndpoint(id));
+  }
+
+  getCityById(id: string): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getCityByIdEndpoint(id));
+  }
+
+
 }

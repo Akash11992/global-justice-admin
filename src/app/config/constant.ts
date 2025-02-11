@@ -110,6 +110,18 @@ export class Constants {
 
     public readonly API_ENDPOINT_ApprovedDelegate: string = 'mail_discount_code'
 
+    public readonly API_ENDPOINT_ADD_SPONSORSHIP: string = 'sponsorships/add'
+    public readonly API_ENDPOINT_EDIT_SPONSORSHIP: string = 'sponsorships/edit'
+    public readonly API_ENDPOINT_DELETE_SPONSORSHIP: string = 'sponsorships/delete'
+    public readonly API_ENDPOINT_GET_SPONSORSHIP: string = 'sponsorships/get'
+    public readonly API_ENDPOINT_LIST_SPONSORSHIP: string = 'sponsorships/list'
+
+
+    public readonly API_ENDPOINT_LIST_PEACEKEEPER: string = 'getAllpeacekeeperDropdown'
+    public readonly API_ENDPOINT_LIST_COUNTRY: string = 'get_delegate_country'
+    public readonly API_ENDPOINT_LIST_STATE: string = 'get_delegate_state'
+    public readonly API_ENDPOINT_LIST_CITY: string = 'get_delegate_city'
+
 
 }
 

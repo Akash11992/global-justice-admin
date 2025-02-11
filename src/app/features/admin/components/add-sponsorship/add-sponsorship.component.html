@@ -68,10 +68,9 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="Country" class="form-label">Country</label>
-                <!-- <input type="text" class="form-control" id="Country" aria-describedby="emailHelp"> -->
-                <select formControlName="country" class="form-control" aria-label="Default select example">
+                <select formControlName="country" (change)="onCountryChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select Country</option>
-                  <option *ngFor="let country of countries" [value]="country">{{country}}</option>
+                  <option *ngFor="let country of countries" [value]="country['id']" [attr.data-name]="country['name']">{{country['name']}}</option>
                 </select>
                 <div *ngIf="form.get('country').errors?.required && form.get('country').touched" class="error text-danger">
                   Country is required
@@ -79,9 +78,9 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="State" class="form-label">State</label>
-                <select formControlName="state" class="form-control" aria-label="Default select example">
+                <select formControlName="state" (change)="onStateChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select State</option>
-                  <option *ngFor="let state of states" [value]="state">{{state}}</option>
+                  <option *ngFor="let state of states" [value]="state['id']" [attr.data-name]="state['name']">{{state['name']}}</option>
                 </select>
                 <div *ngIf="form.get('state').errors?.required && form.get('state').touched" class="error text-danger">
                   State is required
@@ -89,9 +88,9 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="City" class="form-label">City</label>
-                <select formControlName="city" class="form-control" aria-label="Default select example">
+                <select formControlName="city" (change)="onCityChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select City</option>
-                  <option *ngFor="let city of cities" [value]="city">{{city}}</option>
+                  <option *ngFor="let city of cities" [value]="city['id']" [attr.data-name]="city['name']">{{city['name']}}</option>
                 </select>
                 <div *ngIf="form.get('city').errors?.required && form.get('city').touched" class="error text-danger">
                   City is required
@@ -113,11 +112,11 @@
               </div>
               <div class="col-md-3 mb-3" *ngIf="form.get('refBy')?.value === 'peacekeeper'">
                 <label for="Ref_by" class="form-label">Select Peacekeeper</label>
-                <select formControlName="peacekeeper" class="form-control" aria-label="Default select example">
+                <select formControlName="refPeacekeeper" (change)="onPeacekeeperChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Ref Peacekeeper</option>
-                  <option *ngFor="let pk of peacekeepers" [value]="pk">{{pk}}</option>
+                  <option *ngFor="let pk of peacekeepers" [value]="pk['peacekeeper_id']" [attr.data-name]="pk['full_name']">{{pk['full_name']}}</option>
                 </select>
-                <div *ngIf="form.get('peacekeeper').errors?.required && form.get('peacekeeper').touched" class="error text-danger">
+                <div *ngIf="form.get('refPeacekeeper').errors?.required && form.get('refPeacekeeper').touched" class="error text-danger">
                   Peacekeeper is required
                 </div>
               </div>
@@ -133,7 +132,7 @@
               </div>
               <div class="col-md-12 mb-3">
                 <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Save</button>
-                <!-- <button type="submit" class="btn btn-danger mx-3">Cancel</button> -->
+                <button type="button" class="btn btn-danger mx-3" (click)="onCancel()">Cancel</button>
               </div>
             </div>
           </form>

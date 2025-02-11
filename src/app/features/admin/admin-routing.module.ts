@@ -64,6 +64,7 @@ const routes: Routes = [
       { path: "peacekeeper", component: PeacekeeperUserComponent,canActivate: [AuthGuard], },
       { path: "sponsorship", component: SponsorshipComponent,canActivate: [AuthGuard], },
       { path: "add-sponsorship", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
+      { path: "edit-sponsorship/:id", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
       { path: "collaborator", component: CollaboratorComponent,canActivate: [AuthGuard], },
       { path: "add-collaborator", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
       { path: "delegate", component: DelegateComponent,canActivate: [AuthGuard], },
