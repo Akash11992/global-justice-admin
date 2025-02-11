@@ -40,7 +40,22 @@ export class ContactUsComponent implements OnInit {
   RefreshInterval: any;
 
   checkedList:any;
-
+  totalSelected: number = 0;
+  selectAll: boolean = false; // Tracks the "select all" checkbox state
+  searchParams: string = '';
+  pageSize: any = 25;
+  paging: any = 1;
+  totalRecords: number = 0;
+  totalitems: any;
+  itemsPerPage = 10;
+  itemsPageTo = 10;
+  page = 1;
+  numberOfPages: number = 0;
+  activeItem: number = 1;
+  groupByPerpage: any = [];
+  currentPage: any;
+  totalcount: any;
+  globalPageNumber: number = 0;
   sortColumn: string = ''; // Column currently being sorted
   sortDirection: boolean = true; // True = Ascending, False = Descending
 
@@ -52,6 +67,14 @@ export class ContactUsComponent implements OnInit {
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
    
   {
+
+
+    this.groupByPerpage = [
+      { name: "10" },
+      { name: "25" },
+      { name: "50" },
+      { name: "100" },
+    ];
     this.masterSelected = false;
     
     // this.getCheckedItemList();
@@ -59,6 +82,14 @@ export class ContactUsComponent implements OnInit {
 
   
    ngOnInit(): void {
+
+
+    this.groupByPerpage = [
+      { name: "10" },
+      { name: "25" },
+      { name: "50" },
+      { name: "100" },
+    ];
     this.allContactUs();
 
     this.createForm();
@@ -94,11 +125,48 @@ export class ContactUsComponent implements OnInit {
       searchInput: [''] // Initialize with an empty string
     });
   }
+
+
+  searchUsers() {
+    this.searchParams = this.searchForm.get('searchInput').value;
+  
+    clearInterval(this.intervalId);
+    this.allContactUs();
+  
+  }
+
   allContactUs() {
-    // this.ngxService.start();
-    this.AdminService.getContactUsApi().subscribe((data: any) => {
-      console.log("data",data.data);
-      this.contactUsList= data.data
+    let body ={
+      "page_no":this.paging ,
+      "page_size":this.pageSize,
+      "name":this.searchParams,
+      "email":""
+        
+     }
+  
+      this.AdminService.getContactUsApi(body).subscribe((data: any) => {
+  
+        const decreptedUser = this.SharedService.decryptData(data.data)
+  
+        this.contactUsList = decreptedUser
+      console.log("data",decreptedUser);
+
+      this.totalRecords = this.contactUsList.length;
+
+      console.log(this.totalRecords, 'totalRecords');
+
+
+      let pag = Math.ceil(this.totalRecords / this.pageSize);
+
+      this.totalitems = Array(pag)
+        .fill(0)
+        .map((x, i) => i + 1);
+
+      this.numberOfPages = Math.ceil(
+        this.totalRecords / this.pageSize
+      );
+
+
       if(this.contactUsList.length===0){
         this.notFound=true;
       } else{
@@ -113,6 +181,57 @@ export class ContactUsComponent implements OnInit {
     });
   }
 
+
+
+  previousPage() {
+    if (this.activeItem > 1) {
+      this.activeItem--; // Move to the previous item
+
+      // If activeItem is at the start of the page range, update the page and range
+      if (this.activeItem < this.itemsPageTo - 9) {
+        this.itemsPageTo -= 10; // Update the range to the previous set
+        this.page--; // Decrement the page
+      }
+    }
+    this.globalPageNumber = (this.activeItem - 1) * this.itemsPerPage;
+    this.contactUsList = [];
+    this.allContactUs();
+  }
+
+  nextPage() {
+    if (this.activeItem == this.itemsPageTo) {
+      this.itemsPageTo = (this.itemsPageTo + 10);
+      this.page++
+    }
+    this.activeItem++;
+    this.globalPageNumber = (this.activeItem * 10 - 10);
+    this.contactUsList = [];
+
+    this.allContactUs();
+  }
+  async fnPaging(obj: any) {
+
+
+    this.globalPageNumber = 0;
+    this.pageSize = obj;
+
+    this.contactUsList = [];
+
+
+    await this.allContactUs();
+
+
+  }
+  setActiveItem(item: any) {
+
+
+    this.activeItem = item;
+
+    this.globalPageNumber = (item * 10 - 10);
+
+    this.allContactUs();
+
+  }
 
   // Function to update selectedUserIds array when a row is clicked
   updateSelectedUsers(userId: any,userName:any,userEmail:any,userNumber:any) {
@@ -255,19 +374,7 @@ resetForm(): void {
 
   }
 }
-searchUsers() {
-  
-  console.log("active tab name delegate",this.contactUs);
 
-
-  switch (true) {
-    case this.contactUs === true:
-      this.searchDelegateUser();
-      break;
-
-  }
-  
-}
 
 
 

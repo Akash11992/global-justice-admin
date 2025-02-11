@@ -70,13 +70,18 @@ export class LoginComponent {
 
   // Function to submit the form data
   postapi() {
+
+    let encryptedEmail = this.SharedService.encryptData({
+      "email": this.loginForm.controls['email'].value,
+      "password": this.loginForm.controls['password'].value,
+    });
+
     let loginData = {
-      email: this.loginForm.controls['email'].value,
-      password: this.loginForm.controls['password'].value,
+      "encrypted_data": encryptedEmail
     }
 
     // Log the loginData object for debugging purposes
-    console.log(loginData.email + "loginData");
+    console.log(loginData + "loginData");
 
     this.ngxService.start();
     // Call the ProfileService to post the OTP and password data
@@ -87,6 +92,21 @@ export class LoginComponent {
       // Display success message after successful OTP submission
       this.SharedService.ToastPopup('You have logged in successfully!', '', 'success');
       this.isAuthenticatedSubject.next(true);
+      const decreptedToken = this.SharedService.decryptData(res.token);
+      const decreptedUser = this.SharedService.decryptData(res.data)
+      debugger
+      const userData = {
+        name : decreptedUser.name,
+        email : decreptedUser.email,
+        admin_id : decreptedUser.admin_id,
+      }
+      // Store the encrypted token
+      this.SharedService.setJWTToken(decreptedToken);
+      this.SharedService.setUserDetails(JSON.stringify(userData));
+      this.ngxService.stop();
+
+
+
       // Redirect to the login page after a delay
       setTimeout(() => {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['/dashboard']));

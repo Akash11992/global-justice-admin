@@ -41,7 +41,21 @@ export class RegisteredUserComponent {
 
   checkedList:any;
 
-  
+  selectAll: boolean = false; // Tracks the "select all" checkbox state
+  searchParams: string = '';
+  pageSize: any = 25;
+  paging: any = 1;
+  totalRecords: number = 0;
+  totalitems: any;
+  itemsPerPage = 10;
+  itemsPageTo = 10;
+  page = 1;
+  numberOfPages: number = 0;
+  activeItem: number = 1;
+  groupByPerpage: any = [];
+  currentPage: any;
+  totalcount: any;
+  globalPageNumber: number = 0;
     sortColumn: string = ''; // Column currently being sorted
     sortDirection: boolean = true; // True = Ascending, False = Descending
   
@@ -52,6 +66,12 @@ export class RegisteredUserComponent {
   constructor( private datePipe: DatePipe,private fb: FormBuilder, private AdminService: AdminService,private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router,private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,)
    
   {
+    this.groupByPerpage = [
+      { name: "10" },
+      { name: "25" },
+      { name: "50" },
+      { name: "100" },
+    ];
     this.masterSelected = false;
     
     // this.getCheckedItemList();
@@ -59,6 +79,12 @@ export class RegisteredUserComponent {
 
   
    ngOnInit(): void {
+    this.groupByPerpage = [
+      { name: "10" },
+      { name: "25" },
+      { name: "50" },
+      { name: "100" },
+    ];
     this.allDelegate();
 
     this.createForm();
@@ -92,10 +118,37 @@ export class RegisteredUserComponent {
     });
   }
   allDelegate() {
+
+    let body ={
+      "page_no":this.paging ,
+      "page_size":this.pageSize,
+      "name":this.searchParams,
+      "email":""
+        
+     }
+
     // this.ngxService.start();
-    this.AdminService.getApprovedDelegate().subscribe((data: any) => {
-      console.log("data",data.data[0]);
-      this.registeredDelegateList= data.data[0]
+    this.AdminService.getApprovedDelegate(body).subscribe((data: any) => {
+      const decreptedUser = this.SharedService.decryptData(data.data)
+
+      console.log("data",decreptedUser);
+      this.registeredDelegateList= decreptedUser
+
+      this.totalRecords = this.registeredDelegateList.length;
+
+      console.log(this.totalRecords, 'totalRecords');
+
+
+      let pag = Math.ceil(this.totalRecords / this.pageSize);
+
+      this.totalitems = Array(pag)
+        .fill(0)
+        .map((x, i) => i + 1);
+
+      this.numberOfPages = Math.ceil(
+        this.totalRecords / this.pageSize
+      );
+
       if(this.registeredDelegateList.length===0){
         this.notFound=true;
       } else{
@@ -105,6 +158,57 @@ export class RegisteredUserComponent {
       // this.ngxService.stop();
       this.delegate=true
     });
+  }
+
+
+  previousPage() {
+    if (this.activeItem > 1) {
+      this.activeItem--; // Move to the previous item
+
+      // If activeItem is at the start of the page range, update the page and range
+      if (this.activeItem < this.itemsPageTo - 9) {
+        this.itemsPageTo -= 10; // Update the range to the previous set
+        this.page--; // Decrement the page
+      }
+    }
+    this.globalPageNumber = (this.activeItem - 1) * this.itemsPerPage;
+    this.registeredDelegateList = [];
+    this.allDelegate();
+  }
+
+  nextPage() {
+    if (this.activeItem == this.itemsPageTo) {
+      this.itemsPageTo = (this.itemsPageTo + 10);
+      this.page++
+    }
+    this.activeItem++;
+    this.globalPageNumber = (this.activeItem * 10 - 10);
+    this.registeredDelegateList = [];
+
+    this.allDelegate();
+  }
+  async fnPaging(obj: any) {
+
+
+    this.globalPageNumber = 0;
+    this.pageSize = obj;
+
+    this.registeredDelegateList = [];
+
+
+    await this.allDelegate();
+
+
+  }
+  setActiveItem(item: any) {
+
+
+    this.activeItem = item;
+
+    this.globalPageNumber = (item * 10 - 10);
+
+    this.allDelegate();
+
   }
 
 
@@ -246,7 +350,13 @@ resetForm(): void {
 
 }
 searchUsers() {
-  this.searchDelegateUser();
+  this.searchParams = this.searchForm.get('searchInput').value;
+
+
+  clearInterval(this.intervalId);
+  this.allDelegate();
+
+  // this.searchDelegateUser();
 
 }
 

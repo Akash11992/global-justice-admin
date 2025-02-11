@@ -43,7 +43,6 @@ export class PeacekeeperUserComponent implements OnInit {
   // title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
   singleSelected: boolean = false;
   private refreshSubscription: Subscription;
-  couponForm: FormGroup;
   code: any
   qrCodeData: string | null = null;
   isGenerateQR: boolean = false;
@@ -105,16 +104,7 @@ export class PeacekeeperUserComponent implements OnInit {
     //   }
     // });
 
-    this.couponForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
-      lastName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
-      country: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      mobile: ['', [Validators.required]],
-      discount: [7, [Validators.required, Validators.min(1), Validators.max(100)]],
-      couponCode: [{ value: '' }], // Disabled for read-only
-      qrCode: ['', Validators.required],
-    });
+
 
     this.refreshSubscription = this.SharedService.refreshPeacekeeper$.subscribe(async () => {
       await this.allPeacekeeper();
@@ -134,7 +124,6 @@ export class PeacekeeperUserComponent implements OnInit {
     // console.log(window.location.origin);
 
     this.allPeacekeeper();
-    // this.couponForm.valueChanges.subscribe(() => this.generateCouponCode());
 
     this.createForm();
     this.getInterval();
@@ -155,64 +144,10 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
 
-  generateCouponCode(): void {
-    const firstName = this.couponForm.get('firstName')?.value;
-    const nameParts = firstName.trim().split(' ');  // Split name by space and trim any extra spaces
-    const lastName = this.couponForm.get('lastName')?.value || this.couponForm.get('firstName')?.value;
-    const country = this.couponForm.get('country')?.value;
-    const email = this.couponForm.get('email')?.value;
-    const mobile = this.couponForm.get('mobile')?.value;
-
-
-    // Generate parts of the coupon code
-    const firstChar = nameParts[0].charAt(0).toUpperCase();
-    const lastChar = lastName.charAt(0).toUpperCase();
-    const countryChars = country.substring(0, 2).toUpperCase();
-    const emailChars = email.substring(0, 2).toUpperCase();
-    const mobileStart = mobile.split(' ')[1]?.substring(0, 2) || mobile.substring(0, 2);
-    const mobileEnd = mobile.slice(-2);
-    console.log(mobile.length, 'mobile');
-
-    // Combine the parts into a 16-character code
-    if (firstName !== "" && lastName !== "" && country !== "" && email !== "" && mobile !== "" && mobile.length > 9 && !this.couponForm.get('qrCode')?.value) {
-      const randomChars = this.generateRandomChars(16 - (firstChar.length + lastChar.length + mobileStart.length + mobileEnd.length + countryChars.length + emailChars.length));
-      const couponCode = `${firstChar}${lastChar}${mobileStart}${mobileEnd}${countryChars}${emailChars}${randomChars}`;
-      this.couponForm.get('qrCode')?.setValue((this.referralUrl ? this.referralUrl : 'https://www.justice-love-peace.com') + '/delegate-registration?code=' + couponCode);
-      this.couponForm.get('couponCode')?.setValue(couponCode);
-    }
-
-    // Update the coupon code field
-  }
-
-  generateQRCode() {
-    debugger
-    const qrCodeValue = this.couponForm.get('qrCode')?.value;
-    this.qrCodeData = qrCodeValue ? qrCodeValue : null;
-    console.log(this.qrCodeData, 'QRcode');
-
-
-  }
-  generateRandomChars(length: number): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-  }
-
-  onGenerateQR(): void {
-    const qrData = this.couponForm.value;
-    console.log('QR Data:', qrData);
-    // Logic to generate QR code can go here.
-  }
-
   onSave(): void {
     const payload = {
       peace_id: this.peacekeeperID,
-      // coupon_discount:  this.couponForm.get('discount')?.value,
-      // QR_CODE:  this.couponForm.get('qrCode')?.value,
-      // coupon_code:  this.couponForm.get('couponCode')?.value
+    
     };
     console.log("payload", payload);
     this.ngxService.start();
@@ -227,7 +162,6 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
   close() {
-    // this.couponForm.reset();
     this.display='none';
     this.isViewerOpen = false;
   }
@@ -237,10 +171,36 @@ export class PeacekeeperUserComponent implements OnInit {
       searchInput: [''] // Initialize with an empty string
     });
   }
+
+
+
+searchUsers() {
+  this.searchParams = this.searchForm.get('searchInput').value;
+  // this.peacekeeperList = this.peacekeeperList.filter((peaceName) =>
+  //   peaceName.full_name.toLowerCase().includes(this.searchParams.toLowerCase())
+  // );
+
+  clearInterval(this.intervalId);
+  // this.searchPeacekeeperUser();
+  this.allPeacekeeper();
+
+}
+
   allPeacekeeper() {
 
-    this.AdminService.getPeacekeeper(this.searchParams, this.pageSize, this.paging).subscribe((data: any) => {
-      this.peacekeeperList = data.data
+   let body ={
+    "page_no":this.paging ,
+    "page_size":this.pageSize,
+    "name":this.searchParams,
+    "email":""
+      
+   }
+
+    this.AdminService.getAllPeacekeeperData(body).subscribe((data: any) => {
+
+      const decreptedUser = this.SharedService.decryptData(data.data)
+
+      this.peacekeeperList = decreptedUser
       if (this.masterSelected) {
         this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
       }
@@ -393,77 +353,13 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
 
-  searchPeacekeeperUser(): void {
-    const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
-    if (searchValue === null || searchValue.trim() === '') {
-      // Display an error toaster here
-      this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
-      return; // Exit the function
-    }
-    const payload = {
-      search: searchValue
-    };
-    console.log("payload", payload);
-
-
-    const search = searchValue.toLowerCase();
-
-    this.peacekeeperList = this.peacekeeperList.filter(item => 
-      item.full_name.toLowerCase().includes(search) ||
-      item.country.toLowerCase().includes(search) ||
-      item.mobile_number.includes(search) ||
-      item.email_id.toLowerCase().includes(search) ||
-      item.created_at.includes(search)
-    );
-
-
-
-
-
-    // this.ngxService.start();
-    // this.AdminService.SearchPeacekeeperUser(payload).subscribe((data: any) => {
-      // this.ngxService.stop();
-    //   this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-    //   this.peacekeeperList = data.data[0]
-    //   if (this.peacekeeperList.length === 0) {
-    //     this.notFound = true;
-    //   } else {
-    //     this.notFound = false;
-    //     console.log("false");
-    //   }
- 
-    // })
-
-
-
-  }
-
-
-
-
   resetForm(): void {
     this.searchForm.reset();
     this.getInterval();
-
-    console.log("active tab name delegate", this.peacekeeper);
-
-    switch (true) {
-      case this.peacekeeper === true:
+ 
         this.allPeacekeeper();
-        break;
-
-    }
+  
   }
-  searchUsers() {
-    // this.searchParams = this.searchForm.get('searchInput').value;
-    // this.peacekeeperList = this.peacekeeperList.filter((peaceName) =>
-    //   peaceName.full_name.toLowerCase().includes(this.searchParams.toLowerCase())
-    // );
-    clearInterval(this.intervalId);
-    this.searchPeacekeeperUser();
-  }
-
 
 
   sendmail(userId: number) {
@@ -779,6 +675,10 @@ export class PeacekeeperUserComponent implements OnInit {
 
       return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
     });
+  }
+
+  openLink(link:any) {
+    window.open(link, '_blank');
   }
 
   myOptions = {

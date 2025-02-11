@@ -54,14 +54,14 @@
         </div>
       </div>
 
+
       <div class="row m-1" *ngIf="peacekeeperList.length > 0;">
-        <p>
-          * Data will be auto refreshed in every 60 secs
-        </p>
-      </div>
-      <div class="row">
-        <!-- <div class="col-md-12 row">
-                <div class="col-sm-10"></div>
+        <div class="col-md-12 row">
+                <div class="col-sm-10">
+                  <p>
+                    * Data will be auto refreshed in every 60 secs
+                  </p>
+                </div>
                 <div class="col-sm-2">
                 <div class="showData dropdown">
                   <h4 class="m-0">
@@ -85,7 +85,7 @@
                   </h4>
                 </div>
                 </div>
-              </div> -->
+              </div>
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-0">
@@ -149,7 +149,8 @@
                             white-space: pre-wrap;
                             font: -webkit-control;
                             width: 250px;
-                           "><a href="{{all.QR_CODE}}">{{all.QR_CODE}}</a></td>
+                           "><a  (click)="openLink(all.QR_CODE)" style="color: #0056b3;
+                           text-decoration: none;cursor: pointer;">{{all.QR_CODE}}</a></td>
                       <td>{{all.created_at | date : 'dd/MM/yyyy'}}</td>
                       <!-- <td>{{all.designation}}</td>
                             <td>{{all.department}}</td>
@@ -200,7 +201,7 @@
             </div>
           </div>
           <div class="row pt-3 justify-content-center">
-            <!-- <div class="datatable_rgt">
+            <div class="datatable_rgt">
                     <div class="pagination" *ngIf="this.totalitems !== undefined && peacekeeperList.length !== 0">
                       <a (click)="previousPage()" *ngIf="this.activeItem !== 1" [attr.disabled]="page === 1">
                         <img src="../../../../../assets/images/arrow-left-blue.svg" alt="" />
@@ -222,7 +223,7 @@
                       </a>
                     </div>
     
-                  </div> -->
+                  </div>
           </div>
         </div>
       </div>
@@ -239,94 +240,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="col-md-12" style="margin-top: 25px">
-          <img src="assets/images/user (1).png" id="userimg" />
-          <h4 style="display: inline-flex">Add Discount Coupon</h4>
-        </div> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid" id="pagecontent">
 
-
-          <!-- <div class="col-md-12"> -->
-          <!-- <div class="card" id="uppercard">
-              <div class="card-body"> -->
-          <form [formGroup]="couponForm" class="row g-3">
-            <div class="col-md-6 my-lg-2 my-2">
-              <label for="firstName" class="form-label">First Name</label>
-              <input type="text" class="form-control" id="firstName" formControlName="firstName" />
-            </div>
-            <div class="col-md-6 my-lg-2 my-2">
-              <label for="lastName" class="form-label">Last Name</label>
-              <input type="text" class="form-control" id="lastName" formControlName="lastName" />
-            </div>
-            <div class="col-md-6 my-lg-2 my-2">
-              <label for="country" class="form-label">Country</label>
-              <input type="email" class="form-control" formControlName="country" />
-
-              <!-- <select class="form-control" formControlName="country">
-                      <option value="" selected disabled>Select Country</option>
-                      <option value="India">India</option>
-                      <option value="Others">Others</option>
-                    </select> -->
-            </div>
-            <div class="col-md-6 my-lg-2 my-2">
-              <label for="inputEmail4" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail4" formControlName="email" />
-            </div>
-            <div class="col-md-6 my-lg-2 my-2">
-              <label for="mobile" class="form-label">Mobile no.</label>
-              <input type="tel" class="form-control" maxlength="10" id="mobile" formControlName="mobile" />
-            </div>
-            <div class="col-md-6 my-lg-2 my-2">
-              <label for="discount" class="form-label">Discount %</label>
-              <span class="d-flex">
-                <input type="number" class="form-control w-75" id="discount" formControlName="discount" />
-                <img src="assets/images/percent.svg" alt="" />
-              </span>
-            </div>
-            <div class="col-md-12 my-lg-2 my-2">
-              <label for="couponCode" class="form-label">Coupon Code</label>
-              <input type="text" class="form-control" id="couponCode" formControlName="couponCode" readonly />
-            </div>
-            <div class="col-md-12 my-lg-2 my-2">
-              <label for="qrCode" class="form-label">QR. Code</label>
-              <textarea class="form-control" id="qrCode" formControlName="qrCode" readonly></textarea>
-            </div>
-
-            <div class="col-12 text-center qr-code-section" *ngIf="qrCodeData">
-              <h3>QR Code:</h3>
-              <qrcode #parent [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-              <!-- QR Code Component -->
-
-              <div>
-
-                <a style="color: #0056b3;" (click)="downloadQRCode(parent)">Download QR Code</a>
-              </div>
-            </div>
-
-          </form>
-          <!-- </div>
-            </div> -->
-          <!-- </div> -->
-        </div>
-
-
-
-      </div>
-      <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary" (click)="generateQRCode()">Generate QR</button> -->
-        <button type="button" class="btn btn-primary mx-3" [disabled]="isGenerateQR" (click)="onSave()">Save and
-          Generate QR</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
   <!-- Image Viewer -->
 
