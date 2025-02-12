@@ -57,7 +57,7 @@ export class SponsorshipComponent implements OnInit {
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to add sponsorship', 'Badge', 'error');
+      this.SharedService.ToastPopup('Oops failed to list sponsorship', 'Badge', 'error');
     }
     )
   }

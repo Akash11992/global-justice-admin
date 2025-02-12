@@ -116,6 +116,12 @@ export class Constants {
     public readonly API_ENDPOINT_GET_SPONSORSHIP: string = 'sponsorships/get'
     public readonly API_ENDPOINT_LIST_SPONSORSHIP: string = 'sponsorships/list'
 
+    public readonly API_ENDPOINT_ADD_COLLABORATOR: string = 'collaborators/add'
+    public readonly API_ENDPOINT_EDIT_COLLABORATOR: string = 'collaborators/edit'
+    public readonly API_ENDPOINT_DELETE_COLLABORATOR: string = 'collaborators/delete'
+    public readonly API_ENDPOINT_GET_COLLABORATOR: string = 'collaborators/get'
+    public readonly API_ENDPOINT_LIST_COLLABORATOR: string = 'collaborators/list'
+
 
     public readonly API_ENDPOINT_LIST_PEACEKEEPER: string = 'getAllpeacekeeperDropdown'
     public readonly API_ENDPOINT_LIST_COUNTRY: string = 'get_delegate_country'

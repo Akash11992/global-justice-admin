@@ -439,6 +439,36 @@ export class ApiEndpointsService {
       });
   }
 
+  //collaborator
+  public addCollaboratorEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_COLLABORATOR);
+  }
+
+  public editCollaboratorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_EDIT_COLLABORATOR, [id]);
+  }
+
+  public deleteCollaboratorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_DELETE_COLLABORATOR, [id]);
+  }
+
+  public getCollaboratorIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_GET_COLLABORATOR, [id]);
+  }
+
+  public listCollaboratorByPaginationAndSearchAndSortingEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_LIST_COLLABORATOR,
+      (qs: QueryStringParameters) => {
+        qs.push('page', queryParamsObj['page']),
+        qs.push('limit', queryParamsObj['limit']),
+        qs.push('sort', queryParamsObj['sort']),
+        qs.push('order', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
   public listPeaceKeeperEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_LIST_PEACEKEEPER);
   }

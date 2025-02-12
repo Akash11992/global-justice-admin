@@ -247,8 +247,25 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.listSponsorshipByPaginationAndSearchAndSortingEndpoint(queryParamsObj));
   }
 
-  listPeaceKeeper(): Observable<any> {
-    return this._apiHttpService.get(this._apiEndpointsService.listPeaceKeeperEndpoint());
+  //collaborator
+  createCollaborator(bodyParams:any): Observable<any> {
+    return this._apiHttpService.post(this._apiEndpointsService.addCollaboratorEndpoint(),bodyParams);
+  }
+  
+  updateCollaborator(id: string, data: any): Observable<any> {
+    return this._apiHttpService.put(this._apiEndpointsService.editCollaboratorByIdEndpoint(id), data);
+  }
+
+  deleteCollaborator(id: string): Observable<any> {
+    return this._apiHttpService.delete(this._apiEndpointsService.deleteCollaboratorByIdEndpoint(id));
+  }
+
+  getCollaborator(id: string): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getCollaboratorIdEndpoint(id));
+  }
+
+  listCollaborator(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listCollaboratorByPaginationAndSearchAndSortingEndpoint(queryParamsObj));
   }
 
   listCountry(): Observable<any> {
@@ -261,6 +278,10 @@ TrackingLink(body:any) {
 
   getCityById(id: string): Observable<any> {
     return this._apiHttpService.get(this._apiEndpointsService.getCityByIdEndpoint(id));
+  }
+
+  listPeaceKeeper(): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listPeaceKeeperEndpoint());
   }
 
 
