@@ -61,6 +61,29 @@ export class CollaboratorComponent implements OnInit{
       )
     }
 
+    onActivateDeactiveToggle(item:any):void{
+      this.ngxService.start();
+      let id = item['id'];
+      item['is_active'] = !item['is_active'];
+      delete item['id'];
+      delete item['logo_image'];
+      delete item['created_at'];
+      delete item['updated_at'];
+      this.updateCollaboratorData(id,item);
+    }
+
+    updateCollaboratorData(id:string, payload:any){
+      this.adminService.updateCollaborator(id,payload).subscribe((data: any) => {
+        this.ngxService.stop();
+        this.SharedService.ToastPopup('collaborator updated successfully', 'Badge', 'success');
+      },
+      (error: any) => {
+        this.ngxService.stop();
+        this.SharedService.ToastPopup('Oops failed to update collaborator', 'Badge', 'error');
+      }
+      )
+    }
+
     onSelectionChange(selectedValue: string) {
       this.limit = +selectedValue;
       this.loadcollaborators();

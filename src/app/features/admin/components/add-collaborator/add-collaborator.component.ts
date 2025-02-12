@@ -16,6 +16,9 @@ export class AddCollaboratorComponent {
   countries: any[] = [];
   selectedCountryObj:any={};
 
+  collaboratorId!: string;
+  collaboratorResData:any;
+
   constructor(
                 private fb: FormBuilder,
                 private route: ActivatedRoute,
@@ -27,10 +30,16 @@ export class AddCollaboratorComponent {
 
     ngOnInit() {
       this.initializeForm();
-      this.setupCountry();
+      if(!this.collaboratorId){
+        this.setupCountry();
+      }
     }
 
     initializeForm() {
+      this.collaboratorId = this.route.snapshot.paramMap.get('id');
+      if(this.collaboratorId){
+        this.collaboratorDataById();
+      }
         const namePattern = /^[a-zA-Z ]+$/;
     
         this.form = this.fb.group({
@@ -38,8 +47,33 @@ export class AddCollaboratorComponent {
           fullName: ['', [Validators.required, Validators.pattern(namePattern)]],
           mobile: ['', [Validators.required]],
           country: ['', Validators.required],
-          refBy: ['']
+          dob: ['',Validators.required]
         });
+      }
+
+      collaboratorDataById(){
+        this.adminService.getCollaborator(this.collaboratorId).subscribe((data: any) => {
+          this.ngxService.stop();
+    
+          this.collaboratorResData = data;
+    
+          this.setupCountry();
+    
+          const patchFormData = {
+            email: data['email'],
+            fullName: data['full_name'],
+            mobile: data['mobile_no'],
+            country: data['country_id'],
+            dob: data['dob']
+          }
+          this.form.patchValue(patchFormData);
+    
+        },
+        (error: any) => {
+          this.ngxService.stop();
+          this.SharedService.ToastPopup('Oops failed to update collaborator', 'Badge', 'error');
+        }
+        )
       }
 
     setupCountry(): void{
@@ -71,7 +105,7 @@ export class AddCollaboratorComponent {
   
         const payload = {
           full_name:this.form.value["fullName"],
-          mobile:this.form.value["mobile"],
+          mobile_no:this.form.value["mobile"],
           email:this.form.value["email"],
           country_id:this.form.value["country"],
           country:this.selectedCountryObj["name"],
@@ -83,6 +117,7 @@ export class AddCollaboratorComponent {
         this.adminService.createCollaborator(payload).subscribe((data: any) => {
           this.ngxService.stop();
           this.SharedService.ToastPopup('collaborator added successfully', 'Badge', 'success');
+          this.resetForm();
         },
         (error: any) => {
           this.ngxService.stop();

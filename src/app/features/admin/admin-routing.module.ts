@@ -67,6 +67,7 @@ const routes: Routes = [
       { path: "edit-sponsorship/:id", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
       { path: "collaborator", component: CollaboratorComponent,canActivate: [AuthGuard], },
       { path: "add-collaborator", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
+      { path: "edit-collaborator/:id", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
       { path: "delegate", component: DelegateComponent,canActivate: [AuthGuard], },
       { path: "add-delegate", component: AddDelegateComponent,canActivate: [AuthGuard], },
       { path: "add-delegate-by-file", component: AddDelegateByFileComponent,canActivate: [AuthGuard], },
