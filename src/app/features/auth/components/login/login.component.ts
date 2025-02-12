@@ -93,7 +93,7 @@ export class LoginComponent {
       this.SharedService.ToastPopup('You have logged in successfully!', '', 'success');
       this.isAuthenticatedSubject.next(true);
       const decreptedToken = this.SharedService.decryptData(res.token);
-      const decreptedUser = this.SharedService.decryptData(res.data)
+      const decreptedUser = JSON.parse(this.SharedService.decryptData(res.data))
       debugger
       const userData = {
         name : decreptedUser.name,

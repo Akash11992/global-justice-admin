@@ -52,6 +52,8 @@ export class PeacekeeperUserComponent implements OnInit {
   totalSelected: number = 0;
   selectAll: boolean = false; // Tracks the "select all" checkbox state
   searchParams: string = '';
+  sortParamKey: string = 'full_name';
+
   pageSize: any = 25;
   paging: any = 1;
   totalRecords: number = 0;
@@ -77,7 +79,7 @@ export class PeacekeeperUserComponent implements OnInit {
   selectedImage: string = '';
 
   sortColumn: string = ''; // Column currently being sorted
-  sortDirection: boolean = true; // True = Ascending, False = Descending
+  sortDirection: boolean = false; // True = Ascending, False = Descending
 
   // FontAwesome icons for sorting
   faSort = faSort;
@@ -189,10 +191,10 @@ searchUsers() {
   allPeacekeeper() {
 
    let body ={
-    "page_no":this.paging ,
-    "page_size":this.pageSize,
+    "ordering": this.sortParamKey,
     "name":this.searchParams,
-    "email":""
+    "page_size":this.pageSize,
+    "page_no":this.paging ,
       
    }
 
@@ -658,23 +660,39 @@ searchUsers() {
 
 
   // Sorting Function
-  sortData(column: string) {
-    if (this.sortColumn === column) {
+  sortData(queryParamKey: string) {
+
+    if (
+      queryParamKey === this.sortParamKey.replace("-", "") &&
+      this.sortParamKey.includes("-")
+    ) {
+      this.sortParamKey = queryParamKey;
+    } else {
+      this.sortParamKey = "-" + queryParamKey;
+    }
+    // this.sorticon = this.sorticon ? false : true;
+    // this.fnReset(true);
+ 
+
+    if (this.sortColumn === queryParamKey) {
       this.sortDirection = !this.sortDirection; // Toggle direction
     } else {
-      this.sortColumn = column;
+      this.sortColumn = queryParamKey;
       this.sortDirection = true; // Default Ascending
+    
     }
 
-    this.peacekeeperList.sort((a, b) => {
-      let valA = a[column] || ''; // Handle null values
-      let valB = b[column] || '';
+    this.peacekeeperList = [];
+    this.allPeacekeeper();
+    // this.peacekeeperList.sort((a, b) => {
+    //   let valA = a[queryParamKey] || ''; // Handle null values
+    //   let valB = b[queryParamKey] || '';
 
-      if (typeof valA === 'string') valA = valA.toLowerCase();
-      if (typeof valB === 'string') valB = valB.toLowerCase();
+    //   if (typeof valA === 'string') valA = valA.toLowerCase();
+    //   if (typeof valB === 'string') valB = valB.toLowerCase();
 
-      return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
-    });
+    //   return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+    // });
   }
 
   openLink(link:any) {
