@@ -203,6 +203,8 @@ searchUsers() {
       const decreptedUser = this.SharedService.decryptData(data.data)
 
       this.peacekeeperList = decreptedUser
+      console.log(this.peacekeeperList , 'peaceList');
+      
       if (this.masterSelected) {
         this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
       }
@@ -303,60 +305,12 @@ searchUsers() {
     }
   }
 
-  unapproveSelected(): void {
-    if (this.selectedUserIds.length === 0) {
-      this.SharedService.ToastPopup('', "please select user!", 'error')
-
-      // Handle the case when no users are selected.
-      return;
-    }
-    // Prepare the payload with selected user IDs and status 0.
-    const payload = {
-      user_id: this.selectedUserIds.join(','), // Convert array to comma-separated string
-      // user_id:this.userId,
-      status: 2,      //unapprove
-      updated_by: "admin",
-      user_name: this.userName,
-      user_email: this.userEmail,
-      user_number: this.userNumber
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      this.selectedUserIds.pop();
-
-      // this.allPeacekeeper();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.peacekeeper);
-
-        switch (true) {
-          case this.peacekeeper === true:
-            console.log("active tab name delegate", this.peacekeeper);
-            this.allPeacekeeper();
-            break;
-
-        }
-
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-
-
-    })
-  }
-  updateAndUnapprovethroughDropdown(userId: number, userName: any, userEmail: any, userNumber: any): void {
-    // Update the selected users
-    this.updateSelectedUsers(userId, userName, userEmail, userNumber);
-
-    // Now, call the unapproveSelected function
-    this.unapproveSelected();
-  }
+ 
 
 
   resetForm(): void {
     this.searchForm.reset();
+    this.searchParams = '';
     this.getInterval();
  
         this.allPeacekeeper();
@@ -542,13 +496,9 @@ searchUsers() {
       // this.allPeacekeeper();
       setTimeout(() => {
         this.router.navigate(['dashboard/peacekeeper']);
-        switch (true) {
-          case this.peacekeeper === true:
-            console.log("active tab name delegate", this.peacekeeper);
-            this.allPeacekeeper();
-            break;
 
-        }
+            this.allPeacekeeper();
+         
       }, 2000); // 2000 milliseconds (2 seconds) delay
 
 
