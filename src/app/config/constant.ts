@@ -103,6 +103,7 @@ export class Constants {
 
 
     public readonly API_ENDPOINT_getContactUs: string = 'getAllContactUsData'
+    public readonly API_ENDPOINT_SEARCH_PEACEKEEPER_USER: string = 'getAllpeacekeeper'
     public readonly API_ENDPOINT_getPeacekeeper: string = 'getAllpeacekeeper'
     public readonly API_ENDPOINT_DELETE_PEACEKEEPER: string = 'delete_peacekeeper'
     public readonly API_ENDPOINT_PEACE_UPDATE_GENERATE_QR: string = 'update_peacekeeper'

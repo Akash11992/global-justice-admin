@@ -1,0 +1,109 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto; overflow-x: hidden">
+    <div class="container-fluid" id="pagecontent">
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-4">
+                <form class="">
+                  <input
+                    class="form-control"
+                    [ngModelOptions]="{ standalone: true }"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                  />
+                </form>
+              </div>
+
+              <div class="col-md-2">
+                <button
+                  type="button"
+                  class="btn btn-info1"
+                  routerLink="/allContact/importContact/upload"
+                >
+                  <i class="bi bi-plus-lg"></i>&nbsp;Add New List
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table
+              id="dtBasicExample"
+              class="table table-hover mt-3"
+              cellspacing="0"
+              width="100%"
+            >
+              <thead>
+                <tr>
+                 
+                  <th scope="col" class="sorting cursor-pointer">List Name</th>
+
+                  <th scope="col" class="one cursor-pointer">Last Modified</th>
+                  <th scope="col" class="cursor-pointer">Owner</th>
+                  <th scope="col" class="one cursor-pointer">Status</th>
+                  <th scope="col" class="sorting cursor-pointer">
+                    Total Contacts
+                  </th>
+                  <th scope="col" class="one cursor-pointer">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>
+                    <h5>
+                      <a class="text-decoration-none text-dark cursor-pointer"
+                        >List 1</a
+                      >
+                    </h5>
+                  </td>
+
+                  <td>10-02-2025</td>
+                  <td>Kumar Saurabh</td>
+                  <td>
+                    <ng-container>
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="slider round"></span>
+                      </label>
+                    </ng-container>
+                  </td>
+                  <td>20</td>
+                  <td>
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-info1 dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Action
+                      </button>
+                      <ul
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <!-- <li><a class="dropdown-item cursor-pointer">Edit</a></li> -->
+                        <li>
+                          <a class="dropdown-item cursor-pointer">Delete</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

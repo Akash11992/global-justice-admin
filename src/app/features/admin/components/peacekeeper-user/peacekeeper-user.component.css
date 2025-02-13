@@ -1,0 +1,116 @@
+table>tbody>tr>td img {
+    border-radius: 5px;
+    transition: transform 0.2s;
+  }
+  table>tbody>tr>td img:hover {
+    transform: scale(1.1);
+  }
+
+  a {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+  /* Modal background */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it stays on top */
+}
+
+/* Modal content */
+.modal-content {
+  background: transparent !important;
+  align-items: center;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+}
+
+.image-modal .modal-content ngx-image-viewer {
+  max-width: 40%;
+}
+
+.img-container[_ngcontent-wmg-c32] {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: static;
+}
+/* Close button styling */
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  color: black;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #555;
+  background-color: white;
+  opacity: 0.7;
+  /* transition: opacity 200ms; */
+  text-align: center;
+  z-index: 9999;
+}
+
+.close-btn:hover {
+  background-color: white !important ;
+  opacity: 1;
+  
+
+}
+
+   .pagination {
+    display: inline-block;
+  }
+  
+
+  .pagination a {
+    color: #357EBD !important;
+    float: left;
+    padding: 4px 8px;
+    /* padding: 4px 8px; */
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+
+
+
+   .pagination ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+   }
+  .pagination li {
+    margin: 0 5px;
+  }
+
+
+
+
+  .pagination a.disabled {
+    cursor: not-allowed;
+    color: #999;
+    border-color: #ddd;
+  }
+  .pagination li:first-child a,
+  .pagination li:last-child a {
+    border-radius: 5px;
+  }

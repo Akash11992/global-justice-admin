@@ -5,6 +5,16 @@ import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
 
+  {
+    path: '',
+    loadChildren: () =>
+      import('./features/auth/auth.module').then((m) => m.AuthModule)
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./features/admin/admin.module').then((m) => m.AdminModule)
+  }
 ];
 
 @NgModule({

@@ -1,0 +1,183 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto; overflow-x: hidden">
+    <!-- class="p-4 p-md-5 "-->
+
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="col-md-12 px-0" style="margin-top: 25px">
+        <img src="assets/images/user (1).png" id="userimg" />&nbsp; &nbsp;
+        <h4 style="display: inline-flex">Sponsorship</h4>
+      </div>
+
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-12">
+                  <form>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <select class="form-control" aria-label="Default select example">
+                          <option selected>Select</option>
+                          <option value="1">25</option>
+                          <option value="2">50</option>
+                          <option value="3">100</option>
+                        </select>
+                      </div>
+                      <div class="col-md-9 d-flex">
+                        <input
+                      class="form-control"
+                      type="search"
+                      id="inputsearch"
+                      placeholder="Search..."
+                      aria-label="Search"
+                    />
+                    &nbsp; &nbsp;&nbsp;
+                    <button class="btn" id="btncolor">Search</button>
+                    &nbsp; &nbsp;
+                    <button class="btn" type="reset" id="btncolor">
+                      Reset
+                    </button>
+                      </div>
+                    </div>
+                    
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" id="exportcolmd">
+              <button class="btn" type="button" id="exportbtn" routerLink="/dashboard/add-sponsorship">
+                <i class="bi bi-plus"></i> Add Sponsorship
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input type="checkbox" id="checkbox" />
+                      </th>
+                      <th>
+                        Sponsorship Type <i class="bi bi-caret-down-fill"></i>
+                      </th>
+                      <th>
+                        Collaborator Name <i class="bi bi-caret-down-fill"></i>
+                      </th>
+                      <th>POC Name <i class="bi bi-caret-down-fill"></i></th>
+                      <th>POC Mobile NO <i class="bi bi-caret-down-fill"></i></th>
+                      <th class="text-center">
+                        POC Email <i class="bi bi-caret-down-fill"></i>
+                      </th>
+                      <th class="text-center">
+                        Ref by <i class="bi bi-caret-down-fill"></i>
+                      </th>
+                      <th class="text-center">
+                        Name <i class="bi bi-caret-down-fill"></i>
+                      </th>
+                      <!-- <th>Delegate Allowed <i class="bi bi-caret-down-fill"></i></th>
+    <th>Amount</th> -->
+                      <th class="text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>Petrol</td>
+                      <td>APCO</td>
+                      <td>Piyush</td>
+                      <td>9833438670</td>
+                      <td class="text-center">piyush@gmail.com</td>
+                      <td class="text-center">Peacekeeper</td>
+                      <td class="text-center">Kumar saurabh</td>
+                      <!-- <td></td>
+    <td></td> -->
+                      <td class="text-right">
+                        <div class="dropdown dropstart">
+                          <button
+                            class="btn btn-outline-success"
+                            type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <img
+                              src="/assets/images/orangemenuicon.png"
+                              id="hamburgericon"
+                            />
+                          </button>
+                          <ul
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton1"
+                          >
+                            <li>
+                              <a class="dropdown-item" style="cursor: pointer">
+                                Edit</a
+                              >
+                            </li>
+                            <li>
+                              <a class="dropdown-item" style="cursor: pointer">
+                                Active</a
+                              >
+                            </li>
+                            <li>
+                              <a class="dropdown-item" style="cursor: pointer">
+                                Deactive</a
+                              >
+                            </li>
+                            <li>
+                              <a class="dropdown-item" style="cursor: pointer" >
+                                Add Delegate</a
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <nav aria-label="...">
+                <ul class="pagination">
+                  <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item active" aria-current="page">
+                    <span class="page-link">2</span>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+              <!-- <h5 style="text-align: center">
+    <span >No Data Found</span>
+    </h5> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>

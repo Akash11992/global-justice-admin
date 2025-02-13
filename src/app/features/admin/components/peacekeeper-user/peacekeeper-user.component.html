@@ -1,0 +1,256 @@
+<!------------------------------------------- Sidebar start---------------------------------------------->
+<div class="wrapper d-flex align-items-stretch">
+  <app-admin-left-panel></app-admin-left-panel>
+  <!------------------------------------------- Sidebar end---------------------------------------------->
+
+
+
+
+
+  <!------------------------------------------ bodyheader start ----------------------------------------->
+  <div id="content" style="overflow-y: auto ;overflow-x: hidden;">
+    <!-- class="p-4 p-md-5 "-->
+
+    <!------------------------------------------ bodyheader end ---------------------------------------->
+
+
+
+
+
+    <!------------------------------------------ Page Content -------------------------------------------->
+    <div class="container-fluid" id="pagecontent">
+      <div class="col-md-12 py-3">
+        <img src="assets/images/user (1).png" id="userimg">&nbsp; &nbsp;
+        <h4 style="display: inline-flex;"> Registered Peacekeeper</h4>
+      </div>
+
+      <div class="card" id="uppercard">
+        <div class="card-body">
+          <!-- <div class="col-md-12" id="exportcolmd">
+                  <button class="btn " type="button" id="exportbtn" (click)="export()"><i
+                      class="bi bi-file-earmark-excel"></i> Export</button>
+
+                      <button  class="btn btn-danger ml-2" 
+                      (click)="deleteSelected()" 
+                      [disabled]="!selectedIds.length" type="button" ><i
+                        class="bi bi-trash3-fill"></i>  Delete Selected</button>
+
+                </div> -->
+
+          <div class="row">
+            <div class="col-md-6">
+              <form class="d-flex" [formGroup]="searchForm">
+                <input class="form-control" formControlName="searchInput" type="search" id="inputsearch"
+                  placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
+                <button class="btn " (click)="searchUsers()" id="btncolor">Search</button>
+                &nbsp; &nbsp;
+                <button class="btn " (click)="resetForm()" type="reset" id="btncolor">Reset</button>
+              </form>
+            </div>
+            <div class="col-md-6 " id="exportcolmd"> <button class="btn " type="button" id="exportbtn"
+                (click)="export()"><i class="bi bi-file-earmark-excel"></i> Export</button></div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="row m-1" *ngIf="peacekeeperList.length > 0;">
+        <div class="col-md-12 row">
+                <div class="col-sm-10">
+                  <p>
+                    * Data will be auto refreshed in every 60 secs
+                  </p>
+                </div>
+                <div class="col-sm-2">
+                <div class="showData dropdown">
+                  <h4 class="m-0">
+                    <a class="" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span class="group-by" style="font-size: 15px;">{{ this.pageSize }} per page  </span>
+                      <img src="assets/images/arrow-down-blue.svg" alt="" width="20px" class="pl-2 pt-1" />
+                    </a>
+      
+                    <div class="dropdown-menu p-0" style="    position: absolute;
+                    transform: translate3d(747px, -126px, 0px);
+                    top: 0px;
+                    left: 0px;
+                    will-change: transform;
+                ">
+                      <a (click)="fnPaging(list.name)" class="dropdown-item groupdpdn-item" *ngFor="
+                                          let list of groupByPerpage;
+                                        ">
+                        {{ list.name }}
+                      </a>
+                    </div>
+                  </h4>
+                </div>
+                </div>
+              </div>
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body p-0">
+              <div class="table-responsive" *ngIf="peacekeeperList.length > 0; ">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                              <input 
+                                type="checkbox" 
+                                [(ngModel)]="masterSelected" 
+                                (change)="checkUncheckAll()"
+                              />
+                            </th>
+                      <th>SN</th>
+                      <th (click)="sortData('full_name')">Name <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th>DOB</th>
+                      <th (click)="sortData('country')">Country  <fa-icon [icon]="sortColumn === 'country' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th>Mobile</th>
+                      <th (click)="sortData('email_id')">Email  <fa-icon [icon]="sortColumn === 'email_id' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th>Peacekeeper ID</th>
+                      <th>Coupon <br>Discount%</th>
+                      <th>Coupon Code</th>
+                      <th>Image</th>
+                      <th>QR URL</th>
+                      <th (click)="sortData('created_at')">Created Date  <fa-icon [icon]="sortColumn === 'created_at' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let all of peacekeeperList let i = index;">
+                      <td>
+                              <input 
+                                type="checkbox" 
+                                [(ngModel)]="all.selected" 
+                                (change)="isAllSelected()"
+                              />
+                            </td>
+                      <td>{{i+1}}</td>
+                      <td>{{all.full_name}}</td>
+                      <td>{{all.dob !==null? all.dob :'' | date : 'dd/MM/yyyy'}}</td>
+                      <td>{{all.country}}</td>
+                      <td> {{ isVisible[i] ? all.mobile_number : maskMobileNumber(all.mobile_number) }}
+                        <fa-icon [icon]="isVisible[i] ? faEye : faEyeSlash " (click)="toggleVisibility(i)"></fa-icon>
+                      </td>
+                      <td><span style="
+                              display: block;
+                              text-overflow: ellipsis;
+                              overflow: hidden;
+                              white-space: nowrap;
+                              width: 230px;
+                             ">{{all.email_id}} <i class="bi bi-person-fill"></i></span></td>
+                      <td>{{all.Id_no}}</td>
+                      <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
+                      <td>{{all.coupon_code}}</td>
+                      <td class="p-0"><img class="p-1" [src]="all.file_name"  (click)="openImage(all.file_name)" width="50px" alt=""></td>
+                      <td tooltip="{{all.QR_CODE}}" [options]="myOptions" style="
+                            display: block;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: pre-wrap;
+                            font: -webkit-control;
+                            width: 250px;
+                           "><a  (click)="openLink(all.QR_CODE)" style="color: #0056b3;
+                           text-decoration: none;cursor: pointer;">{{all.QR_CODE}}</a></td>
+                      <td>{{all.created_at | date : 'dd/MM/yyyy'}}</td>
+                      <!-- <td>{{all.designation}}</td>
+                            <td>{{all.department}}</td>
+                            <td>{{all.refrence}}</td>
+                            <td>{{all.created_date | date :'short'}}</td> -->
+
+                      <td>
+                        <div class="dropdown dropstart">
+                          <button class="btn btn-outline-success" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/assets/images/orangemenuicon.png" id="hamburgericon">
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                            <!-- <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
+                                                  <i class="fa fa-eye" aria-hidden="true" ></i> View Details</a>
+                                              </li>
+                                                 <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/editdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
+                                                  <i class="bi bi-pencil-fill"></i> Edit Details</a>
+                                              </li>
+                                          
+                                              </li> -->
+                            
+                            <li><a class="dropdown-item" style="cursor: pointer;" type="button"
+                                (click)="resendBadge(all.peacekeeper_id,all.url)">
+                                <i class="bi bi-envelope-fill"></i> Resend Badge</a></li>
+                            <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.peacekeeper_id)" >
+                                                <i class="bi bi-envelope-fill"></i> Resend Reg. Mail</a></li> -->
+
+
+
+
+                            <li><a class="dropdown-item" style="cursor: pointer;"
+                                (click)="deletePeacekeeper(all.peacekeeper_id)">
+                                <i class="bi bi-trash3-fill"></i> Delete</a></li>
+
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              
+              </div>
+              <h5 style="text-align: center;"><span *ngIf="notFound">No Data Found</span></h5>
+
+            </div>
+          </div>
+          <div class="row pt-3 justify-content-center">
+            <div class="datatable_rgt">
+                    <div class="pagination" *ngIf="this.totalitems !== undefined && peacekeeperList.length !== 0">
+                      <a (click)="previousPage()" *ngIf="this.activeItem !== 1" [attr.disabled]="page === 1">
+                        <img src="../../../../../assets/images/arrow-left-blue.svg" alt="" />
+                        Previous
+                      </a>
+                      <ng-container *ngFor="
+                          let item of totalitems
+                            | slice : (page - 1) * itemsPerPage : page * itemsPerPage;
+                          let ind = index
+                        ">
+                        <a [class.active]="item === activeItem" (click)="setActiveItem(item)">
+                          {{ item }}
+                        </a>
+                      </ng-container>
+                      <a (click)="nextPage()" *ngIf="this.totalitems.length !== this.activeItem"
+                        [attr.disabled]="page === numberOfPages">
+                        Next
+                        <img src="../../../../../assets/images/arrow-right-blue.svg" alt="" />
+                      </a>
+                    </div>
+    
+                  </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+</div>
+
+<!------------------------------------------- Page modal start ----------------------------------------->
+
+
+
+
+<!-- Modal -->
+
+
+  <!-- Image Viewer -->
+
+  <div *ngIf="isViewerOpen" class="image-modal">
+    <div class="modal-content">
+         <!-- Close Button -->
+    <button class="close-btn" (click)="closeViewer()">✖</button>
+      <ngx-image-viewer  [fullscreen]="false" 
+        [src]="[selectedImage]" 
+        (close)="isViewerOpen = false">
+      </ngx-image-viewer>
+    </div>
+  </div>

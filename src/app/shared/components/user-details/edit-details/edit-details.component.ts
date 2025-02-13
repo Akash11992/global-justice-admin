@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AdminService } from 'src/app/admin/services/admin.service';
+import { AdminService } from 'src/app/features/admin/services/admin.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { FormGroup, Validators, FormControlName, FormBuilder, FormArray, AbstractControl, ValidatorFn, } from '@angular/forms';

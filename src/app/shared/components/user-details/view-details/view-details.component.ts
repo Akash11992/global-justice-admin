@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AdminService } from 'src/app/admin/services/admin.service';
+import { AdminService } from 'src/app/features/admin/services/admin.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { ActivatedRoute } from '@angular/router';
 
