@@ -365,14 +365,10 @@ export class ContactUsComponent implements OnInit {
   resetForm(): void {
     this.searchForm.reset();
 
-    console.log("active tab name delegate", this.contactUs);
-
-    switch (true) {
-      case this.contactUs === true:
+    this.searchParams = '';
+    this.getInterval();
         this.allContactUs();
-        break;
-
-    }
+     
   }
 
 

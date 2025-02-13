@@ -345,6 +345,8 @@ export class RegisteredUserComponent {
 
   resetForm(): void {
     this.searchForm.reset();
+    this.searchParams = '';
+    this.getInterval();
     this.allDelegate();
 
   }
