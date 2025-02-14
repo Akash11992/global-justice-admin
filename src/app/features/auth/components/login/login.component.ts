@@ -94,7 +94,6 @@ export class LoginComponent {
       this.isAuthenticatedSubject.next(true);
       const decreptedToken = this.SharedService.decryptData(res.token);
       const decreptedUser = JSON.parse(this.SharedService.decryptData(res.data))
-      debugger
       const userData = {
         name : decreptedUser.name,
         email : decreptedUser.email,
