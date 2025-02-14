@@ -23,7 +23,7 @@
                 </label>
                 <select class="form-control" formControlName="sponsorshipType">
                   <option value="">Select Sponsorship Type</option>
-                  <option *ngFor="let type of sponsorshipTypes" [value]="type">{{type}}</option>
+                  <option *ngFor="let type of sponsorshipTypes" [value]="type">{{type | titlecase}}</option>
                 </select>
                 <div *ngIf="form.get('sponsorshipType').errors?.required && form.get('sponsorshipType').touched" class="error text-danger">
                   Sponsorship Type is required
@@ -65,7 +65,7 @@
                 <div *ngIf="form.get('pocEmail').errors?.required && form.get('pocEmail').touched" class="error text-danger">
                   Email is required
                 </div>
-                <div *ngIf="form.get('pocEmail').errors?.email" class="error text-danger">
+                <div *ngIf="form.get('pocEmail').errors?.invalidEmail && form.get('pocEmail').touched" class="error text-danger">
                   Invalid email format
                 </div>
                 <div *ngIf="form.get('pocEmail').errors?.maxlength" class="error text-danger">

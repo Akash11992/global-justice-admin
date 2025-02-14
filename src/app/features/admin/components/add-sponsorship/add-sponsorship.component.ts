@@ -5,6 +5,7 @@ import { map, Subject, takeUntil } from 'rxjs';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { strictEmailValidator } from '../../validator/email-validator';
 
 @Component({
   selector: 'app-add-sponsorship',
@@ -67,7 +68,7 @@ export class AddSponsorshipComponent implements OnInit{
     this.form = this.fb.group({
       sponsorshipType: ['', Validators.required],
       pocName: ['', [Validators.required, Validators.pattern(namePattern)]],
-      pocEmail: ['', [Validators.required, Validators.email,Validators.maxLength(254)]],
+      pocEmail: ['', [Validators.required, strictEmailValidator(),Validators.maxLength(254)]],
       state: ['', Validators.required],
       address: ['', [Validators.required,Validators.pattern(addressPattern)]],
       sponsorshipName: ['', [Validators.required, Validators.pattern(namePattern)]],

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { strictEmailValidator } from '../../validator/email-validator';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -50,7 +51,7 @@ export class AddCollaboratorComponent {
       const mobilePattern = /^\+?[1-9]\d{9,14}$/;
     
         this.form = this.fb.group({
-          email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
+          email: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(254)]],
           fullName: ['', [Validators.required, Validators.pattern(namePattern)]],
           mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
           country: ['', Validators.required],

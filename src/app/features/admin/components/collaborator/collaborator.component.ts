@@ -64,6 +64,7 @@ export class CollaboratorComponent implements OnInit{
     onActivateDeactiveToggle(item:any):void{
       this.ngxService.start();
       const { id, created_at,updated_at, ...newItem } = item;
+      item['is_active'] = +!item['is_active'];
       newItem['is_active'] = +!newItem['is_active'];
       this.updateCollaboratorData(item['id'],newItem);
     }
