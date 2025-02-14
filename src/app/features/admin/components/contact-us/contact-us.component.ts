@@ -50,7 +50,7 @@ export class ContactUsComponent implements OnInit {
   totalitems: any;
   itemsPerPage = 10;
   itemsPageTo = 10;
-  page = 1;
+  // page = 1;
   numberOfPages: number = 0;
   activeItem: number = 1;
   groupByPerpage: any = [];
@@ -65,6 +65,22 @@ export class ContactUsComponent implements OnInit {
   faSortUp = faSortUp;
   faSortDown = faSortDown;
 
+
+  // new pagination
+  totalItems: number = 0;
+  page: number = 1;
+  limit: number = 25;
+  sortBy: string = 'created_at';
+  order: string = 'desc';
+  search: string = '';
+  totalPages: number = 0;
+
+
+  rowOptions = [
+    { value: 25, label: '25' },
+    { value: 50, label: '50' },
+    { value: 100, label: '100' }
+  ];
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
 
 
@@ -136,35 +152,42 @@ export class ContactUsComponent implements OnInit {
 
   allContactUs() {
     let body = {
-      "name": this.searchParams,
-      "ordering": this.sortParamKey,
-      "page_size": this.pageSize,
-      "page_no": this.paging,
-
+      sort_column: this.sortBy,
+      sort_order: this.order,
+      name:this.search,
+      page_size:this.limit,
+      page_no:this.page ,
 
     }
+    this.ngxService.start();
+
 
     this.AdminService.getContactUsApi(body).subscribe((data: any) => {
+      this.ngxService.stop();
 
-      const decreptedUser = this.SharedService.decryptData(data.data)
+      // const decreptedUser = this.SharedService.decryptData(data.data)
 
-      this.contactUsList = decreptedUser
-      console.log("data", decreptedUser);
+      // this.contactUsList = decreptedUser
+      this.contactUsList = data.data
+      console.log("data", this.contactUsList);
 
-      this.totalRecords = this.contactUsList.length;
+      this.totalItems = data.total_records;
+      this.totalPages = Math.ceil(this.totalItems / this.limit);
 
-      console.log(this.totalRecords, 'totalRecords');
+      // this.totalRecords = this.contactUsList.length;
+
+      // console.log(this.totalRecords, 'totalRecords');
 
 
-      let pag = Math.ceil(this.totalRecords / this.pageSize);
+      // let pag = Math.ceil(this.totalRecords / this.pageSize);
 
-      this.totalitems = Array(pag)
-        .fill(0)
-        .map((x, i) => i + 1);
+      // this.totalitems = Array(pag)
+      //   .fill(0)
+      //   .map((x, i) => i + 1);
 
-      this.numberOfPages = Math.ceil(
-        this.totalRecords / this.pageSize
-      );
+      // this.numberOfPages = Math.ceil(
+      //   this.totalRecords / this.pageSize
+      // );
 
 
       if (this.contactUsList.length === 0) {
@@ -561,16 +584,52 @@ export class ContactUsComponent implements OnInit {
     this.contactUsList = [];
     this.allContactUs();
 
-    this.contactUsList.sort((a, b) => {
-      let valA = a[queryParamKey] || ''; // Handle null values
-      let valB = b[queryParamKey] || '';
-
-      if (typeof valA === 'string') valA = valA.toLowerCase();
-      if (typeof valB === 'string') valB = valB.toLowerCase();
-
-      return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
-    });
+ 
   }
+
+
+
+
+// new pagination
+
+onSelectionChange(selectedValue: string) {
+  this.page = 1
+  this.limit = +selectedValue;
+  this.allContactUs();
+}
+
+onSearchClick(searchValue: string) {
+  if(searchValue == ''){
+    this.page = 1
+    this.limit = 25;
+  }
+  this.search = searchValue;
+  this.allContactUs();
+}
+
+changePage(newPage: number) {
+  if (newPage >= 1 && newPage <= this.totalPages) {
+    this.page = newPage;
+    this.allContactUs();
+  }
+}
+
+onSort(column: string) {
+  this.sortBy = column;
+  this.order = this.order === 'asc' ? 'desc' : 'asc';
+
+  if (this.sortColumn === column) {
+    this.sortDirection = !this.sortDirection; // Toggle direction
+  } else {
+    this.sortColumn = column;
+    this.sortDirection = true; // Default Ascending
+  }
+  this.allContactUs();
+}
+
+
+
+
 
   myOptions = {
     'placement': 'top',
