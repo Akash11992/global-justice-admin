@@ -577,11 +577,16 @@ export class RegisteredUserComponent {
 // new pagination
 
 onSelectionChange(selectedValue: string) {
+  this.page = 1
   this.limit = +selectedValue;
   this.allDelegate();
 }
 
 onSearchClick(searchValue: string) {
+  if(searchValue == ''){
+    this.page = 1
+    this.limit = 25;
+  }
   this.search = searchValue;
   this.allDelegate();
 }

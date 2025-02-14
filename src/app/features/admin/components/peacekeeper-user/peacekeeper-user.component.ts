@@ -573,11 +573,16 @@ export class PeacekeeperUserComponent implements OnInit {
 // new pagination
 
 onSelectionChange(selectedValue: string) {
+  this.page = 1
   this.limit = +selectedValue;
   this.allPeacekeeper();
 }
 
 onSearchClick(searchValue: string) {
+  if(searchValue == ''){
+    this.page = 1
+    this.limit = 25;
+  }
   this.search = searchValue;
   this.allPeacekeeper();
 }
