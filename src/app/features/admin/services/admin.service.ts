@@ -26,8 +26,8 @@ export class AdminService {
     return this._apiHttpService.get(this._apiEndpointsService.getSpeakerEndpoint());
   }
 //approvel
-getApprovedDelegate() {
-  return this._apiHttpService.get(this._apiEndpointsService.getApprovedDelegateEndpoint());
+getApprovedDelegate(data:any) {
+  return this._apiHttpService.post(this._apiEndpointsService.getApprovedDelegateEndpoint(data),data);
 }
 
 
@@ -195,14 +195,19 @@ TrackingLink(body:any) {
   }
 
 
-  getContactUsApi() {
-    return this._apiHttpService.get(this._apiEndpointsService.getContactUsEndpoint());
+  getContactUsApi(data:any) {
+    return this._apiHttpService.post(this._apiEndpointsService.getContactUsEndpoint(data),data);
   }
   
   
   
   getPeacekeeper(searchParams:string,pagesize:string,pagenumber:string) {
     return this._apiHttpService.get(this._apiEndpointsService.getPeacekeeperEndpoint(searchParams,pagesize,pagenumber));
+  }
+
+  //encrypted 
+  getAllPeacekeeperData(data:any) {
+    return this._apiHttpService.post(this._apiEndpointsService.getAllPeacekeeperDataEndpoint(data),data);
   }
   
   SearchPeacekeeperUser(body:any) {

@@ -195,7 +195,7 @@ export class ApiEndpointsService {
 
   //approvel
 
-  public getApprovedDelegateEndpoint(): string {
+  public getApprovedDelegateEndpoint(data:any): string {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedDelegate);
   }
 
@@ -371,7 +371,7 @@ export class ApiEndpointsService {
     return this.createUrl(this._constants.API_ENDPOINT_update_user_details);
   }
 
-  public getContactUsEndpoint(): string {
+  public getContactUsEndpoint(data:any): string {
     return this.createUrl(this._constants.API_ENDPOINT_getContactUs);
   }
 
@@ -383,11 +383,16 @@ export class ApiEndpointsService {
   ): string {
     return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_getPeacekeeper,
       (qs: QueryStringParameters) => {
-        qs.push('searchText', searchParams);
-        qs.push('pagesize', pagesize);
-        qs.push('pagenumber', pagenumber);
+        qs.push('name', searchParams);
+        qs.push('page_size', pagesize);
+        qs.push('page_no', pagenumber);
       });
   }
+
+  public getAllPeacekeeperDataEndpoint(data:any): string {
+    return this.createUrl(this._constants.API_ENDPOINT_getPeacekeeper );
+  }
+
 
   public SearchPeacekeeperUserEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_SEARCH_PEACEKEEPER_USER);

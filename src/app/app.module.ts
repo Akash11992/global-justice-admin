@@ -19,13 +19,14 @@ import { DatePipe } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Constants } from './config/constant';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 import { AdminModule } from './features/admin/admin.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ImageViewerModule } from 'ngx-image-viewer'
+import { TokenInterceptorService } from './core/interceptors/token-interceptor.service';
 // import { HeaderComponent } from './shared/components/header/header.component';
 @NgModule({
   declarations: [
@@ -60,6 +61,9 @@ import { ImageViewerModule } from 'ngx-image-viewer'
     
     provideAnimations(),
     Constants,
+    {
+      provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true,
+    },
     // {provide: LocationStrategy, useClass: HashLocationStrategy}
 
   ],
