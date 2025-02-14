@@ -57,29 +57,26 @@ export class SponsorshipComponent implements OnInit {
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to list sponsorship', 'Badge', 'error');
+      this.SharedService.ToastPopup('Oops failed to list sponsorship', 'Sponsorship', 'error');
     }
     )
   }
 
   onActivateDeactiveToggle(item:any):void{
     this.ngxService.start();
-    let id = item['id'];
-    item['is_active'] = +!item['is_active'];
-    delete item['id'];
-    delete item['created_at'];
-    delete item['updated_at'];
-    this.updateSponsorshipData(id,item);
+    const { id, created_at,updated_at, ...newItem } = item;
+    newItem['is_active'] = +!newItem['is_active'];
+    this.updateSponsorshipData(item['id'],newItem);
   }
 
   updateSponsorshipData(id:string, payload:any){
     this.adminService.updateSponsorship(id,payload).subscribe((data: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('sponsorship updated successfully', 'Badge', 'success');
+      this.SharedService.ToastPopup('Sponsorship updated successfully', 'Sponsorship', 'success');
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to update sponsorship', 'Badge', 'error');
+      this.SharedService.ToastPopup('Oops failed to update sponsorship', 'Sponsorship', 'error');
     }
     )
   }

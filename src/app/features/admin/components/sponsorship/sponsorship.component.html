@@ -66,7 +66,7 @@
           <div class="card">
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table">
+                <table class="table" *ngIf="sponsorships.length > 0 else noDataTemplate">
                   <thead>
                     <tr>
                       <th (click)="onSort('sponsorship_type')">
@@ -166,3 +166,8 @@
   </div>
   <!------------------------------------------- Page Content end ----------------------------------------->
 </div>
+
+
+<ng-template #noDataTemplate>
+  <h5 style="text-align: center"><span >No Data Found</span></h5>
+</ng-template>

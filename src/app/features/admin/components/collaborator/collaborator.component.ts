@@ -56,29 +56,26 @@ export class CollaboratorComponent implements OnInit{
       },
       (error: any) => {
         this.ngxService.stop();
-        this.SharedService.ToastPopup('Oops failed to list collaborator', 'Badge', 'error');
+        this.SharedService.ToastPopup('Oops failed to list collaborator', 'Collaborator', 'error');
       }
       )
     }
 
     onActivateDeactiveToggle(item:any):void{
       this.ngxService.start();
-      let id = item['id'];
-      item['is_active'] = +!item['is_active'];
-      delete item['id'];
-      delete item['created_at'];
-      delete item['updated_at'];
-      this.updateCollaboratorData(id,item);
+      const { id, created_at,updated_at, ...newItem } = item;
+      newItem['is_active'] = +!newItem['is_active'];
+      this.updateCollaboratorData(item['id'],newItem);
     }
 
     updateCollaboratorData(id:string, payload:any){
       this.adminService.updateCollaborator(id,payload).subscribe((data: any) => {
         this.ngxService.stop();
-        this.SharedService.ToastPopup('collaborator updated successfully', 'Badge', 'success');
+        this.SharedService.ToastPopup('collaborator updated successfully', 'Collaborator', 'success');
       },
       (error: any) => {
         this.ngxService.stop();
-        this.SharedService.ToastPopup('Oops failed to update collaborator', 'Badge', 'error');
+        this.SharedService.ToastPopup('Oops failed to update collaborator', 'Collaborator', 'error');
       }
       )
     }

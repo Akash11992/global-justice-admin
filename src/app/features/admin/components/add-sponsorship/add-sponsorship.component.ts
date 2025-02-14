@@ -28,6 +28,7 @@ export class AddSponsorshipComponent implements OnInit{
   selectedPeacekeeperObj:any ={};
   selectedRefObj:string ='';
   spononsershipResData:any;
+  title:string = "Add";
   
   constructor(
               private fb: FormBuilder,
@@ -59,16 +60,18 @@ export class AddSponsorshipComponent implements OnInit{
       this.loadSponsorshipDataById();
     }
 
-    const namePattern = /^[a-zA-Z ]+$/;
+    const namePattern = /^[a-zA-Z0-9 ]{1,50}$/;
+    const mobilePattern = /^\+?[1-9]\d{9,14}$/;
+    const addressPattern = /^[a-zA-Z0-9\s,.'\-/#]{1,100}$/;
 
     this.form = this.fb.group({
       sponsorshipType: ['', Validators.required],
       pocName: ['', [Validators.required, Validators.pattern(namePattern)]],
-      pocEmail: ['', [Validators.required, Validators.email]],
+      pocEmail: ['', [Validators.required, Validators.email,Validators.maxLength(254)]],
       state: ['', Validators.required],
-      address: ['', Validators.required],
+      address: ['', [Validators.required,Validators.pattern(addressPattern)]],
       sponsorshipName: ['', [Validators.required, Validators.pattern(namePattern)]],
-      pocMobile: ['', [Validators.required]],
+      pocMobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
       country: ['', Validators.required],
       city: ['', Validators.required],
       refBy: [''],
@@ -207,6 +210,8 @@ export class AddSponsorshipComponent implements OnInit{
   }
 
   loadSponsorshipDataById(){
+    this.title = "Edit";
+    this.ngxService.start();
     this.adminService.getSponsorship(this.sponsorshipId).subscribe((data: any) => {
       this.ngxService.stop();
 
@@ -232,7 +237,7 @@ export class AddSponsorshipComponent implements OnInit{
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to update sponsorship', 'Badge', 'error');
+      this.SharedService.ToastPopup('Oops failed to update sponsorship', 'Sponsorship', 'error');
     }
     )
   }
@@ -241,12 +246,14 @@ export class AddSponsorshipComponent implements OnInit{
     const peacekeeperSelect = this.form.get('refPeacekeeper');
     const otherName = this.form.get('name');
 
+    const namePattern = /^[a-zA-Z0-9' ]{1,50}$/;
+
     if (refBy === 'peacekeeper') {
       peacekeeperSelect?.setValidators([Validators.required]);
       otherName?.clearValidators();
       this.setupPeacekeeper();
     } else if (refBy === 'other') {
-      otherName?.setValidators([Validators.required]);
+      otherName?.setValidators([Validators.required,Validators.pattern(namePattern)]);
       peacekeeperSelect?.clearValidators();
     } else {
       peacekeeperSelect?.clearValidators();
@@ -288,22 +295,22 @@ export class AddSponsorshipComponent implements OnInit{
       if(this.sponsorshipId){
         this.adminService.updateSponsorship(this.sponsorshipId,payload).subscribe((data: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('sponsorship updated successfully', 'Badge', 'success');
+          this.SharedService.ToastPopup('Sponsorship updated successfully', 'Sponsorship', 'success');
         },
         (error: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('Oops failed to updated sponsorship', 'Badge', 'error');
+          this.SharedService.ToastPopup('Oops failed to updated sponsorship', 'Sponsorship', 'error');
         }
         )
       }else{
         this.adminService.createSponsership(payload).subscribe((data: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('sponsorship added successfully', 'Badge', 'success');
+          this.SharedService.ToastPopup('Sponsorship added successfully', 'Sponsorship', 'success');
           this.resetForm();
         },
         (error: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('Oops failed to add sponsorship', 'Badge', 'error');
+          this.SharedService.ToastPopup('Oops failed to add sponsorship', 'Sponsorship', 'error');
         }
         )
       }

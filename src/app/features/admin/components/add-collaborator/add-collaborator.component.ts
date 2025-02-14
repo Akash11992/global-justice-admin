@@ -19,6 +19,11 @@ export class AddCollaboratorComponent {
   collaboratorId!: string;
   collaboratorResData:any;
   selectedImageBase64: string | null = null;
+  maxDate: string = new Date().toISOString().split('T')[0];
+  fileError: string | null = null;
+  maxSize = 5 * 1024 * 1024; // 5MB in bytes
+  allowedTypes = ['image/jpeg', 'image/png', 'image/svg+xml'];
+  title:string = "Add";
 
   constructor(
                 private fb: FormBuilder,
@@ -41,19 +46,22 @@ export class AddCollaboratorComponent {
       if(this.collaboratorId){
         this.collaboratorDataById();
       }
-        const namePattern = /^[a-zA-Z ]+$/;
+      const namePattern = /^[a-zA-Z0-9' ]{1,50}$/;
+      const mobilePattern = /^\+?[1-9]\d{9,14}$/;
     
         this.form = this.fb.group({
-          email: ['', [Validators.required, Validators.email]],
+          email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
           fullName: ['', [Validators.required, Validators.pattern(namePattern)]],
-          mobile: ['', [Validators.required]],
+          mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
           country: ['', Validators.required],
-          dob: ['',Validators.required],
+          dob: ['',[Validators.required,this.noFutureDateValidator]],
           logoImage: ['',Validators.required]
         });
       }
 
       collaboratorDataById(){
+        this.title = "Edit";
+        this.ngxService.start();
         this.adminService.getCollaborator(this.collaboratorId).subscribe((data: any) => {
           this.ngxService.stop();
           this.collaboratorResData = data;
@@ -74,7 +82,7 @@ export class AddCollaboratorComponent {
         },
         (error: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('Oops failed to update collaborator', 'Badge', 'error');
+          this.SharedService.ToastPopup('Oops failed to update collaborator', 'Collaborator', 'error');
         }
         )
       }
@@ -109,8 +117,24 @@ export class AddCollaboratorComponent {
 
     onFileSelected(event: any) {
       const file = event.target.files[0];
+      if (!file) {
+        this.fileError = "Please select an image.";
+        return;
+      }
+  
+      if (!this.allowedTypes.includes(file.type)) {
+        this.fileError = "Only JPG, PNG, and SVG files are allowed.";
+        return;
+      }
+  
+      if (file.size > this.maxSize) {
+        this.fileError = "File size must be less than 5MB.";
+        return;
+      }
+
       if (file) {
         this.SharedService.convertToBase64(file).then((base64) => {
+          this.fileError = null;
           this.selectedImageBase64 = base64;
           this.form.patchValue({ logoImage: this.selectedImageBase64 });
         });
@@ -137,22 +161,22 @@ export class AddCollaboratorComponent {
         if(!this.collaboratorId){
           this.adminService.createCollaborator(payload).subscribe((data: any) => {
             this.ngxService.stop();
-            this.SharedService.ToastPopup('collaborator added successfully', 'Badge', 'success');
+            this.SharedService.ToastPopup('Collaborator added successfully', 'Collaborator', 'success');
             this.resetForm();
           },
           (error: any) => {
             this.ngxService.stop();
-            this.SharedService.ToastPopup('Oops failed to add collaborator', 'Badge', 'error');
+            this.SharedService.ToastPopup('Oops failed to add collaborator', 'Collaborator', 'error');
           }
           )
         }else{
           this.adminService.updateCollaborator(this.collaboratorId,payload).subscribe((data: any) => {
             this.ngxService.stop();
-            this.SharedService.ToastPopup('collaborator updated successfully', 'Badge', 'success');
+            this.SharedService.ToastPopup('Collaborator updated successfully', 'Collaborator', 'success');
           },
           (error: any) => {
             this.ngxService.stop();
-            this.SharedService.ToastPopup('Oops failed to update collaborator', 'Badge', 'error');
+            this.SharedService.ToastPopup('Oops failed to update collaborator', 'Collaborator', 'error');
           }
           )
         }
@@ -177,6 +201,13 @@ export class AddCollaboratorComponent {
   
     onCancel(): void {
       this.router.navigate(['/dashboard/collaborator']);  
+    }
+
+    noFutureDateValidator(control: any) {
+      if (!control.value) return null;
+      const selectedDate = new Date(control.value);
+      const today = new Date();
+      return selectedDate > today ? { futureDate: true } : null;
     }
   
 }
