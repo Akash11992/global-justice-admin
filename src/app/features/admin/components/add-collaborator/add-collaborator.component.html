@@ -67,17 +67,20 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="image" class="form-label">Logo Upload</label>
-                <input type="file" class="form-control" id="image" aria-describedby="emailHelp">
+                <input type="file" class="form-control" id="image" (change)="onFileSelected($event)" accept="image/*" aria-describedby="emailHelp">
+                <div *ngIf="form.get('logoImage')?.invalid && form.get('logoImage')?.touched">
+                  Image is required
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="image" class="form-label">Current Uploaded Image</label>
+                <img *ngIf="selectedImageBase64" [src]="selectedImageBase64" alt="Preview" width="100">
               </div>
               <div class="col-md-6 mb-3">
-                <!-- <label for="image" class="form-label">Generate QR</label> -->
                 <input type="button" class="form-control btn btn-primary col-5" id="image" aria-describedby="emailHelp" value="Generate QR Code" />&nbsp;
                 <input type="button" class="form-control btn btn-primary col-5" id="image" aria-describedby="emailHelp" value="Generate Badge" />
               </div>
-              <!-- <div class="col-md-6 mb-3">
-                <label for="image" class="form-label">Generate Badge</label>
-                <input type="button" class="form-control" id="image" aria-describedby="emailHelp">
-              </div> -->
               <div class="col-md-12 mb-3">
                 <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
                 <button type="submit" class="btn btn-danger mx-3" (click)="onCancel()">Cancel</button>

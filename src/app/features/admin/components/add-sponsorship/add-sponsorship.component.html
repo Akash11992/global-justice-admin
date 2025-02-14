@@ -105,7 +105,7 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="Ref_by" class="form-label">Ref by</label>
-                <select formControlName="refBy" class="form-control" aria-label="Default select example">
+                <select formControlName="refBy" (change)="onChangeReferBy($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select Reference Type</option>
                   <option *ngFor="let option of refByOptions" [value]="option">{{option | titlecase}}</option>
                 </select>

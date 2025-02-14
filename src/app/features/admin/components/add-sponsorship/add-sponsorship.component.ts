@@ -26,6 +26,7 @@ export class AddSponsorshipComponent implements OnInit{
   selectedStateObj:any ={};
   selectedCityObj:any ={};
   selectedPeacekeeperObj:any ={};
+  selectedRefObj:string ='';
   spononsershipResData:any;
   
   constructor(
@@ -164,6 +165,15 @@ export class AddSponsorshipComponent implements OnInit{
 
   }
 
+  onChangeReferBy(event: Event): void{
+    const selectedElement = event.target as HTMLSelectElement;
+    this.selectedRefObj = selectedElement.value;
+
+    if(this.sponsorshipId && selectedElement.value == 'peacekeeper'){
+      this.setupPeacekeeper("default");
+    }
+  }
+
   callCityByIdApi(selectedId:any){
     this.adminService.getCityById(selectedId).subscribe((data: any) => {
       this.cities = data['data'];
@@ -180,10 +190,10 @@ export class AddSponsorshipComponent implements OnInit{
     )
   }
 
-  setupPeacekeeper(): void{
+  setupPeacekeeper(action?:any): void{
       this.adminService.listPeaceKeeper().subscribe((data: any) => {
         this.peacekeepers = data['data'];
-        if(this.sponsorshipId){
+        if(this.sponsorshipId && action != "default"){
           const patchFormData = {
             refPeacekeeper:this.spononsershipResData["ref_by"] === 'peacekeeper' ? +this.spononsershipResData['peacekeeper_id'] : "",
           }
@@ -205,7 +215,6 @@ export class AddSponsorshipComponent implements OnInit{
       this.setupCountry();
       this.callStateByIdApi(data['country_id']);
       this.callCityByIdApi(data['state_id']);
-      data["ref_by"] === 'other'?'':this.setupPeacekeeper();
 
       const patchFormData = {
         sponsorshipType: data['sponsorship_type'],
@@ -260,15 +269,16 @@ export class AddSponsorshipComponent implements OnInit{
         poc_name:this.form.value["pocName"],
         poc_mobile:this.form.value["pocMobile"],
         poc_email:this.form.value["pocEmail"],
-        country_id:this.form.value["country"],
+        country_id:+this.form.value["country"],
         country:this.selectedCountryObj["name"]?this.selectedCountryObj["name"]:this.spononsershipResData['country'],
-        state_id:this.form.value["state"],
+        state_id:+this.form.value["state"],
         state:this.selectedStateObj["name"]?this.selectedStateObj["name"]:this.spononsershipResData['state'],
-        city_id:this.form.value["city"],
+        city_id:+this.form.value["city"],
         city:this.selectedCityObj["name"]?this.selectedCityObj["name"]:this.spononsershipResData['city'],
         address:this.form.value["address"],
-        ref_by:this.form.value["refBy"],
-        peacekeeper_id:this.form.value["refBy"] === 'peacekeeper' ? this.form.value["refPeacekeeper"] : null,
+        ref_by:this.form.value["refBy"] ? this.form.value["refBy"] : '',
+        is_active: this.sponsorshipId ? this.spononsershipResData['is_active'] : 0,
+        peacekeeper_id:this.form.value["refBy"] === 'peacekeeper' ? +this.form.value["refPeacekeeper"] : null,
         peacekeeper_other_name:this.form.value["refBy"] === 'peacekeeper' ? 
         this.selectedPeacekeeperObj['name'] ?this.selectedPeacekeeperObj["name"]:this.spononsershipResData['peacekeeper_other_name'] : this.form.value["name"]
         
@@ -279,7 +289,6 @@ export class AddSponsorshipComponent implements OnInit{
         this.adminService.updateSponsorship(this.sponsorshipId,payload).subscribe((data: any) => {
           this.ngxService.stop();
           this.SharedService.ToastPopup('sponsorship updated successfully', 'Badge', 'success');
-          this.resetForm();
         },
         (error: any) => {
           this.ngxService.stop();

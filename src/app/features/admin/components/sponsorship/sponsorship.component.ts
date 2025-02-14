@@ -65,7 +65,7 @@ export class SponsorshipComponent implements OnInit {
   onActivateDeactiveToggle(item:any):void{
     this.ngxService.start();
     let id = item['id'];
-    item['is_active'] = !item['is_active'];
+    item['is_active'] = +!item['is_active'];
     delete item['id'];
     delete item['created_at'];
     delete item['updated_at'];

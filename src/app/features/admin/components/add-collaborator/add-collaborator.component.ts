@@ -18,6 +18,7 @@ export class AddCollaboratorComponent {
 
   collaboratorId!: string;
   collaboratorResData:any;
+  selectedImageBase64: string | null = null;
 
   constructor(
                 private fb: FormBuilder,
@@ -47,14 +48,14 @@ export class AddCollaboratorComponent {
           fullName: ['', [Validators.required, Validators.pattern(namePattern)]],
           mobile: ['', [Validators.required]],
           country: ['', Validators.required],
-          dob: ['',Validators.required]
+          dob: ['',Validators.required],
+          logoImage: ['',Validators.required]
         });
       }
 
       collaboratorDataById(){
         this.adminService.getCollaborator(this.collaboratorId).subscribe((data: any) => {
           this.ngxService.stop();
-    
           this.collaboratorResData = data;
     
           this.setupCountry();
@@ -63,9 +64,11 @@ export class AddCollaboratorComponent {
             email: data['email'],
             fullName: data['full_name'],
             mobile: data['mobile_no'],
-            country: data['country_id'],
-            dob: data['dob']
+            dob: data['dob'],
+            logoImage: data['logo_image']
           }
+
+          this.selectedImageBase64 = data['logo_image'];
           this.form.patchValue(patchFormData);
     
         },
@@ -79,6 +82,12 @@ export class AddCollaboratorComponent {
     setupCountry(): void{
       this.adminService.listCountry().subscribe((data: any) => {
         this.countries = data['data'];
+        if(this.collaboratorId){
+          const patchFormData = {
+            country: +this.collaboratorResData['country_id'],
+          }
+          this.form.patchValue(patchFormData);
+        }
       },
       (error: any) => {
         console.log(error);
@@ -98,6 +107,16 @@ export class AddCollaboratorComponent {
   
     }
 
+    onFileSelected(event: any) {
+      const file = event.target.files[0];
+      if (file) {
+        this.SharedService.convertToBase64(file).then((base64) => {
+          this.selectedImageBase64 = base64;
+          this.form.patchValue({ logoImage: this.selectedImageBase64 });
+        });
+      }
+    }
+
     onSubmit():void {
       console.log(this.form);
       if (this.form.valid) {
@@ -108,22 +127,35 @@ export class AddCollaboratorComponent {
           mobile_no:this.form.value["mobile"],
           email:this.form.value["email"],
           country_id:this.form.value["country"],
-          country:this.selectedCountryObj["name"],
-          dob:this.form.value["dob"]
+          country:this.selectedCountryObj["name"]?this.selectedCountryObj["name"]:this.collaboratorResData['country'],
+          dob:this.form.value["dob"],
+          logo_image: this.form.value['logoImage'],
+          is_active: this.collaboratorId ? this.collaboratorResData['is_active'] : 0,
         };
   
         this.ngxService.start();
-        
-        this.adminService.createCollaborator(payload).subscribe((data: any) => {
-          this.ngxService.stop();
-          this.SharedService.ToastPopup('collaborator added successfully', 'Badge', 'success');
-          this.resetForm();
-        },
-        (error: any) => {
-          this.ngxService.stop();
-          this.SharedService.ToastPopup('Oops failed to add collaborator', 'Badge', 'error');
+        if(!this.collaboratorId){
+          this.adminService.createCollaborator(payload).subscribe((data: any) => {
+            this.ngxService.stop();
+            this.SharedService.ToastPopup('collaborator added successfully', 'Badge', 'success');
+            this.resetForm();
+          },
+          (error: any) => {
+            this.ngxService.stop();
+            this.SharedService.ToastPopup('Oops failed to add collaborator', 'Badge', 'error');
+          }
+          )
+        }else{
+          this.adminService.updateCollaborator(this.collaboratorId,payload).subscribe((data: any) => {
+            this.ngxService.stop();
+            this.SharedService.ToastPopup('collaborator updated successfully', 'Badge', 'success');
+          },
+          (error: any) => {
+            this.ngxService.stop();
+            this.SharedService.ToastPopup('Oops failed to update collaborator', 'Badge', 'error');
+          }
+          )
         }
-        )
         
       } else {
         this.form.markAllAsTouched();
@@ -138,6 +170,7 @@ export class AddCollaboratorComponent {
         country: "",
         dob: ""
       });
+      this.selectedImageBase64 = null;
       this.form.markAsPristine();
       this.form.markAsUntouched();
     }
