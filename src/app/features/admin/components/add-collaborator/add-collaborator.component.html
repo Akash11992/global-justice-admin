@@ -13,7 +13,7 @@
     <div class="container-fluid" id="pagecontent">
       <div class="card" id="uppercard">
         <div class="card-body">
-          <form>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="row align-items-end">
               <div class="col-md-12 border-bottom mb-3">
                 <h4 style="display: inline-flex">Add Collaborator</h4>
@@ -21,33 +21,49 @@
               
               <div class="col-md-6 mb-3">
                 <label for="fullname" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp">
+                <input type="text" formControlName="fullName" class="form-control" id="fullname" aria-describedby="emailHelp">
+                <div *ngIf="form.get('fullName').errors?.required && form.get('fullName').touched" class="error text-danger">
+                  Full Name is required
+                </div>
+                <div *ngIf="form.get('fullName').errors?.pattern" class="error text-danger">
+                  Only alphabets and spaces allowed
+                </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="fullname" class="form-label">DOB</label>
-                <input type="date" class="form-control" id="fullname" aria-describedby="emailHelp">
+                <label for="dob" class="form-label">DOB</label>
+                <input type="date" class="form-control" formControlName="dob" id="dob" aria-describedby="emailHelp">
+                <div *ngIf="form.get('dob').errors?.required && form.get('dob').touched" class="error text-danger">
+                  DOB is required
+                </div>
               </div>
-              <div class="col-md-6 mb-3">
-                <label for="fullname" class="form-label">DOB</label>
-                <input type="date" class="form-control" id="fullname" aria-describedby="emailHelp">
-              </div>
+
               <div class="col-md-6 mb-3">
                 <label for="Country" class="form-label">Country</label>
-                <!-- <input type="text" class="form-control" id="Country" aria-describedby="emailHelp"> -->
-                <select class="form-control" aria-label="Default select example">
-                  <option selected>Select Country</option>
-                  <option value="1">India</option>
-                  <option value="2">US</option>
-                  <option value="3">Others</option>
+                <select formControlName="country" (change)="onCountryChange($event)" class="form-control" aria-label="Default select example">
+                  <option value="">Select Country</option>
+                  <option *ngFor="let country of countries" [value]="country['id']" [attr.data-name]="country['name']">{{country['name']}}</option>
                 </select>
+                <div *ngIf="form.get('country').errors?.required && form.get('country').touched" class="error text-danger">
+                  Country is required
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="PMN" class="form-label">Mobile NO</label>
+                <input type="text" formControlName="mobile" class="form-control" id="PMN" aria-describedby="emailHelp">
+                <div *ngIf="form.get('mobile').errors?.required && form.get('mobile').touched" class="error text-danger">
+                  Mobile number is required
+                </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="mobile" class="form-label">Mobile No.</label>
-                <input type="mobile" class="form-control" id="mobile" aria-describedby="emailHelp">
+                <label for="PE" class="form-label">Email</label>
+                <input type="text" formControlName="email" class="form-control" id="PE" aria-describedby="emailHelp">
+                <div *ngIf="form.get('email').errors?.required && form.get('email').touched" class="error text-danger">
+                  Email is required
+                </div>
+                <div *ngIf="form.get('email').errors?.email" class="error text-danger">
+                  Invalid email format
+                </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="image" class="form-label">Logo Upload</label>
@@ -63,8 +79,8 @@
                 <input type="button" class="form-control" id="image" aria-describedby="emailHelp">
               </div> -->
               <div class="col-md-12 mb-3">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="submit" class="btn btn-danger mx-3">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+                <button type="submit" class="btn btn-danger mx-3" (click)="onCancel()">Cancel</button>
               </div>
             </div>
           </form>
