@@ -87,6 +87,15 @@ export class SharedService {
     return this._apiHttpService.get(this._apiEndpointsService.getAllCountrycodeEndpoint());
   }
 
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+  
   private secretKey = '6b5872594167471930cfe5c0b99cb6bfafd7b1601ee9f439359a7dde010a5ce9'; // Use a secure key & store it safely
 
   encryptData(data: any): string {

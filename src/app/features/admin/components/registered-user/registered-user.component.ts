@@ -70,8 +70,8 @@ export class RegisteredUserComponent {
   totalItems: number = 0;
   page: number = 1;
   limit: number = 25;
-  sortBy: string = 'created_at';
-  order: string = 'desc';
+  sortBy: string = 'first_name';
+  order: string = 'asc';
   search: string = '';
   totalPages: number = 0;
 
@@ -108,8 +108,7 @@ export class RegisteredUserComponent {
     this.allDelegate();
 
     this.createForm();
-    // this.allPartner()
-    // this.allSpeaker()
+
     this.getInterval();
 
   }
@@ -142,21 +141,27 @@ export class RegisteredUserComponent {
     let body = {
       sort_column: this.sortBy,
       sort_order: this.order,
-      name:this.search,
+      search:this.search,
       page_size:this.limit,
       page_no:this.page ,
-
     }
 
     this.ngxService.start();
     this.AdminService.getApprovedDelegate(body).subscribe((data: any) => {
-      this.ngxService.start();
+      this.ngxService.stop();
 
       // const decreptedUser = this.SharedService.decryptData(data.data)
 
+      // this.registeredDelegateList = decreptedUser totalCount
       this.registeredDelegateList = data.data
       console.log("data", this.registeredDelegateList);
 
+
+      if (this.masterSelected) {
+        this.registeredDelegateList.forEach(item => (item.selected = this.masterSelected));
+      }
+      this.totalItems = data.totalCount;
+      this.totalPages = Math.ceil(this.totalItems / this.limit);
       // this.totalRecords = this.registeredDelegateList.length;
 
       // console.log(this.totalRecords, 'totalRecords');
@@ -586,6 +591,9 @@ onSearchClick(searchValue: string) {
   if(searchValue == ''){
     this.page = 1
     this.limit = 25;
+    this.getInterval();
+  }else{
+    clearInterval(this.intervalId);
   }
   this.search = searchValue;
   this.allDelegate();

@@ -16,58 +16,65 @@
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="row">
               <div class="col-md-12 border-bottom mb-3">
-                <h4 style="display: inline-flex">Add Sponsorship</h4>
+                <h4 style="display: inline-flex">{{title}} Sponsorship</h4>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="Sponsorship_Type" class="form-label">Sponsorship Type</label>
+                <label for="Sponsorship_Type" class="form-label">Sponsorship Type <span class="error text-danger">*</span>
+                </label>
                 <select class="form-control" formControlName="sponsorshipType">
                   <option value="">Select Sponsorship Type</option>
-                  <option *ngFor="let type of sponsorshipTypes" [value]="type">{{type}}</option>
+                  <option *ngFor="let type of sponsorshipTypes" [value]="type">{{type | titlecase}}</option>
                 </select>
                 <div *ngIf="form.get('sponsorshipType').errors?.required && form.get('sponsorshipType').touched" class="error text-danger">
                   Sponsorship Type is required
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="SN" class="form-label">Sponsership Name</label>
+                <label for="SN" class="form-label">Sponsership Name <span class="error text-danger">*</span></label>
                 <input type="text" formControlName="sponsorshipName" class="form-control" id="SN" aria-describedby="emailHelp">
                 <div *ngIf="form.get('sponsorshipName').errors?.required && form.get('sponsorshipName').touched" class="error text-danger">
                   Sponsership Name is required
                 </div>
                 <div *ngIf="form.get('sponsorshipName').errors?.pattern" class="error text-danger">
-                  Only alphabets and spaces allowed
+                  Only alphabets, number and spaces allowed with max length 50
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="SN" class="form-label">POC Name</label>
+                <label for="SN" class="form-label">POC Name <span class="error text-danger">*</span></label>
                 <input type="text" formControlName="pocName" class="form-control" id="SN" aria-describedby="emailHelp">
                 <div *ngIf="form.get('pocName').errors?.required && form.get('pocName').touched" class="error text-danger">
                   POC Name is required
                 </div>
                 <div *ngIf="form.get('pocName').errors?.pattern" class="error text-danger">
-                  Only alphabets and spaces allowed
+                  Only alphabets, number and spaces allowed with max length 50
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="PMN" class="form-label">POC Mobile NO</label>
+                <label for="PMN" class="form-label">POC Mobile No <span class="error text-danger">*</span></label>
                 <input type="text" formControlName="pocMobile" class="form-control" id="PMN" aria-describedby="emailHelp">
                 <div *ngIf="form.get('pocMobile').errors?.required && form.get('pocMobile').touched" class="error text-danger">
                   Mobile number is required
                 </div>
+                <div *ngIf="form.get('pocMobile').errors?.pattern" class="error text-danger">
+                  Invalid mobile number format (eg.+12345678901)
+                </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="PE" class="form-label">POC Email</label>
+                <label for="PE" class="form-label">POC Email <span class="error text-danger">*</span></label>
                 <input type="text" formControlName="pocEmail" class="form-control" id="PE" aria-describedby="emailHelp">
                 <div *ngIf="form.get('pocEmail').errors?.required && form.get('pocEmail').touched" class="error text-danger">
                   Email is required
                 </div>
-                <div *ngIf="form.get('pocEmail').errors?.email" class="error text-danger">
+                <div *ngIf="form.get('pocEmail').errors?.invalidEmail && form.get('pocEmail').touched" class="error text-danger">
                   Invalid email format
+                </div>
+                <div *ngIf="form.get('pocEmail').errors?.maxlength" class="error text-danger">
+                  Email cannot be longer than 254 characters.
                 </div>
                 
               </div>
               <div class="col-md-6 mb-3">
-                <label for="Country" class="form-label">Country</label>
+                <label for="Country" class="form-label">Country <span class="error text-danger">*</span></label>
                 <select formControlName="country" (change)="onCountryChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select Country</option>
                   <option *ngFor="let country of countries" [value]="country['id']" [attr.data-name]="country['name']">{{country['name']}}</option>
@@ -77,7 +84,7 @@
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="State" class="form-label">State</label>
+                <label for="State" class="form-label">State <span class="error text-danger">*</span></label>
                 <select formControlName="state" (change)="onStateChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select State</option>
                   <option *ngFor="let state of states" [value]="state['id']" [attr.data-name]="state['name']">{{state['name']}}</option>
@@ -87,7 +94,7 @@
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="City" class="form-label">City</label>
+                <label for="City" class="form-label">City <span class="error text-danger">*</span></label>
                 <select formControlName="city" (change)="onCityChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select City</option>
                   <option *ngFor="let city of cities" [value]="city['id']" [attr.data-name]="city['name']">{{city['name']}}</option>
@@ -97,15 +104,18 @@
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="Address" class="form-label">Address</label>
+                <label for="Address" class="form-label">Address <span class="error text-danger">*</span></label>
                 <input type="text" formControlName="address" class="form-control" id="Address" aria-describedby="emailHelp">
                 <div *ngIf="form.get('address').errors?.required && form.get('address').touched" class="error text-danger">
                   Address is required
                 </div>
+                <div *ngIf="form.get('address').errors?.pattern" class="error text-danger">
+                  Enter correct address format with max length 100
+                </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="Ref_by" class="form-label">Ref by</label>
-                <select formControlName="refBy" class="form-control" aria-label="Default select example">
+                <select formControlName="refBy" (change)="onChangeReferBy($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select Reference Type</option>
                   <option *ngFor="let option of refByOptions" [value]="option">{{option | titlecase}}</option>
                 </select>
@@ -127,7 +137,7 @@
                   Name is required
                 </div>
                 <div *ngIf="form.get('name').errors?.pattern" class="error text-danger">
-                  Only alphabets and spaces allowed
+                  Only alphabets, number and spaces allowed with max length 50
                 </div>
               </div>
               <div class="col-md-12 mb-3">
