@@ -187,7 +187,7 @@ export class PeacekeeperUserComponent implements OnInit {
    let body ={
     sort_column: this.sortBy,
     sort_order: this.order,
-    name:this.search,
+    search:this.search,
     page_size:this.limit,
     page_no:this.page ,
          
@@ -200,13 +200,13 @@ export class PeacekeeperUserComponent implements OnInit {
       // const decreptedUser = this.SharedService.decryptData(data.data)
 
       // this.peacekeeperList = decreptedUser
-      this.peacekeeperList = data.data.peacekeepers
+      this.peacekeeperList = data.peacekeepers.Data
       console.log(this.peacekeeperList , 'peaceList');
       
       if (this.masterSelected) {
         this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
       }
-      this.totalItems = data.data.total_count;
+      this.totalItems = data.peacekeepers.totalCount;
       this.totalPages = Math.ceil(this.totalItems / this.limit);
       
       // this.totalRecords = this.peacekeeperList.length;
@@ -582,6 +582,9 @@ onSearchClick(searchValue: string) {
   if(searchValue == ''){
     this.page = 1
     this.limit = 25;
+    this.getInterval();
+  }else{
+    clearInterval(this.intervalId);
   }
   this.search = searchValue;
   this.allPeacekeeper();

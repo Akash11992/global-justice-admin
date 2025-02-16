@@ -154,7 +154,7 @@ export class ContactUsComponent implements OnInit {
     let body = {
       sort_column: this.sortBy,
       sort_order: this.order,
-      name:this.search,
+      search:this.search,
       page_size:this.limit,
       page_no:this.page ,
 
@@ -171,7 +171,7 @@ export class ContactUsComponent implements OnInit {
       this.contactUsList = data.data
       console.log("data", this.contactUsList);
 
-      this.totalItems = data.total_records;
+      this.totalItems = data.totalCount;
       this.totalPages = Math.ceil(this.totalItems / this.limit);
 
       // this.totalRecords = this.contactUsList.length;
@@ -602,6 +602,9 @@ onSearchClick(searchValue: string) {
   if(searchValue == ''){
     this.page = 1
     this.limit = 25;
+    this.getInterval();
+  }else{
+    clearInterval(this.intervalId);
   }
   this.search = searchValue;
   this.allContactUs();
