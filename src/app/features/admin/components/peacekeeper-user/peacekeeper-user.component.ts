@@ -228,7 +228,6 @@ export class PeacekeeperUserComponent implements OnInit {
         this.notFound = false;
         console.log("false1111");
       }
-      this.searchForm.reset();
       this.peacekeeper = true
 
 
