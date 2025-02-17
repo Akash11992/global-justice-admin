@@ -107,7 +107,7 @@ export class RegisteredUserComponent {
     ];
     this.allDelegate();
 
-    this.createForm();
+    // this.createForm();
 
     this.getInterval();
 
@@ -131,11 +131,11 @@ export class RegisteredUserComponent {
 
   }
 
-  createForm() {
-    this.searchForm = this.fb.group({
-      searchInput: [''] // Initialize with an empty string
-    });
-  }
+  // createForm() {
+  //   this.searchForm = this.fb.group({
+  //     searchInput: [''] // Initialize with an empty string
+  //   });
+  // }
   allDelegate() {
 
     let body = {
@@ -182,7 +182,7 @@ export class RegisteredUserComponent {
       } else {
         this.notFound = false;
       }
-      this.searchForm.reset();
+      // this.searchForm.reset();
       // this.ngxService.stop();
       this.delegate = true
     });
@@ -343,52 +343,53 @@ export class RegisteredUserComponent {
 
     })
   }
-  searchDelegateUser(): void {
-    const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
-    if (searchValue === null || searchValue.trim() === '') {
-      // Display an error toaster here
-      this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
-      return; // Exit the function
-    }
-    const payload = {
-      search: searchValue
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-      this.registeredDelegateList = data.data[0]
-      if (this.registeredDelegateList.length === 0) {
-        this.notFound = true;
-      } else {
-        this.notFound = false;
-        console.log("false");
-      }
-      // setTimeout(() => {
-      //   this.router.navigate(['dashboard/registered-user']);
-      // }, 2000); // 2000 milliseconds (2 seconds) delay
-    })
-  }
 
-  resetForm(): void {
-    this.searchForm.reset();
-    this.searchParams = '';
-    this.getInterval();
-    this.allDelegate();
+  // searchDelegateUser(): void {
+  //   const searchValue = this.searchForm.get('searchInput').value;
+  //   console.log("search called", searchValue);
+  //   if (searchValue === null || searchValue.trim() === '') {
+  //     // Display an error toaster here
+  //     this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
+  //     return; // Exit the function
+  //   }
+  //   const payload = {
+  //     search: searchValue
+  //   };
+  //   console.log("payload", payload);
+  //   this.ngxService.start();
+  //   this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
+  //     this.ngxService.stop();
+  //     this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
+  //     this.registeredDelegateList = data.data[0]
+  //     if (this.registeredDelegateList.length === 0) {
+  //       this.notFound = true;
+  //     } else {
+  //       this.notFound = false;
+  //       console.log("false");
+  //     }
+  //     // setTimeout(() => {
+  //     //   this.router.navigate(['dashboard/registered-user']);
+  //     // }, 2000); // 2000 milliseconds (2 seconds) delay
+  //   })
+  // }
 
-  }
-  searchUsers() {
-    this.searchParams = this.searchForm.get('searchInput').value;
+  // resetForm(): void {
+  //   this.searchForm.reset();
+  //   this.searchParams = '';
+  //   this.getInterval();
+  //   this.allDelegate();
+
+  // }
+  // searchUsers() {
+  //   this.searchParams = this.searchForm.get('searchInput').value;
 
 
-    clearInterval(this.intervalId);
-    this.allDelegate();
+  //   clearInterval(this.intervalId);
+  //   this.allDelegate();
 
-    // this.searchDelegateUser();
+  //   // this.searchDelegateUser();
 
-  }
+  // }
 
 
   sendmail(userId: number, userName: any, userEmail: any, userNumber: any, qr_code: any, urn_no: any, designation: any, company: any) {

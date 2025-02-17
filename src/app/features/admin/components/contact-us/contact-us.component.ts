@@ -107,7 +107,7 @@ export class ContactUsComponent implements OnInit {
     ];
     this.allContactUs();
 
-    this.createForm();
+    // this.createForm();
     // this.allPartner()
     // this.allSpeaker()
 
@@ -135,20 +135,20 @@ export class ContactUsComponent implements OnInit {
   }
 
 
-  createForm() {
-    this.searchForm = this.fb.group({
-      searchInput: [''] // Initialize with an empty string
-    });
-  }
+  // createForm() {
+  //   this.searchForm = this.fb.group({
+  //     searchInput: [''] // Initialize with an empty string
+  //   });
+  // }
 
 
-  searchUsers() {
-    this.searchParams = this.searchForm.get('searchInput').value;
+  // searchUsers() {
+  //   this.searchParams = this.searchForm.get('searchInput').value;
 
-    clearInterval(this.intervalId);
-    this.allContactUs();
+  //   clearInterval(this.intervalId);
+  //   this.allContactUs();
 
-  }
+  // }
 
   allContactUs() {
     let body = {
@@ -196,7 +196,7 @@ export class ContactUsComponent implements OnInit {
         this.notFound = false;
         console.log("false");
       }
-      this.searchForm.reset();
+      // this.searchForm.reset();
       // this.ngxService.stop();
       this.contactUs = true
 
@@ -353,46 +353,46 @@ export class ContactUsComponent implements OnInit {
 
     })
   }
-  searchDelegateUser(): void {
-    const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
-    if (searchValue === null || searchValue.trim() === '') {
-      // Display an error toaster here
-      this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
-      return; // Exit the function
-    }
-    const payload = {
-      search: searchValue
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-      this.contactUsList = data.data[0]
-      if (this.contactUsList.length === 0) {
-        this.notFound = true;
-      } else {
-        this.notFound = false;
-        console.log("false");
-      }
-      // setTimeout(() => {
-      //   this.router.navigate(['dashboard/peacekeeper']);
-      // }, 2000); // 2000 milliseconds (2 seconds) delay
-    })
-  }
+  // searchDelegateUser(): void {
+  //   const searchValue = this.searchForm.get('searchInput').value;
+  //   console.log("search called", searchValue);
+  //   if (searchValue === null || searchValue.trim() === '') {
+  //     // Display an error toaster here
+  //     this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
+  //     return; // Exit the function
+  //   }
+  //   const payload = {
+  //     search: searchValue
+  //   };
+  //   console.log("payload", payload);
+  //   this.ngxService.start();
+  //   this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
+  //     this.ngxService.stop();
+  //     this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
+  //     this.contactUsList = data.data[0]
+  //     if (this.contactUsList.length === 0) {
+  //       this.notFound = true;
+  //     } else {
+  //       this.notFound = false;
+  //       console.log("false");
+  //     }
+  //     // setTimeout(() => {
+  //     //   this.router.navigate(['dashboard/peacekeeper']);
+  //     // }, 2000); // 2000 milliseconds (2 seconds) delay
+  //   })
+  // }
 
 
 
 
-  resetForm(): void {
-    this.searchForm.reset();
+  // resetForm(): void {
+  //   this.searchForm.reset();
 
-    this.searchParams = '';
-    this.getInterval();
-        this.allContactUs();
+  //   this.searchParams = '';
+  //   this.getInterval();
+  //       this.allContactUs();
      
-  }
+  // }
 
 
 
