@@ -76,6 +76,7 @@
                       <th (click)="onSort('country')">Country <i class="bi bi-caret-down-fill"></i></th>
                       <th (click)="onSort('email')">E-mail</th>
                       <th (click)="onSort('mobile_no')">Mobile No.</th>
+                      <th>QR</th>
                       <th class="text-right">Action</th>
                     </tr>
                   </thead>
@@ -86,6 +87,7 @@
                       <td>{{item.country}}</td>
                       <td>{{item.email}}</td>
                       <td>{{item.mobile_no}}</td>
+                      <td><img [src]="item.qr"></tsd>
                       <td class="text-right">
                         <div class="dropdown dropstart">
                           <button
@@ -112,6 +114,18 @@
                             <li (click)="onActivateDeactiveToggle(item)">
                               <a class="dropdown-item" style="cursor: pointer">
                                 {{item.is_active ? 'Deactivate': 'Activate'}}</a
+                              >
+                            </li>
+
+                            <li (click)="downloadFile(item,true)">
+                              <a class="dropdown-item" style="cursor: pointer">
+                                {{Download QR}}</a
+                              >
+                            </li>
+
+                            <li (click)="downloadFile(item,false)">
+                              <a class="dropdown-item" style="cursor: pointer">
+                                {{Download Badge}}</a
                               >
                             </li>
                           </ul>

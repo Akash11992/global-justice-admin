@@ -128,5 +128,21 @@ export class SharedService {
     localStorage.setItem('userDetails', userDetails);
   }
 
+  downloadFile(fileUrl:string,fileName:string):void{
+    fetch(fileUrl)
+      .then(response => response.blob())  // Convert to Blob
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;  // Set the file name
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => console.error('Error downloading file:', error));
+  }
+
 
 }

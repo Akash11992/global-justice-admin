@@ -104,5 +104,22 @@ export class CollaboratorComponent implements OnInit{
       this.loadcollaborators();
     }
 
+    downloadFile(item: any, isQR: boolean) {
+      if(isQR){
+        //download qr
+        const qr_code_name = "qr.png";
+        this.SharedService.downloadFile(item.qr_code_url,qr_code_name); //image
+      }else{
+        //download batch
+        const badge_image_name = "badge_image.png";
+        const badge_pdf_name = "badge_pdf.pdf";
+        this.SharedService.downloadFile(item.badge_image_url,badge_image_name); //image
+        this.SharedService.downloadFile(item.badge_pdf_url,badge_pdf_name); //pdf
+      }
+      
+    }
+
+    
+
 
 }
