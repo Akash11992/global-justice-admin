@@ -68,26 +68,45 @@
               <div class="table-responsive">
                 <table class="table" *ngIf="sponsorships.length > 0 else noDataTemplate">
                   <thead>
-                    <tr>
-                      <th (click)="onSort('sponsorship_type')">
-                        Sponsorship Type <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th (click)="onSort('sponsorship_name')">
-                        Sponsorship Name <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th (click)="onSort('poc_name')">POC Name <i class="bi bi-caret-down-fill"></i></th>
-                      <th (click)="onSort('poc_mobile')">POC Mobile NO <i class="bi bi-caret-down-fill"></i></th>
-                      <th class="text-center" (click)="onSort('poc_email')">
-                        POC Email <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th class="text-center" (click)="onSort('ref_by')">
-                        Ref by <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th class="text-center" (click)="onSort('peacekeeper_other_name')">
-                        Name <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th class="text-right">Action</th>
-                    </tr>
+                        <tr>
+                          <th (click)="onSort('sponsorship_type')">
+                            Sponsorship Type 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'sponsorship_type' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'sponsorship_type' && order === 'desc'"></i>
+                          </th>
+                          <th (click)="onSort('sponsorship_name')">
+                            Sponsorship Name 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'sponsorship_name' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'sponsorship_name' && order === 'desc'"></i>
+                          </th>
+                          <th (click)="onSort('poc_name')">
+                            POC Name 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'poc_name' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'poc_name' && order === 'desc'"></i>
+                          </th>
+                          <th (click)="onSort('poc_mobile')">
+                            POC Mobile No. 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'poc_mobile' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'poc_mobile' && order === 'desc'"></i>
+                          </th>
+                          <th class="text-center" (click)="onSort('poc_email')">
+                            POC Email 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'poc_email' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'poc_email' && order === 'desc'"></i>
+                          </th>
+                          <th class="text-center" (click)="onSort('ref_by')">
+                            Ref by 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'ref_by' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'ref_by' && order === 'desc'"></i>
+                          </th>
+                          <th class="text-center" (click)="onSort('peacekeeper_other_name')">
+                            Name 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'peacekeeper_other_name' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'peacekeeper_other_name' && order === 'desc'"></i>
+                          </th>
+                          <th class="text-right">Action</th>
+                        </tr>
+                    
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of sponsorships">
