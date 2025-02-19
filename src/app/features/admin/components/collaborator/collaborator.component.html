@@ -70,12 +70,30 @@
                   <thead>
                     <tr>
                       <th (click)="onSort('full_name')">
-                        Full Name <i class="bi bi-caret-down-fill"></i>
+                        Full Name 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'full_name' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'desc'"></i>
                       </th>
-                      <th (click)="onSort('dob')">DOB <i class="bi bi-caret-down-fill"></i></th>
-                      <th (click)="onSort('country')">Country <i class="bi bi-caret-down-fill"></i></th>
-                      <th (click)="onSort('email')">E-mail</th>
-                      <th (click)="onSort('mobile_no')">Mobile No.</th>
+                      <th (click)="onSort('dob')">
+                        DOB
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'dob' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'dob' && order === 'desc'"></i>
+                      </th>
+                      <th (click)="onSort('country')">
+                        Country
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'desc'"></i>
+                      </th>
+                      <th (click)="onSort('email')">
+                        E-mail
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email' && order === 'desc'"></i>
+                      </th>
+                      <th (click)="onSort('mobile_no')">
+                        Mobile No.
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_no' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_no' && order === 'desc'"></i>
+                      </th>
                       <th class="text-right">Action</th>
                     </tr>
                   </thead>

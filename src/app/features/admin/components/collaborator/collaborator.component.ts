@@ -98,11 +98,20 @@ export class CollaboratorComponent implements OnInit{
       }
     }
   
-    onSort(column: string) {
-      this.sortBy = column;
-      this.order = this.order === 'asc' ? 'desc' : 'asc';
-      this.loadcollaborators();
-    }
+    onSort(column: string): void {
 
+      if (this.sortBy === column) {
+        // If the column is already sorted, toggle the direction
+        this.order = this.order === 'asc' ? 'desc' : 'asc';
+      } else {
+        // Otherwise, sort by the new column in ascending order by default
+        this.sortBy = column;
+        this.order = 'asc';
+      }
+  
+      // Implement actual sorting logic here
+      this.loadcollaborators();
+  
+    }
 
 }
