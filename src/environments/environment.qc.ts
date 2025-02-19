@@ -3,6 +3,6 @@ export const environment = {
 
   apiUrl:  'https://globaljusticeqcapi.cylsys.com/api/v1',  //QC
   apiMockUrl:'/api/v1',
-  domainUrl:'https://globaljusticeqcapi.cylsys.com',
+  domainUrl:'https://globaljusticeqc.cylsys.com',
   app_env: 'production'
 };       
