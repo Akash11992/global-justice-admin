@@ -69,14 +69,14 @@
               </form> -->
             </div>
             <div class="col-md-6" id="exportcolmd">
-              <button
+              <!-- <button
                 class="btn"
                 type="button"
                 id="exportbtn"
                 routerLink="/dashboard/add-delegate"
               >
                 <i class="bi bi-plus"></i> Add Delegate
-              </button> &nbsp;
+              </button> &nbsp; -->
               <!-- <button
                 class="btn"
                 type="button"
@@ -99,7 +99,7 @@
               * Data will be auto refreshed in every 60 secs
             </p>
           </div>
-          <div class="col-sm-2">
+          <!-- <div class="col-sm-2">
           <div class="showData dropdown">
             <h4 class="m-0">
               <a class="" data-bs-toggle="dropdown" aria-expanded="false">
@@ -121,7 +121,7 @@
               </div>
             </h4>
           </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="row">
@@ -140,15 +140,15 @@
                       <th>SN</th>
                       <th (click)="onSort('first_name')">Name <fa-icon [icon]="sortColumn === 'first_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
                       <th (click)="onSort('email_id')">Email <fa-icon [icon]="sortColumn === 'email_id' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th>Mobile</th>
+                      <th  (click)="onSort('mobile_number')">Mobile  <fa-icon [icon]="sortColumn === 'mobile_number' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
                       <th (click)="onSort('country')">Country <fa-icon [icon]="sortColumn === 'country' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th>Profession</th>
-                      <th>Organization Name</th>
-                      <th>Payment Status</th>
-                      <th>Payment Transaction Id</th>
+                      <th  (click)="onSort('profession_1')">Profession  <fa-icon [icon]="sortColumn === 'profession_1' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th  (click)="onSort('organization_name')">Organization Name  <fa-icon [icon]="sortColumn === 'organization_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th  (click)="onSort('TUD_STATUS')">Payment Status  <fa-icon [icon]="sortColumn === 'TUD_STATUS' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th  (click)="onSort('TUD_TRANSCATION_ID')">Payment Transaction Id  <fa-icon [icon]="sortColumn === 'TUD_TRANSCATION_ID' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
                       <th>Reference</th>
                       <th (click)="onSort('created_date')">Registered At <fa-icon [icon]="sortColumn === 'created_date' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th>Action</th>
+                      <!-- <th>Action</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -194,7 +194,7 @@
                       <td>{{ all.reference_no }}</td>
                       <td>{{ all.created_date | date : "short" }}</td>
 
-                      <td>
+                      <!-- <td>
                         <div class="dropdown dropstart">
                           <button
                             class="btn btn-outline-success"
@@ -231,7 +231,7 @@
                                               <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li>
                                               <li><a class="dropdown-item" style="cursor: pointer;"   (click)="Generate_Badge(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
                                                 <i  class="bi bi-file-earmark-pdf-fill"></i> Regenerate Badge</a></li> -->
-                                                <li>
+                                                <!-- <li>
                                                   <a 
                                                     class="dropdown-item"
                                                     style="cursor: pointer"
@@ -240,7 +240,7 @@
                                                     <i class="bi bi-pencil-fill"></i> Edit Delegate
                                                     </a
                                                   >
-                                                </li>
+                                                </li> -->
                             <!-- <li>
                               <a
                                 class="dropdown-item"
@@ -263,10 +263,10 @@
                               >
                             </li> -->
                             <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="deleteUser(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">
-                                              <i class="bi bi-trash3-fill"></i> Delete</a></li> -->
+                                              <i class="bi bi-trash3-fill"></i> Delete</a></li> 
                           </ul>
                         </div>
-                      </td>
+                      </td> -->
                     </tr>
                   </tbody>
                 </table>

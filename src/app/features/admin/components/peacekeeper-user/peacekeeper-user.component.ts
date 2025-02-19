@@ -187,7 +187,7 @@ export class PeacekeeperUserComponent implements OnInit {
    let body ={
     sort_column: this.sortBy,
     sort_order: this.order,
-    name:this.search,
+    search:this.search,
     page_size:this.limit,
     page_no:this.page ,
          
@@ -200,13 +200,13 @@ export class PeacekeeperUserComponent implements OnInit {
       // const decreptedUser = this.SharedService.decryptData(data.data)
 
       // this.peacekeeperList = decreptedUser
-      this.peacekeeperList = data.data.peacekeepers
+      this.peacekeeperList = data.peacekeepers.Data
       console.log(this.peacekeeperList , 'peaceList');
       
       if (this.masterSelected) {
         this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
       }
-      this.totalItems = data.data.total_count;
+      this.totalItems = data.peacekeepers.totalCount;
       this.totalPages = Math.ceil(this.totalItems / this.limit);
       
       // this.totalRecords = this.peacekeeperList.length;
@@ -226,9 +226,7 @@ export class PeacekeeperUserComponent implements OnInit {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false1111");
       }
-      this.searchForm.reset();
       this.peacekeeper = true
 
 
@@ -303,7 +301,6 @@ export class PeacekeeperUserComponent implements OnInit {
       // this.allPeacekeeper();
       setTimeout(() => {
         this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.peacekeeper);
         this.allPeacekeeper();
 
       }, 2000); // 2000 milliseconds (2 seconds) delay
@@ -354,7 +351,6 @@ export class PeacekeeperUserComponent implements OnInit {
     const columnsToExport = this.peacekeeperList.map(item => {
 
 
-      console.log("created date...........", item.created_date);
       // Assuming item.created_date is a valid date string or Date object
       let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
 
@@ -402,7 +398,6 @@ export class PeacekeeperUserComponent implements OnInit {
 
   downloadQRCode(parent: any) {
     // debugger
-    console.log(parent);
 
     let parentElement = null
 
@@ -477,8 +472,7 @@ export class PeacekeeperUserComponent implements OnInit {
 
   // Delete Single Row
   deletePeacekeeper(peacekeeperId: number): void {
-    console.log('1 check', peacekeeperId);
-    console.log('all check', this.selectedIds);
+
     let payload
     if (this.selectedIds) {
       payload = { p_peace_id: this.selectedIds }
@@ -525,7 +519,6 @@ export class PeacekeeperUserComponent implements OnInit {
   
 
   toggleVisibility(index:any) {
-    console.log(index, 'row index');
     
     this.isVisible[index] = !this.isVisible[index];
   }
@@ -582,6 +575,9 @@ onSearchClick(searchValue: string) {
   if(searchValue == ''){
     this.page = 1
     this.limit = 25;
+    this.getInterval();
+  }else{
+    clearInterval(this.intervalId);
   }
   this.search = searchValue;
   this.allPeacekeeper();

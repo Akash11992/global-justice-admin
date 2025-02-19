@@ -70,8 +70,8 @@ export class RegisteredUserComponent {
   totalItems: number = 0;
   page: number = 1;
   limit: number = 25;
-  sortBy: string = 'created_at';
-  order: string = 'desc';
+  sortBy: string = 'first_name';
+  order: string = 'asc';
   search: string = '';
   totalPages: number = 0;
 
@@ -107,9 +107,8 @@ export class RegisteredUserComponent {
     ];
     this.allDelegate();
 
-    this.createForm();
-    // this.allPartner()
-    // this.allSpeaker()
+    // this.createForm();
+
     this.getInterval();
 
   }
@@ -132,31 +131,37 @@ export class RegisteredUserComponent {
 
   }
 
-  createForm() {
-    this.searchForm = this.fb.group({
-      searchInput: [''] // Initialize with an empty string
-    });
-  }
+  // createForm() {
+  //   this.searchForm = this.fb.group({
+  //     searchInput: [''] // Initialize with an empty string
+  //   });
+  // }
   allDelegate() {
 
     let body = {
       sort_column: this.sortBy,
       sort_order: this.order,
-      name:this.search,
+      search:this.search,
       page_size:this.limit,
       page_no:this.page ,
-
     }
 
     this.ngxService.start();
     this.AdminService.getApprovedDelegate(body).subscribe((data: any) => {
-      this.ngxService.start();
+      this.ngxService.stop();
 
       // const decreptedUser = this.SharedService.decryptData(data.data)
 
+      // this.registeredDelegateList = decreptedUser totalCount
       this.registeredDelegateList = data.data
       console.log("data", this.registeredDelegateList);
 
+
+      if (this.masterSelected) {
+        this.registeredDelegateList.forEach(item => (item.selected = this.masterSelected));
+      }
+      this.totalItems = data.totalCount;
+      this.totalPages = Math.ceil(this.totalItems / this.limit);
       // this.totalRecords = this.registeredDelegateList.length;
 
       // console.log(this.totalRecords, 'totalRecords');
@@ -177,7 +182,7 @@ export class RegisteredUserComponent {
       } else {
         this.notFound = false;
       }
-      this.searchForm.reset();
+      // this.searchForm.reset();
       // this.ngxService.stop();
       this.delegate = true
     });
@@ -338,52 +343,53 @@ export class RegisteredUserComponent {
 
     })
   }
-  searchDelegateUser(): void {
-    const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
-    if (searchValue === null || searchValue.trim() === '') {
-      // Display an error toaster here
-      this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
-      return; // Exit the function
-    }
-    const payload = {
-      search: searchValue
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-      this.registeredDelegateList = data.data[0]
-      if (this.registeredDelegateList.length === 0) {
-        this.notFound = true;
-      } else {
-        this.notFound = false;
-        console.log("false");
-      }
-      // setTimeout(() => {
-      //   this.router.navigate(['dashboard/registered-user']);
-      // }, 2000); // 2000 milliseconds (2 seconds) delay
-    })
-  }
 
-  resetForm(): void {
-    this.searchForm.reset();
-    this.searchParams = '';
-    this.getInterval();
-    this.allDelegate();
+  // searchDelegateUser(): void {
+  //   const searchValue = this.searchForm.get('searchInput').value;
+  //   console.log("search called", searchValue);
+  //   if (searchValue === null || searchValue.trim() === '') {
+  //     // Display an error toaster here
+  //     this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
+  //     return; // Exit the function
+  //   }
+  //   const payload = {
+  //     search: searchValue
+  //   };
+  //   console.log("payload", payload);
+  //   this.ngxService.start();
+  //   this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
+  //     this.ngxService.stop();
+  //     this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
+  //     this.registeredDelegateList = data.data[0]
+  //     if (this.registeredDelegateList.length === 0) {
+  //       this.notFound = true;
+  //     } else {
+  //       this.notFound = false;
+  //       console.log("false");
+  //     }
+  //     // setTimeout(() => {
+  //     //   this.router.navigate(['dashboard/registered-user']);
+  //     // }, 2000); // 2000 milliseconds (2 seconds) delay
+  //   })
+  // }
 
-  }
-  searchUsers() {
-    this.searchParams = this.searchForm.get('searchInput').value;
+  // resetForm(): void {
+  //   this.searchForm.reset();
+  //   this.searchParams = '';
+  //   this.getInterval();
+  //   this.allDelegate();
+
+  // }
+  // searchUsers() {
+  //   this.searchParams = this.searchForm.get('searchInput').value;
 
 
-    clearInterval(this.intervalId);
-    this.allDelegate();
+  //   clearInterval(this.intervalId);
+  //   this.allDelegate();
 
-    // this.searchDelegateUser();
+  //   // this.searchDelegateUser();
 
-  }
+  // }
 
 
   sendmail(userId: number, userName: any, userEmail: any, userNumber: any, qr_code: any, urn_no: any, designation: any, company: any) {
@@ -586,6 +592,9 @@ onSearchClick(searchValue: string) {
   if(searchValue == ''){
     this.page = 1
     this.limit = 25;
+    this.getInterval();
+  }else{
+    clearInterval(this.intervalId);
   }
   this.search = searchValue;
   this.allDelegate();
