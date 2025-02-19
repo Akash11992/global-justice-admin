@@ -77,7 +77,7 @@
               <div class="col-md-6 mb-3">
                 <label for="image" class="form-label">Logo Upload <span class="error text-danger">*</span></label>
                 <input type="file" class="form-control" id="image" (change)="onFileSelected($event)" #fileInput accept="image/*" aria-describedby="emailHelp">
-                <div *ngIf="form.get('logoImage')?.invalid && form.get('logoImage')?.touched">
+                <div *ngIf="form.get('logoImage')?.invalid && form.get('logoImage')?.touched" class="error text-danger">
                   Image is required
                 </div>
                 <div *ngIf="fileError" style="color: red;">{{ fileError }}</div>
