@@ -118,15 +118,15 @@ export class CollaboratorComponent implements OnInit{
     downloadFile(filePath: string, fileName: string,fileType:string) {
       switch(fileType){
         case 'QR':
-        filePath = environment.apiUrl+'collaborator/qr/'+fileName;
+        filePath = environment.apiUrl+'/collaborator/qr/'+fileName;
         break;
 
         case 'BADGE_IMG':
-          filePath = environment.apiUrl+'collaborator/batch/image/'+fileName;
+          filePath = environment.apiUrl+'/collaborator/batch/image/'+fileName;
         break;
 
         case 'BADGE_PDF':
-          filePath = environment.apiUrl+'collaborator/batch/pdf'+fileName;
+          filePath = environment.apiUrl+'/collaborator/batch/pdf'+fileName;
         break;
 
       }

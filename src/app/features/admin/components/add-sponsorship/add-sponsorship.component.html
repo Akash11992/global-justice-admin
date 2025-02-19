@@ -35,7 +35,7 @@
                 <div *ngIf="form.get('sponsorshipName').errors?.required && form.get('sponsorshipName').touched" class="error text-danger">
                   Sponsership Name is required
                 </div>
-                <div *ngIf="form.get('sponsorshipName').errors?.pattern" class="error text-danger">
+                <div *ngIf="form.get('sponsorshipName').errors?.pattern || form.get('sponsorshipName').errors?.leadingTrailingSpaces" class="error text-danger">
                   Only alphabets, number and spaces allowed with max length 50
                 </div>
               </div>
@@ -45,7 +45,7 @@
                 <div *ngIf="form.get('pocName').errors?.required && form.get('pocName').touched" class="error text-danger">
                   POC Name is required
                 </div>
-                <div *ngIf="form.get('pocName').errors?.pattern" class="error text-danger">
+                <div *ngIf="form.get('pocName').errors?.pattern || form.get('pocName').errors?.leadingTrailingSpaces" class="error text-danger">
                   Only alphabets, number and spaces allowed with max length 50
                 </div>
               </div>
@@ -109,7 +109,7 @@
                 <div *ngIf="form.get('address').errors?.required && form.get('address').touched" class="error text-danger">
                   Address is required
                 </div>
-                <div *ngIf="form.get('address').errors?.pattern" class="error text-danger">
+                <div *ngIf="form.get('address').errors?.pattern || form.get('address').errors?.leadingTrailingSpaces" class="error text-danger">
                   Enter correct address format with max length 100
                 </div>
               </div>
@@ -136,7 +136,7 @@
                 <div *ngIf="form.get('name').errors?.required && form.get('name').touched" class="error text-danger">
                   Name is required
                 </div>
-                <div *ngIf="form.get('name').errors?.pattern" class="error text-danger">
+                <div *ngIf="form.get('name').errors?.pattern || form.get('name').errors?.leadingTrailingSpaces" class="error text-danger">
                   Only alphabets, number and spaces allowed with max length 50
                 </div>
               </div>

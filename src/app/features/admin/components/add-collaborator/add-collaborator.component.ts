@@ -6,6 +6,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { strictEmailValidator } from '../../validator/email-validator';
 import { environment } from 'src/environments/environment';
+import { strictStringValidator } from '../../validator/strict-string-validator';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -58,7 +59,7 @@ export class AddCollaboratorComponent {
     
       this.form = this.fb.group({
         email: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(254)]],
-        fullName: ['', [Validators.required, Validators.pattern(namePattern)]],
+        fullName: ['', [Validators.required, Validators.pattern(namePattern), strictStringValidator()]],
         mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
         country: ['', Validators.required],
         dob: ['',[Validators.required,this.noFutureDateValidator]],
