@@ -191,17 +191,18 @@ export class AddCollaboratorComponent {
   
         const payload = {
           full_name:this.form.value["fullName"],
-          mobile_no:this.form.value["mobile"],
-          email:this.form.value["email"],
-          country_id:this.form.value["country"],
+          mobile_no:this.collaboratorId ? this.collaboratorResData['mobile_no']:this.form.value["mobile"],
+          email:this.collaboratorId ? this.collaboratorResData['email']: this.form.value["email"],
+          country_id:this.collaboratorId ? this.collaboratorResData['country_id']:this.form.value["country"],
           country:this.selectedCountryObj["name"]?this.selectedCountryObj["name"]:this.collaboratorResData['country'],
           country_code:this.selectedCountryObj["code"]?this.selectedCountryObj["code"]:this.collaboratorResData['country_code'],
-          dob:this.form.value["dob"],
+          dob:this.collaboratorId ? this.collaboratorResData['dob'] : this.form.value["dob"],
           logo_image: this.form.value['logoImage'],
-          is_active: this.collaboratorId ? this.collaboratorResData['is_active'] : 0,
-          peacekeeper_id:this.form.value["refPeacekeeper"],
+          is_active: this.collaboratorId ? this.collaboratorResData['is_active'] : 1,
+          peacekeeper_id:this.collaboratorId ? this.collaboratorResData['peacekeeper_id'] : this.form.value["refPeacekeeper"],
           peacekeeper_ref_code:this.selectedPeacekeeperObj['couponCode'] ? this.selectedPeacekeeperObj["couponCode"]: this.collaboratorResData['peacekeeper_ref_code'],
-          domain_url:environment.domainUrl
+          domain_url:environment.domainUrl,
+          is_updated_by_activated: 0
         };
   
         this.ngxService.start();

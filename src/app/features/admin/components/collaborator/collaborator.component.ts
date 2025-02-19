@@ -64,9 +64,11 @@ export class CollaboratorComponent implements OnInit{
 
     onActivateDeactiveToggle(item:any):void{
       this.ngxService.start();
-      const { id, created_at,updated_at, ...newItem } = item;
+      const { id, created_at,updated_at, qr_unique_code,qr_code_url,...newItem } = item;
       item['is_active'] = +!item['is_active'];
       newItem['is_active'] = +!newItem['is_active'];
+      newItem['domain_url'] = environment.domainUrl;
+      newItem['is_updated_by_activated'] = 1;
       this.updateCollaboratorData(item['id'],newItem);
     }
 
@@ -118,15 +120,15 @@ export class CollaboratorComponent implements OnInit{
     downloadFile(filePath: string, fileName: string,fileType:string) {
       switch(fileType){
         case 'QR':
-        filePath = environment.apiUrl+'/collaborator/qr/'+fileName;
+        filePath = environment.fileAccessUrl+'/collaborator/qr/'+fileName;
         break;
 
         case 'BADGE_IMG':
-          filePath = environment.apiUrl+'/collaborator/batch/image/'+fileName;
+          filePath = environment.fileAccessUrl+'/collaborator/batch/image/'+fileName;
         break;
 
         case 'BADGE_PDF':
-          filePath = environment.apiUrl+'/collaborator/batch/pdf'+fileName;
+          filePath = environment.fileAccessUrl+'/collaborator/batch/pdf/'+fileName;
         break;
 
       }

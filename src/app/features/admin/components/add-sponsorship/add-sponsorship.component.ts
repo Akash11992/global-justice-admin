@@ -286,7 +286,7 @@ export class AddSponsorshipComponent implements OnInit{
         city:this.selectedCityObj["name"]?this.selectedCityObj["name"]:this.spononsershipResData['city'],
         address:this.form.value["address"],
         ref_by:this.form.value["refBy"] ? this.form.value["refBy"] : '',
-        is_active: this.sponsorshipId ? this.spononsershipResData['is_active'] : 0,
+        is_active: this.sponsorshipId ? this.spononsershipResData['is_active'] : 1,
         peacekeeper_id:this.form.value["refBy"] === 'peacekeeper' ? +this.form.value["refPeacekeeper"] : null,
         peacekeeper_other_name:this.form.value["refBy"] === 'peacekeeper' ? 
         this.selectedPeacekeeperObj['name'] ?this.selectedPeacekeeperObj["name"]:this.spononsershipResData['peacekeeper_other_name'] : this.form.value["name"]
