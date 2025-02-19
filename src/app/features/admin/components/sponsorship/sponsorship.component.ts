@@ -100,9 +100,15 @@ export class SponsorshipComponent implements OnInit {
   }
 
 
-  onSort(column: string) {
-    this.sortBy = column;
-    this.order = this.order === 'asc' ? 'desc' : 'asc';
+  onSort(column: string): void{
+    if (this.sortBy === column) {
+      // Toggle the sorting direction
+      this.order = this.order === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Sort by the new column in ascending order
+      this.sortBy = column;
+      this.order = 'asc';
+    }
     this.loadSponsorships();
   }
 }
