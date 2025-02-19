@@ -3,7 +3,7 @@ import { ApiEndpointsService } from 'src/app/core/services/api-endpoints.service
 import { ApiHttpService } from 'src/app/core/services/api-http.service';
 import { BehaviorSubject, Observable, Subject, Observer } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import CryptoJS from 'crypto-js';
@@ -25,7 +25,8 @@ export class SharedService {
   constructor(
     private _apiHttpService: ApiHttpService,
     private _apiEndpointsService: ApiEndpointsService,
-    private _toastr :ToastrService
+    private _toastr :ToastrService,
+    private http: HttpClient
   ) { }
   ToastPopup(errorMsg: string, errorModule: string, errorType: string) {
     switch (errorType) {
@@ -126,6 +127,21 @@ export class SharedService {
   setUserDetails(userDetails: any) {
     sessionStorage.setItem('userDetails', userDetails);
     localStorage.setItem('userDetails', userDetails);
+  }
+
+  downloadFile(filePath: string, fileName: string) {
+    this.http
+      .get(filePath, { responseType: 'blob' })
+      .subscribe((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      });
   }
 
 

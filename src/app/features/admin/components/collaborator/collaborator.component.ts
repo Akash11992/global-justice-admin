@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-collaborator',
@@ -114,4 +115,22 @@ export class CollaboratorComponent implements OnInit{
   
     }
 
+    downloadFile(filePath: string, fileName: string,fileType:string) {
+      switch(fileType){
+        case 'QR':
+        filePath = environment.apiUrl+'collaborator/qr/'+fileName;
+        break;
+
+        case 'BADGE_IMG':
+          filePath = environment.apiUrl+'collaborator/batch/image/'+fileName;
+        break;
+
+        case 'BADGE_PDF':
+          filePath = environment.apiUrl+'collaborator/batch/pdf'+fileName;
+        break;
+
+      }
+      this.SharedService.downloadFile(filePath, fileName);
+    }
+  
 }

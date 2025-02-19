@@ -50,21 +50,30 @@ export class AddCollaboratorComponent {
 
     initializeForm() {
       this.collaboratorId = this.route.snapshot.paramMap.get('id');
-      if(this.collaboratorId){
-        this.collaboratorDataById();
-      }
+
+      if(this.collaboratorId) this.collaboratorDataById();
+      
       const namePattern = /^[a-zA-Z0-9' ]{1,50}$/;
       const mobilePattern = /^\+?[1-9]\d{9,14}$/;
     
-        this.form = this.fb.group({
-          email: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(254)]],
-          fullName: ['', [Validators.required, Validators.pattern(namePattern)]],
-          mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
-          country: ['', Validators.required],
-          dob: ['',[Validators.required,this.noFutureDateValidator]],
-          logoImage: ['',Validators.required],
-          refPeacekeeper: ['',Validators.required]
-        });
+      this.form = this.fb.group({
+        email: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(254)]],
+        fullName: ['', [Validators.required, Validators.pattern(namePattern)]],
+        mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
+        country: ['', Validators.required],
+        dob: ['',[Validators.required,this.noFutureDateValidator]],
+        logoImage: ['',Validators.required],
+        refPeacekeeper: ['',Validators.required]
+      });
+
+      if(this.collaboratorId){
+        this.form.controls['email'].disable();
+        this.form.controls['mobile'].disable();
+        this.form.controls['dob'].disable();
+        this.form.controls['country'].disable(); // Disables at form level
+        this.form.controls['refPeacekeeper'].disable(); // Disables at form level
+      }
+
       }
 
       collaboratorDataById(){
@@ -99,12 +108,6 @@ export class AddCollaboratorComponent {
     setupPeacekeeper(): void{
         this.adminService.listPeaceKeeper().subscribe((data: any) => {
           this.peacekeepers = data['data'];
-          if(this.collaboratorId){
-            const patchFormData = {
-              refPeacekeeper:+this.collaboratorResData['peacekeeper_id']
-            }
-            this.form.patchValue(patchFormData);
-          }
         },
         (error: any) => {
           console.log(error);
