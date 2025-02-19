@@ -3,6 +3,6 @@ export const environment = {
 
   apiUrl: 'https://api.justice-love-peace.com/api/v1',   //production
   apiMockUrl:'/api/v1',
-  domainUrl:'http://localhost:5000/',
+  domainUrl:'https://www.justice-love-peace.com',
   app_env: 'production'
 };       

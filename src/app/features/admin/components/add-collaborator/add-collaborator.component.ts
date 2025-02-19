@@ -5,6 +5,7 @@ import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { strictEmailValidator } from '../../validator/email-validator';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -196,7 +197,7 @@ export class AddCollaboratorComponent {
           is_active: this.collaboratorId ? this.collaboratorResData['is_active'] : 0,
           peacekeeper_id:this.form.value["refPeacekeeper"],
           peacekeeper_ref_code:this.selectedPeacekeeperObj['couponCode'] ? this.selectedPeacekeeperObj["couponCode"]: this.collaboratorResData['peacekeeper_ref_code'],
-          domain_url:'https://globaljusticeuatadmin.cylsys.com'
+          domain_url:environment.domainUrl
         };
   
         this.ngxService.start();
