@@ -226,7 +226,6 @@ export class PeacekeeperUserComponent implements OnInit {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false1111");
       }
       this.peacekeeper = true
 
@@ -302,7 +301,6 @@ export class PeacekeeperUserComponent implements OnInit {
       // this.allPeacekeeper();
       setTimeout(() => {
         this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.peacekeeper);
         this.allPeacekeeper();
 
       }, 2000); // 2000 milliseconds (2 seconds) delay
@@ -353,7 +351,6 @@ export class PeacekeeperUserComponent implements OnInit {
     const columnsToExport = this.peacekeeperList.map(item => {
 
 
-      console.log("created date...........", item.created_date);
       // Assuming item.created_date is a valid date string or Date object
       let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
 
@@ -401,7 +398,6 @@ export class PeacekeeperUserComponent implements OnInit {
 
   downloadQRCode(parent: any) {
     // debugger
-    console.log(parent);
 
     let parentElement = null
 
@@ -476,8 +472,7 @@ export class PeacekeeperUserComponent implements OnInit {
 
   // Delete Single Row
   deletePeacekeeper(peacekeeperId: number): void {
-    console.log('1 check', peacekeeperId);
-    console.log('all check', this.selectedIds);
+
     let payload
     if (this.selectedIds) {
       payload = { p_peace_id: this.selectedIds }
@@ -524,7 +519,6 @@ export class PeacekeeperUserComponent implements OnInit {
   
 
   toggleVisibility(index:any) {
-    console.log(index, 'row index');
     
     this.isVisible[index] = !this.isVisible[index];
   }
