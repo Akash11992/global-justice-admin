@@ -153,7 +153,7 @@ export class AddCollaboratorComponent {
       this.selectedCountryObj = {
         id:selectedElement.value,
         name:selectedName,
-        code:selectedCode,
+        code:selectedCode
       };
   
     }

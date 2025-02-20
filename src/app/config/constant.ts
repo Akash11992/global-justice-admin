@@ -128,6 +128,8 @@ export class Constants {
     public readonly API_ENDPOINT_LIST_STATE: string = 'get_delegate_state'
     public readonly API_ENDPOINT_LIST_CITY: string = 'get_delegate_city'
 
+    public readonly API_ENDPOINT_ADD_DELEGATE: string = 'registration/create-delegate-profile'
+
 
 }
 
