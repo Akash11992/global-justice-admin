@@ -3,6 +3,9 @@ import { Chart, registerables } from 'chart.js';
 import { AdminService } from '../../services/admin.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { HttpClient } from '@angular/common/http';
+import { Location, PlatformLocation } from "@angular/common";
+import { Subscription, SubscriptionLike } from "rxjs";
+import { ActivatedRoute, Router } from '@angular/router';
 
 Chart.register(...registerables)
 
@@ -37,18 +40,38 @@ export class DashboardComponent {
   completedData: any;
   pendingData: any;
   colorMapping:any;
-  constructor(private AdminService: AdminService, private SharedService: SharedService, private httpClient: HttpClient) {
+
+  private locationSubscription: SubscriptionLike;
+  isLoginYN: boolean = false;
+
+  constructor(
+    private AdminService: AdminService,
+     private SharedService: SharedService, 
+     private httpClient: HttpClient,
+     private _router: Router,
+     private route : ActivatedRoute,
+     private _location: Location,
+     private platformLocation: PlatformLocation
+    ) {
   }
   chartOptions: any;
   ngOnInit(): void {
     this.graph = true;
     this.getDelegatePieChart();
+console.log('route',this.route);
 
     this.getDelegateRefrenceChart();
     this.rendergraph('donutChart', 'doughnut',)
     //  this.rendergraph('LineChart',"bar")
 
+    history.pushState(null, '', window.location.href);
 
+    // Listen for browser back button press
+    window.onpopstate = (event) => {
+      if (this._router.url === "/dashboard") {
+        this.confirmLogout();
+      }
+    };
   }
 
   rendergraph(id: any, type: any,) {
@@ -579,6 +602,19 @@ getDelegateRefrenceChart(){
     this.salesbroucher = true;
     this.graph = false;
   }
+  confirmLogout() {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      this._router.navigate(['/login']);
+    } else {
+      // Stay on the dashboard and prevent navigation
+      history.pushState(null, '', window.location.href);
+    }
+  }
 
+  ngOnDestroy(): void {
+    // Cleanup event listener when the component is destroyed
+    window.onpopstate = null;
+  }
 
 }

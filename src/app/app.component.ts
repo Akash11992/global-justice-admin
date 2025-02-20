@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, fromEvent, mapTo, merge, of } from 'rxjs';
+import { filter, map, mergeMap } from 'rxjs/operators';
 declare var AOS:any;
 @Component({
   selector: 'app-root',

@@ -92,10 +92,11 @@ export class PeacekeeperUserComponent implements OnInit {
   totalItems: number = 0;
   page: number = 1;
   limit: number = 25;
-  sortBy: string = 'created_at';
+  sortBy: string = 'full_name';
   order: string = 'desc';
   search: string = '';
   totalPages: number = 0;
+  isLoading: boolean = true;
 
 
   rowOptions = [
@@ -164,7 +165,7 @@ export class PeacekeeperUserComponent implements OnInit {
     this.ngxService.start();
     this.AdminService.postPeacekeeper(payload).subscribe((data: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('resent successfully', 'Badge', 'success');
+      this.SharedService.ToastPopup('Resent successfully', 'Badge', 'success');
 
       setTimeout(() => {
         this.allPeacekeeper();
@@ -348,27 +349,42 @@ export class PeacekeeperUserComponent implements OnInit {
   export() {
 
     // Select the columns you want to export
-    const columnsToExport = this.peacekeeperList.map(item => {
 
 
-      // Assuming item.created_date is a valid date string or Date object
-      let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
+        const headers = [
+          'Full name', 'DOB', 'Country', 'Mobile number', 'Email', 'Peacekeeper ID',
+           'Coupan discount', 'Coupan code', 'QR URL', 'Created Date'
+        ];
+    
+        // Select the columns you want to export
+        const columnsToExport = this.peacekeeperList.map(item => {
+          let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
+    
+          return [
+            item.full_name, item.dob, item.country, item.mobile_number,
+            item.email_id, item.Id_no, item.coupon_discount, item.coupon_code, item.QR_CODE, created_date
+          ];
+        });
+    
+        // Insert headers at the first row
+        columnsToExport.unshift(headers);
+    
+        // Convert JSON to worksheet
+        const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
+        // Auto-adjust column width based on the longest content
+        const columnWidths = headers.map((header, colIndex) => {
+          const maxLength = Math.max(
+            header.length, // Header length
+            ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0)) // Longest data cell in the column
+          );
+          return { wch: maxLength + 2 }; // Add padding for better spacing
+        });
+    
+        // Apply calculated column widths
+        ws['!cols'] = columnWidths;
 
-      return {
-        'full_name': item.full_name,
-        'DOB': item.dob,
-        'country': item.country,
-        'mobile_number': item.mobile_number,
-        'email_id': item.email_id,
-        'Peacekeeper_ID': item.Id_no,
-        'Coupan_Discount': item.coupon_discount,
-        'Coupan_Code': item.coupon_code,
-        'QR_URL': item.QR_CODE,
-        'created_date': created_date,
-      };
-    });
 
-    const ws = XLSX.utils.json_to_sheet(columnsToExport);
+
     // const ws = XLSX.utils.json_to_sheet(this.peacekeeperList);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, this.form);
@@ -381,7 +397,7 @@ export class PeacekeeperUserComponent implements OnInit {
     XLSX.writeFile(wb, 'Peacekeeper_Users.xlsx');
 
     // Add your success message or any other functionality here.
-    this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
+    this.SharedService.ToastPopup('Data export successful.', '', 'success');
 
   }
 
