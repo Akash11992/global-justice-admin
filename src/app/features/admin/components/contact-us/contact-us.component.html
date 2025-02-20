@@ -24,7 +24,7 @@
               <form>
                 <div class="row">
                   <div class="col-md-3">
-                    <select #mySelect (change)="onSelectionChange(mySelect.value)" class="form-control" aria-label="Default select example">
+                    <select #mySelect (change)="onSelectionChange(mySelect.value)"  style="cursor: pointer;" class="form-control" aria-label="Default select example">
                       <option *ngFor="let option of rowOptions" [value]="option.value">{{ option.label }}</option>
                     </select>
                   </div>
@@ -103,7 +103,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-0">
-              <div class="table-responsive" *ngIf="contactUsList.length > 0">
+              <div class="table-responsive" *ngIf="contactUsList.length > 0 else noDataTemplate;">
                 <table class="table">
                   <thead>
                     <tr>
@@ -139,10 +139,7 @@
                   </tbody>
                 </table>
               </div>
-              <h5 style="text-align: center">
-                <span *ngIf="notFound">No Data Found</span>
-              </h5>
-
+          
 
               <nav aria-label="...">
                 <ul class="pagination">
@@ -194,3 +191,7 @@
   </div>
   <!------------------------------------------- Page Content end ----------------------------------------->
 </div>
+
+<ng-template #noDataTemplate>
+  <h5 style="text-align: center"><span >No Data Found</span></h5>
+</ng-template>

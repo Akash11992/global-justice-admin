@@ -450,3 +450,7 @@ margin-top:.25rem;
   .dropdown .dropdown-menu {
     min-width: 6rem;
   }
+
+  .no_data{
+    padding: 150px;
+  }

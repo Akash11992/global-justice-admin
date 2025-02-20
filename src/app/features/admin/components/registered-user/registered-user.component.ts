@@ -281,7 +281,7 @@ export class RegisteredUserComponent {
 
   unapproveSelected(): void {
     if (this.selectedUserIds.length === 0) {
-      this.SharedService.ToastPopup('', "please select user!", 'error')
+      this.SharedService.ToastPopup('', "Please select user!", 'error')
 
       // Handle the case when no users are selected.
       return;
@@ -501,53 +501,54 @@ export class RegisteredUserComponent {
 
 
   export() {
-    switch (true) {
-      case this.delegate === true:
         this.form = 'Delegates';
-        break;
 
-    }
-    debugger
+    // Capitalized headers with first letter in uppercase
+    const headers = [
+      'Title', 'First Name', 'Last Name', 'Email ID', 'Country Code',
+      'Mobile Number', 'Country Name', 'Profession', 'Address',
+      'Organization Name', 'Payment Status', 'Payment Transaction',
+      'Reference', 'Created Date'
+    ];
+
     // Select the columns you want to export
     const columnsToExport = this.registeredDelegateList.map(item => {
-
-      // Assuming item.created_date is a valid date string or Date object
       let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
-      let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
 
-      return {
-        'title': item.title,
-        'first_name': item.first_name,
-        'last_name': item.last_name,
-        'email_id': item.email_id,
-        'country_code': item.country_code,
-        'mobile_number': item.mobile_number,
-        'country_name': item.country,
-        'profession': item.profession_1,
-        'address': item.address,
-        'organization_name': item.organization_name,
-        'payment_status': item.TUD_STATUS == 'paid' ? item.TUD_STATUS : 'PENDING',
-        'payment_transaction': item.TUD_TRANSCATION_ID,
-        'refrence': item.reference_no,
-        'created_date': created_date,
-
-      };
+      return [
+        item.title, item.first_name, item.last_name, item.email_id,
+        item.country_code, item.mobile_number, item.country,
+        item.profession_1, item.address, item.organization_name,
+        item.TUD_STATUS === 'paid' ? item.TUD_STATUS : 'PENDING',
+        item.TUD_TRANSCATION_ID, item.reference_no, created_date
+      ];
     });
 
-    const ws = XLSX.utils.json_to_sheet(columnsToExport);
-    // const ws = XLSX.utils.json_to_sheet(this.registeredDelegateList);
+    // Insert headers at the first row
+    columnsToExport.unshift(headers);
+
+    // Convert JSON to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
+    // Auto-adjust column width based on the longest content
+    const columnWidths = headers.map((header, colIndex) => {
+      const maxLength = Math.max(
+        header.length, // Header length
+        ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0)) // Longest data cell in the column
+      );
+      return { wch: maxLength + 2 }; // Add padding for better spacing
+    });
+
+    // Apply calculated column widths
+    ws['!cols'] = columnWidths;
+    // Create a new workbook and append the worksheet
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, this.form);
 
-    // You can set additional properties if needed, e.g., a title:
-    wb.Props = {
-      Title: 'Registered Users - ' + this.form,
-    };
-
+    // Write the workbook to a file
     XLSX.writeFile(wb, 'Registered_Users.xlsx');
 
     // Add your success message or any other functionality here.
-    this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
+    this.SharedService.ToastPopup('Data export successful.', '', 'success');
 
   }
 
