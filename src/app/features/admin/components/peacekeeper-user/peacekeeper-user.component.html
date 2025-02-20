@@ -34,7 +34,7 @@
                   <form>
                     <div class="row">
                       <div class="col-md-3">
-                        <select #mySelect (change)="onSelectionChange(mySelect.value)" class="form-control" aria-label="Default select example">
+                        <select #mySelect (change)="onSelectionChange(mySelect.value)" class="form-control" style="cursor: pointer;" aria-label="Default select example">
                           <option *ngFor="let option of rowOptions" [value]="option.value">{{ option.label }}</option>
                         </select>
                       </div>
@@ -103,7 +103,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-0">
-              <div class="table-responsive" *ngIf="peacekeeperList.length > 0; ">
+              <div class="table-responsive" *ngIf="peacekeeperList.length > 0 else noDataTemplate; ">
                 <table class="table">
                   <thead>
                     <tr>
@@ -155,7 +155,7 @@
                       <td>{{all.Id_no}}</td>
                       <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
                       <td>{{all.coupon_code}}</td>
-                      <td class="p-0"><img class="p-1" [src]="all.file_name"  (click)="openImage(all.file_name)" width="50px" alt=""></td>
+                      <td class="p-0"><img class="p-1" [src]="all.file_name" style="cursor: pointer;" (click)="openImage(all.file_name)" width="50px" alt=""></td>
                       <td tooltip="{{all.QR_CODE}}" [options]="myOptions" style="
                             display: block;
                             text-overflow: ellipsis;
@@ -209,7 +209,6 @@
                 </table>
               
               </div>
-              <h5 style="text-align: center;"><span *ngIf="notFound">No Data Found</span></h5>
               
               <nav aria-label="...">
                 <ul class="pagination">
@@ -263,6 +262,47 @@
   </div>
   <!------------------------------------------- Page Content end ----------------------------------------->
 </div>
+
+<!-- 
+<ng-container *ngIf="isLoading">
+  <div class="table-responsive" >
+    <table class="table">
+      <thead>
+        <tr>
+          <th>SN</th>
+          <th >Name</th>
+          <th>DOB </th>
+          <th >Country</th>
+          <th >Mobile </th>
+          <th>Email </th>
+          <th>Peacekeeper ID </th>
+          <th>Coupon <br>Discount% </th>
+          <th >Coupon Code </th>
+          <th>Image</th>
+          <th>QR URL</th>
+          <th>Created Date</th>
+        </tr>
+      </thead>
+    <tbody>
+      <tr>
+        <td colspan="10n h">
+          <br>
+          <br>
+          <br>
+          <div class="no_data">
+            <img src="assets/UIComponents/images/fetchingdata.svg" alt="" width="150px" />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</ng-container> -->
+
+
+<ng-template #noDataTemplate>
+  <h5 style="text-align: center"><span >No Data Found</span></h5>
+</ng-template>
 
 <!------------------------------------------- Page modal start ----------------------------------------->
 

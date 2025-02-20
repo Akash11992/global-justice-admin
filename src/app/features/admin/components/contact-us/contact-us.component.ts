@@ -522,27 +522,39 @@ export class ContactUsComponent implements OnInit {
   export() {
 
     // Select the columns you want to export
+  
+    const headers = [
+      'SN', 'Title', 'First Name', 'Last Name', 'Mobile Number', 'Email ID',
+       'Query', 'Created Date'
+    ];
+
+    // Select the columns you want to export
     const columnsToExport = this.contactUsList.map(item => {
+      let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
 
-
-      console.log("created date...........", item.created_date);
-      // Assuming item.created_date is a valid date string or Date object
-      let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
-      let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
-
-      return {
-        'SN': item.CONTACT_ID,
-        'TITLE': item.TITLE,
-        'FIRST_NAME': item.FIRST_NAME,
-        'LAST_NAME': item.LAST_NAME,
-        'PHONE_NUMBER': item.PHONE_NUMBER,
-        'EMAIL': item.EMAIL,
-        'query': item.YOUR_QUESTION,
-      };
+      return [
+        item.CONTACT_ID, item.TITLE, item.FIRST_NAME, item.LAST_NAME,
+        item.PHONE_NUMBER, item.EMAIL, item.YOUR_QUESTION, created_date
+      ];
     });
 
-    const ws = XLSX.utils.json_to_sheet(columnsToExport);
-    // const ws = XLSX.utils.json_to_sheet(this.contactUsList);
+    // Insert headers at the first row
+    columnsToExport.unshift(headers);
+
+    // Convert JSON to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
+    // Auto-adjust column width based on the longest content
+    const columnWidths = headers.map((header, colIndex) => {
+      const maxLength = Math.max(
+        header.length, // Header length
+        ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0)) // Longest data cell in the column
+      );
+      return { wch: maxLength + 2 }; // Add padding for better spacing
+    });
+
+    // Apply calculated column widths
+    ws['!cols'] = columnWidths;
+
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, this.form);
 
@@ -554,7 +566,7 @@ export class ContactUsComponent implements OnInit {
     XLSX.writeFile(wb, 'Contact_Us.xlsx');
 
     // Add your success message or any other functionality here.
-    this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
+    this.SharedService.ToastPopup('Data export successful.', '', 'success');
 
   }
 

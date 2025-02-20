@@ -62,7 +62,7 @@ export class BroucherComponent {
     this.ngxService.start();
     this.AdminService.Searchbroucher(payload).subscribe((data: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
+      this.SharedService.ToastPopup('', 'Data fetched successfully', 'success')
       this.nonregist = data.data[0]
       if (this.nonregist.length === 0) {
         this.notFound = true;
