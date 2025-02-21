@@ -51,22 +51,9 @@ export class PeacekeeperUserComponent implements OnInit {
   filteredPeace: any[] = [];
   totalSelected: number = 0;
   selectAll: boolean = false; // Tracks the "select all" checkbox state
-  searchParams: string = '';
-  sortParamKey: string = 'full_name';
 
-  pageSize: any = 25;
-  paging: any = 1;
-  totalRecords: number = 0;
-  totalitems: any;
-  itemsPerPage = 10;
-  itemsPageTo = 10;
-  // page = 1;
-  numberOfPages: number = 0;
-  activeItem: number = 1;
-  groupByPerpage: any = [];
-  currentPage: any;
-  totalcount: any;
-  globalPageNumber: number = 0;
+
+
   private searchSubject = new Subject<string>();
   masterSelected: boolean = false;
   selectedIds: string = '';
@@ -92,11 +79,12 @@ export class PeacekeeperUserComponent implements OnInit {
   totalItems: number = 0;
   page: number = 1;
   limit: number = 25;
-  sortBy: string = 'full_name';
+  sortBy: string = 'created_at';
   order: string = 'desc';
   search: string = '';
   totalPages: number = 0;
   isLoading: boolean = true;
+  isSpinner: number = -1;
 
 
   rowOptions = [
@@ -110,12 +98,6 @@ export class PeacekeeperUserComponent implements OnInit {
   checkedList: any;
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
 
-    this.groupByPerpage = [
-      { name: "10" },
-      { name: "25" },
-      { name: "50" },
-      { name: "100" },
-    ];
 
 
 
@@ -128,13 +110,9 @@ export class PeacekeeperUserComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.groupByPerpage = [
-      { name: "10" },
-      { name: "25" },
-      { name: "50" },
-      { name: "100" },
-    ];
+
     // console.log(window.location.origin);
+    this.isLoading = true;
 
     this.allPeacekeeper();
 
@@ -144,11 +122,11 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
   async getInterval() {
-
     this.RefreshInterval = 60000;
-
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
+        this.isSpinner = 1; // Show spinner before fetching data
+
         this.allPeacekeeper();
       }, this.RefreshInterval);
     }
@@ -193,10 +171,10 @@ export class PeacekeeperUserComponent implements OnInit {
     page_no:this.page ,
          
    }
-   this.ngxService.start();
+  //  this.ngxService.start();
 
     this.AdminService.getAllPeacekeeperData(body).subscribe((data: any) => {
-      this.ngxService.stop();
+      // this.ngxService.stop();
 
       // const decreptedUser = this.SharedService.decryptData(data.data)
 
@@ -210,19 +188,6 @@ export class PeacekeeperUserComponent implements OnInit {
       this.totalItems = data.peacekeepers.totalCount;
       this.totalPages = Math.ceil(this.totalItems / this.limit);
       
-      // this.totalRecords = this.peacekeeperList.length;
-      // console.log(this.totalRecords, 'totalRecords');
-
-
-      // let pag = Math.ceil(this.totalRecords / this.pageSize);
-
-      // this.totalitems = Array(pag)
-      //   .fill(0)
-      //   .map((x, i) => i + 1);
-
-      // this.numberOfPages = Math.ceil(
-      //   this.totalRecords / this.pageSize
-      // );
       if (this.peacekeeperList.length === 0) {
         this.notFound = true;
       } else {
@@ -230,61 +195,15 @@ export class PeacekeeperUserComponent implements OnInit {
       }
       this.peacekeeper = true
 
+      this.isLoading = false;
+      this.isSpinner = -1;
 
+
+    },
+    (error) => {
+      this.isSpinner = -1; // Hide spinner even if an error occurs
     });
   }
-
-
-
-  // previousPage() {
-  //   if (this.activeItem > 1) {
-  //     this.activeItem--; // Move to the previous item
-
-  //     // If activeItem is at the start of the page range, update the page and range
-  //     if (this.activeItem < this.itemsPageTo - 9) {
-  //       this.itemsPageTo -= 10; // Update the range to the previous set
-  //       this.page--; // Decrement the page
-  //     }
-  //   }
-  //   this.globalPageNumber = (this.activeItem - 1) * this.itemsPerPage;
-  //   this.peacekeeperList = [];
-  //   this.allPeacekeeper();
-  // }
-
-  // nextPage() {
-  //   if (this.activeItem == this.itemsPageTo) {
-  //     this.itemsPageTo = (this.itemsPageTo + 10);
-  //     this.page++
-  //   }
-  //   this.activeItem++;
-  //   this.globalPageNumber = (this.activeItem * 10 - 10);
-  //   this.peacekeeperList = [];
-
-  //   this.allPeacekeeper();
-  // }
-  // async fnPaging(obj: any) {
-
-
-  //   this.globalPageNumber = 0;
-  //   this.pageSize = obj;
-
-  //   this.peacekeeperList = [];
-
-
-  //   await this.allPeacekeeper();
-
-
-  // }
-  // setActiveItem(item: any) {
-
-
-  //   this.activeItem = item;
-
-  //   this.globalPageNumber = (item * 10 - 10);
-
-  //   this.allPeacekeeper();
-
-  // }
 
 
 
@@ -550,33 +469,7 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
 
-  // Sorting Function
-  sortData(queryParamKey: string) {
 
-    if (
-      queryParamKey === this.sortParamKey.replace("-", "") &&
-      this.sortParamKey.includes("-")
-    ) {
-      this.sortParamKey = queryParamKey;
-    } else {
-      this.sortParamKey = "-" + queryParamKey;
-    }
-    // this.sorticon = this.sorticon ? false : true;
-    // this.fnReset(true);
- 
-
-    if (this.sortColumn === queryParamKey) {
-      this.sortDirection = !this.sortDirection; // Toggle direction
-    } else {
-      this.sortColumn = queryParamKey;
-      this.sortDirection = true; // Default Ascending
-    
-    }
-
-    this.peacekeeperList = [];
-    this.allPeacekeeper();
-
-  }
 
 
 // new pagination
@@ -588,16 +481,27 @@ onSelectionChange(selectedValue: string) {
 }
 
 onSearchClick(searchValue: string) {
-  if(searchValue == ''){
+  if(searchValue.trim().length === 0){
     this.page = 1
     this.limit = 25;
     this.getInterval();
-  }else{
+  }else if (searchValue.charAt(0) === ' ') {
+    this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
+
+    return;
+  } else{
     clearInterval(this.intervalId);
   }
-  this.search = searchValue;
+  this.search = searchValue.trim();
   this.allPeacekeeper();
 }
+
+preventFirstSpace(input: HTMLInputElement) {
+  if (input.value.charAt(0) === ' ') {
+    input.value = input.value.trim(); // Remove leading space immediately
+  }
+}
+
 
 changePage(newPage: number) {
   if (newPage >= 1 && newPage <= this.totalPages) {

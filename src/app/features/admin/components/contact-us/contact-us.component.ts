@@ -75,6 +75,8 @@ export class ContactUsComponent implements OnInit {
   search: string = '';
   totalPages: number = 0;
 
+  isLoading: boolean = true;
+  isSpinner: number = -1;
 
   rowOptions = [
     { value: 25, label: '25' },
@@ -98,6 +100,7 @@ export class ContactUsComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.isLoading = true;
 
     this.groupByPerpage = [
       { name: "10" },
@@ -111,7 +114,7 @@ export class ContactUsComponent implements OnInit {
     // this.allPartner()
     // this.allSpeaker()
 
-    // this.getInterval();
+    this.getInterval();
 
 
   }
@@ -122,6 +125,8 @@ export class ContactUsComponent implements OnInit {
 
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
+        this.isSpinner = 1; // Show spinner before fetching data
+
         console.log('refreshing......')
         this.allContactUs();
       }, this.RefreshInterval);
@@ -159,11 +164,11 @@ export class ContactUsComponent implements OnInit {
       page_no:this.page ,
 
     }
-    this.ngxService.start();
+    // this.ngxService.start();
 
 
     this.AdminService.getContactUsApi(body).subscribe((data: any) => {
-      this.ngxService.stop();
+      // this.ngxService.stop();
 
       // const decreptedUser = this.SharedService.decryptData(data.data)
 
@@ -199,8 +204,12 @@ export class ContactUsComponent implements OnInit {
       // this.searchForm.reset();
       // this.ngxService.stop();
       this.contactUs = true
+      this.isLoading = false;
+      this.isSpinner = -1;
 
-
+    },
+    (error) => {
+      this.isSpinner = -1; // Hide spinner even if an error occurs
     });
   }
 
@@ -255,268 +264,6 @@ export class ContactUsComponent implements OnInit {
     this.allContactUs();
 
   }
-
-  // Function to update selectedUserIds array when a row is clicked
-  updateSelectedUsers(userId: any, userName: any, userEmail: any, userNumber: any) {
-    // Check if the user ID is already selected, and toggle selection
-    console.log(userId, userName, userEmail, userNumber);
-    this.userId = userId;
-    this.userName = userName;
-    this.userEmail = userEmail;
-    this.userNumber = userNumber
-    if (this.selectedUserIds.includes(userId)) {
-      this.selectedUserIds = this.selectedUserIds.filter(id => id !== userId);
-      console.log("a", this.selectedUserIds);
-
-    } else {
-      this.selectedUserIds.push(userId);
-      console.log("b", this.selectedUserIds);
-    }
-  }
-
-  unapproveSelected(): void {
-    if (this.selectedUserIds.length === 0) {
-      this.SharedService.ToastPopup('', "please select user!", 'error')
-
-      // Handle the case when no users are selected.
-      return;
-    }
-    // Prepare the payload with selected user IDs and status 0.
-    const payload = {
-      user_id: this.selectedUserIds.join(','), // Convert array to comma-separated string
-      // user_id:this.userId,
-      status: 2,      //unapprove
-      updated_by: "admin",
-      user_name: this.userName,
-      user_email: this.userEmail,
-      user_number: this.userNumber
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      this.selectedUserIds.pop();
-
-      // this.allContactUs();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.contactUs);
-
-        switch (true) {
-          case this.contactUs === true:
-            console.log("active tab name delegate", this.contactUs);
-            this.allContactUs();
-            break;
-
-        }
-
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-
-
-    })
-  }
-  updateAndUnapprovethroughDropdown(userId: number, userName: any, userEmail: any, userNumber: any): void {
-    // Update the selected users
-    this.updateSelectedUsers(userId, userName, userEmail, userNumber);
-
-    // Now, call the unapproveSelected function
-    this.unapproveSelected();
-  }
-
-  deleteUser(userId: number, userName: any, userEmail: any, userNumber: any): void {
-    this.updateSelectedUsers(userId, userName, userEmail, userNumber);
-    console.log("delete called", userId);
-
-    const payload = {
-      user_id: userId
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.DeleteUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      // this.allContactUs();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        switch (true) {
-          case this.contactUs === true:
-            console.log("active tab name delegate", this.contactUs);
-            this.allContactUs();
-            break;
-
-        }
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-
-
-    })
-  }
-  // searchDelegateUser(): void {
-  //   const searchValue = this.searchForm.get('searchInput').value;
-  //   console.log("search called", searchValue);
-  //   if (searchValue === null || searchValue.trim() === '') {
-  //     // Display an error toaster here
-  //     this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
-  //     return; // Exit the function
-  //   }
-  //   const payload = {
-  //     search: searchValue
-  //   };
-  //   console.log("payload", payload);
-  //   this.ngxService.start();
-  //   this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
-  //     this.ngxService.stop();
-  //     this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-  //     this.contactUsList = data.data[0]
-  //     if (this.contactUsList.length === 0) {
-  //       this.notFound = true;
-  //     } else {
-  //       this.notFound = false;
-  //       console.log("false");
-  //     }
-  //     // setTimeout(() => {
-  //     //   this.router.navigate(['dashboard/peacekeeper']);
-  //     // }, 2000); // 2000 milliseconds (2 seconds) delay
-  //   })
-  // }
-
-
-
-
-  // resetForm(): void {
-  //   this.searchForm.reset();
-
-  //   this.searchParams = '';
-  //   this.getInterval();
-  //       this.allContactUs();
-     
-  // }
-
-
-
-
-  sendmail(userId: number, userName: any, userEmail: any, userNumber: any, qr_code: any, urn_no: any, designation: any, company: any) {
-
-    switch (true) {
-      case this.contactUs === true:
-        console.log("active tab name delegate", this.contactUs);
-        this.form_name = "delegate"
-        break;
-
-    }
-    // Prepare the payload with selected user IDs and status 0.
-    const payload = {
-      user_id: userId,
-      user_name: userName,
-      user_email: userEmail,
-      user_number: userNumber,
-      qr_code: qr_code,
-      urn_no: urn_no,
-      designation: designation,
-      company: company,
-      form_name: this.form_name
-
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.Send_Email(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      // this.allContactUs();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.contactUs);
-
-        switch (true) {
-          case this.contactUs === true:
-            console.log("active tab name delegate", this.contactUs);
-            this.allContactUs();
-            break;
-
-        }
-
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-    },
-      (error: any) => {
-        // Handle the error here
-        console.error("Error while sending email:", error);
-        // You can also display an error message or take appropriate action.
-      }
-    );
-
-  }
-
-  Generate_Badge(userId: number, userName: any, userEmail: any, userNumber: any, qr_code: any, urn_no: any, designation: any, company: any) {
-
-
-    switch (true) {
-      case this.contactUs === true:
-        console.log("active tab name delegate", this.contactUs);
-        this.form_name = "delegate"
-        break;
-
-    }
-    // Prepare the payload with selected user IDs and status 0.
-    const payload = {
-      user_id: userId,
-      user_name: userName,
-      user_email: userEmail,
-      user_number: userNumber,
-      qr_code: qr_code,
-      urn_no: urn_no,
-      designation: designation,
-      company: company,
-      form_name: this.form_name
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.Generate_Badge(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      // this.allContactUs();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.contactUs);
-
-
-        this.allContactUs();
-
-
-
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-    },
-      (error: any) => {
-        // Handle the error here
-        console.error("Error while sending email:", error);
-        // You can also display an error message or take appropriate action.
-      }
-    );
-
-  }
-
-  downloadBadge(filepath: any, urn_no: any) {
-
-    const payload = {
-      filepath: filepath
-    };
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    console.log(payload);
-
-    // Make the HTTP request to download the PDF
-    this.AdminService.Download_Badge(payload)
-      .subscribe((response: any) => {
-        const blob = new Blob([response], { type: 'application/pdf' });
-        saveAs(blob, `${urn_no}.pdf`); // You can customize the filename
-      });
-
-  }
-
 
 
   export() {
@@ -611,15 +358,26 @@ onSelectionChange(selectedValue: string) {
 }
 
 onSearchClick(searchValue: string) {
-  if(searchValue == ''){
+  if(searchValue.trim().length === 0){
     this.page = 1
     this.limit = 25;
     this.getInterval();
-  }else{
+  }else if (searchValue.charAt(0) === ' ') {
+    this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
+
+    return;
+  } else{
     clearInterval(this.intervalId);
   }
-  this.search = searchValue;
+  this.search = searchValue.trim();
   this.allContactUs();
+}
+
+
+preventFirstSpace(input: HTMLInputElement) {
+  if (input.value.charAt(0) === ' ') {
+    input.value = input.value.trim(); // Remove leading space immediately
+  }
 }
 
 changePage(newPage: number) {
