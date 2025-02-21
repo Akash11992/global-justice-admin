@@ -42,21 +42,7 @@ export class RegisteredUserComponent {
   checkedList: any;
 
   selectAll: boolean = false; // Tracks the "select all" checkbox state
-  searchParams: string = '';
-  sortParamKey: string = 'name';
-  pageSize: any = 25;
-  paging: any = 1;
-  totalRecords: number = 0;
-  totalitems: any;
-  itemsPerPage = 10;
-  itemsPageTo = 10;
-  // page = 1;
-  numberOfPages: number = 0;
-  activeItem: number = 1;
-  groupByPerpage: any = [];
-  currentPage: any;
-  totalcount: any;
-  globalPageNumber: number = 0;
+
   sortColumn: string = ''; // Column currently being sorted
   sortDirection: boolean = true; // True = Ascending, False = Descending
 
@@ -70,11 +56,12 @@ export class RegisteredUserComponent {
   totalItems: number = 0;
   page: number = 1;
   limit: number = 25;
-  sortBy: string = 'first_name';
-  order: string = 'asc';
+  sortBy: string = 'created_date';
+  order: string = 'desc';
   search: string = '';
   totalPages: number = 0;
-
+  isLoading: boolean = true;
+  isSpinner: number = -1;
 
   rowOptions = [
     { value: 25, label: '25' },
@@ -86,12 +73,7 @@ export class RegisteredUserComponent {
 
 
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
-    this.groupByPerpage = [
-      { name: "10" },
-      { name: "25" },
-      { name: "50" },
-      { name: "100" },
-    ];
+ 
     this.masterSelected = false;
 
     // this.getCheckedItemList();
@@ -99,12 +81,8 @@ export class RegisteredUserComponent {
 
 
   ngOnInit(): void {
-    this.groupByPerpage = [
-      { name: "10" },
-      { name: "25" },
-      { name: "50" },
-      { name: "100" },
-    ];
+    this.isLoading = true;
+
     this.allDelegate();
 
     // this.createForm();
@@ -119,6 +97,7 @@ export class RegisteredUserComponent {
 
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
+        this.isSpinner = 1; // Show spinner before fetching data
         console.log('refreshing......')
         this.allDelegate();
       }, this.RefreshInterval);
@@ -146,9 +125,9 @@ export class RegisteredUserComponent {
       page_no:this.page ,
     }
 
-    this.ngxService.start();
+    // this.ngxService.start();
     this.AdminService.getApprovedDelegate(body).subscribe((data: any) => {
-      this.ngxService.stop();
+      // this.ngxService.stop();
 
       // const decreptedUser = this.SharedService.decryptData(data.data)
 
@@ -162,20 +141,6 @@ export class RegisteredUserComponent {
       }
       this.totalItems = data.totalCount;
       this.totalPages = Math.ceil(this.totalItems / this.limit);
-      // this.totalRecords = this.registeredDelegateList.length;
-
-      // console.log(this.totalRecords, 'totalRecords');
-
-
-      // let pag = Math.ceil(this.totalRecords / this.pageSize);
-
-      // this.totalitems = Array(pag)
-      //   .fill(0)
-      //   .map((x, i) => i + 1);
-
-      // this.numberOfPages = Math.ceil(
-      //   this.totalRecords / this.pageSize
-      // );
 
       if (this.registeredDelegateList.length === 0) {
         this.notFound = true;
@@ -185,59 +150,16 @@ export class RegisteredUserComponent {
       // this.searchForm.reset();
       // this.ngxService.stop();
       this.delegate = true
+      this.isLoading = false;
+      this.isSpinner = -1;
+
+    },
+    (error) => {
+      this.isSpinner = -1; // Hide spinner even if an error occurs
     });
   }
 
 
-  previousPage() {
-    if (this.activeItem > 1) {
-      this.activeItem--; // Move to the previous item
-
-      // If activeItem is at the start of the page range, update the page and range
-      if (this.activeItem < this.itemsPageTo - 9) {
-        this.itemsPageTo -= 10; // Update the range to the previous set
-        this.page--; // Decrement the page
-      }
-    }
-    this.globalPageNumber = (this.activeItem - 1) * this.itemsPerPage;
-    this.registeredDelegateList = [];
-    this.allDelegate();
-  }
-
-  nextPage() {
-    if (this.activeItem == this.itemsPageTo) {
-      this.itemsPageTo = (this.itemsPageTo + 10);
-      this.page++
-    }
-    this.activeItem++;
-    this.globalPageNumber = (this.activeItem * 10 - 10);
-    this.registeredDelegateList = [];
-
-    this.allDelegate();
-  }
-  async fnPaging(obj: any) {
-
-
-    this.globalPageNumber = 0;
-    this.pageSize = obj;
-
-    this.registeredDelegateList = [];
-
-
-    await this.allDelegate();
-
-
-  }
-  setActiveItem(item: any) {
-
-
-    this.activeItem = item;
-
-    this.globalPageNumber = (item * 10 - 10);
-
-    this.allDelegate();
-
-  }
 
 
 
@@ -552,32 +474,6 @@ export class RegisteredUserComponent {
 
   }
 
-  // Sorting Function
-  sortData(queryParamKey: string) {
-
-    if (
-      queryParamKey === this.sortParamKey.replace("-", "") &&
-      this.sortParamKey.includes("-")
-    ) {
-      this.sortParamKey = queryParamKey;
-    } else {
-      this.sortParamKey = "-" + queryParamKey;
-    }
-    // this.sorticon = this.sorticon ? false : true;
-    // this.fnReset(true);
- 
-
-    if (this.sortColumn === queryParamKey) {
-      this.sortDirection = !this.sortDirection; // Toggle direction
-    } else {
-      this.sortColumn = queryParamKey;
-      this.sortDirection = true; // Default Ascending
-    
-    }
-    this.registeredDelegateList = [];
-    this.allDelegate();
-
-  }
 
 
 
@@ -590,15 +486,24 @@ onSelectionChange(selectedValue: string) {
 }
 
 onSearchClick(searchValue: string) {
-  if(searchValue == ''){
+  if(searchValue.trim().length === 0){
     this.page = 1
     this.limit = 25;
     this.getInterval();
-  }else{
+  }else if (searchValue.charAt(0) === ' ') {
+    this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
+    return;
+  } else {
     clearInterval(this.intervalId);
   }
-  this.search = searchValue;
+  this.search = searchValue.trim();
   this.allDelegate();
+}
+
+preventFirstSpace(input: HTMLInputElement) {
+  if (input.value.charAt(0) === ' ') {
+    input.value = input.value.trim(); // Remove leading space immediately
+  }
 }
 
 changePage(newPage: number) {

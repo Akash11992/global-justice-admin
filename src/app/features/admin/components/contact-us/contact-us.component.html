@@ -33,7 +33,7 @@
                     class="form-control"
                     type="search"
                     id="inputsearch"
-                    placeholder="Search..."
+                    placeholder="Search..."(input)="preventFirstSpace(searchInput)"
                     aria-label="Search" type="search" id="inputsearch"
               placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
             <button class="btn "  (click)="onSearchClick(searchInput.value)" id="btncolor">Search</button>
@@ -69,11 +69,13 @@
         </div>
       </div>
 
-      <div class="row m-1" *ngIf="contactUsList.length > 0;">
+      <div class="row m-1" *ngIf="contactUsList.length > 0 else noDataTemplate;">
         <div class="col-md-12 row">
                 <div class="col-sm-10">
                   <p>
                     * Data will be auto refreshed in every 60 secs
+                    <img *ngIf="isSpinner == 1" src="assets/UIComponents/images/loading.gif"width="2%" alt="Loading">
+
                   </p>
                 </div>
                 <div class="col-sm-2">
@@ -103,7 +105,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-0">
-              <div class="table-responsive" *ngIf="contactUsList.length > 0 else noDataTemplate;">
+              <div class="table-responsive" *ngIf="contactUsList.length > 0 ;">
                 <table class="table">
                   <thead>
                     <tr>
@@ -187,11 +189,39 @@
           </div>
         </div>
       </div>
+
+      <ng-container *ngIf="isLoading">
+        <div class="table-responsive" >
+          <table class="table">
+            <thead>
+              <tr>
+                <th>SN</th>
+                <th >Name</th>
+                <th >Mobile </th>
+                <th>Email </th>
+                <th>Query </th>
+              </tr>
+            </thead>
+          <tbody>
+            <tr>
+              <td colspan="5">
+                <br>
+                <br>
+                <br>
+                <div class="d-flex justify-content-center no_data">
+                  <img src="assets/UIComponents/images/fetchingdata.svg" alt="" width="150px" />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </ng-container>
     </div>
   </div>
   <!------------------------------------------- Page Content end ----------------------------------------->
 </div>
 
 <ng-template #noDataTemplate>
-  <h5 style="text-align: center"><span >No Data Found</span></h5>
+  <h5 *ngIf="!isLoading" style="text-align: center"><span >No Data Found</span></h5>
 </ng-template>
