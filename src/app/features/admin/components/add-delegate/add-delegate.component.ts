@@ -188,7 +188,7 @@ export class AddDelegateComponent implements OnInit {
         created_by: "Admin",
         status: "1",
         is_nomination:"0",
-        p_type:"DELEGATE_OFFLINE",
+        p_type:"DELEGATE_SPONSERED",
         p_reference_by:this.sponsorshipId
     };
     
