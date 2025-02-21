@@ -141,7 +141,8 @@ export class SharedService {
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
-      });
+      },
+      ()=> console.log("not found"));
   }
 
 
