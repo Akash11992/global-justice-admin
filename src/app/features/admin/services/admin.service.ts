@@ -289,5 +289,13 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.listPeaceKeeperEndpoint());
   }
 
+  addDeletgate(bodyParams:any): Observable<any> {
+    return this._apiHttpService.post(this._apiEndpointsService.addDeletgateEndPoint(),bodyParams);
+  }
+
+  getAllCountrycode() {
+    return this._apiHttpService.get(this._apiEndpointsService.getAllCountrycodeEndpoint());
+  }
+
 
 }

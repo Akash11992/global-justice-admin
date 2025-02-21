@@ -88,7 +88,7 @@ export class SponsorshipComponent implements OnInit {
   }
 
   onSearchClick(searchValue: string) {
-    this.search = searchValue;
+    this.search = searchValue ? searchValue.trim() : "";
     this.loadSponsorships();
   }
 

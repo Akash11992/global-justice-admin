@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-collaborator',
@@ -63,9 +64,11 @@ export class CollaboratorComponent implements OnInit{
 
     onActivateDeactiveToggle(item:any):void{
       this.ngxService.start();
-      const { id, created_at,updated_at, ...newItem } = item;
+      const { id, created_at,updated_at, qr_unique_code,qr_code_url,...newItem } = item;
       item['is_active'] = +!item['is_active'];
       newItem['is_active'] = +!newItem['is_active'];
+      newItem['domain_url'] = environment.domainUrl;
+      newItem['is_updated_by_activated'] = 1;
       this.updateCollaboratorData(item['id'],newItem);
     }
 
@@ -87,7 +90,7 @@ export class CollaboratorComponent implements OnInit{
     }
   
     onSearchClick(searchValue: string) {
-      this.search = searchValue;
+      this.search = searchValue ? searchValue.trim() : "";
       this.loadcollaborators();
     }
   
@@ -114,4 +117,22 @@ export class CollaboratorComponent implements OnInit{
   
     }
 
+    downloadFile(filePath: string, fileName: string,fileType:string) {
+      switch(fileType){
+        case 'QR':
+        filePath = environment.fileAccessUrl+'/collaborator/qr/'+fileName;
+        break;
+
+        case 'BADGE_IMG':
+          filePath = environment.fileAccessUrl+'/collaborator/batch/image/'+fileName;
+        break;
+
+        case 'BADGE_PDF':
+          filePath = environment.fileAccessUrl+'/collaborator/batch/pdf/'+fileName;
+        break;
+
+      }
+      this.SharedService.downloadFile(filePath, fileName);
+    }
+  
 }

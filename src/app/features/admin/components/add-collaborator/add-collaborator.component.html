@@ -25,7 +25,7 @@
                 <div *ngIf="form.get('fullName').errors?.required && form.get('fullName').touched" class="error text-danger">
                   Full Name is required
                 </div>
-                <div *ngIf="form.get('fullName').errors?.pattern" class="error text-danger">
+                <div *ngIf="form.get('fullName').errors?.pattern || form.get('fullName').errors?.leadingTrailingSpaces" class="error text-danger">
                   Only alphabets, number and spaces allowed with max length 50
                 </div>
               </div>
@@ -77,7 +77,7 @@
               <div class="col-md-6 mb-3">
                 <label for="image" class="form-label">Logo Upload <span class="error text-danger">*</span></label>
                 <input type="file" class="form-control" id="image" (change)="onFileSelected($event)" #fileInput accept="image/*" aria-describedby="emailHelp">
-                <div *ngIf="form.get('logoImage')?.invalid && form.get('logoImage')?.touched">
+                <div *ngIf="form.get('logoImage')?.invalid && form.get('logoImage')?.touched" class="error text-danger">
                   Image is required
                 </div>
                 <div *ngIf="fileError" style="color: red;">{{ fileError }}</div>
@@ -99,7 +99,7 @@
                 </div>
               </div>
               <div class="col-md-12 mb-3">
-                <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+                <button type="submit" class="btn btn-primary">Save</button>
                 <button type="submit" class="btn btn-danger mx-3" (click)="onCancel()">Cancel</button>
               </div>
             </div>

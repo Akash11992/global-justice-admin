@@ -490,4 +490,8 @@ export class ApiEndpointsService {
   public getCityByIdEndpoint(id: string): string {
     return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_LIST_CITY, [id]);
   }
+
+  public addDeletgateEndPoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATE);
+  }
 }

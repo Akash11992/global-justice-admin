@@ -5,5 +5,7 @@ export const environment = {
   apiUrl:'https://devglobaljusticeapis.cylsys.com/api/v1',
   apiMockUrl:'/api/v1',
   domainUrl:'https://globaljusticeuat.cylsys.com',
+  // fileAccessUrl:'http://localhost:4000',
+  fileAccessUrl:'https://devglobaljusticeapis.cylsys.com',
   app_env: 'development'
 };       

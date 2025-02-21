@@ -6,6 +6,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { strictEmailValidator } from '../../validator/email-validator';
 import { environment } from 'src/environments/environment';
+import { strictStringValidator } from '../../validator/strict-string-validator';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -50,21 +51,30 @@ export class AddCollaboratorComponent {
 
     initializeForm() {
       this.collaboratorId = this.route.snapshot.paramMap.get('id');
-      if(this.collaboratorId){
-        this.collaboratorDataById();
-      }
+
+      if(this.collaboratorId) this.collaboratorDataById();
+      
       const namePattern = /^[a-zA-Z0-9' ]{1,50}$/;
       const mobilePattern = /^\+?[1-9]\d{9,14}$/;
     
-        this.form = this.fb.group({
-          email: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(254)]],
-          fullName: ['', [Validators.required, Validators.pattern(namePattern)]],
-          mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
-          country: ['', Validators.required],
-          dob: ['',[Validators.required,this.noFutureDateValidator]],
-          logoImage: ['',Validators.required],
-          refPeacekeeper: ['',Validators.required]
-        });
+      this.form = this.fb.group({
+        email: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(254)]],
+        fullName: ['', [Validators.required, Validators.pattern(namePattern), strictStringValidator()]],
+        mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
+        country: ['', Validators.required],
+        dob: ['',[Validators.required,this.noFutureDateValidator]],
+        logoImage: ['',Validators.required],
+        refPeacekeeper: ['',Validators.required]
+      });
+
+      if(this.collaboratorId){
+        this.form.controls['email'].disable();
+        this.form.controls['mobile'].disable();
+        this.form.controls['dob'].disable();
+        this.form.controls['country'].disable(); // Disables at form level
+        this.form.controls['refPeacekeeper'].disable(); // Disables at form level
+      }
+
       }
 
       collaboratorDataById(){
@@ -99,12 +109,6 @@ export class AddCollaboratorComponent {
     setupPeacekeeper(): void{
         this.adminService.listPeaceKeeper().subscribe((data: any) => {
           this.peacekeepers = data['data'];
-          if(this.collaboratorId){
-            const patchFormData = {
-              refPeacekeeper:+this.collaboratorResData['peacekeeper_id']
-            }
-            this.form.patchValue(patchFormData);
-          }
         },
         (error: any) => {
           console.log(error);
@@ -149,7 +153,7 @@ export class AddCollaboratorComponent {
       this.selectedCountryObj = {
         id:selectedElement.value,
         name:selectedName,
-        code:selectedCode,
+        code:selectedCode
       };
   
     }
@@ -187,17 +191,18 @@ export class AddCollaboratorComponent {
   
         const payload = {
           full_name:this.form.value["fullName"],
-          mobile_no:this.form.value["mobile"],
-          email:this.form.value["email"],
-          country_id:this.form.value["country"],
+          mobile_no:this.collaboratorId ? this.collaboratorResData['mobile_no']:this.form.value["mobile"],
+          email:this.collaboratorId ? this.collaboratorResData['email']: this.form.value["email"],
+          country_id:this.collaboratorId ? this.collaboratorResData['country_id']:this.form.value["country"],
           country:this.selectedCountryObj["name"]?this.selectedCountryObj["name"]:this.collaboratorResData['country'],
           country_code:this.selectedCountryObj["code"]?this.selectedCountryObj["code"]:this.collaboratorResData['country_code'],
-          dob:this.form.value["dob"],
+          dob:this.collaboratorId ? this.collaboratorResData['dob'] : this.form.value["dob"],
           logo_image: this.form.value['logoImage'],
-          is_active: this.collaboratorId ? this.collaboratorResData['is_active'] : 0,
-          peacekeeper_id:this.form.value["refPeacekeeper"],
+          is_active: this.collaboratorId ? this.collaboratorResData['is_active'] : 1,
+          peacekeeper_id:this.collaboratorId ? this.collaboratorResData['peacekeeper_id'] : this.form.value["refPeacekeeper"],
           peacekeeper_ref_code:this.selectedPeacekeeperObj['couponCode'] ? this.selectedPeacekeeperObj["couponCode"]: this.collaboratorResData['peacekeeper_ref_code'],
-          domain_url:environment.domainUrl
+          domain_url:environment.domainUrl,
+          is_updated_by_activated: 0
         };
   
         this.ngxService.start();

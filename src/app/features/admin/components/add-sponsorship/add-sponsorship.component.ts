@@ -6,6 +6,7 @@ import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { strictEmailValidator } from '../../validator/email-validator';
+import { strictStringValidator } from '../../validator/strict-string-validator';
 
 @Component({
   selector: 'app-add-sponsorship',
@@ -67,11 +68,11 @@ export class AddSponsorshipComponent implements OnInit{
 
     this.form = this.fb.group({
       sponsorshipType: ['', Validators.required],
-      pocName: ['', [Validators.required, Validators.pattern(namePattern)]],
+      pocName: ['', [Validators.required, Validators.pattern(namePattern), strictStringValidator()]],
       pocEmail: ['', [Validators.required, strictEmailValidator(),Validators.maxLength(254)]],
       state: ['', Validators.required],
-      address: ['', [Validators.required,Validators.pattern(addressPattern)]],
-      sponsorshipName: ['', [Validators.required, Validators.pattern(namePattern)]],
+      address: ['', [Validators.required,Validators.pattern(addressPattern), strictStringValidator()]],
+      sponsorshipName: ['', [Validators.required, Validators.pattern(namePattern),strictStringValidator()]],
       pocMobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
       country: ['', Validators.required],
       city: ['', Validators.required],
@@ -254,7 +255,7 @@ export class AddSponsorshipComponent implements OnInit{
       otherName?.clearValidators();
       this.setupPeacekeeper();
     } else if (refBy === 'other') {
-      otherName?.setValidators([Validators.required,Validators.pattern(namePattern)]);
+      otherName?.setValidators([Validators.required,Validators.pattern(namePattern),strictStringValidator()]);
       peacekeeperSelect?.clearValidators();
     } else {
       peacekeeperSelect?.clearValidators();
@@ -285,7 +286,7 @@ export class AddSponsorshipComponent implements OnInit{
         city:this.selectedCityObj["name"]?this.selectedCityObj["name"]:this.spononsershipResData['city'],
         address:this.form.value["address"],
         ref_by:this.form.value["refBy"] ? this.form.value["refBy"] : '',
-        is_active: this.sponsorshipId ? this.spononsershipResData['is_active'] : 0,
+        is_active: this.sponsorshipId ? this.spononsershipResData['is_active'] : 1,
         peacekeeper_id:this.form.value["refBy"] === 'peacekeeper' ? +this.form.value["refPeacekeeper"] : null,
         peacekeeper_other_name:this.form.value["refBy"] === 'peacekeeper' ? 
         this.selectedPeacekeeperObj['name'] ?this.selectedPeacekeeperObj["name"]:this.spononsershipResData['peacekeeper_other_name'] : this.form.value["name"]
