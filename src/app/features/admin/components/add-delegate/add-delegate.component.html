@@ -19,7 +19,7 @@
                       <div class="form-group col-md-4 mb-3">
                         <label for="title">Title <span class="text-danger">*</span></label>
                         <input type="text" id="title" class="form-control" formControlName="title" />
-                        <div *ngIf="registrationForm.get('title')?.touched && registrationForm.get('title')?.invalid" class="text-danger">
+                        <div *ngIf="registrationForm.get('title')?.touched && (registrationForm.get('title')?.invalid || registrationForm.get('title').errors?.leadingTrailingSpaces)" class="text-danger">
                           Title is required and should be at most 15 characters.
                         </div>
                       </div>
@@ -28,7 +28,7 @@
                       <div class="form-group col-md-4 mb-3">
                         <label for="first_name">First Name <span class="text-danger">*</span></label>
                         <input type="text" id="first_name" class="form-control" formControlName="first_name" />
-                        <div *ngIf="registrationForm.get('first_name')?.touched && registrationForm.get('first_name')?.invalid" class="text-danger">
+                        <div *ngIf="registrationForm.get('first_name')?.touched && (registrationForm.get('first_name')?.invalid || registrationForm.get('first_name').errors?.leadingTrailingSpaces)" class="text-danger">
                           First Name is required (Min 3, Max 115 characters).
                         </div>
                       </div>
@@ -37,7 +37,7 @@
                       <div class="form-group col-md-4 mb-3">
                         <label for="last_name">Last Name <span class="text-danger">*</span></label>
                         <input type="text" id="last_name" class="form-control" formControlName="last_name" />
-                        <div *ngIf="registrationForm.get('last_name')?.touched && registrationForm.get('last_name')?.invalid" class="text-danger">
+                        <div *ngIf="registrationForm.get('last_name')?.touched && (registrationForm.get('last_name')?.invalid || registrationForm.get('last_name').errors?.leadingTrailingSpaces)" class="text-danger">
                           Last Name is required (Min 2, Max 115 characters).
                         </div>
                       </div>
@@ -62,7 +62,27 @@
                     <div class="row">
                       <div class="form-group col-md-4 mb-3">
                         <label for="pocMobile">Mobile Number <span class="text-danger">*</span></label>
-                        <input type="text" id="pocMobile" class="form-control" formControlName="pocMobile" />
+                        <div class="input-group">
+                          <div class="row">
+                            <div class="input-group-prepend col-md-3">
+                              <select class="form-control" formControlName="countryCode">
+                                <option *ngFor="let code of countryCode" [value]="code['codeStr']">{{code['country_mobile_code']}}</option>
+                              </select>
+                            </div>
+<!-- 
+                            <div class="input-group-append col-md-1">
+                              <span class="input-group-text" style="border: none; background: transparent;"> </span>
+                            </div> -->
+                            <!-- Mobile Number Input -->
+                            <div class="input-group-append col-md-9">
+                              <input type="text" id="pocMobile" class="form-control" formControlName="pocMobile"/>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="registrationForm.get('countryCode')?.touched && registrationForm.get('countryCode')?.errors?.required" class="text-danger">
+                          Country Code is required
+                        </div>
+
                         <div *ngIf="registrationForm.get('pocMobile')?.touched && registrationForm.get('pocMobile')?.invalid" class="text-danger">
                           Enter a valid mobile number.
                         </div>
@@ -109,7 +129,7 @@
                     <div class="form-group col-md-4 mb-3">
                       <label for="profession_1">Profession 1 <span class="text-danger">*</span></label>
                       <input type="text" id="profession_1" class="form-control" formControlName="profession_1" />
-                      <div *ngIf="registrationForm.get('profession_1')?.touched && registrationForm.get('profession_1')?.invalid" class="text-danger">
+                      <div *ngIf="registrationForm.get('profession_1')?.touched && (registrationForm.get('profession_1')?.invalid || registrationForm.get('profession_1').errors?.leadingTrailingSpaces)" class="text-danger">
                         Profession 1 is required (Min 2, Max 150 characters).
                       </div>
                     </div>
@@ -185,11 +205,8 @@
                 </div>
 
                 <div class="form-group col-md-4 mb-3">
-                  <label for="Address" class="form-label">Address <span class="error text-danger">*</span></label>
+                  <label for="Address" class="form-label">Address</label>
                 <input type="text" formControlName="address" class="form-control" id="Address" aria-describedby="emailHelp">
-                <div *ngIf="registrationForm.get('address').errors?.required && registrationForm.get('address').touched" class="error text-danger">
-                  Address is required
-                </div>
                 </div>
                 </div>
               </div>

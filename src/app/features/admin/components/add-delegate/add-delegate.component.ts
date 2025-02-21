@@ -6,6 +6,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { strictEmailValidator } from '../../validator/email-validator';
+import { strictStringValidator } from '../../validator/strict-string-validator';
 
 @Component({
   selector: 'app-add-delegate',
@@ -19,6 +20,7 @@ export class AddDelegateComponent implements OnInit {
   selectedStateObj:any ={};
   selectedCityObj:any ={};
 
+  countryCode: any[] = [];
   countries: any[] = [];
   states: any[] = [];
   cities: any[] = [];
@@ -36,16 +38,18 @@ export class AddDelegateComponent implements OnInit {
 
     this.sponsorshipId = this.route.snapshot.paramMap.get('id');
     this.setupCountry();
+    this.getAllCountrycode();
     const mobilePattern = /^[1-9]\d{9,14}$/;
     // Define the form group with controls and validations
     this.registrationForm = this.fb.group({
       // Personal Information Section
-      title: ['', [Validators.required, Validators.maxLength(15)]],
-      first_name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(115)]],
-      last_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(115)]],
+      title: ['', [Validators.required, Validators.maxLength(15),strictStringValidator()]],
+      first_name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(115),strictStringValidator()]],
+      last_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(115),strictStringValidator()]],
       dob: ['', [Validators.required,this.noFutureDateValidator]],
 
       // Contact Information Section
+      countryCode: ['', [Validators.required]],
       pocMobile: ['', [Validators.required, Validators.pattern(mobilePattern)]],
       email_id: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(125)]],
 
@@ -53,7 +57,7 @@ export class AddDelegateComponent implements OnInit {
       instagram: ['', Validators.maxLength(150)],
 
       // Professional Information Section
-      profession_1: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(150)]],
+      profession_1: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(150) ,strictStringValidator()]],
       profession_2: ['', Validators.maxLength(150)],
 
       website: ['', Validators.maxLength(150)],
@@ -63,7 +67,7 @@ export class AddDelegateComponent implements OnInit {
       country: ['', Validators.required],
       state: ['', Validators.required],
       city: ['', Validators.required],
-      address: ['', [Validators.required]],
+      address: [''],
 
       // Reference Code Section
       reference_no: ['', [Validators.minLength(3), Validators.maxLength(50)]],
@@ -162,7 +166,7 @@ export class AddDelegateComponent implements OnInit {
         first_name: formData["first_name"],
         last_name: formData["last_name"],
         dob: formData["dob"],
-        country_code:this.selectedCountryObj.code,
+        country_code:formData["countryCode"],
         mobile_number: formData["pocMobile"],
         email_id: formData["email_id"],
         linkedIn_profile: formData["linkedIn"],
@@ -224,6 +228,22 @@ export class AddDelegateComponent implements OnInit {
       console.log(error);
     }
     )
+  }
+
+  getAllCountrycode() {
+    this.adminService.getAllCountrycode().subscribe(
+      (res: any) => {
+        this.countryCode = res.data;
+        const regex = /\(([^)]+)\)/;
+        this.countryCode = this.countryCode.map(code => ({
+          country_mobile_code: code.country_mobile_code,
+          codeStr: (code.country_mobile_code.match(regex) || [])[1] || code.country_mobile_code
+        }));
+      },
+      (err: any) => {
+        console.log('error', err);
+      }
+    );
   }
 
   onCancel(): void {

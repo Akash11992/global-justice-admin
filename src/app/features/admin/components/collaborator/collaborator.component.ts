@@ -90,7 +90,7 @@ export class CollaboratorComponent implements OnInit{
     }
   
     onSearchClick(searchValue: string) {
-      this.search = searchValue;
+      this.search = searchValue ? searchValue.trim() : "";
       this.loadcollaborators();
     }
   
