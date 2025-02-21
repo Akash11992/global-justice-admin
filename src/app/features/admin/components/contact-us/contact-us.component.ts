@@ -70,7 +70,7 @@ export class ContactUsComponent implements OnInit {
   totalItems: number = 0;
   page: number = 1;
   limit: number = 25;
-  sortBy: string = 'created_at';
+  sortBy: string = 'CREATED_AT';
   order: string = 'desc';
   search: string = '';
   totalPages: number = 0;
