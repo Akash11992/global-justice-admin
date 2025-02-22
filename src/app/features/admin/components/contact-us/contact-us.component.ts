@@ -100,7 +100,7 @@ export class ContactUsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.isLoading = true;
+    this.isLoading = this.SharedService.isLoading;
 
     this.groupByPerpage = [
       { name: "10" },
