@@ -43,7 +43,7 @@
                         class="form-control"
                         type="search"
                         id="inputsearch"
-                        placeholder="Search..."
+                        placeholder="Search..." (input)="preventFirstSpace(searchInput)"
                         aria-label="Search" type="search" id="inputsearch"
                   placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
                 <button class="btn "  (click)="onSearchClick(searchInput.value)" id="btncolor">Search</button>
@@ -69,41 +69,20 @@
       </div>
 
 
-      <div class="row m-1" *ngIf="peacekeeperList.length > 0;">
+      <div class="row m-1" *ngIf="peacekeeperList.length > 0 else noDataTemplate;">
         <div class="col-md-12 row">
                 <div class="col-sm-10">
                   <p>
-                    * Data will be auto refreshed in every 60 secs
+                    * Data will be auto refreshed in every 60 secs 
+                    <img *ngIf="isSpinner == 1" src="assets/UIComponents/images/loading.gif"width="2%" alt="Loading">
                   </p>
                 </div>
-                <!-- <div class="col-sm-2">
-                <div class="showData dropdown">
-                  <h4 class="m-0">
-                    <a class="" data-bs-toggle="dropdown" aria-expanded="false">
-                      <span class="group-by" style="font-size: 15px;">{{ this.pageSize }} per page  </span>
-                      <img src="assets/images/arrow-down-blue.svg" alt="" width="20px" class="pl-2 pt-1" />
-                    </a>
-      
-                    <div class="dropdown-menu p-0" style="    position: absolute;
-                    transform: translate3d(747px, -126px, 0px);
-                    top: 0px;
-                    left: 0px;
-                    will-change: transform;
-                ">
-                      <a (click)="fnPaging(list.name)" class="dropdown-item groupdpdn-item" *ngFor="
-                                          let list of groupByPerpage;
-                                        ">
-                        {{ list.name }}
-                      </a>
-                    </div>
-                  </h4>
-                </div>
-                </div> -->
+
               </div>
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-0">
-              <div class="table-responsive" *ngIf="peacekeeperList.length > 0 else noDataTemplate; ">
+              <div class="table-responsive" *ngIf="peacekeeperList.length > 0 ;">
                 <table class="table">
                   <thead>
                     <tr>
@@ -116,13 +95,13 @@
                             </th>
                       <th>SN</th>
                       <th (click)="onSort('full_name')">Name <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('dob')">DOB <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('country')">Country  <fa-icon [icon]="sortColumn === 'country' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('mobile_number')">Mobile <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('dob')">DOB <fa-icon [icon]="sortColumn === 'dob' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
                       <th (click)="onSort('email_id')">Email  <fa-icon [icon]="sortColumn === 'email_id' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('Id_no')">Peacekeeper ID <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('mobile_number')">Mobile <fa-icon [icon]="sortColumn === 'mobile_number' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('country')">Country  <fa-icon [icon]="sortColumn === 'country' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('Id_no')">Peacekeeper ID <fa-icon [icon]="sortColumn === 'Id_no' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
                       <th>Coupon <br>Discount% </th>
-                      <th (click)="onSort('coupon_code')">Coupon Code <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('coupon_code')">Coupon Code <fa-icon [icon]="sortColumn === 'coupon_code                                                                                           ' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
                       <th>Image</th>
                       <th>QR URL</th>
                       <th (click)="onSort('created_at')">Created Date  <fa-icon [icon]="sortColumn === 'created_at' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
@@ -140,11 +119,7 @@
                             </td>
                       <td>{{i+1}}</td>
                       <td>{{all.full_name}}</td>
-                      <td>{{all.dob !==null? all.dob :'' | date : 'dd/MM/yyyy'}}</td>
-                      <td>{{all.country}}</td>
-                      <td> {{ isVisible[i] ? all.mobile_number : maskMobileNumber(all.mobile_number) }}
-                        <fa-icon [icon]="isVisible[i] ? faEye : faEyeSlash " (click)="toggleVisibility(i)"></fa-icon>
-                      </td>
+                      <td>{{all.dob | date : 'dd-MM-yyyy'}}</td>
                       <td><span style="
                               display: block;
                               text-overflow: ellipsis;
@@ -152,6 +127,10 @@
                               white-space: nowrap;
                               width: 230px;
                              ">{{all.email_id}} <i class="bi bi-person-fill"></i></span></td>
+                      <td> {{ isVisible[i] ? all.mobile_number : maskMobileNumber(all.mobile_number) }}
+                        <fa-icon [icon]="isVisible[i] ? faEye : faEyeSlash " (click)="toggleVisibility(i)"></fa-icon>
+                      </td>
+                      <td>{{all.country}}</td>
                       <td>{{all.Id_no}}</td>
                       <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
                       <td>{{all.coupon_code}}</td>
@@ -165,7 +144,7 @@
                             width: 250px;
                            "><a  (click)="openLink(all.QR_CODE)" style="color: #0056b3;
                            text-decoration: none;cursor: pointer;">{{all.QR_CODE}}</a></td>
-                      <td>{{all.created_at | date : 'dd/MM/yyyy'}}</td>
+                      <td>{{all.created_at | date:'dd-MM-yyyy'}}</td>
                       <!-- <td>{{all.designation}}</td>
                             <td>{{all.department}}</td>
                             <td>{{all.refrence}}</td>
@@ -210,6 +189,8 @@
               
               </div>
               
+
+              
               <nav aria-label="...">
                 <ul class="pagination">
                   <li class="page-item " (click)="changePage(page - 1)" [disabled]="page === 1">
@@ -229,80 +210,56 @@
             </div>
           </div>
 
-          <!-- <div class="row pt-3 justify-content-center">
-            <div class="datatable_rgt">
-                    <div class="pagination" *ngIf="this.totalitems !== undefined && peacekeeperList.length !== 0">
-                      <a (click)="previousPage()" *ngIf="this.activeItem !== 1" [attr.disabled]="page === 1">
-                        <img src="../../../../../assets/images/arrow-left-blue.svg" alt="" />
-                        Previous
-                      </a>
-                      <ng-container *ngFor="
-                          let item of totalitems
-                            | slice : (page - 1) * itemsPerPage : page * itemsPerPage;
-                          let ind = index
-                        ">
-                        <a [class.active]="item === activeItem" (click)="setActiveItem(item)">
-                          {{ item }}
-                        </a>
-                      </ng-container>
-                      <a (click)="nextPage()" *ngIf="this.totalitems.length !== this.activeItem"
-                        [attr.disabled]="page === numberOfPages">
-                        Next
-                        <img src="../../../../../assets/images/arrow-right-blue.svg" alt="" />
-                      </a>
-                    </div>
-    
-                  </div>
-          </div> -->
+           </div>
+            </div>
+
+            <ng-container *ngIf="isLoading">
+              <div class="table-responsive" >
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>SN</th>
+                      <th >Name</th>
+                      <th>DOB </th>
+                      <th >Country</th>
+                      <th >Mobile </th>
+                      <th>Email </th>
+                      <th>Peacekeeper ID </th>
+                      <th>Coupon <br>Discount% </th>
+                      <th >Coupon Code </th>
+                      <th>Image</th>
+                      <th>QR URL</th>
+                      <th>Created Date</th>
+                    </tr>
+                  </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="12">
+                      <br>
+                      <br>
+                      <br>
+                      <div class="d-flex justify-content-center no_data">
+                        <img src="assets/UIComponents/images/fetchingdata.svg" alt="" width="150px" />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+            </ng-container>
+          </div>
+          
+          
         </div>
-      </div>
-    </div>
+        <!------------------------------------------- Page Content end ----------------------------------------->
 
-
-  </div>
-  <!------------------------------------------- Page Content end ----------------------------------------->
+        <ng-template #noDataTemplate >
+          <h5 *ngIf="!isLoading" style="text-align: center"><span >No Data Found</span></h5>
+        </ng-template>
 </div>
 
-<!-- 
-<ng-container *ngIf="isLoading">
-  <div class="table-responsive" >
-    <table class="table">
-      <thead>
-        <tr>
-          <th>SN</th>
-          <th >Name</th>
-          <th>DOB </th>
-          <th >Country</th>
-          <th >Mobile </th>
-          <th>Email </th>
-          <th>Peacekeeper ID </th>
-          <th>Coupon <br>Discount% </th>
-          <th >Coupon Code </th>
-          <th>Image</th>
-          <th>QR URL</th>
-          <th>Created Date</th>
-        </tr>
-      </thead>
-    <tbody>
-      <tr>
-        <td colspan="10n h">
-          <br>
-          <br>
-          <br>
-          <div class="no_data">
-            <img src="assets/UIComponents/images/fetchingdata.svg" alt="" width="150px" />
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
-</ng-container> -->
 
 
-<ng-template #noDataTemplate>
-  <h5 style="text-align: center"><span >No Data Found</span></h5>
-</ng-template>
 
 <!------------------------------------------- Page modal start ----------------------------------------->
 
