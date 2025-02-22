@@ -111,11 +111,23 @@
                     <tr>
                       <!-- <th>#</th> -->
                       <th>SN</th>
-                      <th (click)="onSort('FIRST_NAME')">Name <fa-icon [icon]="sortColumn === 'FIRST_NAME' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th  (click)="onSort('PHONE_NUMBER')">Mobile  <fa-icon [icon]="sortColumn === 'PHONE_NUMBER' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th  (click)="onSort('EMAIL')">Email <fa-icon [icon]="sortColumn === 'EMAIL' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('FIRST_NAME')" [ngStyle]="sortBy === 'FIRST_NAME'?{'cursor': 'pointer'}:{}">Name 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'FIRST_NAME' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'FIRST_NAME' && order === 'desc'"></i>  
+                      </th>
+                      <th  (click)="onSort('PHONE_NUMBER')" [ngStyle]="sortBy === 'PHONE_NUMBER'?{'cursor': 'pointer'}:{}">Mobile
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'PHONE_NUMBER' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'PHONE_NUMBER' && order === 'desc'"></i> 
+                       </th>
+                      <th  (click)="onSort('EMAIL')" [ngStyle]="sortBy === 'EMAIL'?{'cursor': 'pointer'}:{}">Email
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'EMAIL' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'EMAIL' && order === 'desc'"></i>                       
+                       </th>
                       <th>Query</th>
-                      <th (click)="onSort('CREATED_AT')">Created Date  <fa-icon [icon]="sortColumn === 'CREATED_AT' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('CREATED_AT')" [ngStyle]="sortBy === 'CREATED_AT'?{'cursor': 'pointer'}:{}">Created Date
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'CREATED_AT' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'CREATED_AT' && order === 'desc'"></i>
+                      </th>
 
                       <!--   <th>Registered At</th> -->
                       <!-- <th>Action</th> -->

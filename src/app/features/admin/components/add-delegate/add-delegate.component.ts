@@ -108,6 +108,13 @@ export class AddDelegateComponent implements OnInit {
       code:selectedCode
     };
 
+    this.states = [];
+    this.cities = [];
+    this.selectedStateObj = {};
+    this.selectedCityObj = {};
+    this.registrationForm.controls['state'].setValue('');
+    this.registrationForm.controls['city'].setValue('');
+
     this.callStateByIdApi(selectedElement.value);
   }
 
@@ -130,6 +137,9 @@ export class AddDelegateComponent implements OnInit {
       name:selectedName,
     }
 
+    this.cities = [];
+    this.selectedCityObj = {};
+    this.registrationForm.controls['city'].setValue('');
     this.callCityByIdApi(selectedElement.value);
   }
 

@@ -112,7 +112,7 @@ export class PeacekeeperUserComponent implements OnInit {
 
 
     // console.log(window.location.origin);
-    this.isLoading = true;
+    this.isLoading = this.SharedService.isLoading;
 
     this.allPeacekeeper();
 
@@ -201,6 +201,7 @@ export class PeacekeeperUserComponent implements OnInit {
 
     },
     (error) => {
+      this.isLoading = false;
       this.isSpinner = -1; // Hide spinner even if an error occurs
     });
   }

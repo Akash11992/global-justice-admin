@@ -81,7 +81,8 @@ export class RegisteredUserComponent {
 
 
   ngOnInit(): void {
-    this.isLoading = true;
+    this.isLoading = this.SharedService.isLoading;
+
 
     this.allDelegate();
 
