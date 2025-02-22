@@ -116,13 +116,19 @@ export class AddSponsorshipComponent implements OnInit{
       name:selectedName,
     };
 
-    this.callStateByIdApi(selectedElement.value);
+    this.states = [];
+    this.cities = [];
+    this.selectedStateObj = {};
+    this.selectedCityObj = {};
+    this.form.controls['state'].setValue('');
+    this.form.controls['city'].setValue('');
+    this.callStateByIdApi(selectedElement.value, "ON_CHANGE");
   }
 
-  callStateByIdApi(selectedId:any){
+  callStateByIdApi(selectedId:any, from:string){
     this.adminService.getStateById(selectedId).subscribe((data: any) => {
       this.states = data['data'];
-      if(this.sponsorshipId){
+      if(this.sponsorshipId && from == "ON_LOAD"){
         const patchFormData = {
           state: +this.spononsershipResData['state_id'],
         }
@@ -143,9 +149,12 @@ export class AddSponsorshipComponent implements OnInit{
     this.selectedStateObj = {
       id:selectedElement.value,
       name:selectedName,
-    }
+    };
 
-    this.callCityByIdApi(selectedElement.value);
+    this.cities = [];
+    this.selectedCityObj = {};
+    this.form.controls['city'].setValue('');
+    this.callCityByIdApi(selectedElement.value, "ON_CHANGE");
   }
 
   onCityChange(event: Event): void{
@@ -179,10 +188,10 @@ export class AddSponsorshipComponent implements OnInit{
     }
   }
 
-  callCityByIdApi(selectedId:any){
+  callCityByIdApi(selectedId:any, from:string){
     this.adminService.getCityById(selectedId).subscribe((data: any) => {
       this.cities = data['data'];
-      if(this.sponsorshipId){
+      if(this.sponsorshipId && from == "ON_LOAD"){
         const patchFormData = {
           city: +this.spononsershipResData['city_id'],
         }
@@ -220,8 +229,8 @@ export class AddSponsorshipComponent implements OnInit{
       this.spononsershipResData = data;
 
       this.setupCountry();
-      this.callStateByIdApi(data['country_id']);
-      this.callCityByIdApi(data['state_id']);
+      this.callStateByIdApi(data['country_id'], "ON_LOAD");
+      this.callCityByIdApi(data['state_id'], "ON_LOAD");
 
       const patchFormData = {
         sponsorshipType: data['sponsorship_type'],
