@@ -277,7 +277,7 @@ export class ContactUsComponent implements OnInit {
 
     // Select the columns you want to export
     const columnsToExport = this.contactUsList.map(item => {
-      let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
+      let created_date = this.datePipe.transform(item.CREATED_AT, 'yyyy-MM-dd hh:mm a');
 
       return [
         item.CONTACT_ID, item.TITLE, item.FIRST_NAME, item.LAST_NAME,

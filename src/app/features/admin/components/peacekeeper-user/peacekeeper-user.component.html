@@ -43,6 +43,7 @@
                         class="form-control"
                         type="search"
                         id="inputsearch"
+                        maxlength="50"
                         placeholder="Search..." (input)="preventFirstSpace(searchInput)"
                         aria-label="Search" type="search" id="inputsearch"
                   placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
@@ -94,17 +95,41 @@
                               />
                             </th>
                       <th>SN</th>
-                      <th (click)="onSort('full_name')">Name <fa-icon [icon]="sortColumn === 'full_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('dob')">DOB <fa-icon [icon]="sortColumn === 'dob' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('email_id')">Email  <fa-icon [icon]="sortColumn === 'email_id' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('mobile_number')">Mobile <fa-icon [icon]="sortColumn === 'mobile_number' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('country')">Country  <fa-icon [icon]="sortColumn === 'country' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('Id_no')">Peacekeeper ID <fa-icon [icon]="sortColumn === 'Id_no' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('full_name')" [ngStyle]="sortBy === 'full_name'?{'cursor': 'pointer'}:{}">Name 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'full_name' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'desc'"></i>  
+                      </th>
+                      <th (click)="onSort('dob')" [ngStyle]="sortBy === 'dob'?{'cursor': 'pointer'}:{}">DOB 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'dob' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'dob' && order === 'desc'"></i> 
+                     </th>
+                      <th (click)="onSort('email_id')" [ngStyle]="sortBy === 'email_id'?{'cursor': 'pointer'}:{}">Email 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email_id' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email_id' && order === 'desc'"></i> 
+                      </th>
+                      <th (click)="onSort('mobile_number')" [ngStyle]="sortBy === 'mobile_number'?{'cursor': 'pointer'}:{}">Mobile
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_number' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_number' && order === 'desc'"></i>
+                      </th>
+                      <th (click)="onSort('country')" [ngStyle]="sortBy === 'country'?{'cursor': 'pointer'}:{}">Country
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'desc'"></i>
+                      </th>
+                      <th (click)="onSort('Id_no')" [ngStyle]="sortBy === 'Id_no'?{'cursor': 'pointer'}:{}">Peacekeeper ID
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'Id_no' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'Id_no' && order === 'desc'"></i>
+                      </th>
                       <th>Coupon <br>Discount% </th>
-                      <th (click)="onSort('coupon_code')">Coupon Code <fa-icon [icon]="sortColumn === 'coupon_code                                                                                           ' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('coupon_code')" [ngStyle]="sortBy === 'coupon_code'?{'cursor': 'pointer'}:{}">Coupon Code 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'coupon_code' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'coupon_code' && order === 'desc'"></i>
+                      </th>
                       <th>Image</th>
                       <th>QR URL</th>
-                      <th (click)="onSort('created_at')">Created Date  <fa-icon [icon]="sortColumn === 'created_at' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('created_at')" [ngStyle]="sortBy === 'created_at'?{'cursor': 'pointer'}:{}">Created Date 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'created_at' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'created_at' && order === 'desc'"></i>
+                       </th>
                       <th>Action</th>
                     </tr>
                   </thead>

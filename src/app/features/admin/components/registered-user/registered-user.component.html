@@ -33,6 +33,7 @@
                     class="form-control"
                     type="search"
                     id="inputsearch"
+                    maxlength="60"
                     placeholder="Search..."  (input)="preventFirstSpace(searchInput)"
                     aria-label="Search" type="search" id="inputsearch"
               placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
@@ -97,17 +98,47 @@
                                 (change)="checkUncheckAll()"
                       /></th>
                       <th>SN</th>
-                      <th (click)="onSort('first_name')">Name <fa-icon [icon]="sortColumn === 'first_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('dob')">DOB <fa-icon [icon]="sortColumn === 'dob' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('email_id')">Email <fa-icon [icon]="sortColumn === 'email_id' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th  (click)="onSort('mobile_number')">Mobile  <fa-icon [icon]="sortColumn === 'mobile_number' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th (click)="onSort('country')">Country <fa-icon [icon]="sortColumn === 'country' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th  (click)="onSort('profession_1')">Profession  <fa-icon [icon]="sortColumn === 'profession_1' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th  (click)="onSort('organization_name')">Organization Name  <fa-icon [icon]="sortColumn === 'organization_name' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th  (click)="onSort('TUD_STATUS')">Payment Status  <fa-icon [icon]="sortColumn === 'TUD_STATUS' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
-                      <th  (click)="onSort('TUD_TRANSCATION_ID')">Payment Transaction Id  <fa-icon [icon]="sortColumn === 'TUD_TRANSCATION_ID' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('first_name')" [ngStyle]="sortBy === 'first_name'?{'cursor': 'pointer'}:{}">Name 
+                          <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'first_name' && order === 'asc'"></i>
+                          <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'first_name' && order === 'desc'"></i>  
+                        </th>
+                      <th (click)="onSort('dob')"  [ngStyle]="sortBy === 'dob'?{'cursor': 'pointer'}:{}">DOB
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'dob' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'dob' && order === 'desc'"></i>
+                       </th>
+                      <th (click)="onSort('email_id')"  [ngStyle]="sortBy === 'email_id'?{'cursor': 'pointer'}:{}">Email 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email_id' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email_id' && order === 'desc'"></i>                     
+                       </th>
+                      <th  (click)="onSort('mobile_number')"  [ngStyle]="sortBy === 'mobile_number'?{'cursor': 'pointer'}:{}">Mobile
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_number' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_number' && order === 'desc'"></i>
+                       </th>
+                      <th (click)="onSort('country')"  [ngStyle]="sortBy === 'country'?{'cursor': 'pointer'}:{}">Country
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'desc'"></i>
+                       </th>
+                      <th  (click)="onSort('profession_1')"  [ngStyle]="sortBy === 'profession_1'?{'cursor': 'pointer'}:{}">Profession
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'profession_1' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'profession_1' && order === 'desc'"></i>
+                       </th>
+                      <th  (click)="onSort('organization_name')"  [ngStyle]="sortBy === 'organization_name'?{'cursor': 'pointer'}:{}">Organization Name
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'organization_name' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'organization_name' && order === 'desc'"></i>
+                       </th>
+                      <th  (click)="onSort('TUD_STATUS')"  [ngStyle]="sortBy === 'TUD_STATUS'?{'cursor': 'pointer'}:{}">Payment Status 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'TUD_STATUS' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'TUD_STATUS' && order === 'desc'"></i>
+                       </th>
+                      <th  (click)="onSort('TUD_TRANSCATION_ID')"  [ngStyle]="sortBy === 'TUD_TRANSCATION_ID'?{'cursor': 'pointer'}:{}">Payment Transaction Id  
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'TUD_TRANSCATION_ID' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'TUD_TRANSCATION_ID' && order === 'desc'"></i>                     
+                      </th>
                       <th>Reference</th>
-                      <th (click)="onSort('created_date')">Registered At <fa-icon [icon]="sortColumn === 'created_date' ? (sortDirection ? faSortUp : faSortDown) : faSortDown"></fa-icon></th>
+                      <th (click)="onSort('created_date')"  [ngStyle]="sortBy === 'created_date'?{'cursor': 'pointer'}:{}">Registered At
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'created_date' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'created_date' && order === 'desc'"></i>
+                       </th>
                       <!-- <th>Action</th> -->
                     </tr>
                   </thead>
