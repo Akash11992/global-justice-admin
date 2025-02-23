@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit  {
 
   loginForm!: FormGroup;
   type: string = "password";
@@ -67,9 +67,12 @@ export class LoginComponent {
     this.isText ? this.type = "text" : this.type = "password";
   }
 
+  // onLogin() {
+  //   console.log('Logging in with', this.username, this.password);
+  // }
 
   // Function to submit the form data
-  postapi() {
+  onLogin() {
 
     let encryptedEmail = this.SharedService.encryptData({
       "email": this.loginForm.controls['email'].value,
@@ -121,5 +124,23 @@ export class LoginComponent {
   
 
 
+  ngAfterViewInit() {
+    const inputs = document.querySelectorAll<HTMLInputElement>(".input");
 
+    inputs.forEach((input) => {
+      input.addEventListener("focus", () => {
+        let parent = input.parentNode?.parentNode as HTMLElement;
+        parent?.classList.add("focus");
+      });
+
+      input.addEventListener("blur", () => {
+        let parent = input.parentNode?.parentNode as HTMLElement;
+        if (input.value === "") {
+          parent?.classList.remove("focus");
+        }
+      });
+    });
+  }
 }
+
+
