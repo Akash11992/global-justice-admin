@@ -13,7 +13,7 @@ import CryptoJS from 'crypto-js';
 })
 export class SharedService {
   apiUrl: any = environment.apiUrl;
-
+  isLoading: boolean = true;
   permissionData : any;
 
   private refreshPermissionSubject = new Subject<boolean>();
