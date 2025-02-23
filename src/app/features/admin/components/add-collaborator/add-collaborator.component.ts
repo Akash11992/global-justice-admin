@@ -80,10 +80,11 @@ export class AddCollaboratorComponent {
       if(this.collaboratorId){
         this.form.controls['email'].disable();
         this.form.controls['mobile'].disable();
-        this.form.controls['country'].disable(); // Disables at form level
-        this.form.controls['state'].disable(); // Disables at form level
-        this.form.controls['city'].disable(); // Disables at form level
-        this.form.controls['refPeacekeeper'].disable(); // Disables at form level
+        this.form.controls['country'].disable(); 
+        this.form.controls['state'].disable(); 
+        this.form.controls['city'].disable(); 
+        this.form.controls['address'].disable(); 
+        this.form.controls['refPeacekeeper'].disable(); 
       }
 
       }
