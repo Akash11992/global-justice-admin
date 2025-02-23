@@ -273,6 +273,10 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.listCollaboratorByPaginationAndSearchAndSortingEndpoint(queryParamsObj));
   }
 
+  listSponosorshipType(): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listSponsorshipTypeEndpoint());
+  }
+
   listCountry(): Observable<any> {
     return this._apiHttpService.get(this._apiEndpointsService.listCountryEndpoint());
   }

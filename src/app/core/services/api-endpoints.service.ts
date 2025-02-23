@@ -444,6 +444,10 @@ export class ApiEndpointsService {
       });
   }
 
+  public listSponsorshipTypeEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_LIST_SPONSORSHIP_TYPE);
+  }
+
   //collaborator
   public addCollaboratorEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_ADD_COLLABORATOR);

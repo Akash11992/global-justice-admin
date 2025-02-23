@@ -115,6 +115,7 @@ export class Constants {
     public readonly API_ENDPOINT_DELETE_SPONSORSHIP: string = 'sponsorships/delete'
     public readonly API_ENDPOINT_GET_SPONSORSHIP: string = 'sponsorships/get'
     public readonly API_ENDPOINT_LIST_SPONSORSHIP: string = 'sponsorships/list'
+    public readonly API_ENDPOINT_LIST_SPONSORSHIP_TYPE: string = 'sponsorships/sponsorship-types'
 
     public readonly API_ENDPOINT_ADD_COLLABORATOR: string = 'collaborators/add'
     public readonly API_ENDPOINT_EDIT_COLLABORATOR: string = 'collaborators/edit'
