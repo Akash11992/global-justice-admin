@@ -62,6 +62,8 @@ export class RegisteredUserComponent {
   totalPages: number = 0;
   isLoading: boolean = true;
   isSpinner: number = -1;
+  isFromSponsorship:boolean = false;
+  sponsorshipId:any;
 
   rowOptions = [
     { value: 25, label: '25' },
@@ -82,6 +84,14 @@ export class RegisteredUserComponent {
 
   ngOnInit(): void {
     this.isLoading = this.SharedService.isLoading;
+
+    this.ActivatedRoute.queryParams.subscribe(params => {
+      if ((params['type'] && params['type'] == 'DELEGATE_SPONSERED') && 
+        (params['id'] && params['id'] !=='')) {
+            this.isFromSponsorship = true;
+            this.sponsorshipId = params['id'];
+      }
+    })
 
 
     this.allDelegate();
@@ -118,12 +128,18 @@ export class RegisteredUserComponent {
   // }
   allDelegate() {
 
-    let body = {
+    let body:any = {
       sort_column: this.sortBy,
       sort_order: this.order,
       search:this.search,
       page_size:this.limit,
       page_no:this.page ,
+    };
+
+    if(this.isFromSponsorship){
+      body['p_type'] = "DELEGATE_SPONSERED";
+      body['p_reference_by'] = this.sponsorshipId;
+
     }
 
     // this.ngxService.start();
@@ -526,6 +542,10 @@ onSort(column: string) {
   
   }
   this.allDelegate();
+}
+
+onActivateDeactiveToggle(item:any):any{
+  console.log(item);
 }
 
 

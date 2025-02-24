@@ -95,6 +95,11 @@
                             <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'poc_email' && order === 'asc'"></i>
                             <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'poc_email' && order === 'desc'"></i>
                           </th>
+
+                          <th class="text-center">
+                            Total Delegate
+                          </th>
+
                           <th class="text-center" (click)="onSort('ref_by')">
                             Ref by 
                             <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'ref_by' && order === 'asc'"></i>
@@ -117,6 +122,11 @@
                       <td class="text-center">{{item.poc_name}}</td>
                       <td class="text-center">{{item.poc_mobile}}</td>
                       <td class="text-center">{{item.poc_email}}</td>
+                      <td class="text-center">
+                        <a *ngIf="item.user_count >0" style="cursor: pointer" [routerLink]="['/dashboard/registered-user']" [queryParams]="{ type: 'DELEGATE_SPONSERED', id: item.id, name:item.sponsorship_name }">
+                          {{item.user_count}}
+                        </a>
+                      </td>
                       <td class="text-center">{{item.ref_by}}</td>
                       <td class="text-center">{{item.peacekeeper_other_name}}</td>
                       
