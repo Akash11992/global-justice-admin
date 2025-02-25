@@ -502,4 +502,8 @@ export class ApiEndpointsService {
   public addDeletgateEndPoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATE);
   }
+
+  public addDeletgatesEndPoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATES);
+  }
 }

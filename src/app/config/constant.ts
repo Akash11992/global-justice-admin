@@ -131,6 +131,7 @@ export class Constants {
     public readonly API_ENDPOINT_LIST_CITY: string = 'get_delegate_city'
 
     public readonly API_ENDPOINT_ADD_DELEGATE: string = 'bulk_upload_delegate_file'
+    public readonly API_ENDPOINT_ADD_DELEGATES: string = 'registration/create-delegate-profiles'
 
 
 }

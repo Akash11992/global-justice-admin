@@ -297,6 +297,10 @@ TrackingLink(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.addDeletgateEndPoint(),bodyParams);
   }
 
+  addDeletgates(bodyParams:any): Observable<any> {
+    return this._apiHttpService.post(this._apiEndpointsService.addDeletgatesEndPoint(),bodyParams);
+  }
+
   getAllCountrycode() {
     return this._apiHttpService.get(this._apiEndpointsService.getAllCountrycodeEndpoint());
   }
