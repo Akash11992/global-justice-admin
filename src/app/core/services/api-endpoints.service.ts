@@ -199,6 +199,10 @@ export class ApiEndpointsService {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedDelegate);
   }
 
+  public updateDelegateByTypeReferenceEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_updateDelegateByTypeReference);
+  }
+
 
   public getApprovedPartnerEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedPartner);

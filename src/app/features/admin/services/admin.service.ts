@@ -301,5 +301,9 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.getAllCountrycodeEndpoint());
   }
 
+  updateDelegateByTypeRef(data: any): Observable<any> {
+    return this._apiHttpService.put(this._apiEndpointsService.updateDelegateByTypeReferenceEndpoint(), data);
+  }
+
 
 }

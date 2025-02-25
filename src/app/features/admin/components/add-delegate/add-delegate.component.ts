@@ -7,6 +7,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { strictEmailValidator } from '../../validator/email-validator';
 import { strictStringValidator } from '../../validator/strict-string-validator';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-delegate',
@@ -30,8 +31,9 @@ export class AddDelegateComponent implements OnInit {
                   private route: ActivatedRoute,
                   private router: Router,
                   private adminService: AdminService,
-                    private ngxService: NgxUiLoaderService,
-                    private SharedService: SharedService
+                  private ngxService: NgxUiLoaderService,
+                  private SharedService: SharedService,
+                  private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -257,7 +259,8 @@ export class AddDelegateComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/dashboard/sponsorship']);  
+    // this.router.navigate(['/dashboard/sponsor']); 
+    this.location.back(); 
   }
 
   noFutureDateValidator(control: any) {

@@ -62,9 +62,9 @@ const routes: Routes = [
     children: [
       { path: "registered-user", component: RegisteredUserComponent,canActivate: [AuthGuard], },
       { path: "peacekeeper", component: PeacekeeperUserComponent,canActivate: [AuthGuard], },
-      { path: "sponsorship", component: SponsorshipComponent,canActivate: [AuthGuard], },
-      { path: "add-sponsorship", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
-      { path: "edit-sponsorship/:id", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
+      { path: "sponsor", component: SponsorshipComponent,canActivate: [AuthGuard], },
+      { path: "add-sponsor", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
+      { path: "edit-sponsor/:id", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
       { path: "collaborator", component: CollaboratorComponent,canActivate: [AuthGuard], },
       { path: "add-collaborator", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
       { path: "edit-collaborator/:id", component: AddCollaboratorComponent,canActivate: [AuthGuard], },

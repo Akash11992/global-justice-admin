@@ -13,7 +13,7 @@
     <div class="container-fluid" id="pagecontent">
       <div class="col-md-12 px-0" style="margin-top: 25px">
         <img src="assets/images/user (1).png" id="userimg" />&nbsp; &nbsp;
-        <h4 style="display: inline-flex">Sponsorship</h4>
+        <h4 style="display: inline-flex">Sponsor</h4>
       </div>
 
       <div class="card" id="uppercard">
@@ -53,8 +53,8 @@
               </div>
             </div>
             <div class="col-md-6" id="exportcolmd">
-              <button class="btn" type="button" id="exportbtn" routerLink="/dashboard/add-sponsorship">
-                <i class="bi bi-plus"></i> Add Sponsorship
+              <button class="btn" type="button" id="exportbtn" routerLink="/dashboard/add-sponsor">
+                <i class="bi bi-plus"></i> Add Sponsor
               </button>
             </div>
           </div>
@@ -71,12 +71,12 @@
                         <tr>
                           <th>#</th>
                           <th (click)="onSort('sponsorship_type')">
-                            Sponsorship Type 
+                            Sponsor Type 
                             <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'sponsorship_type' && order === 'asc'"></i>
                             <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'sponsorship_type' && order === 'desc'"></i>
                           </th>
                           <th (click)="onSort('sponsorship_name')">
-                            Sponsorship Name 
+                            Sponsor Name 
                             <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'sponsorship_name' && order === 'asc'"></i>
                             <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'sponsorship_name' && order === 'desc'"></i>
                           </th>
@@ -149,15 +149,15 @@
                             aria-labelledby="dropdownMenuButton1"
                           >
                             <li>
-                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/edit-sponsorship', item.id]">
+                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/edit-sponsor', item.id]">
                                 Edit</a
                               >
                             </li>
-                            <li (click)="onActivateDeactiveToggle(item)">
+                            <!-- <li (click)="onActivateDeactiveToggle(item)">
                               <a class="dropdown-item" style="cursor: pointer">
                                 {{item.is_active ? 'Deactivate': 'Activate'}}</a
                               >
-                            </li>
+                            </li> -->
                             <li>
                               <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/add-delegate', item.id]">
                                 Add Delegate</a

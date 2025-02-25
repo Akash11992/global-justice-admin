@@ -7,6 +7,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import { strictEmailValidator } from '../../validator/email-validator';
 import { environment } from 'src/environments/environment';
 import { strictStringValidator } from '../../validator/strict-string-validator';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-collaborator',
@@ -42,7 +43,8 @@ export class AddCollaboratorComponent {
                 private router: Router,
                 private adminService: AdminService,
                 private ngxService: NgxUiLoaderService,
-                private SharedService: SharedService
+                private SharedService: SharedService,
+                private location: Location
               ) {}
 
     ngOnInit() {
@@ -72,7 +74,7 @@ export class AddCollaboratorComponent {
         state: ['0'],
         address: ['', [Validators.pattern(addressPattern), strictStringValidator()]],
         city: ['0'],
-        dob: ['',[Validators.required,this.noFutureDateValidator]],
+        dob: ['02-02-1996'],
         logoImage: ['',Validators.required],
         refPeacekeeper: ['',Validators.required]
       });
@@ -333,7 +335,8 @@ export class AddCollaboratorComponent {
     }
   
     onCancel(): void {
-      this.router.navigate(['/dashboard/collaborator']);  
+      // this.router.navigate(['/dashboard/collaborator']);  
+      this.location.back();
     }
 
     noFutureDateValidator(control: any) {

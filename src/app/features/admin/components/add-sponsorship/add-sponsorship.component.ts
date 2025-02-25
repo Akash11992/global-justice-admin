@@ -6,6 +6,7 @@ import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { strictStringValidator } from '../../validator/strict-string-validator';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-sponsorship',
@@ -20,7 +21,8 @@ export class AddSponsorshipComponent implements OnInit{
   cities: any[] = [];
   peacekeepers: any[] = [];
   sponsorshipTypes: any[] = [];
-  refByOptions = ['peacekeeper', 'other'];
+  // refByOptions = ['peacekeeper', 'other'];
+  refByOptions = ['peacekeeper'];
   private destroy$ = new Subject<void>();
   sponsorshipId!: string;
   selectedCountryObj:any ={};
@@ -38,7 +40,8 @@ export class AddSponsorshipComponent implements OnInit{
               private router: Router,
               private adminService: AdminService,
               private ngxService: NgxUiLoaderService,
-              private SharedService: SharedService
+              private SharedService: SharedService,
+              private location: Location
             ) {
     
   }
@@ -77,7 +80,7 @@ export class AddSponsorshipComponent implements OnInit{
       pocEmail: ['', [Validators.pattern(emailPattern),Validators.maxLength(254)]],
       state: ['0'],
       address: ['', [Validators.pattern(addressPattern), strictStringValidator()]],
-      sponsorshipName: ['', [Validators.required, Validators.pattern(namePattern),strictStringValidator()]],
+      sponsorshipName: ['', [Validators.required,strictStringValidator()]],
       pocMobile: ['', [Validators.pattern(mobilePattern)]],
       country: ['0'],
       city: ['0'],
@@ -279,7 +282,7 @@ export class AddSponsorshipComponent implements OnInit{
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to update sponsorship', 'Sponsorship', 'error');
+      this.SharedService.ToastPopup('Oops failed to update sponsor', 'Sponsor', 'error');
     }
     )
   }
@@ -337,22 +340,22 @@ export class AddSponsorshipComponent implements OnInit{
       if(this.sponsorshipId){
         this.adminService.updateSponsorship(this.sponsorshipId,payload).subscribe((data: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('Sponsorship updated successfully', 'Sponsorship', 'success');
+          this.SharedService.ToastPopup('Sponsor updated successfully', 'Sponsor', 'success');
         },
         (error: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('Oops failed to updated sponsorship', 'Sponsorship', 'error');
+          this.SharedService.ToastPopup('Oops failed to updated sponsor', 'Sponsor', 'error');
         }
         )
       }else{
         this.adminService.createSponsership(payload).subscribe((data: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('Sponsorship added successfully', 'Sponsorship', 'success');
+          this.SharedService.ToastPopup('Sponsor added successfully', 'Sponsor', 'success');
           this.resetForm();
         },
         (error: any) => {
           this.ngxService.stop();
-          this.SharedService.ToastPopup('Oops failed to add sponsorship', 'Sponsorship', 'error');
+          this.SharedService.ToastPopup('Oops failed to add sponsor', 'Sponsor', 'error');
         }
         )
       }
@@ -383,6 +386,7 @@ export class AddSponsorshipComponent implements OnInit{
   }
 
   onCancel(): void {
-    this.router.navigate(['/dashboard/sponsorship']);  
+    // this.router.navigate(['/dashboard/sponsor']); 
+    this.location.back(); 
   }
 }

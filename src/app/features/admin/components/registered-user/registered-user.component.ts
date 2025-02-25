@@ -64,6 +64,7 @@ export class RegisteredUserComponent {
   isSpinner: number = -1;
   isFromSponsorship:boolean = false;
   sponsorshipId:any;
+  sponsorshipName:any;
 
   rowOptions = [
     { value: 25, label: '25' },
@@ -90,6 +91,7 @@ export class RegisteredUserComponent {
         (params['id'] && params['id'] !=='')) {
             this.isFromSponsorship = true;
             this.sponsorshipId = params['id'];
+            this.sponsorshipName = params['name'];
       }
     })
 
@@ -546,6 +548,22 @@ onSort(column: string) {
 
 onActivateDeactiveToggle(item:any):any{
   console.log(item);
+  this.ngxService.start();
+  const payload = {
+    tu_type:item.tu_type,
+    tu_reference_by: item.tu_reference_by,
+    is_active:+!item.is_active
+  };
+  
+  this.AdminService.updateDelegateByTypeRef(payload).subscribe((data: any) => {
+    this.ngxService.stop();
+    this.SharedService.ToastPopup('Delegate updated successfully', 'Delegate', 'success');
+  },
+  (error: any) => {
+    this.ngxService.stop();
+    this.SharedService.ToastPopup('Oops failed to update delegate', 'Delegate', 'error');
+  }
+  )
 }
 
 
