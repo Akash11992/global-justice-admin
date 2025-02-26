@@ -27,7 +27,7 @@
             }">
           </div>
         </div>
-        <div
+        <div class="d-flex"
         *ngIf="getcontrol('email')?.errors && getcontrol('email')?.touched"
       >
         <small
@@ -63,7 +63,7 @@
           ></span>
           </div>
         </div>
-        <div
+        <div class="d-flex"
         *ngIf="
           getcontrol('password')?.errors && getcontrol('password')?.touched
         "
@@ -81,7 +81,7 @@
           values and uppercase characters.</small
         >
       </div>
-        <a routerLink="/forgot-password">Forgot Password?</a>
+        <!-- <a routerLink="/forgot-password">Forgot Password?</a> -->
         <input type="submit" class="btn" value="Login">
       </form>
     </div>
