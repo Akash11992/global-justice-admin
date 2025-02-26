@@ -57,7 +57,7 @@ export class SponsorshipComponent implements OnInit {
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to list sponsorship', 'Sponsorship', 'error');
+      this.SharedService.ToastPopup('Oops failed to list sponsor', 'Sponsor', 'error');
     }
     )
   }
@@ -73,11 +73,11 @@ export class SponsorshipComponent implements OnInit {
   updateSponsorshipData(id:string, payload:any){
     this.adminService.updateSponsorship(id,payload).subscribe((data: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Sponsorship updated successfully', 'Sponsorship', 'success');
+      this.SharedService.ToastPopup('Sponsor updated successfully', 'Sponsor', 'success');
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to update sponsorship', 'Sponsorship', 'error');
+      this.SharedService.ToastPopup('Oops failed to update sponsor', 'Sponsor', 'error');
     }
     )
   }

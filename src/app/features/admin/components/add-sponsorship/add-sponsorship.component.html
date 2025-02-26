@@ -35,9 +35,6 @@
                 <div *ngIf="form.get('sponsorshipName').errors?.required && form.get('sponsorshipName').touched" class="error text-danger">
                   Sponsership Name is required
                 </div>
-                <div *ngIf="form.get('sponsorshipName').errors?.pattern || form.get('sponsorshipName').errors?.leadingTrailingSpaces" class="error text-danger">
-                  Only alphabets, number and spaces allowed with max length 50
-                </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="SN" class="form-label">POC Name <span class="error text-danger">*</span></label>

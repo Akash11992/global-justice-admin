@@ -1,86 +1,53 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-12  text-center">
-      <img
-        id="cent"
-        class="align-item-center"
-        src="assets/images/logo.gif"
-        height="150px"
-      />
+<!-- new html code -->
+<div class="main-container">
+  <img class="wave" src="assets/UIComponents/images/wave.png">
+  
+  <div class="container">
+    <div class="img">
+      <img src="assets/UIComponents/images/login_logo.svg">
     </div>
-    <div class="col-md-12 text-center">
-      <button
-        id="cent1"
-        onclick="document.getElementById('id01').style.display='block'"
-        class="mt-4"
-        style="width: auto"
-      >
-        Login
-      </button>
-    </div>
-  </div>
-</div>
-
-<div id="id01" class="modal">
-  <form
-    class="modal-content animate"
-    [formGroup]="loginForm"
-    novalidate
-    (ngSubmit)="postapi()"
-    method="post"
-  >
-    <div class="imgcontainer">
-      <span
-        onclick="document.getElementById('id01').style.display='none'"
-        class="close"
-        title="Close Modal"
-        >&times;</span
-      >
-      <!-- <img src="./assets/img/nonregisteruse.png" /> -->
-    </div>
-
-    <div class="container">
-      <div class="form-group pt-3">
-        <div class="input-field">
-          <span class="fa fa-user p-2"></span
-          ><label for="psw"><b>Email</b></label>
-
-          <input
-            type="text"
-            placeholder="Email"
-            formControlName="email"
+    <div class="login-content">
+      <form  [formGroup]="loginForm"
+      novalidate
+      (ngSubmit)="onLogin()">
+        <img src="assets/UIComponents/images/avatar.svg">
+        <h2 class="title">Welcome</h2>
+        <div class="input-div one">
+          <div class="i">
+            <i class="fa fa-user"></i>
+          </div>
+          <div class="div">
+            <h5>Username</h5>
+            <input type="text" class="input"formControlName="email"
             name="email"
             maxlength="40"
             [ngClass]="{
               errors:
                 getcontrol('email')?.errors && getcontrol('email')?.touched
-            }"
-          />
+            }">
+          </div>
         </div>
-        <div
-          *ngIf="getcontrol('email')?.errors && getcontrol('email')?.touched"
+        <div class="d-flex"
+        *ngIf="getcontrol('email')?.errors && getcontrol('email')?.touched"
+      >
+        <small
+          class="text-danger"
+          *ngIf="getcontrol('email')?.errors?.['required']"
+          >Email is Required.</small
         >
-          <small
-            class="text-danger"
-            *ngIf="getcontrol('email')?.errors?.['required']"
-            >Email is Required.</small
-          >
-          <small
-            class="text-danger"
-            *ngIf="getcontrol('email')?.errors?.['email']"
-            >Please enter valid email address.</small
-          >
-        </div>
-        <!-- <div  *ngIf="userNameVail && userNameVail.invalid && userNameVail.touched" class="small text-danger text-start ps-3">Email is Required and Please provide a valid email address</div> -->
+        <small
+          class="text-danger"
+          *ngIf="getcontrol('email')?.errors?.['email']"
+          >Please enter valid email address.</small
+        >
       </div>
-      <div class="form-group pt-3">
-        <div class="input-field">
-          <span class="fa fa-lock p-2"></span
-          ><label for="psw"><b>Password</b></label>
-          <input
-            [type]="type"
-            placeholder="Password"
-            formControlName="password"
+        <div class="input-div pass">
+          <div class="i"> 
+            <i class="fa fa-lock"></i>
+          </div>
+          <div class="div">
+            <h5>Password</h5>
+            <input [type]="type" class="input" formControlName="password"
             name="password"
             maxlength="30"
             [ngClass]="{
@@ -91,58 +58,43 @@
           />
           <span
             (click)="hideShowPass()"
-            style="position: relative; bottom: 42px; float: right; right: 12px"
+            style="position: absolute; bottom: 0; float: right; right: 0"
             class=" fa {{ eyeIcon }}"
           ></span>
+          </div>
         </div>
-        <div
-          *ngIf="
-            getcontrol('password')?.errors && getcontrol('password')?.touched
-          "
-        >
-          <small
-            class="text-danger"
-            *ngIf="getcontrol('password')?.errors?.['required']"
-            >Password Required.</small
-          >
-          <small
-            class="text-danger"
-            *ngIf="getcontrol('password')?.errors?.['pattern']"
-          >
-            The password must contain one or more lowercase characters numeric
-            values and uppercase characters.</small
-          >
-        </div>
-        <!-- <div  *ngIf="passwordVail && passwordVail.invalid && passwordVail.touched" class="small text-danger text-start ps-3">Password is Required.</div> -->
-      </div>
-
-      <button type="submit" [disabled]="!loginForm.valid">Login</button>
-      <label>
-        <input type="checkbox" checked="checked" name="remember" /> Remember me
-      </label>
-    </div>
-
-    <div class="container" style="background-color: #f1f1f1">
-      <button
-        type="button"
-        onclick="document.getElementById('id01').style.display='none'"
-        class="cancelbtn"
+        <div class="d-flex"
+        *ngIf="
+          getcontrol('password')?.errors && getcontrol('password')?.touched
+        "
       >
-        Cancel
-      </button>
-      <!-- <span class="psw">Forgot <a routerLink="/send-otp">password?</a></span> -->
+        <small
+          class="text-danger"
+          *ngIf="getcontrol('password')?.errors?.['required']"
+          >Password Required.</small
+        >
+        <small
+          class="text-danger"
+          *ngIf="getcontrol('password')?.errors?.['pattern']"
+        >
+          The password must contain one or more lowercase characters numeric
+          values and uppercase characters.</small
+        >
+      </div>
+        <!-- <a routerLink="/forgot-password">Forgot Password?</a> -->
+        <input type="submit" class="btn" value="Login">
+      </form>
     </div>
-  </form>
+  </div>
+  
+
+
 </div>
 
-<script>
-  // Get the modal
-  var modal = document.getElementById("id01");
 
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  };
-</script>
+
+
+
+
+
+

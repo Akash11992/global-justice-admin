@@ -1,0 +1,286 @@
+<div class="wrapper d-flex align-items-stretch">
+    <app-admin-left-panel></app-admin-left-panel>
+  
+    <div id="content" class="flex-grow-1" style="overflow-y: auto; overflow-x: hidden;">
+      <div class="container-fluid py-3" id="pagecontent">
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Multiple Delegate Registration</h2>
+            <div class="d-flex justify-content-end mb-3">
+              <button
+                class="btn btn-success me-2"
+                (click)="addForm()"
+                type="button"
+                [disabled]="isAddDisabled()"
+              >
+                + Add Delegate
+              </button>
+              <button
+                class="btn btn-danger"
+                (click)="removeLastForm()"
+                type="button"
+                *ngIf="delegateFormsArray.length > 1"
+              >
+                - Delete Delegate
+              </button>
+            </div>
+            <form [formGroup]="mainForm" (ngSubmit)="onSubmitAll()">
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                  <thead class="table-dark">
+                    <tr class="text-center">
+                      <th style="min-width: 80px;">Title *</th>
+                      <th style="min-width: 120px;">First Name *</th>
+                      <th style="min-width: 120px;">Last Name *</th>
+                      <th style="min-width: 110px;">DOB *</th>
+                      <th style="min-width: 120px;">Mobile No. *</th>
+                      <th style="min-width: 150px;">Email *</th>
+                      <th style="min-width: 150px;">LinkedIn Profile</th>
+                      <th style="min-width: 150px;">Instagram ID</th>
+                      <th style="min-width: 120px;">Profession 1 *</th>
+                      <th style="min-width: 120px;">Profession 2</th>
+                      <th style="min-width: 150px;">Website</th>
+                      <th style="min-width: 150px;">Organization Name</th>
+                      <th style="min-width: 150px;">Address</th>
+                      <th style="min-width: 120px;">Country *</th>
+                      <th style="min-width: 140px;">State/Province *</th>
+                      <th style="min-width: 120px;">City *</th>
+                      <th style="min-width: 160px;">Primary Purpose *</th>
+                      <th style="min-width: 200px;">Conference Interests *</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="delegateForms">
+                    <tr *ngFor="let delegateForm of delegateFormsArray.controls; let i = index" [formGroupName]="i">
+                      <!-- Title -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="title"
+                          placeholder="Title"
+                        />
+                        <div *ngIf="delegateForm.get('title')?.invalid && delegateForm.get('title')?.touched" class="text-danger small">
+                          Title is required.
+                        </div>
+                      </td>
+                      <!-- First Name -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="firstName"
+                          placeholder="First Name"
+                        />
+                        <div *ngIf="(delegateForm.get('firstName')?.invalid || delegateForm.get('firstName').errors?.pattern) && delegateForm.get('firstName')?.touched" class="text-danger small">
+                          First Name is required.
+                        </div>
+                      </td>
+                      <!-- Last Name -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="lastName"
+                          placeholder="Last Name"
+                        />
+                        <div *ngIf="(delegateForm.get('lastName')?.invalid || delegateForm.get('firstName').errors?.pattern) && delegateForm.get('lastName')?.touched" class="text-danger small">
+                          Last Name is required.
+                        </div>
+                      </td>
+                      <!-- DOB -->
+                      <td>
+                        <input
+                          type="date"
+                          class="form-control"
+                          formControlName="dob"
+                          [max]="maxDate"
+                        />
+                        <div *ngIf="(delegateForm.get('dob')?.invalid || delegateForm.get('dob')?.errors?.minAge) && delegateForm.get('dob')?.touched" class="text-danger small">
+                          DOB is required & Minimum age should be 21 years.
+                        </div>
+                      </td>
+                      <!-- Mobile No. -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="mobileNo"
+                          placeholder="Mobile Number"
+                        />
+                        <div *ngIf="(delegateForm.get('mobileNo')?.invalid || delegateForm.get('mobileNo').errors?.pattern) && delegateForm.get('mobileNo')?.touched" class="text-danger small">
+                          Mobile No. is required (eg.+12345678901).
+                        </div>
+                      </td>
+                      <!-- Email -->
+                      <td>
+                        <input
+                          type="email"
+                          class="form-control"
+                          formControlName="email"
+                          placeholder="Email Address"
+                        />
+                        <div *ngIf="(delegateForm.get('email')?.invalid || delegateForm.get('email').errors?.pattern) && delegateForm.get('email')?.touched" class="text-danger small">
+                          A valid email is required.
+                        </div>
+                      </td>
+                      <!-- LinkedIn Profile -->
+                      <td>
+                        <input
+                          type="url"
+                          class="form-control"
+                          formControlName="linkedIn"
+                          placeholder="LinkedIn URL"
+                        />
+                      </td>
+                      <!-- Instagram ID -->
+                      <td>
+                        <input
+                          type="url"
+                          class="form-control"
+                          formControlName="instagram"
+                          placeholder="Instagram URL"
+                        />
+                      </td>
+                      <!-- Profession 1 -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="profession1"
+                          placeholder="Profession 1"
+                        />
+                        <div *ngIf="(delegateForm.get('profession1')?.invalid || delegateForm.get('profession1').errors?.pattern) && delegateForm.get('profession1')?.touched" class="text-danger small">
+                          Profession 1 is required.
+                        </div>
+                      </td>
+                      <!-- Profession 2 -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="profession2"
+                          placeholder="Profession 2"
+                        />
+                      </td>
+                      <!-- Website -->
+                      <td>
+                        <input
+                          type="url"
+                          class="form-control"
+                          formControlName="website"
+                          placeholder="Website URL"
+                        />
+                      </td>
+                      <!-- Organization Name -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="organization"
+                          placeholder="Organization"
+                        />
+                      </td>
+                      <!-- Address -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="address"
+                          placeholder="Address"
+                        />
+                      </td>
+                      <!-- Country -->
+                      <td>
+                        <select
+                          formControlName="country"
+                          (change)="onCountryChange($event, i)"
+                          class="form-control"
+                          aria-label="Select Country"
+                        >
+                          <option value="">Select Country</option>
+                          <option *ngFor="let country of countries" [value]="country.name" [attr.data-name]="country.id" [attr.data-code]="country.iso2">
+                            {{ country.name }}
+                          </option>
+                        </select>
+                        <div *ngIf="delegateForm.get('country')?.invalid && delegateForm.get('country')?.touched" class="text-danger small">
+                          Country is required.
+                        </div>
+                      </td>
+                      <!-- State/Province -->
+                      <td>
+                        <select
+                          formControlName="state"
+                          (change)="onStateChange($event, i)"
+                          class="form-control"
+                          aria-label="Select State"
+                        >
+                          <option value="">Select State</option>
+                          <option *ngFor="let state of delegateStates[i]" [value]="state.name" [attr.data-name]="state.id">
+                            {{ state.name }}
+                          </option>
+                        </select>
+                        <div *ngIf="delegateForm.get('state')?.invalid && delegateForm.get('state')?.touched" class="text-danger small">
+                          State/Province is required.
+                        </div>
+                      </td>
+                      <!-- City -->
+                      <td>
+                        <select
+                          formControlName="city"
+                          (change)="onCityChange($event, i)"
+                          class="form-control"
+                          aria-label="Select City"
+                        >
+                          <option value="">Select City</option>
+                          <option *ngFor="let city of delegateCities[i]" [value]="city.name" [attr.data-name]="city.id">
+                            {{ city.name }}
+                          </option>
+                        </select>
+                        <div *ngIf="delegateForm.get('city')?.invalid && delegateForm.get('city')?.touched" class="text-danger small">
+                          City is required.
+                        </div>
+                      </td>
+                      <!-- Primary Purpose -->
+                      <td>
+                        <select class="form-select" formControlName="purpose">
+                          <option value="">Select Purpose</option>
+                          <option value="0">Gathering Knowledge</option>
+                          <option value="1">Networking</option>
+                          <option value="2">Speaker Profile</option>
+                          <option value="3">Working for Peace</option>
+                          <option value="4">Other</option>
+                        </select>
+                        <div *ngIf="delegateForm.get('purpose')?.invalid && delegateForm.get('purpose')?.touched" class="text-danger small">
+                          Purpose is required.
+                        </div>
+                      </td>
+                      <!-- Conference Interests -->
+                      <td>
+                        <div formArrayName="levers" class="d-flex flex-column">
+                          <div *ngFor="let interest of conferenceInterests" class="form-check">
+                            <input
+                              type="checkbox"
+                              class="form-check-input"
+                              [id]="'lever-' + interest.value + '-' + i"
+                              (change)="toggleCheckbox($event, i, interest.value)"
+                            />
+                            <label class="form-check-label" [for]="'lever-' + interest.value + '-' + i">
+                              {{ interest.label }}
+                            </label>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-4">Submit All</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -20,6 +20,7 @@ export class Constants {
     public readonly API_ENDPOINT_getSpeaker: string = 'registration/speaker/non-registered'
 
     public readonly API_ENDPOINT_getApprovedDelegate: string = 'registration/delegate/approved'
+    public readonly API_ENDPOINT_updateDelegateByTypeReference: string = 'registration/update/delegate/byTypeReference'
 
     public readonly API_ENDPOINT_getApprovedPartner: string = 'registration/partner/approved'
     public readonly API_ENDPOINT_getApprovedSpeaker: string = 'registration/speaker/approved'
@@ -130,6 +131,7 @@ export class Constants {
     public readonly API_ENDPOINT_LIST_CITY: string = 'get_delegate_city'
 
     public readonly API_ENDPOINT_ADD_DELEGATE: string = 'bulk_upload_delegate_file'
+    public readonly API_ENDPOINT_ADD_DELEGATES: string = 'registration/create-delegate-profiles'
 
 
 }
