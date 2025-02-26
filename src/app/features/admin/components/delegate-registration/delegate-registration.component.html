@@ -71,7 +71,7 @@
                           formControlName="firstName"
                           placeholder="First Name"
                         />
-                        <div *ngIf="delegateForm.get('firstName')?.invalid && delegateForm.get('firstName')?.touched" class="text-danger small">
+                        <div *ngIf="(delegateForm.get('firstName')?.invalid || delegateForm.get('firstName').errors?.pattern) && delegateForm.get('firstName')?.touched" class="text-danger small">
                           First Name is required.
                         </div>
                       </td>
@@ -83,7 +83,7 @@
                           formControlName="lastName"
                           placeholder="Last Name"
                         />
-                        <div *ngIf="delegateForm.get('lastName')?.invalid && delegateForm.get('lastName')?.touched" class="text-danger small">
+                        <div *ngIf="(delegateForm.get('lastName')?.invalid || delegateForm.get('firstName').errors?.pattern) && delegateForm.get('lastName')?.touched" class="text-danger small">
                           Last Name is required.
                         </div>
                       </td>
@@ -93,9 +93,10 @@
                           type="date"
                           class="form-control"
                           formControlName="dob"
+                          [max]="maxDate"
                         />
-                        <div *ngIf="delegateForm.get('dob')?.invalid && delegateForm.get('dob')?.touched" class="text-danger small">
-                          DOB is required.
+                        <div *ngIf="(delegateForm.get('dob')?.invalid || delegateForm.get('dob')?.errors?.minAge) && delegateForm.get('dob')?.touched" class="text-danger small">
+                          DOB is required & Minimum age should be 21 years.
                         </div>
                       </td>
                       <!-- Mobile No. -->
@@ -106,8 +107,8 @@
                           formControlName="mobileNo"
                           placeholder="Mobile Number"
                         />
-                        <div *ngIf="delegateForm.get('mobileNo')?.invalid && delegateForm.get('mobileNo')?.touched" class="text-danger small">
-                          Mobile No. is required and must be 10 digits.
+                        <div *ngIf="(delegateForm.get('mobileNo')?.invalid || delegateForm.get('mobileNo').errors?.pattern) && delegateForm.get('mobileNo')?.touched" class="text-danger small">
+                          Mobile No. is required (eg.+12345678901).
                         </div>
                       </td>
                       <!-- Email -->
@@ -118,7 +119,7 @@
                           formControlName="email"
                           placeholder="Email Address"
                         />
-                        <div *ngIf="delegateForm.get('email')?.invalid && delegateForm.get('email')?.touched" class="text-danger small">
+                        <div *ngIf="(delegateForm.get('email')?.invalid || delegateForm.get('email').errors?.pattern) && delegateForm.get('email')?.touched" class="text-danger small">
                           A valid email is required.
                         </div>
                       </td>
@@ -148,7 +149,7 @@
                           formControlName="profession1"
                           placeholder="Profession 1"
                         />
-                        <div *ngIf="delegateForm.get('profession1')?.invalid && delegateForm.get('profession1')?.touched" class="text-danger small">
+                        <div *ngIf="(delegateForm.get('profession1')?.invalid || delegateForm.get('profession1').errors?.pattern) && delegateForm.get('profession1')?.touched" class="text-danger small">
                           Profession 1 is required.
                         </div>
                       </td>

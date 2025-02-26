@@ -71,7 +71,7 @@ const routes: Routes = [
       { path: "edit-collaborator/:id", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
       { path: "delegate", component: DelegateComponent,canActivate: [AuthGuard], },
       { path: "add-delegate/:id", component: AddDelegateComponent,canActivate: [AuthGuard], },
-      { path: "delegate-registration", component: DelegateRegistrationComponent,canActivate: [AuthGuard], },
+      { path: "delegate-registration/:id", component: DelegateRegistrationComponent,canActivate: [AuthGuard], },
       { path: "add-delegate-by-file", component: AddDelegateByFileComponent,canActivate: [AuthGuard], },
       { path: "contact-us", component: ContactUsComponent,canActivate: [AuthGuard], },
       // {path:'reset-password',component:ResetPasswordComponent},

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
@@ -28,6 +28,7 @@ export class DelegateRegistrationComponent {
   selectedCountryObjs: { [key: number]: any } = {};
   selectedStateObjs: { [key: number]: any } = {};
   selectedCityObjs: { [key: number]: any } = {};
+  maxDate: string; 
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +37,7 @@ export class DelegateRegistrationComponent {
     private SharedService: SharedService
   ) {
     this.setupCountry();
+    this.maxDate = this.getMaxDate();
     this.mainForm = this.fb.group({
       delegateForms: this.fb.array([this.createDelegateForm()])
     });
@@ -135,16 +137,21 @@ export class DelegateRegistrationComponent {
   }
 
   createDelegateForm(): FormGroup {
+    
+    const namePattern = /^[a-zA-Z0-9 -]{1,50}$/;
+    const emailPattern = /^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    const mobilePattern = /^\+[1-9]\d{9,14}$/;
+
     return this.fb.group({
       title: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      dob: ['', Validators.required],
-      mobileNo: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      email: ['', [Validators.required, Validators.email]],
+      firstName: ['', [Validators.required, Validators.pattern(namePattern)]],
+      lastName: ['', [Validators.required, Validators.pattern(namePattern)]],
+      dob: ['', [Validators.required, this.minimumAgeValidator(21)]],
+      mobileNo: ['', [Validators.required, Validators.pattern(mobilePattern)]],
+      email: ['', [Validators.required, Validators.pattern(emailPattern)]],
       linkedIn: [''],
       instagram: [''],
-      profession1: ['', Validators.required],
+      profession1: ['', [Validators.required,Validators.pattern(namePattern)]],
       profession2: [''],
       website: [''],
       organization: [''],
@@ -221,5 +228,31 @@ export class DelegateRegistrationComponent {
       console.log('Form Invalid');
       console.error('Form is invalid');
     }
+  }
+
+  private getMaxDate(): string {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  }
+
+  // Custom Validator: Minimum Age 21
+  minimumAgeValidator(minAge: number) {
+    return (control: AbstractControl) => {
+      if (!control.value) return null; // If empty, let required validator handle it
+
+      const birthDate = new Date(control.value);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+
+      // Adjust for month/day differences
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      const dayDiff = today.getDate() - birthDate.getDate();
+
+      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--; // Birthday hasn't occurred yet this year
+      }
+
+      return age >= minAge ? null : { minAge: { requiredAge: minAge, actualAge: age } };
+    };
   }
 }

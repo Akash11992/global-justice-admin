@@ -63,7 +63,7 @@ export class AddCollaboratorComponent {
       if(this.collaboratorId) this.collaboratorDataById();
       
       const namePattern = /^[a-zA-Z0-9' -]{1,50}$/;
-      const mobilePattern = /^\+?[1-9]\d{9,14}$/;
+      const mobilePattern = /^\+[1-9]\d{9,14}$/;
       const addressPattern = /^[a-zA-Z0-9\s,.'\-/#]{1,100}$/;
     
       this.form = this.fb.group({

@@ -70,7 +70,7 @@ export class AddSponsorshipComponent implements OnInit{
     }
 
     const namePattern = /^[a-zA-Z0-9 -]{1,50}$/;
-    const mobilePattern = /^\+?[1-9]\d{9,14}$/;
+    const mobilePattern = /^\+[1-9]\d{9,14}$/;
     const addressPattern = /^[a-zA-Z0-9\s,.'\-/#]{1,100}$/;
     const emailPattern = /^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
