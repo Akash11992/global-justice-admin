@@ -13,7 +13,7 @@
     <div class="container-fluid" id="pagecontent">
       <div class="col-md-12 px-0" style="margin-top: 25px">
         <img src="assets/images/user (1).png" id="userimg" />&nbsp; &nbsp;
-        <h4 style="display: inline-flex">Sponsorship</h4>
+        <h4 style="display: inline-flex">Sponsor</h4>
       </div>
 
       <div class="card" id="uppercard">
@@ -53,8 +53,8 @@
               </div>
             </div>
             <div class="col-md-6" id="exportcolmd">
-              <button class="btn" type="button" id="exportbtn" routerLink="/dashboard/add-sponsorship">
-                <i class="bi bi-plus"></i> Add Sponsorship
+              <button class="btn" type="button" id="exportbtn" routerLink="/dashboard/add-sponsor">
+                <i class="bi bi-plus"></i> Add Sponsor
               </button>
             </div>
           </div>
@@ -71,12 +71,12 @@
                         <tr>
                           <th>#</th>
                           <th (click)="onSort('sponsorship_type')">
-                            Sponsorship Type 
+                            Sponsor Type 
                             <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'sponsorship_type' && order === 'asc'"></i>
                             <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'sponsorship_type' && order === 'desc'"></i>
                           </th>
                           <th (click)="onSort('sponsorship_name')">
-                            Sponsorship Name 
+                            Sponsor Name 
                             <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'sponsorship_name' && order === 'asc'"></i>
                             <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'sponsorship_name' && order === 'desc'"></i>
                           </th>
@@ -95,6 +95,11 @@
                             <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'poc_email' && order === 'asc'"></i>
                             <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'poc_email' && order === 'desc'"></i>
                           </th>
+
+                          <th class="text-center">
+                            Total Delegate
+                          </th>
+
                           <th class="text-center" (click)="onSort('ref_by')">
                             Ref by 
                             <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'ref_by' && order === 'asc'"></i>
@@ -117,6 +122,11 @@
                       <td class="text-center">{{item.poc_name}}</td>
                       <td class="text-center">{{item.poc_mobile}}</td>
                       <td class="text-center">{{item.poc_email}}</td>
+                      <td class="text-center">
+                        <a *ngIf="item.user_count >0" style="cursor: pointer" [routerLink]="['/dashboard/registered-user']" [queryParams]="{ type: 'DELEGATE_SPONSERED', id: item.id, name:item.sponsorship_name }">
+                          {{item.user_count}}
+                        </a>
+                      </td>
                       <td class="text-center">{{item.ref_by}}</td>
                       <td class="text-center">{{item.peacekeeper_other_name}}</td>
                       
@@ -139,17 +149,17 @@
                             aria-labelledby="dropdownMenuButton1"
                           >
                             <li>
-                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/edit-sponsorship', item.id]">
+                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/edit-sponsor', item.id]">
                                 Edit</a
                               >
                             </li>
-                            <li (click)="onActivateDeactiveToggle(item)">
+                            <!-- <li (click)="onActivateDeactiveToggle(item)">
                               <a class="dropdown-item" style="cursor: pointer">
                                 {{item.is_active ? 'Deactivate': 'Activate'}}</a
                               >
-                            </li>
+                            </li> -->
                             <li>
-                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/add-delegate', item.id]">
+                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/delegate-registration', item.id]">
                                 Add Delegate</a
                               >
                             </li>

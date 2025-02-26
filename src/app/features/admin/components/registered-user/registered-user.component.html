@@ -11,7 +11,7 @@
     <div class="container-fluid" id="pagecontent">
       <div class="col-md-12 px-0" style="padding-top: 25px">
         <img src="assets/images/user (1).png" id="userimg" />&nbsp;  &nbsp;
-        <h4 style="display: inline-flex">Approved Users</h4>
+        <h4 style="display: inline-flex">Delegate List {{sponsorshipId ? '('+sponsorshipName+')' : ''}}</h4>
       </div>
 
       <div class="card" id="uppercard">
@@ -49,14 +49,15 @@
 
             </div>
             <div class="col-md-6" id="exportcolmd">
-              <!-- <button
+              <button
                 class="btn"
                 type="button"
                 id="exportbtn"
-                routerLink="/dashboard/add-delegate"
+                [routerLink]="['/dashboard/delegate-registration',sponsorshipId]"
+                *ngIf="isFromSponsorship"
               >
                 <i class="bi bi-plus"></i> Add Delegate
-              </button> &nbsp; -->
+              </button> &nbsp;
               <!-- <button
                 class="btn"
                 type="button"
@@ -139,7 +140,7 @@
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'created_date' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'created_date' && order === 'desc'"></i>
                        </th>
-                      <!-- <th>Action</th> -->
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -186,6 +187,34 @@
                       </td>
                       <td>{{ all.reference_no }}</td>
                       <td>{{ all.created_date | date:'dd-MM-yyyy, h:mm a' }}</td>
+
+                      <td class="text-right">
+                        <div class="dropdown dropstart">
+                          <button
+                            class="btn btn-outline-success"
+                            type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <img
+                              src="/assets/images/orangemenuicon.png"
+                              id="hamburgericon"
+                            />
+                          </button>
+                          <ul
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton1"
+                          >
+                            <li (click)="onActivateDeactiveToggle(all)">
+                              <a class="dropdown-item" style="cursor: pointer">
+                                {{all.is_active ? 'Deactivate': 'Activate'}}</a
+                              >
+                            </li>
+                            
+                          </ul>
+                        </div>
+                      </td>
 
                       <!-- <td>
                         <div class="dropdown dropstart">
