@@ -17,7 +17,11 @@ export class AddCollaboratorComponent {
 
   form: FormGroup;
   countries: any[] = [];
+  states: any[] = [];
+  cities: any[] = [];
   selectedCountryObj:any={};
+  selectedStateObj:any ={};
+  selectedCityObj:any ={};
   selectedPeacekeeperObj:any ={};
 
   peacekeepers: any[] = [];
@@ -45,6 +49,8 @@ export class AddCollaboratorComponent {
       this.initializeForm();
       this.setupPeacekeeper();
       if(!this.collaboratorId){
+        this.selectedStateObj={id:"",name:""};
+        this.selectedCityObj={id:"",name:""};
         this.setupCountry();
       }
     }
@@ -54,14 +60,18 @@ export class AddCollaboratorComponent {
 
       if(this.collaboratorId) this.collaboratorDataById();
       
-      const namePattern = /^[a-zA-Z0-9' ]{1,50}$/;
+      const namePattern = /^[a-zA-Z0-9' -]{1,50}$/;
       const mobilePattern = /^\+?[1-9]\d{9,14}$/;
+      const addressPattern = /^[a-zA-Z0-9\s,.'\-/#]{1,100}$/;
     
       this.form = this.fb.group({
         email: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(254)]],
         fullName: ['', [Validators.required, Validators.pattern(namePattern), strictStringValidator()]],
         mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
-        country: ['', Validators.required],
+        country: ['0', Validators.required],
+        state: ['0'],
+        address: ['', [Validators.pattern(addressPattern), strictStringValidator()]],
+        city: ['0'],
         dob: ['',[Validators.required,this.noFutureDateValidator]],
         logoImage: ['',Validators.required],
         refPeacekeeper: ['',Validators.required]
@@ -70,9 +80,11 @@ export class AddCollaboratorComponent {
       if(this.collaboratorId){
         this.form.controls['email'].disable();
         this.form.controls['mobile'].disable();
-        this.form.controls['dob'].disable();
-        this.form.controls['country'].disable(); // Disables at form level
-        this.form.controls['refPeacekeeper'].disable(); // Disables at form level
+        this.form.controls['country'].disable(); 
+        this.form.controls['state'].disable(); 
+        this.form.controls['city'].disable(); 
+        this.form.controls['address'].disable(); 
+        this.form.controls['refPeacekeeper'].disable(); 
       }
 
       }
@@ -155,7 +167,73 @@ export class AddCollaboratorComponent {
         name:selectedName,
         code:selectedCode
       };
+      
+      this.states = [];
+      this.cities = [];
+      this.selectedStateObj={id:"",name:""};
+      this.selectedCityObj={id:"",name:""};
+      this.form.controls['state'].setValue('0');
+      this.form.controls['city'].setValue('0');
+      this.callStateByIdApi(selectedElement.value, "ON_CHANGE");
+    }
+
+    callStateByIdApi(selectedId:any, from:string){
+      this.adminService.getStateById(selectedId).subscribe((data: any) => {
+        this.states = data['data'];
+        if(this.collaboratorId && from == "ON_LOAD"){
+          const patchFormData = {
+            state: +this.collaboratorResData['state_id'],
+          }
+          this.form.patchValue(patchFormData);
+        }
   
+      },
+      (error: any) => {
+        console.log(error);
+      }
+      )
+    }
+  
+    onStateChange(event: Event): void{
+      const selectedElement = event.target as HTMLSelectElement;
+      const selectedName = selectedElement.selectedOptions[0].dataset.name;
+  
+      this.selectedStateObj = {
+        id:selectedElement.value,
+        name:selectedName,
+      };
+  
+      this.cities = [];
+      this.selectedCityObj={id:"",name:""};
+      this.form.controls['city'].setValue('0');
+      this.callCityByIdApi(selectedElement.value, "ON_CHANGE");
+    }
+  
+    onCityChange(event: Event): void{
+      const selectedElement = event.target as HTMLSelectElement;
+      const selectedId = selectedElement.selectedOptions[0].dataset.name;
+  
+      this.selectedCityObj = {
+        id:selectedElement.value,
+        name:selectedId,
+      }
+  
+    }
+
+    callCityByIdApi(selectedId:any, from:string){
+      this.adminService.getCityById(selectedId).subscribe((data: any) => {
+        this.cities = data['data'];
+        if(this.collaboratorId && from == "ON_LOAD"){
+          const patchFormData = {
+            city: +this.collaboratorResData['city_id'],
+          }
+          this.form.patchValue(patchFormData);
+        }
+      },
+      (error: any) => {
+        console.log(error);
+      }
+      )
     }
 
     onFileSelected(event: any) {
@@ -193,9 +271,14 @@ export class AddCollaboratorComponent {
           full_name:this.form.value["fullName"],
           mobile_no:this.collaboratorId ? this.collaboratorResData['mobile_no']:this.form.value["mobile"],
           email:this.collaboratorId ? this.collaboratorResData['email']: this.form.value["email"],
-          country_id:this.collaboratorId ? this.collaboratorResData['country_id']:this.form.value["country"],
+          country_id:this.collaboratorId ? this.collaboratorResData['country_id']:+this.form.value["country"],
           country:this.selectedCountryObj["name"]?this.selectedCountryObj["name"]:this.collaboratorResData['country'],
           country_code:this.selectedCountryObj["code"]?this.selectedCountryObj["code"]:this.collaboratorResData['country_code'],
+          state_id:+this.form.value["state"],
+          state:"name" in this.selectedStateObj ?this.selectedStateObj["name"]:this.collaboratorResData['state'],
+          city_id:+this.form.value["city"],
+          city:"name" in this.selectedCityObj ?this.selectedCityObj["name"]:this.collaboratorResData['city'],
+          address:this.form.value["address"],
           dob:this.collaboratorId ? this.collaboratorResData['dob'] : this.form.value["dob"],
           logo_image: this.form.value['logoImage'],
           is_active: this.collaboratorId ? this.collaboratorResData['is_active'] : 1,
