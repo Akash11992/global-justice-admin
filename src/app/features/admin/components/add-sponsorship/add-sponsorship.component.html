@@ -87,7 +87,7 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="Address" class="form-label">Address</label>
-                <input type="text" formControlName="address" class="form-control" id="Address" aria-describedby="emailHelp">
+                <textarea formControlName="address" class="form-control" id="Address" rows="3"></textarea>
                 <div *ngIf="form.get('address').errors?.pattern || form.get('address').errors?.leadingTrailingSpaces" class="error text-danger">
                   Enter correct address format with max length 100
                 </div>

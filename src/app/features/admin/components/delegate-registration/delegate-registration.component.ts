@@ -3,6 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-delegate-registration',
@@ -29,13 +30,17 @@ export class DelegateRegistrationComponent {
   selectedStateObjs: { [key: number]: any } = {};
   selectedCityObjs: { [key: number]: any } = {};
   maxDate: string; 
+  sponsorshipId!: string;
 
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
     private ngxService: NgxUiLoaderService,
-    private SharedService: SharedService
+    private SharedService: SharedService,
+    private route: ActivatedRoute
   ) {
+
+    this.sponsorshipId = this.route.snapshot.paramMap.get('id');
     this.setupCountry();
     this.maxDate = this.getMaxDate();
     this.mainForm = this.fb.group({
@@ -198,24 +203,26 @@ export class DelegateRegistrationComponent {
   }
 
   onSubmitAll(): void {
-    this.ngxService.start();
     this.mainForm.markAllAsTouched();
 
     if (this.mainForm.valid) {
+      this.ngxService.start();
       console.log('Form Submitted', this.mainForm.value);
       const payload ={
         delegateForms: this.mainForm.value.delegateForms.map((delegate: any) => ({
           ...delegate, // Spread the existing properties
+          attendee_purpose: +delegate.attendee_purpose, // Spread the existing properties
           passport_no: "", // Add the new attribute
           passport_issue_by: "", // Add the new attribute
           status: "0", // Add the new attribute
           created_by: "Admin", // Add the new attribute
           p_type: "DELEGATE_SPONSERED", // Add the new attribute
-          p_reference_by: 10 // Add the new attribute
+          p_reference_by: +this.sponsorshipId // Add the new attribute
         }))
       };
       this.adminService.addDeletgates(payload).subscribe((data: any) => {
         this.ngxService.stop();
+        this.resetForm();
         this.SharedService.ToastPopup('Delegate added successfully', 'Delegate', 'success');
       },
       (error: any) => {
@@ -228,6 +235,17 @@ export class DelegateRegistrationComponent {
       console.log('Form Invalid');
       console.error('Form is invalid');
     }
+  }
+
+  resetForm() {
+    this.mainForm.reset(); // Resets all values in the form
+    this.setDefaultDelegateForm(); // Ensures at least one delegate form remains
+  }
+  
+  setDefaultDelegateForm() {
+    const delegateForms = this.mainForm.get('delegateForms') as FormArray;
+    delegateForms.clear(); // Remove all existing delegate forms
+    delegateForms.push(this.createDelegateForm()); // Add a fresh delegate form
   }
 
   private getMaxDate(): string {
