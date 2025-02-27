@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-delegate-registration',
@@ -11,7 +12,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 })
 export class DelegateRegistrationComponent {
   mainForm: FormGroup;
-  maxForms: number = 3;
+  maxForms: number = 9;
   conferenceInterests = [
     { label: 'Justice', value: 'justice' },
     { label: 'Love', value: 'love' },
@@ -29,13 +30,17 @@ export class DelegateRegistrationComponent {
   selectedStateObjs: { [key: number]: any } = {};
   selectedCityObjs: { [key: number]: any } = {};
   maxDate: string; 
+  sponsorshipId!: string;
 
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
     private ngxService: NgxUiLoaderService,
-    private SharedService: SharedService
+    private SharedService: SharedService,
+    private route: ActivatedRoute
   ) {
+
+    this.sponsorshipId = this.route.snapshot.paramMap.get('id');
     this.setupCountry();
     this.maxDate = this.getMaxDate();
     this.mainForm = this.fb.group({
@@ -161,9 +166,10 @@ export class DelegateRegistrationComponent {
       city: ['', Validators.required],
       referenceNumber: [''],
       purpose: ['', Validators.required],
-      levers: this.fb.array([]) // Checkbox selection
+      levers: this.fb.array([], this.minSelectedCheckboxes(1)) // Checkbox selection
     });
   }
+  
 
   addForm(): void {
     if (this.delegateFormsArray.length < this.maxForms) {
@@ -185,8 +191,20 @@ export class DelegateRegistrationComponent {
     return this.delegateFormsArray.length >= this.maxForms;
   }
 
+  minSelectedCheckboxes(min: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!(control instanceof FormArray)) {
+        return null; // Ensure control is a FormArray
+      }
+  
+      const selectedCount = control.controls.filter(ctrl => ctrl.value).length;
+      return selectedCount >= min ? null : { required: true };
+    };
+  }
+
   toggleCheckbox(event: any, formIndex: number, value: string): void {
     const leversArray = this.delegateFormsArray.at(formIndex).get('levers') as FormArray;
+  
     if (event.target.checked) {
       leversArray.push(this.fb.control(value));
     } else {
@@ -195,27 +213,33 @@ export class DelegateRegistrationComponent {
         leversArray.removeAt(index);
       }
     }
+  
+    leversArray.markAsTouched(); // ✅ Ensure validation triggers on change
+    leversArray.updateValueAndValidity();
   }
+  
 
   onSubmitAll(): void {
-    this.ngxService.start();
     this.mainForm.markAllAsTouched();
 
     if (this.mainForm.valid) {
+      this.ngxService.start();
       console.log('Form Submitted', this.mainForm.value);
       const payload ={
         delegateForms: this.mainForm.value.delegateForms.map((delegate: any) => ({
           ...delegate, // Spread the existing properties
+          attendee_purpose: +delegate.attendee_purpose, // Spread the existing properties
           passport_no: "", // Add the new attribute
           passport_issue_by: "", // Add the new attribute
           status: "0", // Add the new attribute
           created_by: "Admin", // Add the new attribute
           p_type: "DELEGATE_SPONSERED", // Add the new attribute
-          p_reference_by: 10 // Add the new attribute
+          p_reference_by: +this.sponsorshipId // Add the new attribute
         }))
       };
       this.adminService.addDeletgates(payload).subscribe((data: any) => {
         this.ngxService.stop();
+        this.resetForm();
         this.SharedService.ToastPopup('Delegate added successfully', 'Delegate', 'success');
       },
       (error: any) => {
@@ -228,6 +252,17 @@ export class DelegateRegistrationComponent {
       console.log('Form Invalid');
       console.error('Form is invalid');
     }
+  }
+
+  resetForm() {
+    this.mainForm.reset(); // Resets all values in the form
+    this.setDefaultDelegateForm(); // Ensures at least one delegate form remains
+  }
+  
+  setDefaultDelegateForm() {
+    const delegateForms = this.mainForm.get('delegateForms') as FormArray;
+    delegateForms.clear(); // Remove all existing delegate forms
+    delegateForms.push(this.createDelegateForm()); // Add a fresh delegate form
   }
 
   private getMaxDate(): string {
