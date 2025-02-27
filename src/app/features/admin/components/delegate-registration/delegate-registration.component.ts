@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DelegateRegistrationComponent {
   mainForm: FormGroup;
-  maxForms: number = 3;
+  maxForms: number = 9;
   conferenceInterests = [
     { label: 'Justice', value: 'justice' },
     { label: 'Love', value: 'love' },
@@ -166,9 +166,10 @@ export class DelegateRegistrationComponent {
       city: ['', Validators.required],
       referenceNumber: [''],
       purpose: ['', Validators.required],
-      levers: this.fb.array([]) // Checkbox selection
+      levers: this.fb.array([], this.minSelectedCheckboxes(1)) // Checkbox selection
     });
   }
+  
 
   addForm(): void {
     if (this.delegateFormsArray.length < this.maxForms) {
@@ -190,8 +191,20 @@ export class DelegateRegistrationComponent {
     return this.delegateFormsArray.length >= this.maxForms;
   }
 
+  minSelectedCheckboxes(min: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!(control instanceof FormArray)) {
+        return null; // Ensure control is a FormArray
+      }
+  
+      const selectedCount = control.controls.filter(ctrl => ctrl.value).length;
+      return selectedCount >= min ? null : { required: true };
+    };
+  }
+
   toggleCheckbox(event: any, formIndex: number, value: string): void {
     const leversArray = this.delegateFormsArray.at(formIndex).get('levers') as FormArray;
+  
     if (event.target.checked) {
       leversArray.push(this.fb.control(value));
     } else {
@@ -200,7 +213,11 @@ export class DelegateRegistrationComponent {
         leversArray.removeAt(index);
       }
     }
+  
+    leversArray.markAsTouched(); // ✅ Ensure validation triggers on change
+    leversArray.updateValueAndValidity();
   }
+  
 
   onSubmitAll(): void {
     this.mainForm.markAllAsTouched();
