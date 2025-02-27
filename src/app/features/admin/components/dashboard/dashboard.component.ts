@@ -3,6 +3,9 @@ import { Chart, registerables } from 'chart.js';
 import { AdminService } from '../../services/admin.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { HttpClient } from '@angular/common/http';
+import { Location, PlatformLocation } from "@angular/common";
+import { Subscription, SubscriptionLike } from "rxjs";
+import { ActivatedRoute, Router } from '@angular/router';
 
 Chart.register(...registerables)
 
@@ -37,18 +40,38 @@ export class DashboardComponent {
   completedData: any;
   pendingData: any;
   colorMapping:any;
-  constructor(private AdminService: AdminService, private SharedService: SharedService, private httpClient: HttpClient) {
+
+  private locationSubscription: SubscriptionLike;
+  isLoginYN: boolean = false;
+
+  constructor(
+    private AdminService: AdminService,
+     private SharedService: SharedService, 
+     private httpClient: HttpClient,
+     private _router: Router,
+     private route : ActivatedRoute,
+     private _location: Location,
+     private platformLocation: PlatformLocation
+    ) {
   }
   chartOptions: any;
   ngOnInit(): void {
     this.graph = true;
     this.getDelegatePieChart();
+console.log('route',this.route);
 
     this.getDelegateRefrenceChart();
     this.rendergraph('donutChart', 'doughnut',)
     //  this.rendergraph('LineChart',"bar")
 
+    history.pushState(null, '', window.location.href);
 
+    // Listen for browser back button press
+    window.onpopstate = (event) => {
+      if (this._router.url === "/dashboard") {
+        this.confirmLogout();
+      }
+    };
   }
 
   rendergraph(id: any, type: any,) {
@@ -218,239 +241,239 @@ export class DashboardComponent {
 
   }
 
-  getPartnerPieChart() {
-    // this.ngxService.start();
-    this.AdminService.getPartnerPieChart().subscribe((data: any) => {
+  // getPartnerPieChart() {
+  //   // this.ngxService.start();
+  //   this.AdminService.getPartnerPieChart().subscribe((data: any) => {
 
-      this.pie_chart = data.data
-      console.log("partner", this.pie_chart);
-      // Extract labels and data from the API response
-      this.pie_chart_label = this.pie_chart.map((item: any) => item.registration_status);
-      this.pie_chart_label_count = this.pie_chart.map((item: any) => item.count);
-      console.log("partner Labels:", this.pie_chart_label);
-      console.log("partner Data:", this.pie_chart_label_count);
+  //     this.pie_chart = data.data
+  //     console.log("partner", this.pie_chart);
+  //     // Extract labels and data from the API response
+  //     this.pie_chart_label = this.pie_chart.map((item: any) => item.registration_status);
+  //     this.pie_chart_label_count = this.pie_chart.map((item: any) => item.count);
+  //     console.log("partner Labels:", this.pie_chart_label);
+  //     console.log("partner Data:", this.pie_chart_label_count);
 
-      this.rendergraph('pieChart', 'pie')
+  //     this.rendergraph('pieChart', 'pie')
 
-      this.partner = true;
-      this.delegate = false
-      this.speaker = false
-      this.graph = true;
-      this.table = false;
-      this.switchTab()
-    }, (err) => {
-      console.error("An error occurred while fetching data:", err);
-      // Handle the error appropriately, e.g., display an error message to the user
-    });
+  //     this.partner = true;
+  //     this.delegate = false
+  //     this.speaker = false
+  //     this.graph = true;
+  //     this.table = false;
+  //     this.switchTab()
+  //   }, (err) => {
+  //     console.error("An error occurred while fetching data:", err);
+  //     // Handle the error appropriately, e.g., display an error message to the user
+  //   });
 
-    //bar graph................
-    console.log("b ar graph start");
+  //   //bar graph................
+  //   console.log("b ar graph start");
 
-    this.AdminService.getPartnerVerticalBarChart().subscribe((data: any) => {
+  //   this.AdminService.getPartnerVerticalBarChart().subscribe((data: any) => {
 
-      this.bar_chart = data.data
-      console.log("delegate bar chart", this.bar_chart);
+  //     this.bar_chart = data.data
+  //     console.log("delegate bar chart", this.bar_chart);
 
-      // Extract labels and data from the API response
-      this.bar_chart_label_date_range = this.bar_chart.map((item: any) => item.date_range);
-      this.bar_chart_label_pending_count = this.bar_chart.map((item: any) => item.pending_count);
-      this.bar_chart_label_complete_count = this.bar_chart.map((item: any) => item.complete_count);
-      console.log("delegate Labels:bar_chart_label_date_range", this.bar_chart_label_date_range);
-      console.log("delegate Labels:bar_chart_label_complete_count", this.bar_chart_label_complete_count);
-      console.log("delegate Data:bar_chart_label_pending_count", this.bar_chart_label_pending_count);
+  //     // Extract labels and data from the API response
+  //     this.bar_chart_label_date_range = this.bar_chart.map((item: any) => item.date_range);
+  //     this.bar_chart_label_pending_count = this.bar_chart.map((item: any) => item.pending_count);
+  //     this.bar_chart_label_complete_count = this.bar_chart.map((item: any) => item.complete_count);
+  //     console.log("delegate Labels:bar_chart_label_date_range", this.bar_chart_label_date_range);
+  //     console.log("delegate Labels:bar_chart_label_complete_count", this.bar_chart_label_complete_count);
+  //     console.log("delegate Data:bar_chart_label_pending_count", this.bar_chart_label_pending_count);
 
-      // and this.dateArray is your array of dates
-      const completedataPoints = this.bar_chart_label_complete_count.map((count: number, index: number) => ({
-        y: count === null ? 0 : count,
-        label: this.bar_chart_label_date_range[index] // Use the date from the array
-      }));
-      const pendingdataPoints = this.bar_chart_label_pending_count.map((count: number, index: number) => ({
-        y: count === null ? 0 : count,
-        label: this.bar_chart_label_date_range[index] // Use the date from the array
-      }));
-
-
-      console.log("completedataPoints.........", completedataPoints);
-
-      console.log("pendingdataPoints..........", pendingdataPoints);
+  //     // and this.dateArray is your array of dates
+  //     const completedataPoints = this.bar_chart_label_complete_count.map((count: number, index: number) => ({
+  //       y: count === null ? 0 : count,
+  //       label: this.bar_chart_label_date_range[index] // Use the date from the array
+  //     }));
+  //     const pendingdataPoints = this.bar_chart_label_pending_count.map((count: number, index: number) => ({
+  //       y: count === null ? 0 : count,
+  //       label: this.bar_chart_label_date_range[index] // Use the date from the array
+  //     }));
 
 
-      this.chartoption2 = {
-        animationEnabled: true,
-        exportEnabled: true,
-        title: {
-          text: ""
-        },
-        axisX: {
-          title: "Dates"
-        },
-        axisY: {
-          title: "Percentage"
-        },
-        toolTip: {
-          shared: true
-        },
-        legend: {
-          horizontalAlign: "right",
-          verticalAlign: "center",
-          reversed: true
-        },
-        data: [{
-          type: "stackedColumn100",
-          name: "Completed",
-          showInLegend: "true",
-          indexLabel: "#percent %",
-          indexLabelPlacement: "inside",
-          indexLabelFontColor: "white",
-          dataPoints: completedataPoints
+  //     console.log("completedataPoints.........", completedataPoints);
 
-        }, {
-          type: "stackedColumn100",
-          name: "Pending",
-          showInLegend: "true",
-          indexLabel: "#percent %",
-          indexLabelPlacement: "inside",
-          indexLabelFontColor: "white",
-          dataPoints: pendingdataPoints
-
-        }]
-      }
-
-      if (this.chartoption2) {
-        this.bargraph = true
-      }
-      //................................
+  //     console.log("pendingdataPoints..........", pendingdataPoints);
 
 
-      // ...
-      this.delegate = false;
-      this.partner = true;
-      this.speaker = false;
-      this.graph = true;
-      this.table = false;
-      this.switchTab()
-    }, (err) => {
-      console.error("An error occurred while fetching data:", err);
-      // Handle the error appropriately, e.g., display an error message to the user
-    });
+  //     this.chartoption2 = {
+  //       animationEnabled: true,
+  //       exportEnabled: true,
+  //       title: {
+  //         text: ""
+  //       },
+  //       axisX: {
+  //         title: "Dates"
+  //       },
+  //       axisY: {
+  //         title: "Percentage"
+  //       },
+  //       toolTip: {
+  //         shared: true
+  //       },
+  //       legend: {
+  //         horizontalAlign: "right",
+  //         verticalAlign: "center",
+  //         reversed: true
+  //       },
+  //       data: [{
+  //         type: "stackedColumn100",
+  //         name: "Completed",
+  //         showInLegend: "true",
+  //         indexLabel: "#percent %",
+  //         indexLabelPlacement: "inside",
+  //         indexLabelFontColor: "white",
+  //         dataPoints: completedataPoints
 
-  }
+  //       }, {
+  //         type: "stackedColumn100",
+  //         name: "Pending",
+  //         showInLegend: "true",
+  //         indexLabel: "#percent %",
+  //         indexLabelPlacement: "inside",
+  //         indexLabelFontColor: "white",
+  //         dataPoints: pendingdataPoints
 
-  getSpeakerPieChart() {
-    // this.ngxService.start();
-    this.AdminService.getSpeakerPieChart().subscribe((data: any) => {
+  //       }]
+  //     }
 
-      this.pie_chart = data.data
-      console.log("speaker", this.pie_chart);
-      // Extract labels and data from the API response
-      this.pie_chart_label = this.pie_chart.map((item: any) => item.registration_status);
-      this.pie_chart_label_count = this.pie_chart.map((item: any) => item.count);
-      console.log("speaker Labels:", this.pie_chart_label);
-      console.log("speaker Data:", this.pie_chart_label_count);
-
-      this.rendergraph('pieChart', 'pie')
-      this.speaker = true
-      this.partner = false;
-      this.delegate = false
-      this.graph = true;
-      this.switchTab()
-
-    }, (err) => {
-      console.error("An error occurred while fetching data:", err);
-      // Handle the error appropriately, e.g., display an error message to the user
-    });
-
-    //bar graph................
-    console.log("b ar graph start");
-
-    this.AdminService.getSpeakerVerticalBarChart().subscribe((data: any) => {
-
-      this.bar_chart = data.data
-      console.log("delegate bar chart", this.bar_chart);
-
-      // Extract labels and data from the API response
-      this.bar_chart_label_date_range = this.bar_chart.map((item: any) => item.date_range);
-      this.bar_chart_label_pending_count = this.bar_chart.map((item: any) => item.pending_count);
-      this.bar_chart_label_complete_count = this.bar_chart.map((item: any) => item.complete_count);
-      console.log("delegate Labels:bar_chart_label_date_range", this.bar_chart_label_date_range);
-      console.log("delegate Labels:bar_chart_label_complete_count", this.bar_chart_label_complete_count);
-      console.log("delegate Data:bar_chart_label_pending_count", this.bar_chart_label_pending_count);
-
-      // and this.dateArray is your array of dates
-      const completedataPoints = this.bar_chart_label_complete_count.map((count: number, index: number) => ({
-        y: count === null ? 0 : count,
-        label: this.bar_chart_label_date_range[index] // Use the date from the array
-      }));
-      const pendingdataPoints = this.bar_chart_label_pending_count.map((count: number, index: number) => ({
-        y: count === null ? 0 : count,
-        label: this.bar_chart_label_date_range[index] // Use the date from the array
-      }));
+  //     if (this.chartoption2) {
+  //       this.bargraph = true
+  //     }
+  //     //................................
 
 
-      console.log("completedataPoints.........", completedataPoints);
+  //     // ...
+  //     this.delegate = false;
+  //     this.partner = true;
+  //     this.speaker = false;
+  //     this.graph = true;
+  //     this.table = false;
+  //     this.switchTab()
+  //   }, (err) => {
+  //     console.error("An error occurred while fetching data:", err);
+  //     // Handle the error appropriately, e.g., display an error message to the user
+  //   });
 
-      console.log("pendingdataPoints..........", pendingdataPoints);
+  // }
+
+  // getSpeakerPieChart() {
+  //   // this.ngxService.start();
+  //   this.AdminService.getSpeakerPieChart().subscribe((data: any) => {
+
+  //     this.pie_chart = data.data
+  //     console.log("speaker", this.pie_chart);
+  //     // Extract labels and data from the API response
+  //     this.pie_chart_label = this.pie_chart.map((item: any) => item.registration_status);
+  //     this.pie_chart_label_count = this.pie_chart.map((item: any) => item.count);
+  //     console.log("speaker Labels:", this.pie_chart_label);
+  //     console.log("speaker Data:", this.pie_chart_label_count);
+
+  //     this.rendergraph('pieChart', 'pie')
+  //     this.speaker = true
+  //     this.partner = false;
+  //     this.delegate = false
+  //     this.graph = true;
+  //     this.switchTab()
+
+  //   }, (err) => {
+  //     console.error("An error occurred while fetching data:", err);
+  //     // Handle the error appropriately, e.g., display an error message to the user
+  //   });
+
+  //   //bar graph................
+  //   console.log("b ar graph start");
+
+  //   this.AdminService.getSpeakerVerticalBarChart().subscribe((data: any) => {
+
+  //     this.bar_chart = data.data
+  //     console.log("delegate bar chart", this.bar_chart);
+
+  //     // Extract labels and data from the API response
+  //     this.bar_chart_label_date_range = this.bar_chart.map((item: any) => item.date_range);
+  //     this.bar_chart_label_pending_count = this.bar_chart.map((item: any) => item.pending_count);
+  //     this.bar_chart_label_complete_count = this.bar_chart.map((item: any) => item.complete_count);
+  //     console.log("delegate Labels:bar_chart_label_date_range", this.bar_chart_label_date_range);
+  //     console.log("delegate Labels:bar_chart_label_complete_count", this.bar_chart_label_complete_count);
+  //     console.log("delegate Data:bar_chart_label_pending_count", this.bar_chart_label_pending_count);
+
+  //     // and this.dateArray is your array of dates
+  //     const completedataPoints = this.bar_chart_label_complete_count.map((count: number, index: number) => ({
+  //       y: count === null ? 0 : count,
+  //       label: this.bar_chart_label_date_range[index] // Use the date from the array
+  //     }));
+  //     const pendingdataPoints = this.bar_chart_label_pending_count.map((count: number, index: number) => ({
+  //       y: count === null ? 0 : count,
+  //       label: this.bar_chart_label_date_range[index] // Use the date from the array
+  //     }));
 
 
-      this.chartoption2 = {
-        animationEnabled: true,
-        exportEnabled: true,
-        title: {
-          text: ""
-        },
-        axisX: {
-          title: "Dates"
-        },
-        axisY: {
-          title: "Percentage"
-        },
-        toolTip: {
-          shared: true
-        },
-        legend: {
-          horizontalAlign: "right",
-          verticalAlign: "center",
-          reversed: true
-        },
-        data: [{
-          type: "stackedColumn100",
-          name: "Completed",
-          showInLegend: "true",
-          indexLabel: "#percent %",
-          indexLabelPlacement: "inside",
-          indexLabelFontColor: "white",
-          dataPoints: completedataPoints
+  //     console.log("completedataPoints.........", completedataPoints);
 
-        }, {
-          type: "stackedColumn100",
-          name: "Pending",
-          showInLegend: "true",
-          indexLabel: "#percent %",
-          indexLabelPlacement: "inside",
-          indexLabelFontColor: "white",
-          dataPoints: pendingdataPoints
-
-        }]
-      }
-
-      if (this.chartoption2) {
-        this.bargraph = true
-      }
-      //................................
+  //     console.log("pendingdataPoints..........", pendingdataPoints);
 
 
-      // ...
-      this.delegate = false;
-      this.partner = false;
-      this.speaker = true;
-      this.graph = true;
-      this.table = false;
-      this.switchTab()
-    }, (err) => {
-      console.error("An error occurred while fetching data:", err);
-      // Handle the error appropriately, e.g., display an error message to the user
-    });
-  }
+  //     this.chartoption2 = {
+  //       animationEnabled: true,
+  //       exportEnabled: true,
+  //       title: {
+  //         text: ""
+  //       },
+  //       axisX: {
+  //         title: "Dates"
+  //       },
+  //       axisY: {
+  //         title: "Percentage"
+  //       },
+  //       toolTip: {
+  //         shared: true
+  //       },
+  //       legend: {
+  //         horizontalAlign: "right",
+  //         verticalAlign: "center",
+  //         reversed: true
+  //       },
+  //       data: [{
+  //         type: "stackedColumn100",
+  //         name: "Completed",
+  //         showInLegend: "true",
+  //         indexLabel: "#percent %",
+  //         indexLabelPlacement: "inside",
+  //         indexLabelFontColor: "white",
+  //         dataPoints: completedataPoints
+
+  //       }, {
+  //         type: "stackedColumn100",
+  //         name: "Pending",
+  //         showInLegend: "true",
+  //         indexLabel: "#percent %",
+  //         indexLabelPlacement: "inside",
+  //         indexLabelFontColor: "white",
+  //         dataPoints: pendingdataPoints
+
+  //       }]
+  //     }
+
+  //     if (this.chartoption2) {
+  //       this.bargraph = true
+  //     }
+  //     //................................
+
+
+  //     // ...
+  //     this.delegate = false;
+  //     this.partner = false;
+  //     this.speaker = true;
+  //     this.graph = true;
+  //     this.table = false;
+  //     this.switchTab()
+  //   }, (err) => {
+  //     console.error("An error occurred while fetching data:", err);
+  //     // Handle the error appropriately, e.g., display an error message to the user
+  //   });
+  // }
 
 
 
@@ -478,70 +501,70 @@ getDelegateRefrenceChart(){
   });
 }
 
-getPartnerRefrenceChart(){
-  this.AdminService.getPartnerRefrencePieChart().subscribe((data: any) => {
+// getPartnerRefrenceChart(){
+//   this.AdminService.getPartnerRefrencePieChart().subscribe((data: any) => {
 
-    this.refrence_pie_chart = data.data
-    console.log("delegate refrence", this.refrence_pie_chart);
-    // Extract labels and data from the API response
-    this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
-    this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
-    console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
-    console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
+//     this.refrence_pie_chart = data.data
+//     console.log("delegate refrence", this.refrence_pie_chart);
+//     // Extract labels and data from the API response
+//     this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
+//     this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
+//     console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
+//     console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
 
-    this.rendergraph('donutChart', 'doughnut')
-    this.speaker = false
-    this.partner = true;
-    this.delegate = false;
-    this.graph = true;
-    this.switchTab()
+//     this.rendergraph('donutChart', 'doughnut')
+//     this.speaker = false
+//     this.partner = true;
+//     this.delegate = false;
+//     this.graph = true;
+//     this.switchTab()
 
-  }, (err) => {
-    console.error("An error occurred while fetching data:", err);
-    // Handle the error appropriately, e.g., display an error message to the user
-  });
-}
+//   }, (err) => {
+//     console.error("An error occurred while fetching data:", err);
+//     // Handle the error appropriately, e.g., display an error message to the user
+//   });
+// }
 
-getSpeakerRefrenceChart(){
-  this.AdminService.getSpeakerRefrencePieChart().subscribe((data: any) => {
+// getSpeakerRefrenceChart(){
+//   this.AdminService.getSpeakerRefrencePieChart().subscribe((data: any) => {
 
-    this.refrence_pie_chart = data.data
-    console.log("delegate refrence", this.refrence_pie_chart);
-    // Extract labels and data from the API response
-    this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
-    this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
-    console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
-    console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
+//     this.refrence_pie_chart = data.data
+//     console.log("delegate refrence", this.refrence_pie_chart);
+//     // Extract labels and data from the API response
+//     this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
+//     this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
+//     console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
+//     console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
 
-    this.rendergraph('donutChart', 'doughnut')
-    this.speaker = true
-    this.partner = false;
-    this.delegate = false;
-    this.graph = true;
-    this.switchTab()
+//     this.rendergraph('donutChart', 'doughnut')
+//     this.speaker = true
+//     this.partner = false;
+//     this.delegate = false;
+//     this.graph = true;
+//     this.switchTab()
 
-  }, (err) => {
-    console.error("An error occurred while fetching data:", err);
-    // Handle the error appropriately, e.g., display an error message to the user
-  });
-}
+//   }, (err) => {
+//     console.error("An error occurred while fetching data:", err);
+//     // Handle the error appropriately, e.g., display an error message to the user
+//   });
+// }
   switchTab() {
     console.log("active tab name delegate", this.delegate);
-    console.log("active tab name partner", this.partner);
-    console.log("active tab name speaker", this.speaker,);
+    // console.log("active tab name partner", this.partner);
+    // console.log("active tab name speaker", this.speaker,);
     switch (true) {
       case this.delegate === true:
         console.log("active tab name delegate", this.delegate);
         this.value = "Delegate"
         break;
-      case this.partner === true:
-        console.log("active tab name partner", this.partner);
-        this.value = "Partner"
-        break;
-      case this.speaker === true:
-        console.log("active tab name speaker", this.speaker,);
-        this.value = "Speaker"
-        break;
+      // case this.partner === true:
+      //   console.log("active tab name partner", this.partner);
+      //   this.value = "Partner"
+      //   break;
+      // case this.speaker === true:
+      //   console.log("active tab name speaker", this.speaker,);
+      //   this.value = "Speaker"
+      //   break;
     }
   }
 
@@ -579,6 +602,19 @@ getSpeakerRefrenceChart(){
     this.salesbroucher = true;
     this.graph = false;
   }
+  confirmLogout() {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      this._router.navigate(['/login']);
+    } else {
+      // Stay on the dashboard and prevent navigation
+      history.pushState(null, '', window.location.href);
+    }
+  }
 
+  ngOnDestroy(): void {
+    // Cleanup event listener when the component is destroyed
+    window.onpopstate = null;
+  }
 
 }

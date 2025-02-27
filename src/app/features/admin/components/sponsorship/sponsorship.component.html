@@ -25,15 +25,13 @@
                   <form>
                     <div class="row">
                       <div class="col-md-3">
-                        <select class="form-control" aria-label="Default select example">
-                          <option selected>Select</option>
-                          <option value="1">25</option>
-                          <option value="2">50</option>
-                          <option value="3">100</option>
+                        <select #mySelect (change)="onSelectionChange(mySelect.value)"  style="cursor: pointer;" class="form-control" aria-label="Default select example">
+                          <option *ngFor="let option of rowOptions" [value]="option.value">{{ option.label }}</option>
                         </select>
                       </div>
                       <div class="col-md-9 d-flex">
                         <input
+                        #searchInput
                       class="form-control"
                       type="search"
                       id="inputsearch"
@@ -41,9 +39,9 @@
                       aria-label="Search"
                     />
                     &nbsp; &nbsp;&nbsp;
-                    <button class="btn" id="btncolor">Search</button>
+                    <button class="btn" id="btncolor" (click)="onSearchClick(searchInput.value)">Search</button>
                     &nbsp; &nbsp;
-                    <button class="btn" type="reset" id="btncolor">
+                    <button class="btn" type="reset" id="btncolor" (click)="onSearchClick('')">
                       Reset
                     </button>
                       </div>
@@ -68,48 +66,60 @@
           <div class="card">
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table">
+                <table class="table" *ngIf="sponsorships.length > 0 else noDataTemplate">
                   <thead>
-                    <tr>
-                      <th>
-                        <input type="checkbox" id="checkbox" />
-                      </th>
-                      <th>
-                        Sponsorship Type <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th>
-                        Collaborator Name <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th>POC Name <i class="bi bi-caret-down-fill"></i></th>
-                      <th>POC Mobile NO <i class="bi bi-caret-down-fill"></i></th>
-                      <th class="text-center">
-                        POC Email <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th class="text-center">
-                        Ref by <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <th class="text-center">
-                        Name <i class="bi bi-caret-down-fill"></i>
-                      </th>
-                      <!-- <th>Delegate Allowed <i class="bi bi-caret-down-fill"></i></th>
-    <th>Amount</th> -->
-                      <th class="text-right">Action</th>
-                    </tr>
+                        <tr>
+                          <th>#</th>
+                          <th (click)="onSort('sponsorship_type')">
+                            Sponsorship Type 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'sponsorship_type' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'sponsorship_type' && order === 'desc'"></i>
+                          </th>
+                          <th (click)="onSort('sponsorship_name')">
+                            Sponsorship Name 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'sponsorship_name' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'sponsorship_name' && order === 'desc'"></i>
+                          </th>
+                          <th (click)="onSort('poc_name')">
+                            POC Name 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'poc_name' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'poc_name' && order === 'desc'"></i>
+                          </th>
+                          <th (click)="onSort('poc_mobile')">
+                            POC Mobile No. 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'poc_mobile' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'poc_mobile' && order === 'desc'"></i>
+                          </th>
+                          <th class="text-center" (click)="onSort('poc_email')">
+                            POC Email 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'poc_email' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'poc_email' && order === 'desc'"></i>
+                          </th>
+                          <th class="text-center" (click)="onSort('ref_by')">
+                            Ref by 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'ref_by' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'ref_by' && order === 'desc'"></i>
+                          </th>
+                          <th class="text-center" (click)="onSort('peacekeeper_other_name')">
+                            Name 
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'peacekeeper_other_name' && order === 'asc'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'peacekeeper_other_name' && order === 'desc'"></i>
+                          </th>
+                          <th class="text-right">Action</th>
+                        </tr>
+                    
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <input type="checkbox" />
-                      </td>
-                      <td>Petrol</td>
-                      <td>APCO</td>
-                      <td>Piyush</td>
-                      <td>9833438670</td>
-                      <td class="text-center">piyush@gmail.com</td>
-                      <td class="text-center">Peacekeeper</td>
-                      <td class="text-center">Kumar saurabh</td>
-                      <!-- <td></td>
-    <td></td> -->
+                    <tr *ngFor="let item of sponsorships; let i=index">
+                      <td class="text-center">{{ (page - 1) * limit + i + 1 }}</td>
+                      <td class="text-center">{{item.sponsorship_type | titlecase}}</td>
+                      <td class="text-center">{{item.sponsorship_name}}</td>
+                      <td class="text-center">{{item.poc_name}}</td>
+                      <td class="text-center">{{item.poc_mobile}}</td>
+                      <td class="text-center">{{item.poc_email}}</td>
+                      <td class="text-center">{{item.ref_by}}</td>
+                      <td class="text-center">{{item.peacekeeper_other_name}}</td>
+                      
                       <td class="text-right">
                         <div class="dropdown dropstart">
                           <button
@@ -129,22 +139,17 @@
                             aria-labelledby="dropdownMenuButton1"
                           >
                             <li>
-                              <a class="dropdown-item" style="cursor: pointer">
+                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/edit-sponsorship', item.id]">
                                 Edit</a
                               >
                             </li>
-                            <li>
+                            <li (click)="onActivateDeactiveToggle(item)">
                               <a class="dropdown-item" style="cursor: pointer">
-                                Active</a
+                                {{item.is_active ? 'Deactivate': 'Activate'}}</a
                               >
                             </li>
                             <li>
-                              <a class="dropdown-item" style="cursor: pointer">
-                                Deactive</a
-                              >
-                            </li>
-                            <li>
-                              <a class="dropdown-item" style="cursor: pointer" >
+                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/add-delegate', item.id]">
                                 Add Delegate</a
                               >
                             </li>
@@ -157,16 +162,16 @@
               </div>
               <nav aria-label="...">
                 <ul class="pagination">
-                  <li class="page-item disabled">
+                  <li class="page-item " (click)="changePage(page - 1)" [disabled]="page === 1">
                     <span class="page-link">Previous</span>
                   </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item active" aria-current="page">
-                    <span class="page-link">2</span>
+                  <li class="page-item" *ngFor="let p of [].constructor(totalPages); let i = index" 
+                  (click)="changePage(i + 1)" 
+                  [class.active]="page === i + 1" >
+                  <span class="page-link">{{ i + 1 }}</span>
                   </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
                   <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" (click)="changePage(page + 1)" [disabled]="page === totalPages">Next</a>
                   </li>
                 </ul>
               </nav>
@@ -181,3 +186,8 @@
   </div>
   <!------------------------------------------- Page Content end ----------------------------------------->
 </div>
+
+
+<ng-template #noDataTemplate>
+  <h5 style="text-align: center"><span >No Data Found</span></h5>
+</ng-template>

@@ -42,21 +42,7 @@ export class RegisteredUserComponent {
   checkedList: any;
 
   selectAll: boolean = false; // Tracks the "select all" checkbox state
-  searchParams: string = '';
-  sortParamKey: string = 'name';
-  pageSize: any = 25;
-  paging: any = 1;
-  totalRecords: number = 0;
-  totalitems: any;
-  itemsPerPage = 10;
-  itemsPageTo = 10;
-  page = 1;
-  numberOfPages: number = 0;
-  activeItem: number = 1;
-  groupByPerpage: any = [];
-  currentPage: any;
-  totalcount: any;
-  globalPageNumber: number = 0;
+
   sortColumn: string = ''; // Column currently being sorted
   sortDirection: boolean = true; // True = Ascending, False = Descending
 
@@ -64,13 +50,30 @@ export class RegisteredUserComponent {
   faSort = faSort;
   faSortUp = faSortUp;
   faSortDown = faSortDown;
+
+
+  // new pagination
+  totalItems: number = 0;
+  page: number = 1;
+  limit: number = 25;
+  sortBy: string = 'created_date';
+  order: string = 'desc';
+  search: string = '';
+  totalPages: number = 0;
+  isLoading: boolean = true;
+  isSpinner: number = -1;
+
+  rowOptions = [
+    { value: 25, label: '25' },
+    { value: 50, label: '50' },
+    { value: 100, label: '100' }
+  ];
+
+
+
+
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
-    this.groupByPerpage = [
-      { name: "10" },
-      { name: "25" },
-      { name: "50" },
-      { name: "100" },
-    ];
+ 
     this.masterSelected = false;
 
     // this.getCheckedItemList();
@@ -78,17 +81,13 @@ export class RegisteredUserComponent {
 
 
   ngOnInit(): void {
-    this.groupByPerpage = [
-      { name: "10" },
-      { name: "25" },
-      { name: "50" },
-      { name: "100" },
-    ];
+    this.isLoading = this.SharedService.isLoading;
+
+
     this.allDelegate();
 
-    this.createForm();
-    // this.allPartner()
-    // this.allSpeaker()
+    // this.createForm();
+
     this.getInterval();
 
   }
@@ -99,6 +98,7 @@ export class RegisteredUserComponent {
 
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
+        this.isSpinner = 1; // Show spinner before fetching data
         console.log('refreshing......')
         this.allDelegate();
       }, this.RefreshInterval);
@@ -111,104 +111,56 @@ export class RegisteredUserComponent {
 
   }
 
-  createForm() {
-    this.searchForm = this.fb.group({
-      searchInput: [''] // Initialize with an empty string
-    });
-  }
+  // createForm() {
+  //   this.searchForm = this.fb.group({
+  //     searchInput: [''] // Initialize with an empty string
+  //   });
+  // }
   allDelegate() {
 
     let body = {
-      "name": this.searchParams,
-      "ordering": this.sortParamKey,
-      "page_size": this.pageSize,
-      "page_no": this.paging
-
+      sort_column: this.sortBy,
+      sort_order: this.order,
+      search:this.search,
+      page_size:this.limit,
+      page_no:this.page ,
     }
 
     // this.ngxService.start();
     this.AdminService.getApprovedDelegate(body).subscribe((data: any) => {
-      const decreptedUser = this.SharedService.decryptData(data.data)
+      // this.ngxService.stop();
 
-      console.log("data", decreptedUser);
-      this.registeredDelegateList = decreptedUser
+      // const decreptedUser = this.SharedService.decryptData(data.data)
 
-      this.totalRecords = this.registeredDelegateList.length;
+      // this.registeredDelegateList = decreptedUser totalCount
+      this.registeredDelegateList = data.data
+      console.log("data", this.registeredDelegateList);
 
-      console.log(this.totalRecords, 'totalRecords');
 
-
-      let pag = Math.ceil(this.totalRecords / this.pageSize);
-
-      this.totalitems = Array(pag)
-        .fill(0)
-        .map((x, i) => i + 1);
-
-      this.numberOfPages = Math.ceil(
-        this.totalRecords / this.pageSize
-      );
+      if (this.masterSelected) {
+        this.registeredDelegateList.forEach(item => (item.selected = this.masterSelected));
+      }
+      this.totalItems = data.totalCount;
+      this.totalPages = Math.ceil(this.totalItems / this.limit);
 
       if (this.registeredDelegateList.length === 0) {
         this.notFound = true;
       } else {
         this.notFound = false;
       }
-      this.searchForm.reset();
+      // this.searchForm.reset();
       // this.ngxService.stop();
       this.delegate = true
+      this.isLoading = false;
+      this.isSpinner = -1;
+
+    },
+    (error) => {
+      this.isSpinner = -1; // Hide spinner even if an error occurs
     });
   }
 
 
-  previousPage() {
-    if (this.activeItem > 1) {
-      this.activeItem--; // Move to the previous item
-
-      // If activeItem is at the start of the page range, update the page and range
-      if (this.activeItem < this.itemsPageTo - 9) {
-        this.itemsPageTo -= 10; // Update the range to the previous set
-        this.page--; // Decrement the page
-      }
-    }
-    this.globalPageNumber = (this.activeItem - 1) * this.itemsPerPage;
-    this.registeredDelegateList = [];
-    this.allDelegate();
-  }
-
-  nextPage() {
-    if (this.activeItem == this.itemsPageTo) {
-      this.itemsPageTo = (this.itemsPageTo + 10);
-      this.page++
-    }
-    this.activeItem++;
-    this.globalPageNumber = (this.activeItem * 10 - 10);
-    this.registeredDelegateList = [];
-
-    this.allDelegate();
-  }
-  async fnPaging(obj: any) {
-
-
-    this.globalPageNumber = 0;
-    this.pageSize = obj;
-
-    this.registeredDelegateList = [];
-
-
-    await this.allDelegate();
-
-
-  }
-  setActiveItem(item: any) {
-
-
-    this.activeItem = item;
-
-    this.globalPageNumber = (item * 10 - 10);
-
-    this.allDelegate();
-
-  }
 
 
 
@@ -252,7 +204,7 @@ export class RegisteredUserComponent {
 
   unapproveSelected(): void {
     if (this.selectedUserIds.length === 0) {
-      this.SharedService.ToastPopup('', "please select user!", 'error')
+      this.SharedService.ToastPopup('', "Please select user!", 'error')
 
       // Handle the case when no users are selected.
       return;
@@ -314,50 +266,53 @@ export class RegisteredUserComponent {
 
     })
   }
-  searchDelegateUser(): void {
-    const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
-    if (searchValue === null || searchValue.trim() === '') {
-      // Display an error toaster here
-      this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
-      return; // Exit the function
-    }
-    const payload = {
-      search: searchValue
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-      this.registeredDelegateList = data.data[0]
-      if (this.registeredDelegateList.length === 0) {
-        this.notFound = true;
-      } else {
-        this.notFound = false;
-        console.log("false");
-      }
-      // setTimeout(() => {
-      //   this.router.navigate(['dashboard/registered-user']);
-      // }, 2000); // 2000 milliseconds (2 seconds) delay
-    })
-  }
 
-  resetForm(): void {
-    this.searchForm.reset();
-    this.allDelegate();
+  // searchDelegateUser(): void {
+  //   const searchValue = this.searchForm.get('searchInput').value;
+  //   console.log("search called", searchValue);
+  //   if (searchValue === null || searchValue.trim() === '') {
+  //     // Display an error toaster here
+  //     this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
+  //     return; // Exit the function
+  //   }
+  //   const payload = {
+  //     search: searchValue
+  //   };
+  //   console.log("payload", payload);
+  //   this.ngxService.start();
+  //   this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
+  //     this.ngxService.stop();
+  //     this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
+  //     this.registeredDelegateList = data.data[0]
+  //     if (this.registeredDelegateList.length === 0) {
+  //       this.notFound = true;
+  //     } else {
+  //       this.notFound = false;
+  //       console.log("false");
+  //     }
+  //     // setTimeout(() => {
+  //     //   this.router.navigate(['dashboard/registered-user']);
+  //     // }, 2000); // 2000 milliseconds (2 seconds) delay
+  //   })
+  // }
 
-  }
-  searchUsers() {
-    this.searchParams = this.searchForm.get('searchInput').value;
+  // resetForm(): void {
+  //   this.searchForm.reset();
+  //   this.searchParams = '';
+  //   this.getInterval();
+  //   this.allDelegate();
+
+  // }
+  // searchUsers() {
+  //   this.searchParams = this.searchForm.get('searchInput').value;
 
 
-    clearInterval(this.intervalId);
-    this.allDelegate();
+  //   clearInterval(this.intervalId);
+  //   this.allDelegate();
 
-    // this.searchDelegateUser();
+  //   // this.searchDelegateUser();
 
-  }
+  // }
 
 
   sendmail(userId: number, userName: any, userEmail: any, userNumber: any, qr_code: any, urn_no: any, designation: any, company: any) {
@@ -469,90 +424,114 @@ export class RegisteredUserComponent {
 
 
   export() {
-    switch (true) {
-      case this.delegate === true:
         this.form = 'Delegates';
-        break;
 
-    }
-    debugger
+    // Capitalized headers with first letter in uppercase
+    const headers = [
+      'Title', 'First Name', 'Last Name', 'Email ID', 'Country Code',
+      'Mobile Number', 'Country Name', 'Profession', 'Address',
+      'Organization Name', 'Payment Status', 'Payment Transaction',
+      'Reference', 'Created Date'
+    ];
+
     // Select the columns you want to export
     const columnsToExport = this.registeredDelegateList.map(item => {
-
-      // Assuming item.created_date is a valid date string or Date object
       let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
-      let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
 
-      return {
-        'title': item.title,
-        'first_name': item.first_name,
-        'last_name': item.last_name,
-        'email_id': item.email_id,
-        'country_code': item.country_code,
-        'mobile_number': item.mobile_number,
-        'country_name': item.country,
-        'profession': item.profession_1,
-        'address': item.address,
-        'organization_name': item.organization_name,
-        'payment_status': item.TUD_STATUS == 'paid' ? item.TUD_STATUS : 'PENDING',
-        'payment_transaction': item.TUD_TRANSCATION_ID,
-        'refrence': item.reference_no,
-        'created_date': created_date,
-
-      };
+      return [
+        item.title, item.first_name, item.last_name, item.email_id,
+        item.country_code, item.mobile_number, item.country,
+        item.profession_1, item.address, item.organization_name,
+        item.TUD_STATUS === 'paid' ? item.TUD_STATUS : 'PENDING',
+        item.TUD_TRANSCATION_ID, item.reference_no, created_date
+      ];
     });
 
-    const ws = XLSX.utils.json_to_sheet(columnsToExport);
-    // const ws = XLSX.utils.json_to_sheet(this.registeredDelegateList);
+    // Insert headers at the first row
+    columnsToExport.unshift(headers);
+
+    // Convert JSON to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
+    // Auto-adjust column width based on the longest content
+    const columnWidths = headers.map((header, colIndex) => {
+      const maxLength = Math.max(
+        header.length, // Header length
+        ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0)) // Longest data cell in the column
+      );
+      return { wch: maxLength + 2 }; // Add padding for better spacing
+    });
+
+    // Apply calculated column widths
+    ws['!cols'] = columnWidths;
+    // Create a new workbook and append the worksheet
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, this.form);
 
-    // You can set additional properties if needed, e.g., a title:
-    wb.Props = {
-      Title: 'Registered Users - ' + this.form,
-    };
-
+    // Write the workbook to a file
     XLSX.writeFile(wb, 'Registered_Users.xlsx');
 
     // Add your success message or any other functionality here.
-    this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
+    this.SharedService.ToastPopup('Data export successful.', '', 'success');
 
   }
 
-  // Sorting Function
-  sortData(queryParamKey: string) {
 
-    if (
-      queryParamKey === this.sortParamKey.replace("-", "") &&
-      this.sortParamKey.includes("-")
-    ) {
-      this.sortParamKey = queryParamKey;
-    } else {
-      this.sortParamKey = "-" + queryParamKey;
-    }
-    // this.sorticon = this.sorticon ? false : true;
-    // this.fnReset(true);
- 
 
-    if (this.sortColumn === queryParamKey) {
-      this.sortDirection = !this.sortDirection; // Toggle direction
-    } else {
-      this.sortColumn = queryParamKey;
-      this.sortDirection = true; // Default Ascending
-    
-    }
-    this.registeredDelegateList = [];
+
+// new pagination
+
+onSelectionChange(selectedValue: string) {
+  this.page = 1
+  this.limit = +selectedValue;
+  this.allDelegate();
+}
+
+onSearchClick(searchValue: string) {
+  if(searchValue.trim().length === 0){
+    this.page = 1
+    this.limit = 25;
+    this.getInterval();
+  }else if (searchValue.charAt(0) === ' ') {
+    this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
+    return;
+  } else {
+    clearInterval(this.intervalId);
+  }
+  this.search = searchValue.trim();
+  this.allDelegate();
+}
+
+preventFirstSpace(input: HTMLInputElement) {
+  if (input.value.charAt(0) === ' ') {
+    input.value = input.value.trim(); // Remove leading space immediately
+  }
+}
+
+changePage(newPage: number) {
+  if (newPage >= 1 && newPage <= this.totalPages) {
+    this.page = newPage;
     this.allDelegate();
-
-    // this.registeredDelegateList.sort((a, b) => {
-    //   let valA = a[queryParamKey] || ''; // Handle null values
-    //   let valB = b[queryParamKey] || '';
-
-    //   if (typeof valA === 'string') valA = valA.toLowerCase();
-    //   if (typeof valB === 'string') valB = valB.toLowerCase();
-
-    //   return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
-    // });
   }
+}
+
+onSort(column: string) {
+  this.sortBy = column;
+  this.order = this.order === 'asc' ? 'desc' : 'asc';
+
+  if (this.sortColumn === column) {
+    this.sortDirection = !this.sortDirection; // Toggle direction
+  } else {
+    this.sortColumn = column;
+    this.sortDirection = true; // Default Ascending
+  
+  }
+  this.allDelegate();
+}
+
+
+
+
+
+
 }
 

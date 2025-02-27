@@ -51,22 +51,9 @@ export class PeacekeeperUserComponent implements OnInit {
   filteredPeace: any[] = [];
   totalSelected: number = 0;
   selectAll: boolean = false; // Tracks the "select all" checkbox state
-  searchParams: string = '';
-  sortParamKey: string = 'full_name';
 
-  pageSize: any = 25;
-  paging: any = 1;
-  totalRecords: number = 0;
-  totalitems: any;
-  itemsPerPage = 10;
-  itemsPageTo = 10;
-  page = 1;
-  numberOfPages: number = 0;
-  activeItem: number = 1;
-  groupByPerpage: any = [];
-  currentPage: any;
-  totalcount: any;
-  globalPageNumber: number = 0;
+
+
   private searchSubject = new Subject<string>();
   masterSelected: boolean = false;
   selectedIds: string = '';
@@ -85,60 +72,61 @@ export class PeacekeeperUserComponent implements OnInit {
   faSort = faSort;
   faSortUp = faSortUp;
   faSortDown = faSortDown;
-  // referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code='
-  // referralUrl:any ='https://www.justice-love-peace.com/delegate-registration?code='
+
+
+
+  // new pagination
+  totalItems: number = 0;
+  page: number = 1;
+  limit: number = 25;
+  sortBy: string = 'created_at';
+  order: string = 'desc';
+  search: string = '';
+  totalPages: number = 0;
+  isLoading: boolean = true;
+  isSpinner: number = -1;
+
+
+  rowOptions = [
+    { value: 25, label: '25' },
+    { value: 50, label: '50' },
+    { value: 100, label: '100' }
+  ];
+
+
 
   checkedList: any;
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
 
-    this.groupByPerpage = [
-      { name: "10" },
-      { name: "25" },
-      { name: "50" },
-      { name: "100" },
-    ];
 
-    // this.searchSubject.pipe(debounceTime(300)).subscribe((searchText) => {
-    //   if (searchText.length >= 3) {
-    //     this.filterClients(searchText);
-    //   } else {
-    //     this.filteredClients = [];
-    //   }
-    // });
 
 
 
     this.refreshSubscription = this.SharedService.refreshPeacekeeper$.subscribe(async () => {
       await this.allPeacekeeper();
     });
-    // this.getCheckedItemList();
   }
 
 
   ngOnInit(): void {
 
-    this.groupByPerpage = [
-      { name: "10" },
-      { name: "25" },
-      { name: "50" },
-      { name: "100" },
-    ];
+
     // console.log(window.location.origin);
+    this.isLoading = this.SharedService.isLoading;
 
     this.allPeacekeeper();
 
-    this.createForm();
     this.getInterval();
 
 
   }
 
   async getInterval() {
-
     this.RefreshInterval = 60000;
-
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
+        this.isSpinner = 1; // Show spinner before fetching data
+
         this.allPeacekeeper();
       }, this.RefreshInterval);
     }
@@ -155,7 +143,7 @@ export class PeacekeeperUserComponent implements OnInit {
     this.ngxService.start();
     this.AdminService.postPeacekeeper(payload).subscribe((data: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('resent successfully', 'Badge', 'success');
+      this.SharedService.ToastPopup('Resent successfully', 'Badge', 'success');
 
       setTimeout(() => {
         this.allPeacekeeper();
@@ -168,200 +156,57 @@ export class PeacekeeperUserComponent implements OnInit {
     this.isViewerOpen = false;
   }
 
-  createForm() {
-    this.searchForm = this.fb.group({
-      searchInput: [''] // Initialize with an empty string
-    });
-  }
 
 
 
-searchUsers() {
-  this.searchParams = this.searchForm.get('searchInput').value;
-  // this.peacekeeperList = this.peacekeeperList.filter((peaceName) =>
-  //   peaceName.full_name.toLowerCase().includes(this.searchParams.toLowerCase())
-  // );
 
-  clearInterval(this.intervalId);
-  // this.searchPeacekeeperUser();
-  this.allPeacekeeper();
-
-}
 
   allPeacekeeper() {
 
    let body ={
-    "ordering": this.sortParamKey,
-    "name":this.searchParams,
-    "page_size":this.pageSize,
-    "page_no":this.paging ,
-      
+    sort_column: this.sortBy,
+    sort_order: this.order,
+    search:this.search,
+    page_size:this.limit,
+    page_no:this.page ,
+         
    }
+  //  this.ngxService.start();
 
     this.AdminService.getAllPeacekeeperData(body).subscribe((data: any) => {
+      // this.ngxService.stop();
 
-      const decreptedUser = this.SharedService.decryptData(data.data)
+      // const decreptedUser = this.SharedService.decryptData(data.data)
 
-      this.peacekeeperList = decreptedUser
+      // this.peacekeeperList = decreptedUser
+      this.peacekeeperList = data.peacekeepers.Data
+      console.log(this.peacekeeperList , 'peaceList');
+      
       if (this.masterSelected) {
         this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
       }
-      this.totalRecords = this.peacekeeperList.length;
-
-      console.log(this.totalRecords, 'totalRecords');
-
-
-      let pag = Math.ceil(this.totalRecords / this.pageSize);
-
-      this.totalitems = Array(pag)
-        .fill(0)
-        .map((x, i) => i + 1);
-
-      this.numberOfPages = Math.ceil(
-        this.totalRecords / this.pageSize
-      );
+      this.totalItems = data.peacekeepers.totalCount;
+      this.totalPages = Math.ceil(this.totalItems / this.limit);
+      
       if (this.peacekeeperList.length === 0) {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false1111");
       }
-      this.searchForm.reset();
       this.peacekeeper = true
 
+      this.isLoading = false;
+      this.isSpinner = -1;
 
+
+    },
+    (error) => {
+      this.isLoading = false;
+      this.isSpinner = -1; // Hide spinner even if an error occurs
     });
   }
 
 
-
-  previousPage() {
-    if (this.activeItem > 1) {
-      this.activeItem--; // Move to the previous item
-
-      // If activeItem is at the start of the page range, update the page and range
-      if (this.activeItem < this.itemsPageTo - 9) {
-        this.itemsPageTo -= 10; // Update the range to the previous set
-        this.page--; // Decrement the page
-      }
-    }
-    this.globalPageNumber = (this.activeItem - 1) * this.itemsPerPage;
-    this.peacekeeperList = [];
-    this.allPeacekeeper();
-  }
-
-  nextPage() {
-    if (this.activeItem == this.itemsPageTo) {
-      this.itemsPageTo = (this.itemsPageTo + 10);
-      this.page++
-    }
-    this.activeItem++;
-    this.globalPageNumber = (this.activeItem * 10 - 10);
-    this.peacekeeperList = [];
-
-    this.allPeacekeeper();
-  }
-  async fnPaging(obj: any) {
-
-
-    this.globalPageNumber = 0;
-    this.pageSize = obj;
-
-    this.peacekeeperList = [];
-
-
-    await this.allPeacekeeper();
-
-
-  }
-  setActiveItem(item: any) {
-
-
-    this.activeItem = item;
-
-    this.globalPageNumber = (item * 10 - 10);
-
-    this.allPeacekeeper();
-
-  }
-
-  // Function to update selectedUserIds array when a row is clicked
-  updateSelectedUsers(userId: any, userName: any, userEmail: any, userNumber: any) {
-    // Check if the user ID is already selected, and toggle selection
-    console.log(userId, userName, userEmail, userNumber);
-    this.userId = userId;
-    this.userName = userName;
-    this.userEmail = userEmail;
-    this.userNumber = userNumber
-    if (this.selectedUserIds.includes(userId)) {
-      this.selectedUserIds = this.selectedUserIds.filter(id => id !== userId);
-      console.log("a", this.selectedUserIds);
-
-    } else {
-      this.selectedUserIds.push(userId);
-      console.log("b", this.selectedUserIds);
-    }
-  }
-
-  unapproveSelected(): void {
-    if (this.selectedUserIds.length === 0) {
-      this.SharedService.ToastPopup('', "please select user!", 'error')
-
-      // Handle the case when no users are selected.
-      return;
-    }
-    // Prepare the payload with selected user IDs and status 0.
-    const payload = {
-      user_id: this.selectedUserIds.join(','), // Convert array to comma-separated string
-      // user_id:this.userId,
-      status: 2,      //unapprove
-      updated_by: "admin",
-      user_name: this.userName,
-      user_email: this.userEmail,
-      user_number: this.userNumber
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      this.selectedUserIds.pop();
-
-      // this.allPeacekeeper();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.peacekeeper);
-
-        switch (true) {
-          case this.peacekeeper === true:
-            console.log("active tab name delegate", this.peacekeeper);
-            this.allPeacekeeper();
-            break;
-
-        }
-
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-
-
-    })
-  }
-  updateAndUnapprovethroughDropdown(userId: number, userName: any, userEmail: any, userNumber: any): void {
-    // Update the selected users
-    this.updateSelectedUsers(userId, userName, userEmail, userNumber);
-
-    // Now, call the unapproveSelected function
-    this.unapproveSelected();
-  }
-
-
-  resetForm(): void {
-    this.searchForm.reset();
-    this.getInterval();
- 
-        this.allPeacekeeper();
-  
-  }
 
 
   sendmail(userId: number) {
@@ -377,7 +222,6 @@ searchUsers() {
       // this.allPeacekeeper();
       setTimeout(() => {
         this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.peacekeeper);
         this.allPeacekeeper();
 
       }, 2000); // 2000 milliseconds (2 seconds) delay
@@ -425,28 +269,42 @@ searchUsers() {
   export() {
 
     // Select the columns you want to export
-    const columnsToExport = this.peacekeeperList.map(item => {
 
 
-      console.log("created date...........", item.created_date);
-      // Assuming item.created_date is a valid date string or Date object
-      let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
+        const headers = [
+          'Full name', 'DOB', 'Country', 'Mobile number', 'Email', 'Peacekeeper ID',
+           'Coupan discount', 'Coupan code', 'QR URL', 'Created Date'
+        ];
+    
+        // Select the columns you want to export
+        const columnsToExport = this.peacekeeperList.map(item => {
+          let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
+    
+          return [
+            item.full_name, item.dob, item.country, item.mobile_number,
+            item.email_id, item.Id_no, item.coupon_discount, item.coupon_code, item.QR_CODE, created_date
+          ];
+        });
+    
+        // Insert headers at the first row
+        columnsToExport.unshift(headers);
+    
+        // Convert JSON to worksheet
+        const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
+        // Auto-adjust column width based on the longest content
+        const columnWidths = headers.map((header, colIndex) => {
+          const maxLength = Math.max(
+            header.length, // Header length
+            ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0)) // Longest data cell in the column
+          );
+          return { wch: maxLength + 2 }; // Add padding for better spacing
+        });
+    
+        // Apply calculated column widths
+        ws['!cols'] = columnWidths;
 
-      return {
-        'full_name': item.full_name,
-        'DOB': item.dob,
-        'country': item.country,
-        'mobile_number': item.mobile_number,
-        'email_id': item.email_id,
-        'Peacekeeper_ID': item.Id_no,
-        'Coupan_Discount': item.coupon_discount,
-        'Coupan_Code': item.coupon_code,
-        'QR_URL': item.QR_CODE,
-        'created_date': created_date,
-      };
-    });
 
-    const ws = XLSX.utils.json_to_sheet(columnsToExport);
+
     // const ws = XLSX.utils.json_to_sheet(this.peacekeeperList);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, this.form);
@@ -459,7 +317,7 @@ searchUsers() {
     XLSX.writeFile(wb, 'Peacekeeper_Users.xlsx');
 
     // Add your success message or any other functionality here.
-    this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
+    this.SharedService.ToastPopup('Data export successful.', '', 'success');
 
   }
 
@@ -476,7 +334,6 @@ searchUsers() {
 
   downloadQRCode(parent: any) {
     // debugger
-    console.log(parent);
 
     let parentElement = null
 
@@ -527,34 +384,6 @@ searchUsers() {
   }
 
 
-  deleteUser(userId: number, userName: any, userEmail: any, userNumber: any): void {
-    this.updateSelectedUsers(userId, userName, userEmail, userNumber);
-    console.log("delete called", userId);
-
-    const payload = {
-      user_id: userId
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.DeleteUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      // this.allPeacekeeper();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        switch (true) {
-          case this.peacekeeper === true:
-            console.log("active tab name delegate", this.peacekeeper);
-            this.allPeacekeeper();
-            break;
-
-        }
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-
-
-    })
-  }
 
 
   // Master Checkbox Logic
@@ -579,8 +408,7 @@ searchUsers() {
 
   // Delete Single Row
   deletePeacekeeper(peacekeeperId: number): void {
-    console.log('1 check', peacekeeperId);
-    console.log('all check', this.selectedIds);
+
     let payload
     if (this.selectedIds) {
       payload = { p_peace_id: this.selectedIds }
@@ -603,23 +431,7 @@ searchUsers() {
     );
   }
 
-  // Delete Selected Rows
-  deleteSelected(): void {
-    const confirmDelete = confirm('Are you sure you want to delete the selected rows?');
-    if (!confirmDelete) return;
 
-    const payload = { ids: this.selectedIds };
-
-    this.AdminService.deletePeacekeeperApi(payload).subscribe(
-      (response: any) => {
-        this.SharedService.ToastPopup('Rows deleted successfully!', '', 'success');
-        this.allPeacekeeper(); // Refresh the list
-      },
-      (error: any) => {
-        this.SharedService.ToastPopup('Error deleting rows.', '', 'error');
-      }
-    );
-  }
 
 
   maskMobileNumber(mobile: string): string {
@@ -643,7 +455,6 @@ searchUsers() {
   
 
   toggleVisibility(index:any) {
-    console.log(index, 'row index');
     
     this.isVisible[index] = !this.isVisible[index];
   }
@@ -659,41 +470,66 @@ searchUsers() {
   }
 
 
-  // Sorting Function
-  sortData(queryParamKey: string) {
 
-    if (
-      queryParamKey === this.sortParamKey.replace("-", "") &&
-      this.sortParamKey.includes("-")
-    ) {
-      this.sortParamKey = queryParamKey;
-    } else {
-      this.sortParamKey = "-" + queryParamKey;
-    }
-    // this.sorticon = this.sorticon ? false : true;
-    // this.fnReset(true);
- 
 
-    if (this.sortColumn === queryParamKey) {
-      this.sortDirection = !this.sortDirection; // Toggle direction
-    } else {
-      this.sortColumn = queryParamKey;
-      this.sortDirection = true; // Default Ascending
-    
-    }
 
-    this.peacekeeperList = [];
-    this.allPeacekeeper();
-    // this.peacekeeperList.sort((a, b) => {
-    //   let valA = a[queryParamKey] || ''; // Handle null values
-    //   let valB = b[queryParamKey] || '';
+// new pagination
 
-    //   if (typeof valA === 'string') valA = valA.toLowerCase();
-    //   if (typeof valB === 'string') valB = valB.toLowerCase();
+onSelectionChange(selectedValue: string) {
+  this.page = 1
+  this.limit = +selectedValue;
+  this.allPeacekeeper();
+}
 
-    //   return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
-    // });
+onSearchClick(searchValue: string) {
+  if(searchValue.trim().length === 0){
+    this.page = 1
+    this.limit = 25;
+    this.getInterval();
+  }else if (searchValue.charAt(0) === ' ') {
+    this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
+
+    return;
+  } else{
+    clearInterval(this.intervalId);
   }
+  this.search = searchValue.trim();
+  this.allPeacekeeper();
+}
+
+preventFirstSpace(input: HTMLInputElement) {
+  if (input.value.charAt(0) === ' ') {
+    input.value = input.value.trim(); // Remove leading space immediately
+  }
+}
+
+
+changePage(newPage: number) {
+  if (newPage >= 1 && newPage <= this.totalPages) {
+    this.page = newPage;
+    this.allPeacekeeper();
+  }
+}
+
+onSort(column: string) {
+  this.sortBy = column;
+  this.order = this.order === 'asc' ? 'desc' : 'asc';
+
+  if (this.sortColumn === column) {
+    this.sortDirection = !this.sortDirection; // Toggle direction
+  } else {
+    this.sortColumn = column;
+    this.sortDirection = true; // Default Ascending
+  
+  }
+  this.allPeacekeeper();
+}
+
+
+
+
+
+
 
   openLink(link:any) {
     window.open(link, '_blank');

@@ -1,10 +1,9 @@
 export const environment = {
   production: true,
 
-  // apiUrl: 'https://api.justice-love-peace.com/api/v1',   //production
-  apiUrl : 'https://devglobaljusticeapis.cylsys.com/api/v1',   //development
-  // apiUrl:  'https://globaljusticeqcapi.cylsys.com/api/v1',  //QC
+  apiUrl: 'https://api.justice-love-peace.com/api/v1',   //production
   apiMockUrl:'/api/v1',
-  domainUrl:'http://localhost:5000/',
+  domainUrl:'https://www.justice-love-peace.com',
+  fileAccessUrl:'https://api.justice-love-peace.com',
   app_env: 'production'
 };       

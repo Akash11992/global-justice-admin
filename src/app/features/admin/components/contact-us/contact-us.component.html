@@ -20,7 +20,32 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-6">
-              <form class="d-flex" [formGroup]="searchForm">
+
+              <form>
+                <div class="row">
+                  <div class="col-md-3">
+                    <select #mySelect (change)="onSelectionChange(mySelect.value)"  style="cursor: pointer;" class="form-control" aria-label="Default select example">
+                      <option *ngFor="let option of rowOptions" [value]="option.value">{{ option.label }}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-9 d-flex">
+                    <input   #searchInput
+                    class="form-control"
+                    type="search"
+                    id="inputsearch"
+                    placeholder="Search..."(input)="preventFirstSpace(searchInput)"
+                    aria-label="Search" type="search" id="inputsearch"
+              placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
+            <button class="btn "  (click)="onSearchClick(searchInput.value)" id="btncolor">Search</button>
+            &nbsp; &nbsp;
+            <button class="btn " (click)="onSearchClick('')" type="reset" id="btncolor">Reset</button>
+                  </div>
+                </div>
+                
+                
+              </form>
+
+              <!-- <form class="d-flex" [formGroup]="searchForm">
                 <input
                   class="form-control"
                   formControlName="searchInput"
@@ -33,7 +58,7 @@
                 <button class="btn" id="btncolor">Search</button>
                 &nbsp; &nbsp;
                 <button class="btn" type="reset" id="btncolor">Reset</button>
-              </form>
+              </form> -->
             </div>
             <div class="col-md-6" id="exportcolmd">
               <button class="btn" type="button" id="exportbtn" (click)="export()">
@@ -44,15 +69,17 @@
         </div>
       </div>
 
-      <div class="row m-1" *ngIf="contactUsList.length > 0;">
+      <div class="row m-1" *ngIf="contactUsList.length > 0 else noDataTemplate;">
         <div class="col-md-12 row">
                 <div class="col-sm-10">
                   <p>
                     * Data will be auto refreshed in every 60 secs
+                    <img *ngIf="isSpinner == 1" src="assets/UIComponents/images/loading.gif"width="2%" alt="Loading">
+
                   </p>
                 </div>
                 <div class="col-sm-2">
-                <div class="showData dropdown">
+                <!-- <div class="showData dropdown">
                   <h4 class="m-0">
                     <a class="" data-bs-toggle="dropdown" aria-expanded="false">
                       <span class="group-by" style="font-size: 15px;">{{ this.pageSize }} per page  </span>
@@ -72,22 +99,36 @@
                       </a>
                     </div>
                   </h4>
-                </div>
+                </div> -->
                 </div>
               </div>
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-0">
-              <div class="table-responsive" *ngIf="contactUsList.length > 0">
+              <div class="table-responsive" *ngIf="contactUsList.length > 0 ;">
                 <table class="table">
                   <thead>
                     <tr>
                       <!-- <th>#</th> -->
                       <th>SN</th>
-                      <th (click)="sortData('FIRST_NAME')">Name <fa-icon [icon]="sortColumn === 'FIRST_NAME' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
-                      <th>Mobile</th>
-                      <th  (click)="sortData('EMAIL')">Email <fa-icon [icon]="sortColumn === 'EMAIL' ? (sortDirection ? faSortUp : faSortDown) : faSort"></fa-icon></th>
+                      <th (click)="onSort('FIRST_NAME')" [ngStyle]="sortBy === 'FIRST_NAME'?{'cursor': 'pointer'}:{}">Name 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'FIRST_NAME' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'FIRST_NAME' && order === 'desc'"></i>  
+                      </th>
+                      <th  (click)="onSort('PHONE_NUMBER')" [ngStyle]="sortBy === 'PHONE_NUMBER'?{'cursor': 'pointer'}:{}">Mobile
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'PHONE_NUMBER' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'PHONE_NUMBER' && order === 'desc'"></i> 
+                       </th>
+                      <th  (click)="onSort('EMAIL')" [ngStyle]="sortBy === 'EMAIL'?{'cursor': 'pointer'}:{}">Email
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'EMAIL' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'EMAIL' && order === 'desc'"></i>                       
+                       </th>
                       <th>Query</th>
+                      <th (click)="onSort('CREATED_AT')" [ngStyle]="sortBy === 'CREATED_AT'?{'cursor': 'pointer'}:{}">Created Date
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'CREATED_AT' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'CREATED_AT' && order === 'desc'"></i>
+                      </th>
+
                       <!--   <th>Registered At</th> -->
                       <!-- <th>Action</th> -->
                     </tr>
@@ -108,52 +149,34 @@
                         white-space: nowrap;
                         width: 250px;
                        "> {{ all.YOUR_QUESTION }}</span></td>
-                      <!--    <td>{{all.created_date | date :'short'}}</td> -->
+                      <td>{{all.CREATED_AT | date:'dd-MM-yyyy'}}</td>
 
-                      <!-- <td>
-                                <div class="dropdown dropstart">
-                                    <button class="btn btn-outline-success" type="button" id="dropdownMenuButton1"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="/assets/images/orangemenuicon.png"
-                                            id="hamburgericon">
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                             
-  
-                                               <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/viewdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
-                                                  <i class="fa fa-eye" aria-hidden="true" ></i> View Details</a>
-                                              </li>
-                                                 <li><a class="dropdown-item" style="cursor: pointer;" routerLink="/user/editdetails/{{all.user_id}}" [queryParams]="{ refer: 'registered-user' }">
-                                                  <i class="bi bi-pencil-fill"></i> Edit Details</a>
-                                              </li>
-                                                <li><a class="dropdown-item" style="cursor: pointer;" (click)="downloadBadge(all.filepath,all.urn_no)">
-                                                  <i class="bi bi-download"></i> Download Badge</a>
-                                              </li>
-                                        <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
-                                                <i class="bi bi-envelope-fill"></i> Resend Reg Mail</a></li>
-                                                <li><a class="dropdown-item" style="cursor: pointer;"   (click)="Generate_Badge(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number,all.qr_code,all.urn_no,all.designation,all.company_name)" >
-                                                  <i  class="bi bi-file-earmark-pdf-fill"></i> Regenerate Badge</a></li>
-  
-  
-                                                <li><a class="dropdown-item" style="cursor: pointer;"  (click)="updateAndUnapprovethroughDropdown(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">
-                                                  <i class="bi bi-x-lg"></i> Unapprove Registration</a>
-                                              </li>
-                                        <li><a class="dropdown-item" style="cursor: pointer;" (click)="deleteUser(all.user_id,all.title+' '+all.first_name+' '+all.last_name,all.email_id,all.mobile_number)">
-                                                <i class="bi bi-trash3-fill"></i> Delete</a></li>
-                                                
-                                    </ul>
-                                </div>
-                            </td> -->
+
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <h5 style="text-align: center">
-                <span *ngIf="notFound">No Data Found</span>
-              </h5>
+          
+
+              <nav aria-label="...">
+                <ul class="pagination">
+                  <li class="page-item " (click)="changePage(page - 1)" [disabled]="page === 1">
+                    <span class="page-link">Previous</span>
+                  </li>
+                  <li class="page-item" *ngFor="let p of [].constructor(totalPages); let i = index" 
+                  (click)="changePage(i + 1)" 
+                  [class.active]="page === i + 1" >
+                  <span class="page-link">{{ i + 1 }}</span>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" (click)="changePage(page + 1)" [disabled]="page === totalPages">Next</a>
+                  </li>
+                </ul>
+              </nav>
+
             </div>
 
-            <div class="row pt-3 justify-content-center">
+            <!-- <div class="row pt-3 justify-content-center">
               <div class="datatable_rgt">
                       <div class="pagination" *ngIf="this.totalitems !== undefined && contactUsList.length !== 0">
                         <a (click)="previousPage()" *ngIf="this.activeItem !== 1" [attr.disabled]="page === 1">
@@ -177,11 +200,43 @@
                       </div>
       
                     </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
+
+      <ng-container *ngIf="isLoading">
+        <div class="table-responsive" >
+          <table class="table">
+            <thead>
+              <tr>
+                <th>SN</th>
+                <th >Name</th>
+                <th >Mobile </th>
+                <th>Email </th>
+                <th>Query </th>
+              </tr>
+            </thead>
+          <tbody>
+            <tr>
+              <td colspan="5">
+                <br>
+                <br>
+                <br>
+                <div class="d-flex justify-content-center no_data">
+                  <img src="assets/UIComponents/images/fetchingdata.svg" alt="" width="150px" />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </ng-container>
     </div>
   </div>
   <!------------------------------------------- Page Content end ----------------------------------------->
 </div>
+
+<ng-template #noDataTemplate>
+  <h5 *ngIf="!isLoading" style="text-align: center"><span >No Data Found</span></h5>
+</ng-template>
