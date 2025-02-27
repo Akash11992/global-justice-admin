@@ -21,9 +21,9 @@
               <div class="col-md-6 mb-3">
                 <label for="Sponsorship_Type" class="form-label">Sponsorship Type <span class="error text-danger">*</span>
                 </label>
-                <select class="form-control" formControlName="sponsorshipType" (change)="onSponsorshipTypeChange($event)">
+                <select class="form-control" formControlName="sponsorshipType">
                   <option value="">Select Sponsorship Type</option>
-                  <option *ngFor="let sponsorshipType of sponsorshipTypes" [value]="sponsorshipType['id']" [attr.data-name]="sponsorshipType['name']">{{sponsorshipType['name'] | titlecase}}</option>
+                  <option *ngFor="let type of sponsorshipTypes" [value]="type">{{type | titlecase}}</option>
                 </select>
                 <div *ngIf="form.get('sponsorshipType').errors?.required && form.get('sponsorshipType').touched" class="error text-danger">
                   Sponsorship Type is required
@@ -50,16 +50,22 @@
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="PMN" class="form-label">POC Mobile No</label>
+                <label for="PMN" class="form-label">POC Mobile No <span class="error text-danger">*</span></label>
                 <input type="text" formControlName="pocMobile" class="form-control" id="PMN" aria-describedby="emailHelp">
+                <div *ngIf="form.get('pocMobile').errors?.required && form.get('pocMobile').touched" class="error text-danger">
+                  Mobile number is required
+                </div>
                 <div *ngIf="form.get('pocMobile').errors?.pattern" class="error text-danger">
                   Invalid mobile number format (eg.+12345678901)
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="PE" class="form-label">POC Email</label>
+                <label for="PE" class="form-label">POC Email <span class="error text-danger">*</span></label>
                 <input type="text" formControlName="pocEmail" class="form-control" id="PE" aria-describedby="emailHelp">
-                <div *ngIf="form.get('pocEmail').errors?.pattern" class="error text-danger">
+                <div *ngIf="form.get('pocEmail').errors?.required && form.get('pocEmail').touched" class="error text-danger">
+                  Email is required
+                </div>
+                <div *ngIf="form.get('pocEmail').errors?.invalidEmail && form.get('pocEmail').touched" class="error text-danger">
                   Invalid email format
                 </div>
                 <div *ngIf="form.get('pocEmail').errors?.maxlength" class="error text-danger">
@@ -68,29 +74,41 @@
                 
               </div>
               <div class="col-md-6 mb-3">
-                <label for="Country" class="form-label">Country</label>
+                <label for="Country" class="form-label">Country <span class="error text-danger">*</span></label>
                 <select formControlName="country" (change)="onCountryChange($event)" class="form-control" aria-label="Default select example">
-                  <option value="0">Select Country</option>
+                  <option value="">Select Country</option>
                   <option *ngFor="let country of countries" [value]="country['id']" [attr.data-name]="country['name']">{{country['name']}}</option>
                 </select>
+                <div *ngIf="form.get('country').errors?.required && form.get('country').touched" class="error text-danger">
+                  Country is required
+                </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="State" class="form-label">State</label>
+                <label for="State" class="form-label">State <span class="error text-danger">*</span></label>
                 <select formControlName="state" (change)="onStateChange($event)" class="form-control" aria-label="Default select example">
-                  <option value="0">Select State</option>
+                  <option value="">Select State</option>
                   <option *ngFor="let state of states" [value]="state['id']" [attr.data-name]="state['name']">{{state['name']}}</option>
                 </select>
+                <div *ngIf="form.get('state').errors?.required && form.get('state').touched" class="error text-danger">
+                  State is required
+                </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="City" class="form-label">City</label>
+                <label for="City" class="form-label">City <span class="error text-danger">*</span></label>
                 <select formControlName="city" (change)="onCityChange($event)" class="form-control" aria-label="Default select example">
-                  <option value="0">Select City</option>
+                  <option value="">Select City</option>
                   <option *ngFor="let city of cities" [value]="city['id']" [attr.data-name]="city['name']">{{city['name']}}</option>
                 </select>
+                <div *ngIf="form.get('city').errors?.required && form.get('city').touched" class="error text-danger">
+                  City is required
+                </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="Address" class="form-label">Address</label>
+                <label for="Address" class="form-label">Address <span class="error text-danger">*</span></label>
                 <input type="text" formControlName="address" class="form-control" id="Address" aria-describedby="emailHelp">
+                <div *ngIf="form.get('address').errors?.required && form.get('address').touched" class="error text-danger">
+                  Address is required
+                </div>
                 <div *ngIf="form.get('address').errors?.pattern || form.get('address').errors?.leadingTrailingSpaces" class="error text-danger">
                   Enter correct address format with max length 100
                 </div>
@@ -106,7 +124,7 @@
                 <label for="Ref_by" class="form-label">Select Peacekeeper</label>
                 <select formControlName="refPeacekeeper" (change)="onPeacekeeperChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Ref Peacekeeper</option>
-                  <option *ngFor="let pk of peacekeepers" [value]="pk['peacekeeper_id']" [attr.data-name]="pk['full_name']">{{pk['full_name'] +'('+ pk['coupon_code'] + ')'}}</option>
+                  <option *ngFor="let pk of peacekeepers" [value]="pk['peacekeeper_id']" [attr.data-name]="pk['full_name']">{{pk['full_name']}}</option>
                 </select>
                 <div *ngIf="form.get('refPeacekeeper').errors?.required && form.get('refPeacekeeper').touched" class="error text-danger">
                   Peacekeeper is required
