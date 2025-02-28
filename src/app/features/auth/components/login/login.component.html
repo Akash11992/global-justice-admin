@@ -1,4 +1,5 @@
 <!-- new html code -->
+
 <div class="main-container">
   <img class="wave" src="assets/UIComponents/images/wave.png">
   
@@ -6,6 +7,10 @@
     <div class="img">
       <img src="assets/UIComponents/images/login_logo.svg">
     </div>
+
+    <div class="loginBox">
+      <div class="login-box">
+
     <div class="login-content">
       <form  [formGroup]="loginForm"
       novalidate
@@ -58,9 +63,10 @@
           />
           <span
             (click)="hideShowPass()"
-            style="position: absolute; bottom: 0; float: right; right: 0"
+            style="position: absolute; bottom: 10px; float: right; right: 5px;font-size: large;"
             class=" fa {{ eyeIcon }}"
-          ></span>
+          >
+        </span>
           </div>
         </div>
         <div class="d-flex"
@@ -85,11 +91,15 @@
         <input type="submit" class="btn" value="Login">
       </form>
     </div>
+
+      </div>
+    </div>
   </div>
   
 
 
 </div>
+
 
 
 

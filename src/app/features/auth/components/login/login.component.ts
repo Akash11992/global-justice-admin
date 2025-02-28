@@ -15,7 +15,7 @@ export class LoginComponent implements AfterViewInit  {
   loginForm!: FormGroup;
   type: string = "password";
   isText: boolean = false;
-  eyeIcon: string = "fa-eye-slash"
+  eyeIcon: string = "bi-eye-slash"
   private readonly AUTH_KEY = 'isLoggedIn';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
@@ -63,7 +63,7 @@ export class LoginComponent implements AfterViewInit  {
 
   hideShowPass() {
     this.isText = !this.isText;
-    this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
+    this.isText ? this.eyeIcon = "bi-eye-fill" : this.eyeIcon = "bi-eye-slash";
     this.isText ? this.type = "text" : this.type = "password";
   }
 

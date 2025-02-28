@@ -29,23 +29,23 @@
                 <table class="table table-bordered table-striped align-middle">
                   <thead class="table-dark">
                     <tr class="text-center">
-                      <th style="min-width: 80px;">Title *</th>
-                      <th style="min-width: 120px;">First Name *</th>
-                      <th style="min-width: 120px;">Last Name *</th>
-                      <th style="min-width: 110px;">DOB *</th>
-                      <th style="min-width: 120px;">Mobile No. *</th>
-                      <th style="min-width: 150px;">Email *</th>
-                      <th style="min-width: 150px;">LinkedIn Profile</th>
-                      <th style="min-width: 150px;">Instagram ID</th>
-                      <th style="min-width: 120px;">Profession 1 *</th>
-                      <th style="min-width: 120px;">Profession 2</th>
+                      <th style="min-width: 120px;">Title *</th>
+                      <th style="min-width: 160px;">First Name *</th>
+                      <th style="min-width: 160px;">Last Name *</th>
+                      <th style="min-width: 160px;">DOB *</th>
+                      <th style="min-width: 200px;">Mobile No. *</th>
+                      <th style="min-width: 200px;">Email *</th>
+                      <th style="min-width: 170px;">LinkedIn Profile</th>
+                      <th style="min-width: 170px;">Instagram ID</th>
+                      <th style="min-width: 170px;">Profession 1 *</th>
+                      <th style="min-width: 170px;">Profession 2</th>
                       <th style="min-width: 150px;">Website</th>
                       <th style="min-width: 150px;">Organization Name</th>
-                      <th style="min-width: 150px;">Address</th>
-                      <th style="min-width: 120px;">Country *</th>
-                      <th style="min-width: 140px;">State/Province *</th>
-                      <th style="min-width: 120px;">City *</th>
-                      <th style="min-width: 160px;">Primary Purpose *</th>
+                      <th style="min-width: 250px;">Address</th>
+                      <th style="min-width: 200px;">Country *</th>
+                      <th style="min-width: 200px;">State/Province *</th>
+                      <th style="min-width: 200px;">City *</th>
+                      <th style="min-width: 250px;">Primary Purpose *</th>
                       <th style="min-width: 200px;">Conference Interests *</th>
                     </tr>
                   </thead>
@@ -242,7 +242,7 @@
                       </td>
                       <!-- Primary Purpose -->
                       <td>
-                        <select class="form-select" formControlName="purpose">
+                        <select class="form-control" formControlName="purpose">
                           <option value="">Select Purpose</option>
                           <option value="0">Gathering Knowledge</option>
                           <option value="1">Networking</option>
@@ -257,16 +257,16 @@
                       <!-- Conference Interests -->
                       <td>
                         <div formArrayName="levers" class="d-flex flex-column">
-                          <div *ngFor="let interest of conferenceInterests" class="form-check">
-                            <input
-                              type="checkbox"
-                              class="form-check-input"
-                              [id]="'lever-' + interest.value + '-' + i"
+                          <div *ngFor="let interest of conferenceInterests;">
+                            <input 
+                              type="checkbox" 
+                              [value]="interest.value" 
                               (change)="toggleCheckbox($event, i, interest.value)"
-                            />
-                            <label class="form-check-label" [for]="'lever-' + interest.value + '-' + i">
-                              {{ interest.label }}
-                            </label>
+                            > {{ interest.label }}
+                          </div>
+                        
+                          <div *ngIf="delegateFormsArray.at(i).get('levers').invalid && delegateFormsArray.at(i).get('levers').touched">
+                            <span class="error-text text-danger">At least one option must be selected.</span>
                           </div>
                         </div>
                       </td>
@@ -276,6 +276,7 @@
               </div>
               <div class="text-center mt-4">
                 <button type="submit" class="btn btn-primary px-4">Submit All</button>
+                <button type="submit" class="btn btn-danger mx-3" (click)="onCancel()">Cancel</button>
               </div>
             </form>
           </div>

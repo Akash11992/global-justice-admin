@@ -14,7 +14,7 @@
       <div class="card" id="uppercard">
         <div class="card-body">
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="row align-items-end">
+            <div class="row">
               <div class="col-md-12 border-bottom mb-3">
                 <h4 style="display: inline-flex">{{title}} Collaborator</h4>
               </div>
@@ -91,13 +91,12 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="Address" class="form-label">Address</label>
-                <input type="text" formControlName="address" class="form-control" id="Address" aria-describedby="emailHelp">
+                <textarea formControlName="address" class="form-control" id="Address" rows="3"></textarea>
                 <div *ngIf="form.get('address').errors?.pattern || form.get('address').errors?.leadingTrailingSpaces" class="error text-danger">
                   Enter correct address format with max length 100
                 </div>
               </div>
 
-              
               <div class="col-md-6 mb-3">
                 <label for="image" class="form-label">Logo Upload <span class="error text-danger">*</span></label>
                 <input type="file" class="form-control" id="image" (change)="onFileSelected($event)" #fileInput accept="image/*" aria-describedby="emailHelp">
@@ -108,7 +107,7 @@
               </div>
 
               <div class="col-md-6 mb-3">
-                <label  class="form-label">Current Uploaded Image</label>
+                <label  class="form-label d-block mb-2">Current Uploaded Image</label>
                 <img *ngIf="selectedImageBase64" [src]="selectedImageBase64" alt="Preview" width="100">
               </div>
 

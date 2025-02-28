@@ -92,16 +92,17 @@ export class RegisteredUserComponent {
             this.isFromSponsorship = true;
             this.sponsorshipId = params['id'];
             this.sponsorshipName = params['name'];
+
+            this.allDelegate();
+            this.getInterval();
+      }else{
+            this.isFromSponsorship = false;
+            this.sponsorshipId = "";
+            this.sponsorshipName = "";
+            this.allDelegate();
+            this.getInterval();
       }
     })
-
-
-    this.allDelegate();
-
-    // this.createForm();
-
-    this.getInterval();
-
   }
 
   async getInterval() {

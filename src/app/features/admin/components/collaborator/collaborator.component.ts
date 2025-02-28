@@ -68,6 +68,7 @@ export class CollaboratorComponent implements OnInit{
       item['is_active'] = +!item['is_active'];
       newItem['is_active'] = +!newItem['is_active'];
       newItem['domain_url'] = environment.domainUrl;
+      newItem['logo_image'] = '';
       newItem['is_updated_by_activated'] = 1;
       this.updateCollaboratorData(item['id'],newItem);
     }
