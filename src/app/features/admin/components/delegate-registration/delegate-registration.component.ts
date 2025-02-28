@@ -4,6 +4,7 @@ import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-delegate-registration',
@@ -37,7 +38,8 @@ export class DelegateRegistrationComponent {
     private adminService: AdminService,
     private ngxService: NgxUiLoaderService,
     private SharedService: SharedService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {
 
     this.sponsorshipId = this.route.snapshot.paramMap.get('id');
@@ -289,5 +291,10 @@ export class DelegateRegistrationComponent {
 
       return age >= minAge ? null : { minAge: { requiredAge: minAge, actualAge: age } };
     };
+  }
+
+  onCancel(): void {
+    // this.router.navigate(['/dashboard/collaborator']);  
+    this.location.back();
   }
 }
