@@ -133,6 +133,10 @@ export class Constants {
     public readonly API_ENDPOINT_ADD_DELEGATE: string = 'bulk_upload_delegate_file'
     public readonly API_ENDPOINT_ADD_DELEGATES: string = 'registration/create-delegate-profiles'
 
+    public readonly API_ENDPOINT_ADD_BULK_VISITOR: string = 'visitors/bulk-insert'
+    public readonly API_ENDPOINT_VISITOR: string = 'visitors'
+    public readonly API_ENDPOINT_VISITOR_TYPE: string = 'visitors/type'
+
 
 }
 
