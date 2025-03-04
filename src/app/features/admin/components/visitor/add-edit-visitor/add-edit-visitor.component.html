@@ -5,7 +5,7 @@
       <div class="container-fluid py-3" id="pagecontent">
         <div class="card shadow-sm mb-4">
           <div class="card-body">
-            <h2 class="text-center mb-4">Multiple Delegate Registration</h2>
+            <h2 class="text-center mb-4">Multiple Visitor Registration</h2>
             <div class="d-flex justify-content-end mb-3" *ngIf="!isEditMode">
               <button
                 class="btn btn-success me-2"
@@ -13,7 +13,7 @@
                 type="button"
                 [disabled]="isAddDisabled()"
               >
-                + Add Delegate
+                + Add Visitor
               </button>
               <button
                 class="btn btn-danger"
@@ -21,7 +21,7 @@
                 type="button"
                 *ngIf="visitorFormsArray.length > 1"
               >
-                - Delete Delegate
+                - Delete Visitor
               </button>
             </div>
             <form [formGroup]="mainForm" (ngSubmit)="onSubmitAll()">

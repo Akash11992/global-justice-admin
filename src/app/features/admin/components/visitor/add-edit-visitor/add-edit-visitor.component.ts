@@ -51,7 +51,7 @@ export class AddEditVisitorComponent implements OnInit {
     this.adminService.getVisitorById(visitorId).subscribe(
       (data: any) => {
         this.ngxService.stop();
-        this.populateForm(data.data);
+        this.populateForm([data.data]);
       },
       (error: any) => {
         this.ngxService.stop();
@@ -169,7 +169,7 @@ export class AddEditVisitorComponent implements OnInit {
 
       if (this.isEditMode) {
         // Update existing visitor
-        this.adminService.updateVisitor(this.visitorId, payload).subscribe(
+        this.adminService.updateVisitor(this.visitorId, payload.visitors[0]).subscribe(
           (data: any) => {
             this.ngxService.stop();
             this.SharedService.ToastPopup('Visitor updated successfully', 'Visitor', 'success');

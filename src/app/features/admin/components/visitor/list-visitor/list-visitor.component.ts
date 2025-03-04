@@ -17,7 +17,7 @@ export class ListVisitorComponent implements OnInit{
   page: number = 1;
   limit: number = 25;
   sortBy: string = 'created_at';
-  order: string = 'desc';
+  order: string = 'DESC';
   search: string = '';
   totalPages: number = 0;
 
@@ -106,13 +106,13 @@ export class ListVisitorComponent implements OnInit{
 
       if (this.sortBy === column) {
         // If the column is already sorted, toggle the direction
-        this.order = this.order === 'asc' ? 'desc' : 'asc';
+        this.order = this.order === 'ASC' ? 'DESC' : 'ASC';
       } else {
         // Otherwise, sort by the new column in ascending order by default
         this.sortBy = column;
-        this.order = 'asc';
+        this.order = 'ASC';
       }
-  
+
       // Implement actual sorting logic here
       this.loadVisitors();
   
