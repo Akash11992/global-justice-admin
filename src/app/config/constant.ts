@@ -135,7 +135,8 @@ export class Constants {
 
     public readonly API_ENDPOINT_ADD_BULK_VISITOR: string = 'visitors/bulk-insert'
     public readonly API_ENDPOINT_VISITOR: string = 'visitors'
-    public readonly API_ENDPOINT_VISITOR_TYPE: string = 'visitors/type'
+    public readonly API_ENDPOINT_SINGLE_VISITOR: string = 'visitors/single'
+    public readonly API_ENDPOINT_VISITOR_TYPE: string = 'visitors/visitors-types'
 
 
 }

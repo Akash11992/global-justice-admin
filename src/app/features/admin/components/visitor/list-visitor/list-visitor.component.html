@@ -1,4 +1,3 @@
-<p>list-visitor works!</p>
 <!------------------------------------------- Sidebar start---------------------------------------------->
 <div class="wrapper d-flex align-items-stretch">
     <app-admin-left-panel></app-admin-left-panel>
@@ -54,7 +53,7 @@
                 </div>
               </div>
               <div class="col-md-6" id="exportcolmd">
-                <button class="btn" type="button" id="exportbtn" routerLink="/dashboard/adde-visitor">
+                <button class="btn" type="button" id="exportbtn" routerLink="/dashboard/add-visitor">
                   <i class="bi bi-plus"></i> Add Visitor
                 </button>
               </div>
@@ -73,32 +72,32 @@
                         <th>#</th>
                         <th (click)="onSort('full_name')">
                           Full Name 
-                          <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'full_name' && order === 'asc'"></i>
-                          <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'desc'"></i>
+                          <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'full_name' && order === 'ASC'"></i>
+                          <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'DESC'"></i>
                         </th>
                         
                         <th (click)="onSort('mobile_no')">
                             Mobile No.
-                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_no' && order === 'asc'"></i>
-                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_no' && order === 'desc'"></i>
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_no' && order === 'ASC'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_no' && order === 'DESC'"></i>
                         </th>
 
                         <th (click)="onSort('email')">
                           E-mail
-                          <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email' && order === 'asc'"></i>
-                          <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email' && order === 'desc'"></i>
+                          <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email' && order === 'ASC'"></i>
+                          <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email' && order === 'DESC'"></i>
                         </th>
 
                         <th (click)="onSort('country')">
                             Country
-                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'asc'"></i>
-                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'desc'"></i>
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'ASC'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'DESC'"></i>
                           </th>
 
                         <th (click)="onSort('country')">
                             Type
-                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'type' && order === 'asc'"></i>
-                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'type' && order === 'desc'"></i>
+                            <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'type' && order === 'ASC'"></i>
+                            <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'type' && order === 'DESC'"></i>
                           </th>
                         <th class="text-right">Action</th>
                       </tr>
@@ -130,24 +129,24 @@
                               aria-labelledby="dropdownMenuButton1"
                             >
                               <li>
-                                <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/edit-collaborator', item.id]">
+                                <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/edit-visitor', item.id]">
                                   Edit</a
                                 >
                               </li>
                               <li (click)="onActivateDeactiveToggle(item)">
                                 <a class="dropdown-item" style="cursor: pointer">
-                                  {{item.is_active ? 'Deactivate': 'Activate'}}</a
+                                  {{+item.is_active ? 'Deactivate': 'Activate'}}</a
                                 >
                               </li>
   
                               <li>
-                                <a class="dropdown-item" style="cursor: pointer" (click)="downloadFile(item.qr_unique_code, item.qr_unique_code+'.png','QR')">
+                                <a class="dropdown-item" style="cursor: pointer">
                                   Resend Ticket</a
                                 >
                               </li>
   
                               <li>
-                                <a class="dropdown-item" style="cursor: pointer" (click)="downloadFile(item.qr_unique_code, item.qr_unique_code+'.png','BADGE_IMG'); downloadFile(item.qr_unique_code, item.qr_unique_code+'.pdf','BADGE_PDF')">
+                                <a class="dropdown-item" style="cursor: pointer">
                                   Download Ticket</a
                                 >
                               </li>

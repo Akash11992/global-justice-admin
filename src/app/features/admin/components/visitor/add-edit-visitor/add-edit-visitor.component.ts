@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from '../../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { Location } from '@angular/common';
 
@@ -27,6 +27,7 @@ export class AddEditVisitorComponent implements OnInit {
     private ngxService: NgxUiLoaderService,
     private SharedService: SharedService,
     private route: ActivatedRoute,
+    private router:Router,
     private location: Location
   ) {
     this.mainForm = this.fb.group({
@@ -51,7 +52,7 @@ export class AddEditVisitorComponent implements OnInit {
     this.adminService.getVisitorById(visitorId).subscribe(
       (data: any) => {
         this.ngxService.stop();
-        this.populateForm(data.data);
+        this.populateForm([data.data]);
       },
       (error: any) => {
         this.ngxService.stop();
@@ -169,7 +170,7 @@ export class AddEditVisitorComponent implements OnInit {
 
       if (this.isEditMode) {
         // Update existing visitor
-        this.adminService.updateVisitor(this.visitorId, payload).subscribe(
+        this.adminService.updateVisitor(this.visitorId, payload.visitors[0]).subscribe(
           (data: any) => {
             this.ngxService.stop();
             this.SharedService.ToastPopup('Visitor updated successfully', 'Visitor', 'success');
@@ -216,7 +217,7 @@ export class AddEditVisitorComponent implements OnInit {
 
 
   onCancel(): void {
-    // this.router.navigate(['/dashboard/collaborator']);  
-    this.location.back();
+    this.router.navigate(['/dashboard/visitor']);  
+    // this.location.back();
   }
 }

@@ -539,7 +539,7 @@ export class ApiEndpointsService {
   }
 
   public getVisitorByIdEndpoint(id: string): string {
-    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_VISITOR, [id]);
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_SINGLE_VISITOR, [id]);
   }
 
 
