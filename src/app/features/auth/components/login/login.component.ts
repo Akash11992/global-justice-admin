@@ -1,34 +1,35 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AdminService } from 'src/app/features/admin/services/admin.service';
 import { BehaviorSubject } from 'rxjs';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit  {
 
   loginForm!: FormGroup;
   type: string = "password";
   isText: boolean = false;
-  eyeIcon: string = "fa-eye-slash"
+  eyeIcon: string = "bi-eye-slash"
   private readonly AUTH_KEY = 'isLoggedIn';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-
+  userPermissions: any;
 
 
 
   constructor(
     private _fb: FormBuilder,
     private adminService: AdminService,
-
     private router: Router,
     private SharedService: SharedService,
     private ngxService: NgxUiLoaderService,
+    private permissionsService:UserPermissionsService
   ) { 
     const isLoggedIn = localStorage.getItem(this.AUTH_KEY) === 'true';
     this.isAuthenticatedSubject.next(isLoggedIn);
@@ -63,13 +64,16 @@ export class LoginComponent {
 
   hideShowPass() {
     this.isText = !this.isText;
-    this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
+    this.isText ? this.eyeIcon = "bi-eye-fill" : this.eyeIcon = "bi-eye-slash";
     this.isText ? this.type = "text" : this.type = "password";
   }
 
+  // onLogin() {
+  //   console.log('Logging in with', this.username, this.password);
+  // }
 
   // Function to submit the form data
-  postapi() {
+  onLogin() {
 
     let encryptedEmail = this.SharedService.encryptData({
       "email": this.loginForm.controls['email'].value,
@@ -94,12 +98,12 @@ export class LoginComponent {
       this.isAuthenticatedSubject.next(true);
       const decreptedToken = this.SharedService.decryptData(res.token);
       const decreptedUser = JSON.parse(this.SharedService.decryptData(res.data))
-      debugger
       const userData = {
         name : decreptedUser.name,
         email : decreptedUser.email,
         admin_id : decreptedUser.admin_id,
       }
+      this.userPermissions = this.permissionsService.getUserPermissions(decreptedUser.email);
       // Store the encrypted token
       this.SharedService.setJWTToken(decreptedToken);
       this.SharedService.setUserDetails(JSON.stringify(userData));
@@ -122,5 +126,23 @@ export class LoginComponent {
   
 
 
+  ngAfterViewInit() {
+    const inputs = document.querySelectorAll<HTMLInputElement>(".input");
 
+    inputs.forEach((input) => {
+      input.addEventListener("focus", () => {
+        let parent = input.parentNode?.parentNode as HTMLElement;
+        parent?.classList.add("focus");
+      });
+
+      input.addEventListener("blur", () => {
+        let parent = input.parentNode?.parentNode as HTMLElement;
+        if (input.value === "") {
+          parent?.classList.remove("focus");
+        }
+      });
+    });
+  }
 }
+
+

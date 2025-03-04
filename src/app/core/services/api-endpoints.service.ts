@@ -72,7 +72,7 @@ export class ApiEndpointsService {
     for (const pathVariable of pathVariables) {
       if (pathVariable !== null) {
         encodedPathVariablesUrl +=
-          `${encodeURIComponent(pathVariable.toString())}/`;
+          `/${encodeURIComponent(pathVariable.toString())}/`;
       }
     }
     const urlBuilder: UrlBuilder = new UrlBuilder(
@@ -197,6 +197,10 @@ export class ApiEndpointsService {
 
   public getApprovedDelegateEndpoint(data:any): string {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedDelegate);
+  }
+
+  public updateDelegateByTypeReferenceEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_updateDelegateByTypeReference);
   }
 
 
@@ -412,5 +416,131 @@ export class ApiEndpointsService {
   public ApprovedRegistrationEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_ApprovedDelegate);
   }
+
+
+  //sponsorship
+  public addSponsorshipEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_SPONSORSHIP);
+  }
+
+  public editSponsorshipByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_EDIT_SPONSORSHIP, [id]);
+  }
+
+  public deleteSponsorshipByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_DELETE_SPONSORSHIP, [id]);
+  }
+
+  public getSponsorshipByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_GET_SPONSORSHIP, [id]);
+  }
+
+  public listSponsorshipByPaginationAndSearchAndSortingEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_LIST_SPONSORSHIP,
+      (qs: QueryStringParameters) => {
+        qs.push('page', queryParamsObj['page']),
+        qs.push('limit', queryParamsObj['limit']),
+        qs.push('sort', queryParamsObj['sort']),
+        qs.push('order', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
+  public listSponsorshipTypeEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_LIST_SPONSORSHIP_TYPE);
+  }
+
+  //collaborator
+  public addCollaboratorEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_COLLABORATOR);
+  }
+
+  public editCollaboratorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_EDIT_COLLABORATOR, [id]);
+  }
+
+  public deleteCollaboratorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_DELETE_COLLABORATOR, [id]);
+  }
+
+  public getCollaboratorIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_GET_COLLABORATOR, [id]);
+  }
+
+  public listCollaboratorByPaginationAndSearchAndSortingEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_LIST_COLLABORATOR,
+      (qs: QueryStringParameters) => {
+        qs.push('page', queryParamsObj['page']),
+        qs.push('limit', queryParamsObj['limit']),
+        qs.push('sort', queryParamsObj['sort']),
+        qs.push('order', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
+  public listPeaceKeeperEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_LIST_PEACEKEEPER);
+  }
+
+  //country, state, city
+  public listCountryEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_LIST_COUNTRY);
+  }
+
+  public getStateByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_LIST_STATE, [id]);
+  }
+
+  public getCityByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_LIST_CITY, [id]);
+  }
+
+  public addDeletgateEndPoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATE);
+  }
+
+  public addDeletgatesEndPoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATES);
+  }
+
+  public addBulkVisitorEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_BULK_VISITOR);
+  }
+
+  public getVisitorEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_VISITOR,
+      (qs: QueryStringParameters) => {
+        qs.push('pageOffset', queryParamsObj['page']),
+        qs.push('pageLimit', queryParamsObj['limit']),
+        qs.push('sortColumn', queryParamsObj['sort']),
+        qs.push('sortOrder', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
+  public updateVisitorByIdEndpoint(
+    id: string
+  ): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_VISITOR, [id]);
+  }
+
+  public deactivateVisitorEndpoint(id: string): string {
+    return this.createUrl(this._constants.API_ENDPOINT_VISITOR +"/"+id + "/deactivate");
+  }
+
+  public listVisitorTypeEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_VISITOR_TYPE);
+  }
+
+  public getVisitorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_SINGLE_VISITOR, [id]);
+  }
+
 
 }

@@ -25,15 +25,13 @@
                   <form>
                     <div class="row">
                       <div class="col-md-3">
-                        <select class="form-control" aria-label="Default select example">
-                          <option selected>Select</option>
-                          <option value="1">25</option>
-                          <option value="2">50</option>
-                          <option value="3">100</option>
+                        <select #mySelect (change)="onSelectionChange(mySelect.value)"  style="cursor: pointer;" class="form-control" aria-label="Default select example">
+                          <option *ngFor="let option of rowOptions" [value]="option.value">{{ option.label }}</option>
                         </select>
                       </div>
                       <div class="col-md-9 d-flex">
                         <input
+                        #searchInput
                       class="form-control"
                       type="search"
                       id="inputsearch"
@@ -41,9 +39,9 @@
                       aria-label="Search"
                     />
                     &nbsp; &nbsp;&nbsp;
-                    <button class="btn" id="btncolor">Search</button>
+                    <button class="btn" id="btncolor" (click)="onSearchClick(searchInput.value)">Search</button>
                     &nbsp; &nbsp;
-                    <button class="btn" type="reset" id="btncolor">
+                    <button class="btn" type="reset" (click)="onSearchClick('')" id="btncolor">
                       Reset
                     </button>
                       </div>
@@ -68,35 +66,47 @@
           <div class="card">
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table">
+                <table class="table" *ngIf="collaborators.length > 0 else noDataTemplate">
                   <thead>
                     <tr>
-                      <th>
-                        <input type="checkbox" id="checkbox" />
+                      <th>#</th>
+                      <th (click)="onSort('full_name')">
+                        Full Name 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'full_name' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'desc'"></i>
                       </th>
-                      <th>
-                        Full Name <i class="bi bi-caret-down-fill"></i>
+                      <!-- <th (click)="onSort('dob')">
+                        DOB
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'dob' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'dob' && order === 'desc'"></i>
+                      </th> -->
+                      <th (click)="onSort('country')">
+                        Country
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'desc'"></i>
                       </th>
-                      <th>DOB <i class="bi bi-caret-down-fill"></i></th>
-                      <th>Country <i class="bi bi-caret-down-fill"></i></th>
-                      <th>E-mail</th>
-                      <th>Mobile No.</th>
-                      <th>Image</th>
-                      <!-- <th class="text-right">Action</th> -->
+                      <th (click)="onSort('email')">
+                        E-mail
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email' && order === 'desc'"></i>
+                      </th>
+                      <th (click)="onSort('mobile_no')">
+                        Mobile No.
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_no' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_no' && order === 'desc'"></i>
+                      </th>
+                      <th class="text-right">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <input type="checkbox" />
-                      </td>
-                      <td>Kumar Saurabh</td>
-                      <td>03/12/1996</td>
-                      <td>India</td>
-                      <td>saurabh@gmai.vom</td>
-                      <td>8845347345</td>
-                      <td></td>
-                      <!-- <td class="text-right">
+                    <tr *ngFor="let item of collaborators ; let i=index">
+                      <td class="text-center">{{ (page - 1) * limit + i + 1 }}</td>
+                      <td>{{item.full_name}}</td>
+                      <!-- <td>{{item.dob}}</td> -->
+                      <td>{{item.country}}</td>
+                      <td>{{item.email}}</td>
+                      <td>{{item.mobile_no}}</td>
+                      <td class="text-right">
                         <div class="dropdown dropstart">
                           <button
                             class="btn btn-outline-success"
@@ -115,44 +125,46 @@
                             aria-labelledby="dropdownMenuButton1"
                           >
                             <li>
-                              <a class="dropdown-item" style="cursor: pointer">
+                              <a class="dropdown-item" style="cursor: pointer" [routerLink]="['/dashboard/edit-collaborator', item.id]">
                                 Edit</a
                               >
                             </li>
-                            <li>
+                            <li *ngIf="userPermissions.update" (click)="onActivateDeactiveToggle(item)">
                               <a class="dropdown-item" style="cursor: pointer">
-                                Active</a
+                                {{item.is_active ? 'Deactivate': 'Activate'}}</a
                               >
                             </li>
+
                             <li>
-                              <a class="dropdown-item" style="cursor: pointer">
-                                Deactive</a
+                              <a class="dropdown-item" style="cursor: pointer" (click)="downloadFile(item.qr_unique_code, item.qr_unique_code+'.png','QR')">
+                                Download QR</a
                               >
                             </li>
+
                             <li>
-                              <a class="dropdown-item" style="cursor: pointer">
-                                Add Delegate</a
+                              <a class="dropdown-item" style="cursor: pointer" (click)="downloadFile(item.qr_unique_code, item.qr_unique_code+'.png','BADGE_IMG'); downloadFile(item.qr_unique_code, item.qr_unique_code+'.pdf','BADGE_PDF')">
+                                Download Badge (Image & Pdf)</a
                               >
                             </li>
                           </ul>
                         </div>
-                      </td> -->
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <nav aria-label="...">
                 <ul class="pagination">
-                  <li class="page-item disabled">
+                  <li class="page-item " (click)="changePage(page - 1)" [disabled]="page === 1">
                     <span class="page-link">Previous</span>
                   </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item active" aria-current="page">
-                    <span class="page-link">2</span>
+                  <li class="page-item" *ngFor="let p of [].constructor(totalPages); let i = index" 
+                  (click)="changePage(i + 1)" 
+                  [class.active]="page === i + 1" >
+                  <span class="page-link">{{ i + 1 }}</span>
                   </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
                   <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" (click)="changePage(page + 1)" [disabled]="page === totalPages">Next</a>
                   </li>
                 </ul>
               </nav>
@@ -167,3 +179,7 @@
   </div>
   <!------------------------------------------- Page Content end ----------------------------------------->
 </div>
+
+<ng-template #noDataTemplate>
+  <h5 style="text-align: center"><span >No Data Found</span></h5>
+</ng-template>

@@ -20,6 +20,7 @@ export class Constants {
     public readonly API_ENDPOINT_getSpeaker: string = 'registration/speaker/non-registered'
 
     public readonly API_ENDPOINT_getApprovedDelegate: string = 'registration/delegate/approved'
+    public readonly API_ENDPOINT_updateDelegateByTypeReference: string = 'registration/update/delegate/byTypeReference'
 
     public readonly API_ENDPOINT_getApprovedPartner: string = 'registration/partner/approved'
     public readonly API_ENDPOINT_getApprovedSpeaker: string = 'registration/speaker/approved'
@@ -109,6 +110,33 @@ export class Constants {
     public readonly API_ENDPOINT_PEACE_UPDATE_GENERATE_QR: string = 'update_peacekeeper'
 
     public readonly API_ENDPOINT_ApprovedDelegate: string = 'mail_discount_code'
+
+    public readonly API_ENDPOINT_ADD_SPONSORSHIP: string = 'sponsorships/add'
+    public readonly API_ENDPOINT_EDIT_SPONSORSHIP: string = 'sponsorships/edit'
+    public readonly API_ENDPOINT_DELETE_SPONSORSHIP: string = 'sponsorships/delete'
+    public readonly API_ENDPOINT_GET_SPONSORSHIP: string = 'sponsorships/get'
+    public readonly API_ENDPOINT_LIST_SPONSORSHIP: string = 'sponsorships/list'
+    public readonly API_ENDPOINT_LIST_SPONSORSHIP_TYPE: string = 'sponsorships/sponsorship-types'
+
+    public readonly API_ENDPOINT_ADD_COLLABORATOR: string = 'collaborators/add'
+    public readonly API_ENDPOINT_EDIT_COLLABORATOR: string = 'collaborators/edit'
+    public readonly API_ENDPOINT_DELETE_COLLABORATOR: string = 'collaborators/delete'
+    public readonly API_ENDPOINT_GET_COLLABORATOR: string = 'collaborators/get'
+    public readonly API_ENDPOINT_LIST_COLLABORATOR: string = 'collaborators/list'
+
+
+    public readonly API_ENDPOINT_LIST_PEACEKEEPER: string = 'getAllpeacekeeperDropdown'
+    public readonly API_ENDPOINT_LIST_COUNTRY: string = 'get_delegate_country'
+    public readonly API_ENDPOINT_LIST_STATE: string = 'get_delegate_state'
+    public readonly API_ENDPOINT_LIST_CITY: string = 'get_delegate_city'
+
+    public readonly API_ENDPOINT_ADD_DELEGATE: string = 'bulk_upload_delegate_file'
+    public readonly API_ENDPOINT_ADD_DELEGATES: string = 'registration/create-delegate-profiles'
+
+    public readonly API_ENDPOINT_ADD_BULK_VISITOR: string = 'visitors/bulk-insert'
+    public readonly API_ENDPOINT_VISITOR: string = 'visitors'
+    public readonly API_ENDPOINT_SINGLE_VISITOR: string = 'visitors/single'
+    public readonly API_ENDPOINT_VISITOR_TYPE: string = 'visitors/visitors-types'
 
 
 }

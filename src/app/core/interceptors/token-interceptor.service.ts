@@ -32,9 +32,12 @@ export class TokenInterceptorService {
           } else if (err.error !== null) {
             console.log("Interceptor error:", err);
             this._ngxLoader.stop();
+            this._sharedService.isLoading = false ;
             this._sharedService.ToastPopup(err.error.message, '', 'error');
           } else {
             this._sharedService.ToastPopup(err.message, err.statusText, 'error');
+            this._sharedService.isLoading = false ;
+
           }
           return EMPTY;
         }),

@@ -50,7 +50,7 @@ export class ContactUsComponent implements OnInit {
   totalitems: any;
   itemsPerPage = 10;
   itemsPageTo = 10;
-  page = 1;
+  // page = 1;
   numberOfPages: number = 0;
   activeItem: number = 1;
   groupByPerpage: any = [];
@@ -65,6 +65,24 @@ export class ContactUsComponent implements OnInit {
   faSortUp = faSortUp;
   faSortDown = faSortDown;
 
+
+  // new pagination
+  totalItems: number = 0;
+  page: number = 1;
+  limit: number = 25;
+  sortBy: string = 'CREATED_AT';
+  order: string = 'desc';
+  search: string = '';
+  totalPages: number = 0;
+
+  isLoading: boolean = true;
+  isSpinner: number = -1;
+
+  rowOptions = [
+    { value: 25, label: '25' },
+    { value: 50, label: '50' },
+    { value: 100, label: '100' }
+  ];
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
 
 
@@ -82,6 +100,7 @@ export class ContactUsComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.isLoading = this.SharedService.isLoading;
 
     this.groupByPerpage = [
       { name: "10" },
@@ -91,11 +110,11 @@ export class ContactUsComponent implements OnInit {
     ];
     this.allContactUs();
 
-    this.createForm();
+    // this.createForm();
     // this.allPartner()
     // this.allSpeaker()
 
-    // this.getInterval();
+    this.getInterval();
 
 
   }
@@ -106,6 +125,8 @@ export class ContactUsComponent implements OnInit {
 
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
+        this.isSpinner = 1; // Show spinner before fetching data
+
         console.log('refreshing......')
         this.allContactUs();
       }, this.RefreshInterval);
@@ -119,52 +140,59 @@ export class ContactUsComponent implements OnInit {
   }
 
 
-  createForm() {
-    this.searchForm = this.fb.group({
-      searchInput: [''] // Initialize with an empty string
-    });
-  }
+  // createForm() {
+  //   this.searchForm = this.fb.group({
+  //     searchInput: [''] // Initialize with an empty string
+  //   });
+  // }
 
 
-  searchUsers() {
-    this.searchParams = this.searchForm.get('searchInput').value;
+  // searchUsers() {
+  //   this.searchParams = this.searchForm.get('searchInput').value;
 
-    clearInterval(this.intervalId);
-    this.allContactUs();
+  //   clearInterval(this.intervalId);
+  //   this.allContactUs();
 
-  }
+  // }
 
   allContactUs() {
     let body = {
-      "name": this.searchParams,
-      "ordering": this.sortParamKey,
-      "page_size": this.pageSize,
-      "page_no": this.paging,
-
+      sort_column: this.sortBy,
+      sort_order: this.order,
+      search:this.search,
+      page_size:this.limit,
+      page_no:this.page ,
 
     }
+    // this.ngxService.start();
+
 
     this.AdminService.getContactUsApi(body).subscribe((data: any) => {
+      // this.ngxService.stop();
 
-      const decreptedUser = this.SharedService.decryptData(data.data)
+      // const decreptedUser = this.SharedService.decryptData(data.data)
 
-      this.contactUsList = decreptedUser
-      console.log("data", decreptedUser);
+      // this.contactUsList = decreptedUser
+      this.contactUsList = data.data
+      console.log("data", this.contactUsList);
 
-      this.totalRecords = this.contactUsList.length;
+      this.totalItems = data.totalCount;
+      this.totalPages = Math.ceil(this.totalItems / this.limit);
 
-      console.log(this.totalRecords, 'totalRecords');
+      // this.totalRecords = this.contactUsList.length;
+
+      // console.log(this.totalRecords, 'totalRecords');
 
 
-      let pag = Math.ceil(this.totalRecords / this.pageSize);
+      // let pag = Math.ceil(this.totalRecords / this.pageSize);
 
-      this.totalitems = Array(pag)
-        .fill(0)
-        .map((x, i) => i + 1);
+      // this.totalitems = Array(pag)
+      //   .fill(0)
+      //   .map((x, i) => i + 1);
 
-      this.numberOfPages = Math.ceil(
-        this.totalRecords / this.pageSize
-      );
+      // this.numberOfPages = Math.ceil(
+      //   this.totalRecords / this.pageSize
+      // );
 
 
       if (this.contactUsList.length === 0) {
@@ -173,11 +201,15 @@ export class ContactUsComponent implements OnInit {
         this.notFound = false;
         console.log("false");
       }
-      this.searchForm.reset();
+      // this.searchForm.reset();
       // this.ngxService.stop();
       this.contactUs = true
+      this.isLoading = false;
+      this.isSpinner = -1;
 
-
+    },
+    (error) => {
+      this.isSpinner = -1; // Hide spinner even if an error occurs
     });
   }
 
@@ -233,293 +265,43 @@ export class ContactUsComponent implements OnInit {
 
   }
 
-  // Function to update selectedUserIds array when a row is clicked
-  updateSelectedUsers(userId: any, userName: any, userEmail: any, userNumber: any) {
-    // Check if the user ID is already selected, and toggle selection
-    console.log(userId, userName, userEmail, userNumber);
-    this.userId = userId;
-    this.userName = userName;
-    this.userEmail = userEmail;
-    this.userNumber = userNumber
-    if (this.selectedUserIds.includes(userId)) {
-      this.selectedUserIds = this.selectedUserIds.filter(id => id !== userId);
-      console.log("a", this.selectedUserIds);
-
-    } else {
-      this.selectedUserIds.push(userId);
-      console.log("b", this.selectedUserIds);
-    }
-  }
-
-  unapproveSelected(): void {
-    if (this.selectedUserIds.length === 0) {
-      this.SharedService.ToastPopup('', "please select user!", 'error')
-
-      // Handle the case when no users are selected.
-      return;
-    }
-    // Prepare the payload with selected user IDs and status 0.
-    const payload = {
-      user_id: this.selectedUserIds.join(','), // Convert array to comma-separated string
-      // user_id:this.userId,
-      status: 2,      //unapprove
-      updated_by: "admin",
-      user_name: this.userName,
-      user_email: this.userEmail,
-      user_number: this.userNumber
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      this.selectedUserIds.pop();
-
-      // this.allContactUs();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.contactUs);
-
-        switch (true) {
-          case this.contactUs === true:
-            console.log("active tab name delegate", this.contactUs);
-            this.allContactUs();
-            break;
-
-        }
-
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-
-
-    })
-  }
-  updateAndUnapprovethroughDropdown(userId: number, userName: any, userEmail: any, userNumber: any): void {
-    // Update the selected users
-    this.updateSelectedUsers(userId, userName, userEmail, userNumber);
-
-    // Now, call the unapproveSelected function
-    this.unapproveSelected();
-  }
-
-  deleteUser(userId: number, userName: any, userEmail: any, userNumber: any): void {
-    this.updateSelectedUsers(userId, userName, userEmail, userNumber);
-    console.log("delete called", userId);
-
-    const payload = {
-      user_id: userId
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.DeleteUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      // this.allContactUs();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        switch (true) {
-          case this.contactUs === true:
-            console.log("active tab name delegate", this.contactUs);
-            this.allContactUs();
-            break;
-
-        }
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-
-
-    })
-  }
-  searchDelegateUser(): void {
-    const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
-    if (searchValue === null || searchValue.trim() === '') {
-      // Display an error toaster here
-      this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
-      return; // Exit the function
-    }
-    const payload = {
-      search: searchValue
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.SearchDelegateUser(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
-      this.contactUsList = data.data[0]
-      if (this.contactUsList.length === 0) {
-        this.notFound = true;
-      } else {
-        this.notFound = false;
-        console.log("false");
-      }
-      // setTimeout(() => {
-      //   this.router.navigate(['dashboard/peacekeeper']);
-      // }, 2000); // 2000 milliseconds (2 seconds) delay
-    })
-  }
-
-
-
-
-  resetForm(): void {
-    this.searchForm.reset();
-
-    this.searchParams = '';
-    this.getInterval();
-        this.allContactUs();
-     
-  }
-
-
-
-
-  sendmail(userId: number, userName: any, userEmail: any, userNumber: any, qr_code: any, urn_no: any, designation: any, company: any) {
-
-    switch (true) {
-      case this.contactUs === true:
-        console.log("active tab name delegate", this.contactUs);
-        this.form_name = "delegate"
-        break;
-
-    }
-    // Prepare the payload with selected user IDs and status 0.
-    const payload = {
-      user_id: userId,
-      user_name: userName,
-      user_email: userEmail,
-      user_number: userNumber,
-      qr_code: qr_code,
-      urn_no: urn_no,
-      designation: designation,
-      company: company,
-      form_name: this.form_name
-
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.Send_Email(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      // this.allContactUs();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.contactUs);
-
-        switch (true) {
-          case this.contactUs === true:
-            console.log("active tab name delegate", this.contactUs);
-            this.allContactUs();
-            break;
-
-        }
-
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-    },
-      (error: any) => {
-        // Handle the error here
-        console.error("Error while sending email:", error);
-        // You can also display an error message or take appropriate action.
-      }
-    );
-
-  }
-
-  Generate_Badge(userId: number, userName: any, userEmail: any, userNumber: any, qr_code: any, urn_no: any, designation: any, company: any) {
-
-
-    switch (true) {
-      case this.contactUs === true:
-        console.log("active tab name delegate", this.contactUs);
-        this.form_name = "delegate"
-        break;
-
-    }
-    // Prepare the payload with selected user IDs and status 0.
-    const payload = {
-      user_id: userId,
-      user_name: userName,
-      user_email: userEmail,
-      user_number: userNumber,
-      qr_code: qr_code,
-      urn_no: urn_no,
-      designation: designation,
-      company: company,
-      form_name: this.form_name
-    };
-    console.log("payload", payload);
-    this.ngxService.start();
-    this.AdminService.Generate_Badge(payload).subscribe((data: any) => {
-      this.ngxService.stop();
-      this.SharedService.ToastPopup('', data.message, 'success')
-      // this.allContactUs();
-      setTimeout(() => {
-        this.router.navigate(['dashboard/peacekeeper']);
-        console.log("active tab name delegate", this.contactUs);
-
-
-        this.allContactUs();
-
-
-
-      }, 2000); // 2000 milliseconds (2 seconds) delay
-
-    },
-      (error: any) => {
-        // Handle the error here
-        console.error("Error while sending email:", error);
-        // You can also display an error message or take appropriate action.
-      }
-    );
-
-  }
-
-  downloadBadge(filepath: any, urn_no: any) {
-
-    const payload = {
-      filepath: filepath
-    };
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    console.log(payload);
-
-    // Make the HTTP request to download the PDF
-    this.AdminService.Download_Badge(payload)
-      .subscribe((response: any) => {
-        const blob = new Blob([response], { type: 'application/pdf' });
-        saveAs(blob, `${urn_no}.pdf`); // You can customize the filename
-      });
-
-  }
-
-
 
   export() {
 
     // Select the columns you want to export
+  
+    const headers = [
+      'SN', 'Title', 'First Name', 'Last Name', 'Mobile Number', 'Email ID',
+       'Query', 'Created Date'
+    ];
+
+    // Select the columns you want to export
     const columnsToExport = this.contactUsList.map(item => {
+      let created_date = this.datePipe.transform(item.CREATED_AT, 'yyyy-MM-dd hh:mm a');
 
-
-      console.log("created date...........", item.created_date);
-      // Assuming item.created_date is a valid date string or Date object
-      let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
-      let updated_date = this.datePipe.transform(item.updated_date, 'yyyy-MM-dd hh:mm a');
-
-      return {
-        'SN': item.CONTACT_ID,
-        'TITLE': item.TITLE,
-        'FIRST_NAME': item.FIRST_NAME,
-        'LAST_NAME': item.LAST_NAME,
-        'PHONE_NUMBER': item.PHONE_NUMBER,
-        'EMAIL': item.EMAIL,
-        'query': item.YOUR_QUESTION,
-      };
+      return [
+        item.CONTACT_ID, item.TITLE, item.FIRST_NAME, item.LAST_NAME,
+        item.PHONE_NUMBER, item.EMAIL, item.YOUR_QUESTION, created_date
+      ];
     });
 
-    const ws = XLSX.utils.json_to_sheet(columnsToExport);
-    // const ws = XLSX.utils.json_to_sheet(this.contactUsList);
+    // Insert headers at the first row
+    columnsToExport.unshift(headers);
+
+    // Convert JSON to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
+    // Auto-adjust column width based on the longest content
+    const columnWidths = headers.map((header, colIndex) => {
+      const maxLength = Math.max(
+        header.length, // Header length
+        ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0)) // Longest data cell in the column
+      );
+      return { wch: maxLength + 2 }; // Add padding for better spacing
+    });
+
+    // Apply calculated column widths
+    ws['!cols'] = columnWidths;
+
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, this.form);
 
@@ -531,7 +313,7 @@ export class ContactUsComponent implements OnInit {
     XLSX.writeFile(wb, 'Contact_Us.xlsx');
 
     // Add your success message or any other functionality here.
-    this.SharedService.ToastPopup('Table has exported successfully', '', 'success');
+    this.SharedService.ToastPopup('Data export successful.', '', 'success');
 
   }
 
@@ -561,16 +343,66 @@ export class ContactUsComponent implements OnInit {
     this.contactUsList = [];
     this.allContactUs();
 
-    this.contactUsList.sort((a, b) => {
-      let valA = a[queryParamKey] || ''; // Handle null values
-      let valB = b[queryParamKey] || '';
-
-      if (typeof valA === 'string') valA = valA.toLowerCase();
-      if (typeof valB === 'string') valB = valB.toLowerCase();
-
-      return this.sortDirection ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
-    });
+ 
   }
+
+
+
+
+// new pagination
+
+onSelectionChange(selectedValue: string) {
+  this.page = 1
+  this.limit = +selectedValue;
+  this.allContactUs();
+}
+
+onSearchClick(searchValue: string) {
+  if(searchValue.trim().length === 0){
+    this.page = 1
+    this.limit = 25;
+    this.getInterval();
+  }else if (searchValue.charAt(0) === ' ') {
+    this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
+
+    return;
+  } else{
+    clearInterval(this.intervalId);
+  }
+  this.search = searchValue.trim();
+  this.allContactUs();
+}
+
+
+preventFirstSpace(input: HTMLInputElement) {
+  if (input.value.charAt(0) === ' ') {
+    input.value = input.value.trim(); // Remove leading space immediately
+  }
+}
+
+changePage(newPage: number) {
+  if (newPage >= 1 && newPage <= this.totalPages) {
+    this.page = newPage;
+    this.allContactUs();
+  }
+}
+
+onSort(column: string) {
+  this.sortBy = column;
+  this.order = this.order === 'asc' ? 'desc' : 'asc';
+
+  if (this.sortColumn === column) {
+    this.sortDirection = !this.sortDirection; // Toggle direction
+  } else {
+    this.sortColumn = column;
+    this.sortDirection = true; // Default Ascending
+  }
+  this.allContactUs();
+}
+
+
+
+
 
   myOptions = {
     'placement': 'top',

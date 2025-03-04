@@ -199,7 +199,7 @@ export class NonRegisteredUserComponent {
 
   approveAndRegisterSelected(): void {
     if (this.selectedUserIds.length === 0) {
-      this.SharedService.ToastPopup('', "please select record!", 'error')
+      this.SharedService.ToastPopup('', "Please select record!", 'error')
 
       // Handle the case when no users are selected.
       return;
@@ -283,7 +283,7 @@ export class NonRegisteredUserComponent {
   unapproveSelected(): void {
     if (this.selectedUserIds.length === 0) {
       // Handle the case when no users are selected.
-      this.SharedService.ToastPopup('', "please select record!", 'error')
+      this.SharedService.ToastPopup('', "Please select record!", 'error')
 
       return;
     }
@@ -507,7 +507,7 @@ export class NonRegisteredUserComponent {
     this.ngxService.start();
     this.AdminService.SearchPartnernNonUser(payload).subscribe((data: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
+      this.SharedService.ToastPopup('', 'Data fetched successfully', 'success')
       this.nonregist = data.data[0]
       if (this.nonregist.length === 0) {
         this.notFound = true;
