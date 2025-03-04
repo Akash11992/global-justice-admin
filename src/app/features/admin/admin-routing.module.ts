@@ -24,6 +24,8 @@ import { DelegateComponent } from "./components/delegate/delegate.component";
 import { AddDelegateComponent } from "./components/add-delegate/add-delegate.component";
 import { AddDelegateByFileComponent } from "./components/add-delegate-by-file/add-delegate-by-file.component";
 import { DelegateRegistrationComponent } from "./components/delegate-registration/delegate-registration.component";
+import { ListVisitorComponent } from "./components/visitor/list-visitor/list-visitor.component";
+import { AddEditVisitorComponent } from "./components/visitor/add-edit-visitor/add-edit-visitor.component";
 
 const routes: Routes = [
   {
@@ -74,6 +76,10 @@ const routes: Routes = [
       { path: "delegate-registration/:id", component: DelegateRegistrationComponent,canActivate: [AuthGuard], },
       { path: "add-delegate-by-file", component: AddDelegateByFileComponent,canActivate: [AuthGuard], },
       { path: "contact-us", component: ContactUsComponent,canActivate: [AuthGuard], },
+      { path: "visitor", component: ListVisitorComponent,canActivate: [AuthGuard], },
+      { path: "add-visitor", component: AddEditVisitorComponent,canActivate: [AuthGuard], },
+      { path: "edit-visitor/:id", component: AddEditVisitorComponent,canActivate: [AuthGuard], },
+      
       // {path:'reset-password',component:ResetPasswordComponent},
       { path: "", redirectTo: "registered-user", pathMatch: "full" },
     ],

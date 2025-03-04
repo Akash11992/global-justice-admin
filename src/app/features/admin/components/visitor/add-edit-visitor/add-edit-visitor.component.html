@@ -1,0 +1,127 @@
+<div class="wrapper d-flex align-items-stretch">
+    <app-admin-left-panel></app-admin-left-panel>
+  
+    <div id="content" class="flex-grow-1" style="overflow-y: auto; overflow-x: hidden;">
+      <div class="container-fluid py-3" id="pagecontent">
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Multiple Visitor Registration</h2>
+            <div class="d-flex justify-content-end mb-3" *ngIf="!isEditMode">
+              <button
+                class="btn btn-success me-2"
+                (click)="addForm()"
+                type="button"
+                [disabled]="isAddDisabled()"
+              >
+                + Add Visitor
+              </button>
+              <button
+                class="btn btn-danger"
+                (click)="removeLastForm()"
+                type="button"
+                *ngIf="visitorFormsArray.length > 1"
+              >
+                - Delete Visitor
+              </button>
+            </div>
+            <form [formGroup]="mainForm" (ngSubmit)="onSubmitAll()">
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                  <thead class="table-dark">
+                    <tr class="text-center">
+                      <th style="min-width: 160px;">Full Name *</th>
+                      <th style="min-width: 200px;">Mobile No. *</th>
+                      <th style="min-width: 200px;">Email *</th>
+                      <th style="min-width: 200px;">Country *</th>
+                      <th style="min-width: 250px;">Type *</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="visitorForms">
+                    <tr *ngFor="let visitorForm of visitorFormsArray.controls; let i = index" [formGroupName]="i">
+                      <!-- First Name -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="full_name"
+                          placeholder="Full Name"
+                        />
+                        <div *ngIf="(visitorForm.get('full_name')?.invalid || visitorForm.get('full_name').errors?.pattern) && visitorForm.get('full_name')?.touched" class="text-danger small">
+                          Full Name is required.
+                        </div>
+                      </td>
+                      <!-- Mobile No. -->
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="mobile_no"
+                          placeholder="Mobile Number"
+                        />
+                        <div *ngIf="(visitorForm.get('mobile_no')?.invalid || visitorForm.get('mobile_no').errors?.pattern) && visitorForm.get('mobile_no')?.touched" class="text-danger small">
+                          Mobile No. is required (eg.+12345678901).
+                        </div>
+                      </td>
+                      <!-- Email -->
+                      <td>
+                        <input
+                          type="email"
+                          class="form-control"
+                          formControlName="email"
+                          placeholder="Email Address"
+                        />
+                        <div *ngIf="(visitorForm.get('email')?.invalid || visitorForm.get('email').errors?.pattern) && visitorForm.get('email')?.touched" class="text-danger small">
+                          A valid email is required.
+                        </div>
+                      </td>
+                      
+                      <!-- Country -->
+                      <td>
+                        <select
+                          formControlName="country"
+                          (change)="onCountryChange($event, i)"
+                          class="form-control"
+                          aria-label="Select Country"
+                        >
+                          <option value="">Select Country</option>
+                          <option *ngFor="let country of countries" [value]="country.name" [attr.data-id]="country.id" [attr.data-code]="country.iso2">
+                            {{ country.name }}
+                          </option>
+                        </select>
+                        <div *ngIf="visitorForm.get('country')?.invalid && visitorForm.get('country')?.touched" class="text-danger small">
+                          Country is required.
+                        </div>
+                      </td>
+                      
+                      <!-- Type -->
+                      <td>
+                        <select
+                          formControlName="type"
+                          (change)="onTypeChange($event, i)"
+                          class="form-control"
+                          aria-label="Select Type"
+                        >
+                          <option value="">Select Type</option>
+                          <option *ngFor="let type of types" [value]="type.name" [attr.data-id]="type.id">
+                            {{ type.name }}
+                          </option>
+                        </select>
+                        <div *ngIf="visitorForm.get('type')?.invalid && visitorForm.get('type')?.touched" class="text-danger small">
+                          Type is required.
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-4">Submit All</button>
+                <button type="submit" class="btn btn-danger mx-3" (click)="onCancel()">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -506,4 +506,41 @@ export class ApiEndpointsService {
   public addDeletgatesEndPoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATES);
   }
+
+  public addBulkVisitorEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_BULK_VISITOR);
+  }
+
+  public getVisitorEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_VISITOR,
+      (qs: QueryStringParameters) => {
+        qs.push('pageOffset', queryParamsObj['page']),
+        qs.push('pageLimit', queryParamsObj['limit']),
+        qs.push('sortColumn', queryParamsObj['sort']),
+        qs.push('sortOrder', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
+  public updateVisitorByIdEndpoint(
+    id: string
+  ): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_VISITOR, [id]);
+  }
+
+  public deactivateVisitorEndpoint(id: string): string {
+    return this.createUrl(this._constants.API_ENDPOINT_VISITOR +"/"+id + "/deactivate");
+  }
+
+  public listVisitorTypeEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_VISITOR_TYPE);
+  }
+
+  public getVisitorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_SINGLE_VISITOR, [id]);
+  }
+
+
 }

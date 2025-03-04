@@ -309,5 +309,29 @@ TrackingLink(body:any) {
     return this._apiHttpService.put(this._apiEndpointsService.updateDelegateByTypeReferenceEndpoint(), data);
   }
 
+  addBulkVisitor(bodyParams:any): Observable<any> {
+    return this._apiHttpService.post(this._apiEndpointsService.addBulkVisitorEndpoint(),bodyParams);
+  }
+
+  listVisitor(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getVisitorEndpoint(queryParamsObj));
+  }
+
+  updateVisitor(id: string, data: any): Observable<any> {
+    return this._apiHttpService.put(this._apiEndpointsService.updateVisitorByIdEndpoint(id), data);
+  }
+
+  deactivateVisitor(id: string, data: any): Observable<any> {
+    return this._apiHttpService.put(this._apiEndpointsService.deactivateVisitorEndpoint(id), data);
+  }
+
+  listVisitorType(): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listVisitorTypeEndpoint());
+  }
+
+  getVisitorById(id: string): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getVisitorByIdEndpoint(id));
+  }
+
 
 }

@@ -5,6 +5,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AdminService } from 'src/app/features/admin/services/admin.service';
 import { BehaviorSubject } from 'rxjs';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,17 +19,17 @@ export class LoginComponent implements AfterViewInit  {
   eyeIcon: string = "bi-eye-slash"
   private readonly AUTH_KEY = 'isLoggedIn';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-
+  userPermissions: any;
 
 
 
   constructor(
     private _fb: FormBuilder,
     private adminService: AdminService,
-
     private router: Router,
     private SharedService: SharedService,
     private ngxService: NgxUiLoaderService,
+    private permissionsService:UserPermissionsService
   ) { 
     const isLoggedIn = localStorage.getItem(this.AUTH_KEY) === 'true';
     this.isAuthenticatedSubject.next(isLoggedIn);
@@ -102,6 +103,7 @@ export class LoginComponent implements AfterViewInit  {
         email : decreptedUser.email,
         admin_id : decreptedUser.admin_id,
       }
+      this.userPermissions = this.permissionsService.getUserPermissions(decreptedUser.email);
       // Store the encrypted token
       this.SharedService.setJWTToken(decreptedToken);
       this.SharedService.setUserDetails(JSON.stringify(userData));

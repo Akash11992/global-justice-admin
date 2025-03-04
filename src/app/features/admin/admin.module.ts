@@ -33,6 +33,8 @@ import { AddDelegateByFileComponent } from './components/add-delegate-by-file/ad
 import { UploadContactComponent } from './components/upload-contact/upload-contact.component';
 import { ReviewContactComponent } from './components/review-contact/review-contact.component';
 import { DelegateRegistrationComponent } from './components/delegate-registration/delegate-registration.component';
+import { ListVisitorComponent } from './components/visitor/list-visitor/list-visitor.component';
+import { AddEditVisitorComponent } from './components/visitor/add-edit-visitor/add-edit-visitor.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { DelegateRegistrationComponent } from './components/delegate-registratio
     AddDelegateByFileComponent,
     UploadContactComponent,
     ReviewContactComponent,
-    DelegateRegistrationComponent
+    DelegateRegistrationComponent,
+    ListVisitorComponent,
+    AddEditVisitorComponent
   ],
   imports: [
     SharedModule,
