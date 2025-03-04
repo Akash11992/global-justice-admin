@@ -4,34 +4,45 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UserPermissionsService {
+  private userPermission: any = {};
   private superAdminEmails: string[] = ['admin@jlps.com']; // Add super admin emails here
-  private supportTeamEmails: string[] = ['maneesh.yadav@cylsys.com']; // Add support team emails here
+  private supportTeamEmails: string[] = ['support@jlps.com']; // Add support team emails here
 
   constructor() { }
 
   getUserPermissions(email: string) {
     if (this.superAdminEmails.includes(email)) {
-      return {
+      this.userPermission = {
         create: true,
         view: true,
         update: true,
         delete: true,
       };
+
     } else if (this.supportTeamEmails.includes(email)) {
-      return {
+
+      this.userPermission = {
         create: true,
         view: true,
         update: false, // Support team cannot update
         delete: false, // Support team cannot delete
       };
+
     } else {
-      return {
+      this.userPermission = {
         create: false,
-        view: false,
+        view: true,
         update: false,
         delete: false,
       };
     }
+    // Store general user permissions
+    localStorage.setItem('userPermission', JSON.stringify(this.userPermission));
+
   }
-  
+
+  getStoredPermissions() {
+    // Return permissions from in-memory, preventing modification via localStorage
+    return this.userPermission;
+  }
 }

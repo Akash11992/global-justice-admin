@@ -107,8 +107,8 @@ export class PeacekeeperUserComponent implements OnInit {
     private router: Router,
     private ActivatedRoute: ActivatedRoute,
     private httpClient: HttpClient,
-    private permissionsService:UserPermissionsService
-    
+    private permissionsService: UserPermissionsService
+
   ) {
 
 
@@ -121,10 +121,9 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-let userData =  JSON.parse(localStorage.getItem('userDetails'));
-    this.userPermissions = this.permissionsService.getUserPermissions(userData.email);
-    // console.log(window.location.origin);
+  async ngOnInit(): Promise<void> {
+    await this.getUserPermission();
+
     this.isLoading = this.SharedService.isLoading;
 
     this.allPeacekeeper();
@@ -539,7 +538,13 @@ let userData =  JSON.parse(localStorage.getItem('userDetails'));
   }
 
 
+  async getUserPermission() {
+    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    this.permissionsService.getUserPermissions(userData.email);
 
+    // Use in-memory permissions instead of localStorage to prevent tampering
+    this.userPermissions = this.permissionsService.getStoredPermissions();
+  }
 
 
 
