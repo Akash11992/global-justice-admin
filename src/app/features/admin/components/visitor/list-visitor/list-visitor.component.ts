@@ -30,6 +30,7 @@ export class ListVisitorComponent implements OnInit{
   filteredVisitors: any[] = []; // Filtered visitor data
   typeOptions: any[] = []; // Replace with your actual types
   selectedType: string = '';
+  disabledItems = new Set<string>();
 
   constructor(
                   private adminService: AdminService,
@@ -106,7 +107,15 @@ export class ListVisitorComponent implements OnInit{
       )
     }
 
+    disableButtonTemporarily(id: string) {
+      this.disabledItems.add(id); // Disable the button
+      setTimeout(() => this.disabledItems.delete(id), 120000); // Enable after 2 min
+    }
+
     onActivateDeactiveToggle(item:any):void{
+      if (this.disabledItems.has(`toggle-${item.id}`)) return; // Prevent duplicate clicks
+        this.disableButtonTemporarily(`toggle-${item.id}`);
+
       this.ngxService.start();
       const { id, created_at,updated_at, qr_unique_code,qr_code_url,...newItem } = item;
       item['is_active'] = +!item['is_active'];
@@ -168,6 +177,9 @@ export class ListVisitorComponent implements OnInit{
     }
 
     resendTicket(id:string){
+      if (this.disabledItems.has(`resend-${id}`)) return; // Prevent duplicate clicks
+        this.disableButtonTemporarily(`resend-${id}`);
+
       this.adminService.resentTicketVisitor(id).subscribe((data: any) => {
         this.ngxService.stop();
         this.SharedService.ToastPopup('The ticket has been sent successfully', 'Visitor', 'success');
