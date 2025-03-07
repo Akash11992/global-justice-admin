@@ -337,8 +337,8 @@ export class AddCollaboratorComponent {
     }
   
     onCancel(): void {
-      // this.router.navigate(['/dashboard/collaborator']);  
-      this.location.back();
+      this.router.navigate(['dashboard/collaborator']);  
+      // this.location.back();
     }
 
     noFutureDateValidator(control: any) {

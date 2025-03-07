@@ -109,7 +109,7 @@ export class ListVisitorComponent implements OnInit{
 
     disableButtonTemporarily(id: string) {
       this.disabledItems.add(id); // Disable the button
-      setTimeout(() => this.disabledItems.delete(id), 120000); // Enable after 2 min
+      setTimeout(() => this.disabledItems.delete(id), 30000); // Enable after 2 min
     }
 
     onActivateDeactiveToggle(item:any):void{

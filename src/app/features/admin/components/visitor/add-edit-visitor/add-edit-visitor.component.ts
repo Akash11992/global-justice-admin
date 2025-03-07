@@ -217,7 +217,7 @@ export class AddEditVisitorComponent implements OnInit {
 
 
   onCancel(): void {
-    this.router.navigate(['/dashboard/visitor']);  
+    this.router.navigate(['dashboard/visitor']);  
     // this.location.back();
   }
 }

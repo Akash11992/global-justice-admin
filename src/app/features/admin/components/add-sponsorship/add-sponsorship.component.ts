@@ -386,7 +386,7 @@ export class AddSponsorshipComponent implements OnInit{
   }
 
   onCancel(): void {
-    // this.router.navigate(['/dashboard/sponsor']); 
-    this.location.back(); 
+    this.router.navigate(['dashboard/sponsor']); 
+    // this.location.back(); 
   }
 }
