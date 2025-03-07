@@ -10,6 +10,7 @@ import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
 import { faEye, faEyeSlash, faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 
 
 @Component({
@@ -62,9 +63,10 @@ export class RegisteredUserComponent {
   totalPages: number = 0;
   isLoading: boolean = true;
   isSpinner: number = -1;
-  isFromSponsorship:boolean = false;
-  sponsorshipId:any;
-  sponsorshipName:any;
+  isFromSponsorship: boolean = false;
+  sponsorshipId: any;
+  sponsorshipName: any;
+  userPermissions: any;
 
   rowOptions = [
     { value: 25, label: '25' },
@@ -75,32 +77,43 @@ export class RegisteredUserComponent {
 
 
 
-  constructor(private datePipe: DatePipe, private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
- 
+  constructor(
+    private datePipe: DatePipe,
+    private fb: FormBuilder,
+    private AdminService: AdminService,
+    private SharedService: SharedService,
+    private ngxService: NgxUiLoaderService,
+    private router: Router,
+    private ActivatedRoute: ActivatedRoute,
+    private httpClient: HttpClient,
+    private permissionsService: UserPermissionsService
+  ) {
+
     this.masterSelected = false;
 
     // this.getCheckedItemList();
   }
 
+  async ngOnInit(): Promise<void> {
+    await this.getUserPermission();
 
-  ngOnInit(): void {
     this.isLoading = this.SharedService.isLoading;
 
     this.ActivatedRoute.queryParams.subscribe(params => {
-      if ((params['type'] && params['type'] == 'DELEGATE_SPONSERED') && 
-        (params['id'] && params['id'] !=='')) {
-            this.isFromSponsorship = true;
-            this.sponsorshipId = params['id'];
-            this.sponsorshipName = params['name'];
+      if ((params['type'] && params['type'] == 'DELEGATE_SPONSERED') &&
+        (params['id'] && params['id'] !== '')) {
+        this.isFromSponsorship = true;
+        this.sponsorshipId = params['id'];
+        this.sponsorshipName = params['name'];
 
-            this.allDelegate();
-            this.getInterval();
-      }else{
-            this.isFromSponsorship = false;
-            this.sponsorshipId = "";
-            this.sponsorshipName = "";
-            this.allDelegate();
-            this.getInterval();
+        this.allDelegate();
+        this.getInterval();
+      } else {
+        this.isFromSponsorship = false;
+        this.sponsorshipId = "";
+        this.sponsorshipName = "";
+        this.allDelegate();
+        this.getInterval();
       }
     })
   }
@@ -131,15 +144,15 @@ export class RegisteredUserComponent {
   // }
   allDelegate() {
 
-    let body:any = {
+    let body: any = {
       sort_column: this.sortBy,
       sort_order: this.order,
-      search:this.search,
-      page_size:this.limit,
-      page_no:this.page ,
+      search: this.search,
+      page_size: this.limit,
+      page_no: this.page,
     };
 
-    if(this.isFromSponsorship){
+    if (this.isFromSponsorship) {
       body['p_type'] = "DELEGATE_SPONSERED";
       body['p_reference_by'] = this.sponsorshipId;
 
@@ -174,9 +187,9 @@ export class RegisteredUserComponent {
       this.isSpinner = -1;
 
     },
-    (error) => {
-      this.isSpinner = -1; // Hide spinner even if an error occurs
-    });
+      (error) => {
+        this.isSpinner = -1; // Hide spinner even if an error occurs
+      });
   }
 
 
@@ -443,7 +456,7 @@ export class RegisteredUserComponent {
 
 
   export() {
-        this.form = 'Delegates';
+    this.form = 'Delegates';
 
     // Capitalized headers with first letter in uppercase
     const headers = [
@@ -497,76 +510,84 @@ export class RegisteredUserComponent {
 
 
 
-// new pagination
+  // new pagination
 
-onSelectionChange(selectedValue: string) {
-  this.page = 1
-  this.limit = +selectedValue;
-  this.allDelegate();
-}
-
-onSearchClick(searchValue: string) {
-  if(searchValue.trim().length === 0){
+  onSelectionChange(selectedValue: string) {
     this.page = 1
-    this.limit = 25;
-    this.getInterval();
-  }else if (searchValue.charAt(0) === ' ') {
-    this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
-    return;
-  } else {
-    clearInterval(this.intervalId);
-  }
-  this.search = searchValue.trim();
-  this.allDelegate();
-}
-
-preventFirstSpace(input: HTMLInputElement) {
-  if (input.value.charAt(0) === ' ') {
-    input.value = input.value.trim(); // Remove leading space immediately
-  }
-}
-
-changePage(newPage: number) {
-  if (newPage >= 1 && newPage <= this.totalPages) {
-    this.page = newPage;
+    this.limit = +selectedValue;
     this.allDelegate();
   }
-}
 
-onSort(column: string) {
-  this.sortBy = column;
-  this.order = this.order === 'asc' ? 'desc' : 'asc';
-
-  if (this.sortColumn === column) {
-    this.sortDirection = !this.sortDirection; // Toggle direction
-  } else {
-    this.sortColumn = column;
-    this.sortDirection = true; // Default Ascending
-  
+  onSearchClick(searchValue: string) {
+    if (searchValue.trim().length === 0) {
+      this.page = 1
+      this.limit = 25;
+      this.getInterval();
+    } else if (searchValue.charAt(0) === ' ') {
+      this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
+      return;
+    } else {
+      clearInterval(this.intervalId);
+    }
+    this.search = searchValue.trim();
+    this.allDelegate();
   }
-  this.allDelegate();
-}
 
-onActivateDeactiveToggle(item:any):any{
-  console.log(item);
-  this.ngxService.start();
-  const payload = {
-    tu_type:item.tu_type,
-    tu_reference_by: item.tu_reference_by,
-    is_active:+!item.is_active
-  };
-  
-  this.AdminService.updateDelegateByTypeRef(payload).subscribe((data: any) => {
-    this.ngxService.stop();
-    this.SharedService.ToastPopup('Delegate updated successfully', 'Delegate', 'success');
-  },
-  (error: any) => {
-    this.ngxService.stop();
-    this.SharedService.ToastPopup('Oops failed to update delegate', 'Delegate', 'error');
+  preventFirstSpace(input: HTMLInputElement) {
+    if (input.value.charAt(0) === ' ') {
+      input.value = input.value.trim(); // Remove leading space immediately
+    }
   }
-  )
-}
 
+  changePage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      this.allDelegate();
+    }
+  }
+
+  onSort(column: string) {
+    this.sortBy = column;
+    this.order = this.order === 'asc' ? 'desc' : 'asc';
+
+    if (this.sortColumn === column) {
+      this.sortDirection = !this.sortDirection; // Toggle direction
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = true; // Default Ascending
+
+    }
+    this.allDelegate();
+  }
+
+  onActivateDeactiveToggle(item: any): any {
+    console.log(item);
+    this.ngxService.start();
+    const payload = {
+      tu_type: item.tu_type,
+      tu_reference_by: item.tu_reference_by,
+      is_active: +!item.is_active
+    };
+
+    this.AdminService.updateDelegateByTypeRef(payload).subscribe((data: any) => {
+      this.ngxService.stop();
+      this.SharedService.ToastPopup('Delegate updated successfully', 'Delegate', 'success');
+    },
+      (error: any) => {
+        this.ngxService.stop();
+        this.SharedService.ToastPopup('Oops failed to update delegate', 'Delegate', 'error');
+      }
+    )
+  }
+
+
+  async getUserPermission() {
+    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    this.permissionsService.getUserPermissions(userData.email);
+
+    // Use in-memory permissions instead of localStorage to prevent tampering
+    this.userPermissions = this.permissionsService.getStoredPermissions();
+  }
 
 
 

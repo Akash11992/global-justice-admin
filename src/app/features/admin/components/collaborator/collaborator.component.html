@@ -133,7 +133,7 @@
                                 Edit</a
                               >
                             </li>
-                            <li (click)="onActivateDeactiveToggle(item)">
+                            <li *ngIf="userPermissions.update" (click)="onActivateDeactiveToggle(item)">
                               <a class="dropdown-item" style="cursor: pointer">
                                 {{item.is_active ? 'Deactivate': 'Activate'}}</a
                               >
