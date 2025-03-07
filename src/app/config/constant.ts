@@ -139,6 +139,7 @@ export class Constants {
     public readonly API_ENDPOINT_VISITOR: string = 'visitors'
     public readonly API_ENDPOINT_VISITOR_EXPORT: string = 'visitors/exportToCsv'
     public readonly API_ENDPOINT_SINGLE_VISITOR: string = 'visitors/single'
+    public readonly API_ENDPOINT_RESEND_TICKET_VISITOR: string = 'visitors/resendMail'
     public readonly API_ENDPOINT_VISITOR_TYPE: string = 'visitors/visitors-types'
 
 

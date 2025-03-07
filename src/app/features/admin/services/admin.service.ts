@@ -351,5 +351,9 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.getVisitorByIdEndpoint(id));
   }
 
+  resentTicketVisitor(id: string): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.resentTicketVisitorByIdEndpoint(id));
+  }
+
 
 }

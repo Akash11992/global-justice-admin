@@ -167,18 +167,30 @@ export class ListVisitorComponent implements OnInit{
   
     }
 
+    resendTicket(id:string){
+      this.adminService.resentTicketVisitor(id).subscribe((data: any) => {
+        this.ngxService.stop();
+        this.SharedService.ToastPopup('The ticket has been sent successfully', 'Visitor', 'success');
+      },
+      (error: any) => {
+        this.ngxService.stop();
+        this.SharedService.ToastPopup('Oops failed to send ticket visitor', 'Visitor', 'error');
+      }
+      )
+    }
+
     downloadFile(filePath: string, fileName: string,fileType:string) {
       switch(fileType){
         case 'QR':
-        filePath = environment.fileAccessUrl+'/visitor/qr/'+fileName;
+        filePath = environment.fileAccessUrl+'/visitor/ticket_qr/'+fileName;
         break;
 
         case 'BADGE_IMG':
-          filePath = environment.fileAccessUrl+'/visitor/batch/image/'+fileName;
+          filePath = environment.fileAccessUrl+'/visitor/ticket_photo/'+fileName;
         break;
 
         case 'BADGE_PDF':
-          filePath = environment.fileAccessUrl+'/visitor/batch/pdf/'+fileName;
+          filePath = environment.fileAccessUrl+'/visitor/ticket_pdf/'+fileName;
         break;
 
       }
