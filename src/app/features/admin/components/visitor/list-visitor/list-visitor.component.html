@@ -19,17 +19,23 @@
         <div class="card" id="uppercard">
           <div class="card-body">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <div class="row">
                   <div class="col-md-12">
                     <form>
                       <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                           <select #mySelect (change)="onSelectionChange(mySelect.value)"  style="cursor: pointer;" class="form-control" aria-label="Default select example">
                             <option *ngFor="let option of rowOptions" [value]="option.value">{{ option.label }}</option>
                           </select>
                         </div>
-                        <div class="col-md-9 d-flex">
+                        <div class="col-md-4">
+                          <select #typeSelect (change)="onTypeFilterChange(typeSelect.value)" style="cursor: pointer;" class="form-control" aria-label="Filter by type">
+                            <option value="">All Types</option>
+                            <option *ngFor="let type of typeOptions" [value]="type?.id">{{ type?.name }}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6 d-flex">
                           <input
                           #searchInput
                         class="form-control"
@@ -52,9 +58,13 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6" id="exportcolmd">
+              <div class="col-md-4" id="exportcolmd">
                 <button class="btn" type="button" id="exportbtn" routerLink="/dashboard/add-visitor">
                   <i class="bi bi-plus"></i> Add Visitor
+                </button>
+                &nbsp;
+                <button class="btn " type="button" id="exportbtn"
+                  (click)="onClickExport()"><i class="bi bi-file-earmark-excel"></i> Export
                 </button>
               </div>
             </div>

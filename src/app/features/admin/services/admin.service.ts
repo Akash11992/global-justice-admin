@@ -252,6 +252,12 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.listSponsorshipByPaginationAndSearchAndSortingEndpoint(queryParamsObj));
   }
 
+  exportSponsor(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.exportSponsorByPaginAndSearchAndSortEndpoint(queryParamsObj),{
+      responseType: 'blob', // Important: Set responseType to 'blob' for file download
+    });
+  }
+
   //collaborator
   createCollaborator(bodyParams:any): Observable<any> {
     return this._apiHttpService.post(this._apiEndpointsService.addCollaboratorEndpoint(),bodyParams);
@@ -271,6 +277,12 @@ TrackingLink(body:any) {
 
   listCollaborator(queryParamsObj: any): Observable<any> {
     return this._apiHttpService.get(this._apiEndpointsService.listCollaboratorByPaginationAndSearchAndSortingEndpoint(queryParamsObj));
+  }
+
+  exportCollaborator(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.exportCollaboratorByPaginAndSearchAndSortEndpoint(queryParamsObj),{
+      responseType: 'blob', // Important: Set responseType to 'blob' for file download
+    });
   }
 
   listSponosorshipType(): Observable<any> {
@@ -315,6 +327,12 @@ TrackingLink(body:any) {
 
   listVisitor(queryParamsObj: any): Observable<any> {
     return this._apiHttpService.get(this._apiEndpointsService.getVisitorEndpoint(queryParamsObj));
+  }
+
+  exportVisitor(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getVisitorExportEndpoint(queryParamsObj),{
+      responseType: 'blob', // Important: Set responseType to 'blob' for file download
+    });
   }
 
   updateVisitor(id: string, data: any): Observable<any> {

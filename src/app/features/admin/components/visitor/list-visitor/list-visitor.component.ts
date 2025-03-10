@@ -29,37 +29,81 @@ export class ListVisitorComponent implements OnInit {
     { value: 100, label: '100' }
   ];
 
+  filteredVisitors: any[] = []; // Filtered visitor data
+  typeOptions: any[] = []; // Replace with your actual types
+  selectedType: string = '';
+
   constructor(
-    private adminService: AdminService,
-    private ngxService: NgxUiLoaderService,
-    private SharedService: SharedService,
-    private permissionsService: UserPermissionsService
+                  private adminService: AdminService,
+                  private ngxService: NgxUiLoaderService,
+                  private SharedService: SharedService,
+                  private permissionsService: UserPermissionsService
+                ) {}
+  
+    ngOnInit() {
+     this.getUserPermission(); 
 
-  ) { }
+      this.setupType();
+      this.loadVisitors();
+    }
 
-  async ngOnInit(): Promise<void> {
-    await this.getUserPermission(); 
-    this.loadVisitors();
-  }
+    setupType(): void {
+      this.adminService.listVisitorType().subscribe(
+        (data: any) => {
+          this.typeOptions = data['data'];
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    }
 
-  loadVisitors() {
-    const payload = {
-      page: this.page,
-      limit: this.limit,
-      sort: this.sortBy,
-      order: this.order,
-      search: this.search
-    };
-
-    this.ngxService.start();
-
-    this.adminService.listVisitor(payload).subscribe((res: any) => {
-      this.ngxService.stop();
-      this.visitors = res.data;
-      this.totalItems = res.totalItems;
-      this.totalPages = Math.ceil(this.totalItems / this.limit);
-
-    },
+    onClickExport(){
+      const payload = {
+        page:this.page,
+        limit:this.limit,
+        sort:this.sortBy,
+        order:this.order,
+        search:this.search,
+        type:this.selectedType
+      };
+  
+      this.ngxService.start();
+  
+      this.adminService.exportVisitor(payload).subscribe((blob: Blob) => {
+        this.ngxService.stop();
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `visitors_${new Date().toISOString().split('T')[0]}.csv`; // Set the file name
+        link.click(); // Trigger the download
+        window.URL.revokeObjectURL(link.href); 
+      },
+      (error: any) => {
+        this.ngxService.stop();
+        this.SharedService.ToastPopup('Oops failed to list visitor', 'Visitors', 'error');
+      }
+      )
+    }
+  
+    loadVisitors() {
+      const payload = {
+        page:this.page,
+        limit:this.limit,
+        sort:this.sortBy,
+        order:this.order,
+        search:this.search,
+        type:this.selectedType
+      };
+  
+      this.ngxService.start();
+  
+      this.adminService.listVisitor(payload).subscribe((res: any) => {
+        this.ngxService.stop();
+        this.visitors = res.data;
+        this.totalItems = res.totalItems;
+        this.totalPages = Math.ceil(this.totalItems / this.limit);
+  
+      },
       (error: any) => {
         this.ngxService.stop();
         this.SharedService.ToastPopup('Oops failed to list visitor', 'Visitors', 'error');
@@ -95,6 +139,11 @@ export class ListVisitorComponent implements OnInit {
     this.loadVisitors();
   }
 
+  onTypeFilterChange(type: string): void {
+    this.selectedType = type;
+    this.loadVisitors();
+  }
+
   onSearchClick(searchValue: string) {
     this.search = searchValue ? searchValue.trim() : "";
     this.loadVisitors();
@@ -106,6 +155,7 @@ export class ListVisitorComponent implements OnInit {
       this.loadVisitors();
     }
   }
+
 
   onSort(column: string): void {
 

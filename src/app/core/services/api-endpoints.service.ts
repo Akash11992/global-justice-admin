@@ -448,6 +448,19 @@ export class ApiEndpointsService {
       });
   }
 
+  public exportSponsorByPaginAndSearchAndSortEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_EXPORT_SPONSORSHIP,
+      (qs: QueryStringParameters) => {
+        qs.push('page', queryParamsObj['page']),
+        qs.push('limit', queryParamsObj['limit']),
+        qs.push('sort', queryParamsObj['sort']),
+        qs.push('order', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
   public listSponsorshipTypeEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_LIST_SPONSORSHIP_TYPE);
   }
@@ -473,6 +486,19 @@ export class ApiEndpointsService {
     queryParamsObj:any
   ): string {
     return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_LIST_COLLABORATOR,
+      (qs: QueryStringParameters) => {
+        qs.push('page', queryParamsObj['page']),
+        qs.push('limit', queryParamsObj['limit']),
+        qs.push('sort', queryParamsObj['sort']),
+        qs.push('order', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
+  public exportCollaboratorByPaginAndSearchAndSortEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_EXPORT_COLLABORATOR,
       (qs: QueryStringParameters) => {
         qs.push('page', queryParamsObj['page']),
         qs.push('limit', queryParamsObj['limit']),
@@ -521,6 +547,21 @@ export class ApiEndpointsService {
         qs.push('sortColumn', queryParamsObj['sort']),
         qs.push('sortOrder', queryParamsObj['order']),
         qs.push('search', queryParamsObj['search'])
+        qs.push('type', queryParamsObj['type'])
+      });
+  }
+
+  public getVisitorExportEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_VISITOR_EXPORT,
+      (qs: QueryStringParameters) => {
+        qs.push('pageOffset', queryParamsObj['page']),
+        qs.push('pageLimit', queryParamsObj['limit']),
+        qs.push('sortColumn', queryParamsObj['sort']),
+        qs.push('sortOrder', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+        qs.push('type', queryParamsObj['type'])
       });
   }
 
