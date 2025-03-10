@@ -324,8 +324,10 @@ export class AddCollaboratorComponent {
         fullName: "",
         email: "",
         mobile: "",
-        country: "",
-        dob: "",
+        country: "0",
+        state: "0",
+        city: "0",
+        dob: "02-02-1996",
         refPeacekeeper:""
       });
       this.selectedImageBase64 = null;

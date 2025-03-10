@@ -47,7 +47,7 @@
                           placeholder="Full Name"
                         />
                         <div *ngIf="(visitorForm.get('full_name')?.invalid || visitorForm.get('full_name').errors?.pattern) && visitorForm.get('full_name')?.touched" class="text-danger small">
-                          Full Name is required.
+                          Full Name is required and valid .
                         </div>
                       </td>
                       <!-- Mobile No. -->

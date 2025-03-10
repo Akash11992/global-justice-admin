@@ -143,20 +143,24 @@
                                   Edit</a
                                 >
                               </li>
-                              <li *ngIf="userPermissions.update" (click)="onActivateDeactiveToggle(item)">
-                                <a class="dropdown-item" style="cursor: pointer">
+                              <li (click)="onActivateDeactiveToggle(item)">
+                                <a class="dropdown-item" style="cursor: pointer"
+                                [class.disabled]="disabledItems.has('toggle-' + item.id)" 
+                                [attr.aria-disabled]="disabledItems.has('toggle-' + item.id)">
                                   {{+item.is_active ? 'Deactivate': 'Activate'}}</a
                                 >
                               </li>
   
                               <li>
-                                <a class="dropdown-item" style="cursor: pointer">
+                                <a class="dropdown-item" style="cursor: pointer" (click)="resendTicket(item.id)"
+                                [class.disabled]="disabledItems.has('resend-' + item.id)" 
+                                [attr.aria-disabled]="disabledItems.has('resend-' + item.id)">
                                   Resend Ticket</a
                                 >
                               </li>
   
                               <li>
-                                <a class="dropdown-item" style="cursor: pointer">
+                                <a class="dropdown-item" style="cursor: pointer" (click)="downloadFile(item.random_id, item.random_id+'.pdf','BADGE_PDF')">
                                   Download Ticket</a
                                 >
                               </li>

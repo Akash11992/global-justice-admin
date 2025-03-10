@@ -583,5 +583,11 @@ export class ApiEndpointsService {
     return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_SINGLE_VISITOR, [id]);
   }
 
+  public resentTicketVisitorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_RESEND_TICKET_VISITOR, [id]);
+  }
+
+  
+
 
 }
