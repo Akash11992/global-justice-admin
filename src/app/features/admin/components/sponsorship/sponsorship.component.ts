@@ -62,6 +62,32 @@ export class SponsorshipComponent implements OnInit {
     )
   }
 
+  onClickExport(){
+    const payload = {
+      page:this.page,
+      limit:this.limit,
+      sort:this.sortBy,
+      order:this.order,
+      search:this.search
+    };
+
+    this.ngxService.start();
+
+    this.adminService.exportSponsor(payload).subscribe((blob: Blob) => {
+      this.ngxService.stop();
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `sponsor_${new Date().toISOString().split('T')[0]}.csv`; // Set the file name
+      link.click(); // Trigger the download
+      window.URL.revokeObjectURL(link.href); 
+    },
+    (error: any) => {
+      this.ngxService.stop();
+      this.SharedService.ToastPopup('Oops failed to list sponsor', 'Sponsors', 'error');
+    }
+    )
+  }
+
   onActivateDeactiveToggle(item:any):void{
     this.ngxService.start();
     const { id, created_at,updated_at, ...newItem } = item;
