@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 
 @Component({
   selector: 'app-sponsorship',
@@ -19,6 +20,8 @@ export class SponsorshipComponent implements OnInit {
   order: string = 'desc';
   search: string = '';
   totalPages: number = 0;
+  userPermissions: any;
+
 
   rowOptions = [
     { value: 25, label: '25' },
@@ -30,10 +33,13 @@ export class SponsorshipComponent implements OnInit {
    constructor(
                 private adminService: AdminService,
                 private ngxService: NgxUiLoaderService,
-                private SharedService: SharedService
+                private SharedService: SharedService,
+                private permissionsService: UserPermissionsService
+                
               ) {}
 
   ngOnInit() {
+    this.getUserPermission();
     this.loadSponsorships();
   }
 
@@ -136,6 +142,14 @@ export class SponsorshipComponent implements OnInit {
       this.order = 'asc';
     }
     this.loadSponsorships();
+  }
+
+  async getUserPermission() {
+    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    this.permissionsService.getUserPermissions(userData.email);
+
+    // Use in-memory permissions instead of localStorage to prevent tampering
+    this.userPermissions = this.permissionsService.getStoredPermissions();
   }
 }
 
