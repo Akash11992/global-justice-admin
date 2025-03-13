@@ -74,6 +74,7 @@
                   <thead>
                     <tr>
                       <th>#</th>
+
                       <th (click)="onSort('full_name')">
                         Full Name 
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'full_name' && order === 'asc'"></i>
@@ -94,6 +95,7 @@
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email' && order === 'desc'"></i>
                       </th>
+
                       <th (click)="onSort('mobile_no')">
                         Mobile No.
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_no' && order === 'asc'"></i>
@@ -107,6 +109,7 @@
                       <td class="text-center">{{ (page - 1) * limit + i + 1 }}</td>
                       <td>{{item.full_name}}</td>
                       <!-- <td>{{item.dob}}</td> -->
+
                       <td>{{item.country}}</td>
                       <td>{{item.email}}</td>
                       <td>{{item.mobile_no}}</td>
@@ -134,6 +137,7 @@
                               >
                             </li>
                             <li *ngIf="userPermissions.update" (click)="onActivateDeactiveToggle(item)">
+
                               <a class="dropdown-item" style="cursor: pointer">
                                 {{item.is_active ? 'Deactivate': 'Activate'}}</a
                               >

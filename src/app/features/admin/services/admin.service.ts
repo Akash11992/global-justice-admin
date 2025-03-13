@@ -258,6 +258,7 @@ TrackingLink(body:any) {
     });
   }
 
+
   //collaborator
   createCollaborator(bodyParams:any): Observable<any> {
     return this._apiHttpService.post(this._apiEndpointsService.addCollaboratorEndpoint(),bodyParams);
@@ -289,6 +290,7 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.listSponsorshipTypeEndpoint());
   }
 
+
   listCountry(): Observable<any> {
     return this._apiHttpService.get(this._apiEndpointsService.listCountryEndpoint());
   }
@@ -312,6 +314,7 @@ TrackingLink(body:any) {
   addDeletgates(bodyParams:any): Observable<any> {
     return this._apiHttpService.post(this._apiEndpointsService.addDeletgatesEndPoint(),bodyParams);
   }
+
 
   getAllCountrycode() {
     return this._apiHttpService.get(this._apiEndpointsService.getAllCountrycodeEndpoint());
@@ -354,6 +357,7 @@ TrackingLink(body:any) {
   resentTicketVisitor(id: string): Observable<any> {
     return this._apiHttpService.get(this._apiEndpointsService.resentTicketVisitorByIdEndpoint(id));
   }
+
 
 
 }

@@ -14,7 +14,9 @@
       <div class="card" id="uppercard">
         <div class="card-body">
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
             <div class="row">
+
               <div class="col-md-12 border-bottom mb-3">
                 <h4 style="display: inline-flex">{{title}} Collaborator</h4>
               </div>
@@ -28,6 +30,7 @@
                 <div *ngIf="form.get('fullName').errors?.pattern || form.get('fullName').errors?.leadingTrailingSpaces" class="error text-danger">
                   Only alphabets, number and spaces allowed with max length 50
                 </div>
+
               </div>
               <!-- <div class="col-md-6 mb-3">
                 <label for="dob" class="form-label">DOB <span class="error text-danger">*</span></label>
@@ -72,16 +75,28 @@
                 </select>
                 <div *ngIf="form.get('country').errors?.required && form.get('country').touched" class="error text-danger">
                   Country is required
+
                 </div>
               </div>
 
               <div class="col-md-6 mb-3">
+
                 <label for="State" class="form-label">State</label>
                 <select formControlName="state" (change)="onStateChange($event)" class="form-control" aria-label="Default select example">
                   <option value="0">Select State</option>
                   <option *ngFor="let state of states" [value]="state['id']" [attr.data-name]="state['name']">{{state['name']}}</option>
+
+                <label for="Country" class="form-label">Country <span class="error text-danger">*</span></label>
+                <select formControlName="country" (change)="onCountryChange($event)" class="form-control" aria-label="Default select example">
+                  <option value="">Select Country</option>
+                  <option *ngFor="let country of countries" [value]="country['id']" [attr.data-name]="country['name']" [attr.data-code]="country['iso2']">{{country['name']}}</option>
+
                 </select>
+                <div *ngIf="form.get('country').errors?.required && form.get('country').touched" class="error text-danger">
+                  Country is required
+                </div>
               </div>
+
               <div class="col-md-6 mb-3">
                 <label for="City" class="form-label">City</label>
                 <select formControlName="city" (change)="onCityChange($event)" class="form-control" aria-label="Default select example">
@@ -94,6 +109,7 @@
                 <textarea formControlName="address" class="form-control" id="Address" rows="3"></textarea>
                 <div *ngIf="form.get('address').errors?.pattern || form.get('address').errors?.leadingTrailingSpaces" class="error text-danger">
                   Enter correct address format with max length 100
+
                 </div>
               </div>
 
@@ -108,6 +124,7 @@
 
               <div class="col-md-6 mb-3">
                 <label  class="form-label d-block mb-2">Current Uploaded Image</label>
+
                 <img *ngIf="selectedImageBase64" [src]="selectedImageBase64" alt="Preview" width="100">
               </div>
 

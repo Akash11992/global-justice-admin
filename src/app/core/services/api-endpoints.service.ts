@@ -448,6 +448,7 @@ export class ApiEndpointsService {
       });
   }
 
+
   public exportSponsorByPaginAndSearchAndSortEndpoint(
     queryParamsObj:any
   ): string {
@@ -464,6 +465,7 @@ export class ApiEndpointsService {
   public listSponsorshipTypeEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_LIST_SPONSORSHIP_TYPE);
   }
+
 
   //collaborator
   public addCollaboratorEndpoint(): string {
@@ -495,6 +497,7 @@ export class ApiEndpointsService {
       });
   }
 
+
   public exportCollaboratorByPaginAndSearchAndSortEndpoint(
     queryParamsObj:any
   ): string {
@@ -507,6 +510,7 @@ export class ApiEndpointsService {
         qs.push('search', queryParamsObj['search'])
       });
   }
+
 
   public listPeaceKeeperEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_LIST_PEACEKEEPER);
@@ -528,6 +532,7 @@ export class ApiEndpointsService {
   public addDeletgateEndPoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATE);
   }
+
 
   public addDeletgatesEndPoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATES);

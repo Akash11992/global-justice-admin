@@ -68,12 +68,15 @@ const routes: Routes = [
       { path: "sponsor", component: SponsorshipComponent,canActivate: [AuthGuard], },
       { path: "add-sponsor", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
       { path: "edit-sponsor/:id", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
+
       { path: "collaborator", component: CollaboratorComponent,canActivate: [AuthGuard], },
       { path: "add-collaborator", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
       { path: "edit-collaborator/:id", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
       { path: "delegate", component: DelegateComponent,canActivate: [AuthGuard], },
       { path: "add-delegate/:id", component: AddDelegateComponent,canActivate: [AuthGuard], },
+
       { path: "delegate-registration/:id", component: DelegateRegistrationComponent,canActivate: [AuthGuard], },
+
       { path: "add-delegate-by-file", component: AddDelegateByFileComponent,canActivate: [AuthGuard], },
       { path: "contact-us", component: ContactUsComponent,canActivate: [AuthGuard], },
       { path: "visitor", component: ListVisitorComponent,canActivate: [AuthGuard], },

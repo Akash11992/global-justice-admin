@@ -97,6 +97,7 @@ export class PeacekeeperUserComponent implements OnInit {
 
   userPermissions: any;
 
+
   checkedList: any;
   constructor(
     private datePipe: DatePipe,
@@ -123,6 +124,7 @@ export class PeacekeeperUserComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getUserPermission();
+
 
     this.isLoading = this.SharedService.isLoading;
 
@@ -185,6 +187,7 @@ export class PeacekeeperUserComponent implements OnInit {
     }
     //  this.ngxService.start();
 
+
     this.AdminService.getAllPeacekeeperData(body).subscribe((data: any) => {
       // this.ngxService.stop();
 
@@ -216,6 +219,7 @@ export class PeacekeeperUserComponent implements OnInit {
         this.isLoading = false;
         this.isSpinner = -1; // Hide spinner even if an error occurs
       });
+
   }
 
 
@@ -468,6 +472,7 @@ export class PeacekeeperUserComponent implements OnInit {
 
   toggleVisibility(index: any) {
 
+
     this.isVisible[index] = !this.isVisible[index];
   }
 
@@ -544,7 +549,16 @@ export class PeacekeeperUserComponent implements OnInit {
 
     // Use in-memory permissions instead of localStorage to prevent tampering
     this.userPermissions = this.permissionsService.getStoredPermissions();
+
   }
+  this.allPeacekeeper();
+}
+
+
+
+
+
+
 
 
 

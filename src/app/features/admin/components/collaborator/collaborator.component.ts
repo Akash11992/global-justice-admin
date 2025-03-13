@@ -6,12 +6,14 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import { environment } from 'src/environments/environment';
 import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 
+
 @Component({
   selector: 'app-collaborator',
   templateUrl: './collaborator.component.html',
   styleUrls: ['./collaborator.component.css']
 })
 export class CollaboratorComponent implements OnInit {
+
 
   collaborators: any[] = [];
   totalItems: number = 0;
@@ -22,6 +24,7 @@ export class CollaboratorComponent implements OnInit {
   search: string = '';
   totalPages: number = 0;
   userPermissions: any;
+
 
   rowOptions = [
     { value: 25, label: '25' },
@@ -67,6 +70,7 @@ export class CollaboratorComponent implements OnInit {
   }
 
     onClickExport(){
+
       const payload = {
         page:this.page,
         limit:this.limit,
@@ -84,6 +88,7 @@ export class CollaboratorComponent implements OnInit {
         link.download = `collaborator_${new Date().toISOString().split('T')[0]}.csv`; // Set the file name
         link.click(); // Trigger the download
         window.URL.revokeObjectURL(link.href); 
+
       },
       (error: any) => {
         this.ngxService.stop();
@@ -99,6 +104,7 @@ export class CollaboratorComponent implements OnInit {
       newItem['is_active'] = +!newItem['is_active'];
       newItem['domain_url'] = environment.domainUrl;
       newItem['logo_image'] = '';
+
       newItem['is_updated_by_activated'] = 1;
       this.updateCollaboratorData(item['id'],newItem);
     }
@@ -108,6 +114,7 @@ export class CollaboratorComponent implements OnInit {
       this.ngxService.stop();
       this.SharedService.ToastPopup('collaborator updated successfully', 'Collaborator', 'success');
     },
+
       (error: any) => {
         this.ngxService.stop();
         this.SharedService.ToastPopup('Oops failed to update collaborator', 'Collaborator', 'error');
@@ -175,4 +182,9 @@ export class CollaboratorComponent implements OnInit {
   }
 
 
+
+      }
+      this.SharedService.downloadFile(filePath, fileName);
+    }
+  
 }

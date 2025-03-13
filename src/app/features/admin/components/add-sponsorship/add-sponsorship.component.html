@@ -21,9 +21,11 @@
               <div class="col-md-6 mb-3">
                 <label for="Sponsorship_Type" class="form-label">Sponsorship Type <span class="error text-danger">*</span>
                 </label>
+
                 <select class="form-control" formControlName="sponsorshipType" (change)="onSponsorshipTypeChange($event)">
                   <option value="">Select Sponsorship Type</option>
                   <option *ngFor="let sponsorshipType of sponsorshipTypes" [value]="sponsorshipType['id']" [attr.data-name]="sponsorshipType['name']">{{sponsorshipType['name'] | titlecase}}</option>
+
                 </select>
                 <div *ngIf="form.get('sponsorshipType').errors?.required && form.get('sponsorshipType').touched" class="error text-danger">
                   Sponsorship Type is required
@@ -35,6 +37,8 @@
                 <div *ngIf="form.get('sponsorshipName').errors?.required && form.get('sponsorshipName').touched" class="error text-danger">
                   Sponsership Name is required
                 </div>
+
+
               </div>
               <div class="col-md-6 mb-3">
                 <label for="SN" class="form-label">POC Name <span class="error text-danger">*</span></label>
@@ -47,16 +51,20 @@
                 </div>
               </div>
               <div class="col-md-6 mb-3">
+
                 <label for="PMN" class="form-label">POC Mobile No</label>
                 <input type="text" formControlName="pocMobile" class="form-control" id="PMN" aria-describedby="emailHelp">
+
                 <div *ngIf="form.get('pocMobile').errors?.pattern" class="error text-danger">
                   Invalid mobile number format (eg.+12345678901)
                 </div>
               </div>
               <div class="col-md-6 mb-3">
+
                 <label for="PE" class="form-label">POC Email</label>
                 <input type="text" formControlName="pocEmail" class="form-control" id="PE" aria-describedby="emailHelp">
                 <div *ngIf="form.get('pocEmail').errors?.pattern" class="error text-danger">
+
                   Invalid email format
                 </div>
                 <div *ngIf="form.get('pocEmail').errors?.maxlength" class="error text-danger">
@@ -68,26 +76,39 @@
                 <label for="Country" class="form-label">Country</label>
                 <select formControlName="country" (change)="onCountryChange($event)" class="form-control" aria-label="Default select example">
                   <option value="0">Select Country</option>
+
                   <option *ngFor="let country of countries" [value]="country['id']" [attr.data-name]="country['name']">{{country['name']}}</option>
                 </select>
+                <div *ngIf="form.get('country').errors?.required && form.get('country').touched" class="error text-danger">
+                  Country is required
+                </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="State" class="form-label">State</label>
                 <select formControlName="state" (change)="onStateChange($event)" class="form-control" aria-label="Default select example">
                   <option value="0">Select State</option>
+
                   <option *ngFor="let state of states" [value]="state['id']" [attr.data-name]="state['name']">{{state['name']}}</option>
                 </select>
+                <div *ngIf="form.get('state').errors?.required && form.get('state').touched" class="error text-danger">
+                  State is required
+                </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="City" class="form-label">City</label>
                 <select formControlName="city" (change)="onCityChange($event)" class="form-control" aria-label="Default select example">
                   <option value="0">Select City</option>
+
                   <option *ngFor="let city of cities" [value]="city['id']" [attr.data-name]="city['name']">{{city['name']}}</option>
                 </select>
+                <div *ngIf="form.get('city').errors?.required && form.get('city').touched" class="error text-danger">
+                  City is required
+                </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="Address" class="form-label">Address</label>
                 <textarea formControlName="address" class="form-control" id="Address" rows="3"></textarea>
+
                 <div *ngIf="form.get('address').errors?.pattern || form.get('address').errors?.leadingTrailingSpaces" class="error text-danger">
                   Enter correct address format with max length 100
                 </div>
@@ -104,6 +125,7 @@
                 <select formControlName="refPeacekeeper" (change)="onPeacekeeperChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Ref Peacekeeper</option>
                   <option *ngFor="let pk of peacekeepers" [value]="pk['peacekeeper_id']" [attr.data-name]="pk['full_name']">{{pk['full_name'] +'('+ pk['coupon_code'] + ')'}}</option>
+
                 </select>
                 <div *ngIf="form.get('refPeacekeeper').errors?.required && form.get('refPeacekeeper').touched" class="error text-danger">
                   Peacekeeper is required

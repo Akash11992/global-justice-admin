@@ -23,6 +23,7 @@ export class SponsorshipComponent implements OnInit {
   userPermissions: any;
 
 
+
   rowOptions = [
     { value: 25, label: '25' },
     { value: 50, label: '50' },
@@ -40,6 +41,7 @@ export class SponsorshipComponent implements OnInit {
 
   ngOnInit() {
     this.getUserPermission();
+
     this.loadSponsorships();
   }
 
@@ -90,6 +92,7 @@ export class SponsorshipComponent implements OnInit {
     (error: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('Oops failed to list sponsor', 'Sponsors', 'error');
+
     }
     )
   }
@@ -110,6 +113,7 @@ export class SponsorshipComponent implements OnInit {
     (error: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('Oops failed to update sponsor', 'Sponsor', 'error');
+
     }
     )
   }
@@ -151,5 +155,6 @@ export class SponsorshipComponent implements OnInit {
     // Use in-memory permissions instead of localStorage to prevent tampering
     this.userPermissions = this.permissionsService.getStoredPermissions();
   }
+
 }
 

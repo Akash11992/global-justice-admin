@@ -68,6 +68,7 @@ export class RegisteredUserComponent {
   sponsorshipName: any;
   userPermissions: any;
 
+
   rowOptions = [
     { value: 25, label: '25' },
     { value: 50, label: '50' },
@@ -89,6 +90,7 @@ export class RegisteredUserComponent {
     private permissionsService: UserPermissionsService
   ) {
 
+
     this.masterSelected = false;
 
     // this.getCheckedItemList();
@@ -105,6 +107,7 @@ export class RegisteredUserComponent {
         this.isFromSponsorship = true;
         this.sponsorshipId = params['id'];
         this.sponsorshipName = params['name'];
+
 
         this.allDelegate();
         this.getInterval();
@@ -156,6 +159,7 @@ export class RegisteredUserComponent {
       body['p_type'] = "DELEGATE_SPONSERED";
       body['p_reference_by'] = this.sponsorshipId;
 
+
     }
 
     // this.ngxService.start();
@@ -190,6 +194,7 @@ export class RegisteredUserComponent {
       (error) => {
         this.isSpinner = -1; // Hide spinner even if an error occurs
       });
+
   }
 
 
@@ -466,6 +471,7 @@ export class RegisteredUserComponent {
       'Reference', 'Created Date'
     ];
 
+
     // Select the columns you want to export
     const columnsToExport = this.registeredDelegateList.map(item => {
       let created_date = this.datePipe.transform(item.created_date, 'yyyy-MM-dd hh:mm a');
@@ -588,6 +594,7 @@ export class RegisteredUserComponent {
     // Use in-memory permissions instead of localStorage to prevent tampering
     this.userPermissions = this.permissionsService.getStoredPermissions();
   }
+
 
 
 

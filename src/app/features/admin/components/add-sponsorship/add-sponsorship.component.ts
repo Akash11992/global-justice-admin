@@ -8,6 +8,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import { strictStringValidator } from '../../validator/strict-string-validator';
 import { Location } from '@angular/common';
 
+
 @Component({
   selector: 'app-add-sponsorship',
   templateUrl: './add-sponsorship.component.html',
@@ -29,6 +30,7 @@ export class AddSponsorshipComponent implements OnInit{
   selectedStateObj:any ={};
   selectedCityObj:any ={};
   selectedSTypeObj:any ={};
+
   selectedPeacekeeperObj:any ={};
   selectedRefObj:string ='';
   spononsershipResData:any;
@@ -42,6 +44,7 @@ export class AddSponsorshipComponent implements OnInit{
               private ngxService: NgxUiLoaderService,
               private SharedService: SharedService,
               private location: Location
+
             ) {
     
   }
@@ -53,6 +56,7 @@ export class AddSponsorshipComponent implements OnInit{
       this.selectedCountryObj={id:"",name:""};
       this.selectedStateObj={id:"",name:""};
       this.selectedCityObj={id:"",name:""};
+
       this.setupCountry();
       this.setupConditionalValidation();
     }
@@ -74,6 +78,7 @@ export class AddSponsorshipComponent implements OnInit{
     const addressPattern = /^[a-zA-Z0-9\s,.'\-/#]{1,100}$/;
     const emailPattern = /^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
+
     this.form = this.fb.group({
       sponsorshipType: ['', Validators.required],
       pocName: ['', [Validators.required, Validators.pattern(namePattern), strictStringValidator()]],
@@ -84,11 +89,11 @@ export class AddSponsorshipComponent implements OnInit{
       pocMobile: ['', [Validators.pattern(mobilePattern)]],
       country: ['0'],
       city: ['0'],
+
       refBy: [''],
       name: [''],
       refPeacekeeper: ['']
     });
-
 
   }
 
@@ -137,6 +142,7 @@ export class AddSponsorshipComponent implements OnInit{
     };
   }
 
+
   onCountryChange(event: Event): void{
 
     const selectedElement = event.target as HTMLSelectElement;
@@ -154,6 +160,7 @@ export class AddSponsorshipComponent implements OnInit{
     this.selectedCityObj={id:"",name:""};
     this.form.controls['state'].setValue(0);
     this.form.controls['city'].setValue(0);
+
     this.callStateByIdApi(selectedElement.value, "ON_CHANGE");
   }
 
@@ -186,6 +193,7 @@ export class AddSponsorshipComponent implements OnInit{
     this.cities = [];
     this.selectedCityObj={id:"",name:""};
     this.form.controls['city'].setValue(0);
+
     this.callCityByIdApi(selectedElement.value, "ON_CHANGE");
   }
 
@@ -270,6 +278,7 @@ export class AddSponsorshipComponent implements OnInit{
         pocEmail: data['poc_email'],
         city: data['city_id'],
         state: data['state_id'],
+
         address: data['address'],
         name: data["ref_by"] === 'other' ? data["peacekeeper_other_name"] : "",
         sponsorshipName: data['sponsorship_name'],
@@ -283,6 +292,7 @@ export class AddSponsorshipComponent implements OnInit{
     (error: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('Oops failed to update sponsor', 'Sponsor', 'error');
+
     }
     )
   }
@@ -318,6 +328,7 @@ export class AddSponsorshipComponent implements OnInit{
       const payload = {
         sponsorship_type_id:this.form.value["sponsorshipType"],
         sponsorship_type:this.selectedSTypeObj["name"] ? this.selectedSTypeObj["name"] : this.spononsershipResData['sponsorship_type'],
+
         sponsorship_name:this.form.value["sponsorshipName"],
         poc_name:this.form.value["pocName"],
         poc_mobile:this.form.value["pocMobile"],
@@ -328,12 +339,14 @@ export class AddSponsorshipComponent implements OnInit{
         state: "name" in this.selectedStateObj ? this.selectedStateObj["name"]:this.spononsershipResData['state'],
         city_id:+this.form.value["city"],
         city:"name" in this.selectedCityObj ? this.selectedCityObj["name"]:this.spononsershipResData['city'],
+
         address:this.form.value["address"],
         ref_by:this.form.value["refBy"] ? this.form.value["refBy"] : '',
         is_active: this.sponsorshipId ? this.spononsershipResData['is_active'] : 1,
         peacekeeper_id:this.form.value["refBy"] === 'peacekeeper' ? +this.form.value["refPeacekeeper"] : null,
         peacekeeper_other_name:this.form.value["refBy"] === 'peacekeeper' ? 
         this.selectedPeacekeeperObj?.name ?this.selectedPeacekeeperObj["name"]:this.spononsershipResData['peacekeeper_other_name'] : this.form.value["name"]
+
       };
 
       this.ngxService.start();
@@ -345,17 +358,20 @@ export class AddSponsorshipComponent implements OnInit{
         (error: any) => {
           this.ngxService.stop();
           this.SharedService.ToastPopup('Oops failed to updated sponsor', 'Sponsor', 'error');
+
         }
         )
       }else{
         this.adminService.createSponsership(payload).subscribe((data: any) => {
           this.ngxService.stop();
           this.SharedService.ToastPopup('Sponsor added successfully', 'Sponsor', 'success');
+
           this.resetForm();
         },
         (error: any) => {
           this.ngxService.stop();
           this.SharedService.ToastPopup('Oops failed to add sponsor', 'Sponsor', 'error');
+
         }
         )
       }
@@ -388,5 +404,6 @@ export class AddSponsorshipComponent implements OnInit{
   onCancel(): void {
     // this.router.navigate(['/dashboard/sponsor']); 
     this.location.back(); 
+
   }
 }
