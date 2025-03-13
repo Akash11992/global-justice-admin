@@ -252,6 +252,13 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.listSponsorshipByPaginationAndSearchAndSortingEndpoint(queryParamsObj));
   }
 
+  exportSponsor(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.exportSponsorByPaginAndSearchAndSortEndpoint(queryParamsObj),{
+      responseType: 'blob', // Important: Set responseType to 'blob' for file download
+    });
+  }
+
+
   //collaborator
   createCollaborator(bodyParams:any): Observable<any> {
     return this._apiHttpService.post(this._apiEndpointsService.addCollaboratorEndpoint(),bodyParams);
@@ -273,6 +280,17 @@ TrackingLink(body:any) {
     return this._apiHttpService.get(this._apiEndpointsService.listCollaboratorByPaginationAndSearchAndSortingEndpoint(queryParamsObj));
   }
 
+  exportCollaborator(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.exportCollaboratorByPaginAndSearchAndSortEndpoint(queryParamsObj),{
+      responseType: 'blob', // Important: Set responseType to 'blob' for file download
+    });
+  }
+
+  listSponosorshipType(): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listSponsorshipTypeEndpoint());
+  }
+
+
   listCountry(): Observable<any> {
     return this._apiHttpService.get(this._apiEndpointsService.listCountryEndpoint());
   }
@@ -293,9 +311,53 @@ TrackingLink(body:any) {
     return this._apiHttpService.post(this._apiEndpointsService.addDeletgateEndPoint(),bodyParams);
   }
 
+  addDeletgates(bodyParams:any): Observable<any> {
+    return this._apiHttpService.post(this._apiEndpointsService.addDeletgatesEndPoint(),bodyParams);
+  }
+
+
   getAllCountrycode() {
     return this._apiHttpService.get(this._apiEndpointsService.getAllCountrycodeEndpoint());
   }
+
+  updateDelegateByTypeRef(data: any): Observable<any> {
+    return this._apiHttpService.put(this._apiEndpointsService.updateDelegateByTypeReferenceEndpoint(), data);
+  }
+
+  addBulkVisitor(bodyParams:any): Observable<any> {
+    return this._apiHttpService.post(this._apiEndpointsService.addBulkVisitorEndpoint(),bodyParams);
+  }
+
+  listVisitor(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getVisitorEndpoint(queryParamsObj));
+  }
+
+  exportVisitor(queryParamsObj: any): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getVisitorExportEndpoint(queryParamsObj),{
+      responseType: 'blob', // Important: Set responseType to 'blob' for file download
+    });
+  }
+
+  updateVisitor(id: string, data: any): Observable<any> {
+    return this._apiHttpService.put(this._apiEndpointsService.updateVisitorByIdEndpoint(id), data);
+  }
+
+  deactivateVisitor(id: string, data: any): Observable<any> {
+    return this._apiHttpService.put(this._apiEndpointsService.deactivateVisitorEndpoint(id), data);
+  }
+
+  listVisitorType(): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.listVisitorTypeEndpoint());
+  }
+
+  getVisitorById(id: string): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.getVisitorByIdEndpoint(id));
+  }
+
+  resentTicketVisitor(id: string): Observable<any> {
+    return this._apiHttpService.get(this._apiEndpointsService.resentTicketVisitorByIdEndpoint(id));
+  }
+
 
 
 }

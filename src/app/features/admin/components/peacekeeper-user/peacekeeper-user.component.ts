@@ -11,6 +11,7 @@ import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
 import { debounceTime, interval, Subject, Subscription } from 'rxjs';
 import { faEye, faEyeSlash, faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 
 
 
@@ -94,9 +95,22 @@ export class PeacekeeperUserComponent implements OnInit {
   ];
 
 
+  userPermissions: any;
+
 
   checkedList: any;
-  constructor(private datePipe: DatePipe, private fb: FormBuilder, private AdminService: AdminService, private SharedService: SharedService, private ngxService: NgxUiLoaderService, private router: Router, private ActivatedRoute: ActivatedRoute, private httpClient: HttpClient,) {
+  constructor(
+    private datePipe: DatePipe,
+    private fb: FormBuilder,
+    private AdminService: AdminService,
+    private SharedService: SharedService,
+    private ngxService: NgxUiLoaderService,
+    private router: Router,
+    private ActivatedRoute: ActivatedRoute,
+    private httpClient: HttpClient,
+    private permissionsService: UserPermissionsService
+
+  ) {
 
 
 
@@ -108,10 +122,10 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.getUserPermission();
 
 
-    // console.log(window.location.origin);
     this.isLoading = this.SharedService.isLoading;
 
     this.allPeacekeeper();
@@ -137,7 +151,7 @@ export class PeacekeeperUserComponent implements OnInit {
   onSave(): void {
     const payload = {
       peace_id: this.peacekeeperID,
-    
+
     };
     console.log("payload", payload);
     this.ngxService.start();
@@ -152,7 +166,7 @@ export class PeacekeeperUserComponent implements OnInit {
   }
 
   close() {
-    this.display='none';
+    this.display = 'none';
     this.isViewerOpen = false;
   }
 
@@ -163,15 +177,16 @@ export class PeacekeeperUserComponent implements OnInit {
 
   allPeacekeeper() {
 
-   let body ={
-    sort_column: this.sortBy,
-    sort_order: this.order,
-    search:this.search,
-    page_size:this.limit,
-    page_no:this.page ,
-         
-   }
-  //  this.ngxService.start();
+    let body = {
+      sort_column: this.sortBy,
+      sort_order: this.order,
+      search: this.search,
+      page_size: this.limit,
+      page_no: this.page,
+
+    }
+    //  this.ngxService.start();
+
 
     this.AdminService.getAllPeacekeeperData(body).subscribe((data: any) => {
       // this.ngxService.stop();
@@ -180,14 +195,14 @@ export class PeacekeeperUserComponent implements OnInit {
 
       // this.peacekeeperList = decreptedUser
       this.peacekeeperList = data.peacekeepers.Data
-      console.log(this.peacekeeperList , 'peaceList');
-      
+      console.log(this.peacekeeperList, 'peaceList');
+
       if (this.masterSelected) {
         this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
       }
       this.totalItems = data.peacekeepers.totalCount;
       this.totalPages = Math.ceil(this.totalItems / this.limit);
-      
+
       if (this.peacekeeperList.length === 0) {
         this.notFound = true;
       } else {
@@ -200,10 +215,11 @@ export class PeacekeeperUserComponent implements OnInit {
 
 
     },
-    (error) => {
-      this.isLoading = false;
-      this.isSpinner = -1; // Hide spinner even if an error occurs
-    });
+      (error) => {
+        this.isLoading = false;
+        this.isSpinner = -1; // Hide spinner even if an error occurs
+      });
+
   }
 
 
@@ -271,37 +287,37 @@ export class PeacekeeperUserComponent implements OnInit {
     // Select the columns you want to export
 
 
-        const headers = [
-          'Full name', 'DOB', 'Country', 'Mobile number', 'Email', 'Peacekeeper ID',
-           'Coupan discount', 'Coupan code', 'QR URL', 'Created Date'
-        ];
-    
-        // Select the columns you want to export
-        const columnsToExport = this.peacekeeperList.map(item => {
-          let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
-    
-          return [
-            item.full_name, item.dob, item.country, item.mobile_number,
-            item.email_id, item.Id_no, item.coupon_discount, item.coupon_code, item.QR_CODE, created_date
-          ];
-        });
-    
-        // Insert headers at the first row
-        columnsToExport.unshift(headers);
-    
-        // Convert JSON to worksheet
-        const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
-        // Auto-adjust column width based on the longest content
-        const columnWidths = headers.map((header, colIndex) => {
-          const maxLength = Math.max(
-            header.length, // Header length
-            ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0)) // Longest data cell in the column
-          );
-          return { wch: maxLength + 2 }; // Add padding for better spacing
-        });
-    
-        // Apply calculated column widths
-        ws['!cols'] = columnWidths;
+    const headers = [
+      'Full name', 'DOB', 'Country', 'Mobile number', 'Email', 'Peacekeeper ID',
+      'Coupan discount', 'Coupan code', 'QR URL', 'Created Date'
+    ];
+
+    // Select the columns you want to export
+    const columnsToExport = this.peacekeeperList.map(item => {
+      let created_date = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
+
+      return [
+        item.full_name, item.dob, item.country, item.mobile_number,
+        item.email_id, item.Id_no, item.coupon_discount, item.coupon_code, item.QR_CODE, created_date
+      ];
+    });
+
+    // Insert headers at the first row
+    columnsToExport.unshift(headers);
+
+    // Convert JSON to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
+    // Auto-adjust column width based on the longest content
+    const columnWidths = headers.map((header, colIndex) => {
+      const maxLength = Math.max(
+        header.length, // Header length
+        ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0)) // Longest data cell in the column
+      );
+      return { wch: maxLength + 2 }; // Add padding for better spacing
+    });
+
+    // Apply calculated column widths
+    ws['!cols'] = columnWidths;
 
 
 
@@ -452,10 +468,11 @@ export class PeacekeeperUserComponent implements OnInit {
     // Mask all but the last 4 digits
     return countryCode + number.slice(0, -4).replace(/\d/g, '#') + number.slice(-4);
   }
-  
 
-  toggleVisibility(index:any) {
-    
+
+  toggleVisibility(index: any) {
+
+
     this.isVisible[index] = !this.isVisible[index];
   }
 
@@ -473,54 +490,66 @@ export class PeacekeeperUserComponent implements OnInit {
 
 
 
-// new pagination
+  // new pagination
 
-onSelectionChange(selectedValue: string) {
-  this.page = 1
-  this.limit = +selectedValue;
-  this.allPeacekeeper();
-}
-
-onSearchClick(searchValue: string) {
-  if(searchValue.trim().length === 0){
+  onSelectionChange(selectedValue: string) {
     this.page = 1
-    this.limit = 25;
-    this.getInterval();
-  }else if (searchValue.charAt(0) === ' ') {
-    this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
-
-    return;
-  } else{
-    clearInterval(this.intervalId);
-  }
-  this.search = searchValue.trim();
-  this.allPeacekeeper();
-}
-
-preventFirstSpace(input: HTMLInputElement) {
-  if (input.value.charAt(0) === ' ') {
-    input.value = input.value.trim(); // Remove leading space immediately
-  }
-}
-
-
-changePage(newPage: number) {
-  if (newPage >= 1 && newPage <= this.totalPages) {
-    this.page = newPage;
+    this.limit = +selectedValue;
     this.allPeacekeeper();
   }
-}
 
-onSort(column: string) {
-  this.sortBy = column;
-  this.order = this.order === 'asc' ? 'desc' : 'asc';
+  onSearchClick(searchValue: string) {
+    if (searchValue.trim().length === 0) {
+      this.page = 1
+      this.limit = 25;
+      this.getInterval();
+    } else if (searchValue.charAt(0) === ' ') {
+      this.SharedService.ToastPopup('', 'First character should not be a space!', 'error')
 
-  if (this.sortColumn === column) {
-    this.sortDirection = !this.sortDirection; // Toggle direction
-  } else {
-    this.sortColumn = column;
-    this.sortDirection = true; // Default Ascending
-  
+      return;
+    } else {
+      clearInterval(this.intervalId);
+    }
+    this.search = searchValue.trim();
+    this.allPeacekeeper();
+  }
+
+  preventFirstSpace(input: HTMLInputElement) {
+    if (input.value.charAt(0) === ' ') {
+      input.value = input.value.trim(); // Remove leading space immediately
+    }
+  }
+
+
+  changePage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+      this.allPeacekeeper();
+    }
+  }
+
+  onSort(column: string) {
+    this.sortBy = column;
+    this.order = this.order === 'asc' ? 'desc' : 'asc';
+
+    if (this.sortColumn === column) {
+      this.sortDirection = !this.sortDirection; // Toggle direction
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = true; // Default Ascending
+
+    }
+    this.allPeacekeeper();
+  }
+
+
+  async getUserPermission() {
+    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    this.permissionsService.getUserPermissions(userData.email);
+
+    // Use in-memory permissions instead of localStorage to prevent tampering
+    this.userPermissions = this.permissionsService.getStoredPermissions();
+
   }
   this.allPeacekeeper();
 }
@@ -531,7 +560,10 @@ onSort(column: string) {
 
 
 
-  openLink(link:any) {
+
+
+
+  openLink(link: any) {
     window.open(link, '_blank');
   }
 

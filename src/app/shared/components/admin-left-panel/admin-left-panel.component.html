@@ -81,7 +81,7 @@
       <a routerLink="/dashboard/registered-user" id="sidebarDashboard"
         ><img src="assets/img/usericon.png" id="speedmeter" />
 
-        &nbsp; &nbsp;<span>Approved (Delegate Users) </span>
+        &nbsp; &nbsp;<span>Delegate</span>
       </a>
     </li>
     <!-- <li
@@ -98,9 +98,9 @@
       [routerLinkActive]="['active']"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <a routerLink="/dashboard/sponsorship" id="sidebarDashboard"
+      <a routerLink="/dashboard/sponsor" id="sidebarDashboard"
         ><img src="assets/img/nonregisteruse.png" id="speedmeter" /> &nbsp;
-        &nbsp;<span>Sponsorship</span></a
+        &nbsp;<span>Sponsor</span></a
       >
     </li>
 
@@ -123,6 +123,17 @@
         &nbsp;<span>Collaborator</span></a
       >
     </li>
+
+    <li
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard/visitor" id="sidebarDashboard"
+        ><img src="assets/img/usericon.png" id="speedmeter" /> &nbsp;
+        &nbsp;<span>Visitor</span></a
+      >
+    </li>
+
 
     <li
       [routerLinkActive]="['active']"

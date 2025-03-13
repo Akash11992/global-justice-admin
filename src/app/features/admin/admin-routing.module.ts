@@ -23,6 +23,9 @@ import { AddCollaboratorComponent } from "./components/add-collaborator/add-coll
 import { DelegateComponent } from "./components/delegate/delegate.component";
 import { AddDelegateComponent } from "./components/add-delegate/add-delegate.component";
 import { AddDelegateByFileComponent } from "./components/add-delegate-by-file/add-delegate-by-file.component";
+import { DelegateRegistrationComponent } from "./components/delegate-registration/delegate-registration.component";
+import { ListVisitorComponent } from "./components/visitor/list-visitor/list-visitor.component";
+import { AddEditVisitorComponent } from "./components/visitor/add-edit-visitor/add-edit-visitor.component";
 
 const routes: Routes = [
   {
@@ -62,16 +65,24 @@ const routes: Routes = [
     children: [
       { path: "registered-user", component: RegisteredUserComponent,canActivate: [AuthGuard], },
       { path: "peacekeeper", component: PeacekeeperUserComponent,canActivate: [AuthGuard], },
-      { path: "sponsorship", component: SponsorshipComponent,canActivate: [AuthGuard], },
-      { path: "add-sponsorship", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
-      { path: "edit-sponsorship/:id", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
+      { path: "sponsor", component: SponsorshipComponent,canActivate: [AuthGuard], },
+      { path: "add-sponsor", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
+      { path: "edit-sponsor/:id", component: AddSponsorshipComponent,canActivate: [AuthGuard], },
+
       { path: "collaborator", component: CollaboratorComponent,canActivate: [AuthGuard], },
       { path: "add-collaborator", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
       { path: "edit-collaborator/:id", component: AddCollaboratorComponent,canActivate: [AuthGuard], },
       { path: "delegate", component: DelegateComponent,canActivate: [AuthGuard], },
       { path: "add-delegate/:id", component: AddDelegateComponent,canActivate: [AuthGuard], },
+
+      { path: "delegate-registration/:id", component: DelegateRegistrationComponent,canActivate: [AuthGuard], },
+
       { path: "add-delegate-by-file", component: AddDelegateByFileComponent,canActivate: [AuthGuard], },
       { path: "contact-us", component: ContactUsComponent,canActivate: [AuthGuard], },
+      { path: "visitor", component: ListVisitorComponent,canActivate: [AuthGuard], },
+      { path: "add-visitor", component: AddEditVisitorComponent,canActivate: [AuthGuard], },
+      { path: "edit-visitor/:id", component: AddEditVisitorComponent,canActivate: [AuthGuard], },
+      
       // {path:'reset-password',component:ResetPasswordComponent},
       { path: "", redirectTo: "registered-user", pathMatch: "full" },
     ],

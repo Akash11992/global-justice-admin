@@ -199,6 +199,10 @@ export class ApiEndpointsService {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedDelegate);
   }
 
+  public updateDelegateByTypeReferenceEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_updateDelegateByTypeReference);
+  }
+
 
   public getApprovedPartnerEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_getApprovedPartner);
@@ -444,6 +448,25 @@ export class ApiEndpointsService {
       });
   }
 
+
+  public exportSponsorByPaginAndSearchAndSortEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_EXPORT_SPONSORSHIP,
+      (qs: QueryStringParameters) => {
+        qs.push('page', queryParamsObj['page']),
+        qs.push('limit', queryParamsObj['limit']),
+        qs.push('sort', queryParamsObj['sort']),
+        qs.push('order', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
+  public listSponsorshipTypeEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_LIST_SPONSORSHIP_TYPE);
+  }
+
+
   //collaborator
   public addCollaboratorEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_ADD_COLLABORATOR);
@@ -474,6 +497,21 @@ export class ApiEndpointsService {
       });
   }
 
+
+  public exportCollaboratorByPaginAndSearchAndSortEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_EXPORT_COLLABORATOR,
+      (qs: QueryStringParameters) => {
+        qs.push('page', queryParamsObj['page']),
+        qs.push('limit', queryParamsObj['limit']),
+        qs.push('sort', queryParamsObj['sort']),
+        qs.push('order', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+      });
+  }
+
+
   public listPeaceKeeperEndpoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_LIST_PEACEKEEPER);
   }
@@ -494,4 +532,67 @@ export class ApiEndpointsService {
   public addDeletgateEndPoint(): string {
     return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATE);
   }
+
+
+  public addDeletgatesEndPoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_DELEGATES);
+  }
+
+  public addBulkVisitorEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_ADD_BULK_VISITOR);
+  }
+
+  public getVisitorEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_VISITOR,
+      (qs: QueryStringParameters) => {
+        qs.push('pageOffset', queryParamsObj['page']),
+        qs.push('pageLimit', queryParamsObj['limit']),
+        qs.push('sortColumn', queryParamsObj['sort']),
+        qs.push('sortOrder', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+        qs.push('type', queryParamsObj['type'])
+      });
+  }
+
+  public getVisitorExportEndpoint(
+    queryParamsObj:any
+  ): string {
+    return this.createUrlWithQueryParameters(this._constants.API_ENDPOINT_VISITOR_EXPORT,
+      (qs: QueryStringParameters) => {
+        qs.push('pageOffset', queryParamsObj['page']),
+        qs.push('pageLimit', queryParamsObj['limit']),
+        qs.push('sortColumn', queryParamsObj['sort']),
+        qs.push('sortOrder', queryParamsObj['order']),
+        qs.push('search', queryParamsObj['search'])
+        qs.push('type', queryParamsObj['type'])
+      });
+  }
+
+  public updateVisitorByIdEndpoint(
+    id: string
+  ): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_VISITOR, [id]);
+  }
+
+  public deactivateVisitorEndpoint(id: string): string {
+    return this.createUrl(this._constants.API_ENDPOINT_VISITOR +"/"+id + "/deactivate");
+  }
+
+  public listVisitorTypeEndpoint(): string {
+    return this.createUrl(this._constants.API_ENDPOINT_VISITOR_TYPE);
+  }
+
+  public getVisitorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_SINGLE_VISITOR, [id]);
+  }
+
+  public resentTicketVisitorByIdEndpoint(id: string): string {
+    return this.createUrlWithPathVariables(this._constants.API_ENDPOINT_RESEND_TICKET_VISITOR, [id]);
+  }
+
+  
+
+
 }

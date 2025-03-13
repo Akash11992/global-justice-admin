@@ -20,6 +20,7 @@ export class Constants {
     public readonly API_ENDPOINT_getSpeaker: string = 'registration/speaker/non-registered'
 
     public readonly API_ENDPOINT_getApprovedDelegate: string = 'registration/delegate/approved'
+    public readonly API_ENDPOINT_updateDelegateByTypeReference: string = 'registration/update/delegate/byTypeReference'
 
     public readonly API_ENDPOINT_getApprovedPartner: string = 'registration/partner/approved'
     public readonly API_ENDPOINT_getApprovedSpeaker: string = 'registration/speaker/approved'
@@ -116,11 +117,17 @@ export class Constants {
     public readonly API_ENDPOINT_GET_SPONSORSHIP: string = 'sponsorships/get'
     public readonly API_ENDPOINT_LIST_SPONSORSHIP: string = 'sponsorships/list'
 
+    public readonly API_ENDPOINT_EXPORT_SPONSORSHIP: string = 'sponsorships/exportToCsv'
+    public readonly API_ENDPOINT_LIST_SPONSORSHIP_TYPE: string = 'sponsorships/sponsorship-types'
+
+
     public readonly API_ENDPOINT_ADD_COLLABORATOR: string = 'collaborators/add'
     public readonly API_ENDPOINT_EDIT_COLLABORATOR: string = 'collaborators/edit'
     public readonly API_ENDPOINT_DELETE_COLLABORATOR: string = 'collaborators/delete'
     public readonly API_ENDPOINT_GET_COLLABORATOR: string = 'collaborators/get'
     public readonly API_ENDPOINT_LIST_COLLABORATOR: string = 'collaborators/list'
+    public readonly API_ENDPOINT_EXPORT_COLLABORATOR: string = 'collaborators/exportToCsv'
+
 
 
     public readonly API_ENDPOINT_LIST_PEACEKEEPER: string = 'getAllpeacekeeperDropdown'
@@ -129,6 +136,16 @@ export class Constants {
     public readonly API_ENDPOINT_LIST_CITY: string = 'get_delegate_city'
 
     public readonly API_ENDPOINT_ADD_DELEGATE: string = 'bulk_upload_delegate_file'
+
+    public readonly API_ENDPOINT_ADD_DELEGATES: string = 'registration/create-delegate-profiles'
+
+    public readonly API_ENDPOINT_ADD_BULK_VISITOR: string = 'visitors/bulk-insert'
+    public readonly API_ENDPOINT_VISITOR: string = 'visitors'
+    public readonly API_ENDPOINT_VISITOR_EXPORT: string = 'visitors/exportToCsv'
+    public readonly API_ENDPOINT_SINGLE_VISITOR: string = 'visitors/single'
+    public readonly API_ENDPOINT_RESEND_TICKET_VISITOR: string = 'visitors/resendMail'
+    public readonly API_ENDPOINT_VISITOR_TYPE: string = 'visitors/visitors-types'
+
 
 
 }

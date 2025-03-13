@@ -11,12 +11,15 @@ import { AdminService } from 'src/app/features/admin/services/admin.service';
   styleUrls: ['./forget-password.component.css']
 })
 export class ForgetPasswordComponent {
-  loginForm!: FormGroup;
-  type: string = "password";
-  type1: string = "password";
-  isText: boolean = false;
-  eyeIcon: string = "fa-eye-slash"
-  eyeIcon1: string = "fa-eye-slash"
+
+  forgotPasswordForm: FormGroup;
+  submitted = false;
+  otpSent = false;
+  otpVerified = false;
+  showPassword = false;
+  showConfirmPassword = false;
+
+
 
   constructor(
     private _fb: FormBuilder,
@@ -25,35 +28,16 @@ export class ForgetPasswordComponent {
     private router: Router,
     private SharedService: SharedService,
     private ngxService: NgxUiLoaderService,
-  ) { }
-  ngOnInit(): void {
-    // Set up form configurations
-    this._preConfig();
-  }
-
-
-  getcontrol(name: any): AbstractControl | null {
-    return this.loginForm.get(name);
-  }
-
-  // Function to initialize form configurations
-  private _preConfig() {
-    this._createLoginForm();
-  }
-
-  // Function to create the login form
-  private _createLoginForm() {
-    this.loginForm = this._fb.group({
-      otp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
-      password: [null, [Validators.required, Validators.maxLength(6), Validators.minLength(6), Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
+  ) { 
+    this.forgotPasswordForm = this._fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      otp: [''],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)]],
       confirmPassword: new FormControl(null, [(c: AbstractControl) => Validators.required(c), Validators.pattern('^((?!.*[s])(?=.*[A-Z])(?=.*d).{8,99})'),]),
-    }, { validators: this.passwordMatchValidator })
+        }, { validators: this.passwordMatchValidator })
   }
 
-
-
-
-   // Custom validator function to check if password and confirm password match
+    // Custom validator function to check if password and confirm password match
    passwordMatchValidator(formGroup: FormGroup<any>) {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
@@ -64,63 +48,185 @@ export class ForgetPasswordComponent {
       formGroup.get('confirmPassword')?.setErrors(null);
     }
   }
-
-  hideShowPass() {
-    this.isText = !this.isText;
-    this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
-    this.isText ? this.type = "text" : this.type = "password";
+  ngOnInit(): void {
+    // Set up form configurations
+    // this._preConfig();
+  }
+  getControl(controlName: string) {
+    return this.forgotPasswordForm.get(controlName);
   }
 
-  // Function to toggle confirm password visibility
-  hideShow() {
-    this.isText = !this.isText;
-    this.isText ? this.eyeIcon1 = "fa-eye" : this.eyeIcon1 = "fa-eye-slash";
-    this.isText ? this.type1 = "text" : this.type1 = "password";
-  }
-
-
-  // Function to submit the form data
-  verify() {
-    debugger
-    let loginData = {
-      otp: this.loginForm.controls['otp'].value,
-      password: this.loginForm.controls['password'].value,
-      // password: this.loginForm.controls['password'].value,
+  sendOTP() {
+    if (this.getControl('email')?.valid) {
+      this.otpSent = true;
+      alert('OTP sent to your email.');
     }
-
-    // Log the loginData object for debugging purposes
-    console.log(loginData.otp + "loginData");
-
-    this.ngxService.start();
-    // Call the ProfileService to post the OTP and password data
-    this.adminService.fillotp(loginData).subscribe((res: any) => {
-      this.ngxService.stop();
-
-      // Display success message after successful OTP submission
-      this.SharedService.ToastPopup('Your password has changed successfully!', '', 'success');
-
-      // Redirect to the login page after a delay
-      setTimeout(() => {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['/login']));
-      }, 2000);
-    }, (err) => {
-      this.ngxService.stop();
-
-      // Display error message if OTP is not found or there's an error in API call
-      this.SharedService.ToastPopup("OTP didn't match!", '', 'error');
-    })
   }
 
-
-  keyPressNumbers(event: any) {
-    var charCode = event.which ? event.which : event.keyCode;
-    // Only Numbers 0-9
-    if (charCode < 48 || charCode > 57) {
-      event.preventDefault();
-      return false;
+  verifyOTP() {
+    if (this.getControl('otp')?.value === '123456') {  // Dummy OTP for testing
+      this.otpVerified = true;
+      alert('OTP Verified!');
     } else {
-      return true;
+      alert('Invalid OTP');
     }
   }
+
+  togglePasswordVisibility(field: string) {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.otpVerified && this.forgotPasswordForm.valid) {
+      alert('Password changed successfully!');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // getcontrol(name: any): AbstractControl | null {
+  //   return this.loginForm.get(name);
+  // }
+
+  // // Function to initialize form configurations
+  // private _preConfig() {
+  //   this._createLoginForm();
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+  // loginForm!: FormGroup;
+  // type: string = "password";
+  // type1: string = "password";
+  // isText: boolean = false;
+  // eyeIcon: string = "fa-eye-slash"
+  // eyeIcon1: string = "fa-eye-slash"
+  // // Function to create the login form
+  // private _createLoginForm() {
+  //   this.loginForm = this._fb.group({
+  //     otp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
+  //     password: [null, [Validators.required, Validators.maxLength(6), Validators.minLength(6), Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
+  //     confirmPassword: new FormControl(null, [(c: AbstractControl) => Validators.required(c), Validators.pattern('^((?!.*[s])(?=.*[A-Z])(?=.*d).{8,99})'),]),
+  //   }, { validators: this.passwordMatchValidator })
+  // }
+
+
+
+
+  //  // Custom validator function to check if password and confirm password match
+  //  passwordMatchValidator(formGroup: FormGroup<any>) {
+  //   const password = formGroup.get('password')?.value;
+  //   const confirmPassword = formGroup.get('confirmPassword')?.value;
+
+  //   if (password !== confirmPassword) {
+  //     formGroup.get('confirmPassword')?.setErrors({ passwordMismatch: true });
+  //   } else {
+  //     formGroup.get('confirmPassword')?.setErrors(null);
+  //   }
+  // }
+
+  // hideShowPass() {
+  //   this.isText = !this.isText;
+  //   this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
+  //   this.isText ? this.type = "text" : this.type = "password";
+  // }
+
+  // // Function to toggle confirm password visibility
+  // hideShow() {
+  //   this.isText = !this.isText;
+  //   this.isText ? this.eyeIcon1 = "fa-eye" : this.eyeIcon1 = "fa-eye-slash";
+  //   this.isText ? this.type1 = "text" : this.type1 = "password";
+  // }
+
+
+  // // Function to submit the form data
+  // verify() {
+  //   debugger
+  //   let loginData = {
+  //     otp: this.loginForm.controls['otp'].value,
+  //     password: this.loginForm.controls['password'].value,
+  //     // password: this.loginForm.controls['password'].value,
+  //   }
+
+  //   // Log the loginData object for debugging purposes
+  //   console.log(loginData.otp + "loginData");
+
+  //   this.ngxService.start();
+  //   // Call the ProfileService to post the OTP and password data
+  //   this.adminService.fillotp(loginData).subscribe((res: any) => {
+  //     this.ngxService.stop();
+
+  //     // Display success message after successful OTP submission
+  //     this.SharedService.ToastPopup('Your password has changed successfully!', '', 'success');
+
+  //     // Redirect to the login page after a delay
+  //     setTimeout(() => {
+  //       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['/login']));
+  //     }, 2000);
+  //   }, (err) => {
+  //     this.ngxService.stop();
+
+  //     // Display error message if OTP is not found or there's an error in API call
+  //     this.SharedService.ToastPopup("OTP didn't match!", '', 'error');
+  //   })
+  // }
+
+
+  // keyPressNumbers(event: any) {
+  //   var charCode = event.which ? event.which : event.keyCode;
+  //   // Only Numbers 0-9
+  //   if (charCode < 48 || charCode > 57) {
+  //     event.preventDefault();
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
 }

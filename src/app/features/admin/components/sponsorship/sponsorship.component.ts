@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 
 @Component({
   selector: 'app-sponsorship',
@@ -19,6 +20,9 @@ export class SponsorshipComponent implements OnInit {
   order: string = 'desc';
   search: string = '';
   totalPages: number = 0;
+  userPermissions: any;
+
+
 
   rowOptions = [
     { value: 25, label: '25' },
@@ -30,10 +34,14 @@ export class SponsorshipComponent implements OnInit {
    constructor(
                 private adminService: AdminService,
                 private ngxService: NgxUiLoaderService,
-                private SharedService: SharedService
+                private SharedService: SharedService,
+                private permissionsService: UserPermissionsService
+                
               ) {}
 
   ngOnInit() {
+    this.getUserPermission();
+
     this.loadSponsorships();
   }
 
@@ -57,7 +65,34 @@ export class SponsorshipComponent implements OnInit {
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to list sponsorship', 'Sponsorship', 'error');
+      this.SharedService.ToastPopup('Oops failed to list sponsor', 'Sponsor', 'error');
+    }
+    )
+  }
+
+  onClickExport(){
+    const payload = {
+      page:this.page,
+      limit:this.limit,
+      sort:this.sortBy,
+      order:this.order,
+      search:this.search
+    };
+
+    this.ngxService.start();
+
+    this.adminService.exportSponsor(payload).subscribe((blob: Blob) => {
+      this.ngxService.stop();
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `sponsor_${new Date().toISOString().split('T')[0]}.csv`; // Set the file name
+      link.click(); // Trigger the download
+      window.URL.revokeObjectURL(link.href); 
+    },
+    (error: any) => {
+      this.ngxService.stop();
+      this.SharedService.ToastPopup('Oops failed to list sponsor', 'Sponsors', 'error');
+
     }
     )
   }
@@ -73,11 +108,12 @@ export class SponsorshipComponent implements OnInit {
   updateSponsorshipData(id:string, payload:any){
     this.adminService.updateSponsorship(id,payload).subscribe((data: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Sponsorship updated successfully', 'Sponsorship', 'success');
+      this.SharedService.ToastPopup('Sponsor updated successfully', 'Sponsor', 'success');
     },
     (error: any) => {
       this.ngxService.stop();
-      this.SharedService.ToastPopup('Oops failed to update sponsorship', 'Sponsorship', 'error');
+      this.SharedService.ToastPopup('Oops failed to update sponsor', 'Sponsor', 'error');
+
     }
     )
   }
@@ -111,5 +147,14 @@ export class SponsorshipComponent implements OnInit {
     }
     this.loadSponsorships();
   }
+
+  async getUserPermission() {
+    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    this.permissionsService.getUserPermissions(userData.email);
+
+    // Use in-memory permissions instead of localStorage to prevent tampering
+    this.userPermissions = this.permissionsService.getStoredPermissions();
+  }
+
 }
 
