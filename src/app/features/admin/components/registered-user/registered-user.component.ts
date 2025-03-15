@@ -77,8 +77,8 @@ export class RegisteredUserComponent {
   typeOptions = [
     { value: 'All', label: 'All' },
     { value: 'paid', label: 'Payment Done' },
-    { value: 'complete', label: 'Registered and Not Paid' },
-    { value: 'incomplete', label: 'Payment Done and Incomplete Profile' },
+    { value: 'RegisterOrNotPaid', label: 'Registered and Not Paid' },
+    { value: 'RegisterOrPaid', label: 'Payment Done and Incomplete Profile' },
     { value: 'complete', label: 'Complete Profile' }
   ];
 

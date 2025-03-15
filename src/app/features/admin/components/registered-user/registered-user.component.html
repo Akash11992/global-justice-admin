@@ -120,9 +120,9 @@
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_no' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_no' && order === 'desc'"></i>
                        </th>
-                      <th (click)="onSort('country')"  [ngStyle]="sortBy === 'country'?{'cursor': 'pointer'}:{}">Country
-                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'asc'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'desc'"></i>
+                      <th (click)="onSort('country_name')"  [ngStyle]="sortBy === 'country_name'?{'cursor': 'pointer'}:{}">country
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country_name' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country_name' && order === 'desc'"></i>
                        </th>
                       <th  (click)="onSort('profession')"  [ngStyle]="sortBy === 'profession'?{'cursor': 'pointer'}:{}">Profession
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'profession' && order === 'asc'"></i>
@@ -141,9 +141,9 @@
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'TUD_TRANSCATION_ID' && order === 'desc'"></i>                     
                       </th>
                       <th>Reference</th>
-                      <th (click)="onSort('created_date')"  [ngStyle]="sortBy === 'created_date'?{'cursor': 'pointer'}:{}">Registered At
-                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'created_date' && order === 'asc'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'created_date' && order === 'desc'"></i>
+                      <th (click)="onSort('created_at')"  [ngStyle]="sortBy === 'created_at'?{'cursor': 'pointer'}:{}">Registered At
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'created_at' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'created_at' && order === 'desc'"></i>
                        </th>
                       <th [ngClass]="{'d-lg-none':!userPermissions.update}">Action</th>
                     </tr>
@@ -173,7 +173,7 @@
                              ">{{all.email}} <i class="bi bi-person-fill"></i></span>
                       </td>
                       <td>{{ all.mobile_no }}</td>
-                      <td>{{ all.country }}</td>
+                      <td>{{ all.country_name }}</td>
                       <td>{{ all.profession }}</td>
                       <td>{{ all.organization_name }}</td>
                       <td
@@ -191,7 +191,7 @@
                         }}
                       </td>
                       <td>{{ all.reference_no }}</td>
-                      <td>{{ all.created_date | date:'dd-MM-yyyy, h:mm a' }}</td>
+                      <td>{{ all.created_at | date:'dd-MM-yyyy, h:mm a' }}</td>
 
                       <td class="text-right" [ngClass]="{'d-lg-none':!userPermissions.update}"> 
                         <div class="dropdown dropstart">
