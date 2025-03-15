@@ -181,10 +181,4 @@ export class CollaboratorComponent implements OnInit {
     this.userPermissions = this.permissionsService.getStoredPermissions();
   }
 
-
-
-      }
-      this.SharedService.downloadFile(filePath, fileName);
-    }
-  
 }

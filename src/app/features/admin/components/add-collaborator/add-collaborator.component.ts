@@ -7,9 +7,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import { strictEmailValidator } from '../../validator/email-validator';
 import { environment } from 'src/environments/environment';
 import { strictStringValidator } from '../../validator/strict-string-validator';
-
 import { Location } from '@angular/common';
-
 
 @Component({
   selector: 'app-add-collaborator',
@@ -20,15 +18,11 @@ export class AddCollaboratorComponent {
 
   form: FormGroup;
   countries: any[] = [];
-
   states: any[] = [];
   cities: any[] = [];
   selectedCountryObj:any={};
   selectedStateObj:any ={};
   selectedCityObj:any ={};
-
-  selectedCountryObj:any={};
-
   selectedPeacekeeperObj:any ={};
 
   peacekeepers: any[] = [];
@@ -49,20 +43,16 @@ export class AddCollaboratorComponent {
                 private router: Router,
                 private adminService: AdminService,
                 private ngxService: NgxUiLoaderService,
-
                 private SharedService: SharedService,
                 private location: Location
-
               ) {}
 
     ngOnInit() {
       this.initializeForm();
       this.setupPeacekeeper();
       if(!this.collaboratorId){
-
         this.selectedStateObj={id:"",name:""};
         this.selectedCityObj={id:"",name:""};
-
         this.setupCountry();
       }
     }
@@ -72,23 +62,19 @@ export class AddCollaboratorComponent {
 
       if(this.collaboratorId) this.collaboratorDataById();
       
-
       const namePattern = /^[a-zA-Z0-9' -]{1,50}$/;
       const mobilePattern = /^\+[1-9]\d{9,14}$/;
       const addressPattern = /^[a-zA-Z0-9\s,.'\-/#]{1,100}$/;
-
     
       this.form = this.fb.group({
         email: ['', [Validators.required, strictEmailValidator(), Validators.maxLength(254)]],
         fullName: ['', [Validators.required, Validators.pattern(namePattern), strictStringValidator()]],
         mobile: ['', [Validators.required,Validators.pattern(mobilePattern)]],
-
         country: ['0', Validators.required],
         state: ['0'],
         address: ['', [Validators.pattern(addressPattern), strictStringValidator()]],
         city: ['0'],
         dob: ['02-02-1996'],
-
         logoImage: ['',Validators.required],
         refPeacekeeper: ['',Validators.required]
       });
@@ -96,13 +82,11 @@ export class AddCollaboratorComponent {
       if(this.collaboratorId){
         this.form.controls['email'].disable();
         this.form.controls['mobile'].disable();
-
         this.form.controls['country'].disable(); 
         this.form.controls['state'].disable(); 
         this.form.controls['city'].disable(); 
         this.form.controls['address'].disable(); 
         this.form.controls['refPeacekeeper'].disable(); 
-
       }
 
       }
@@ -185,7 +169,6 @@ export class AddCollaboratorComponent {
         name:selectedName,
         code:selectedCode
       };
-
       
       this.states = [];
       this.cities = [];
@@ -253,6 +236,7 @@ export class AddCollaboratorComponent {
         console.log(error);
       }
       )
+    }
 
     onFileSelected(event: any) {
       const file = event.target.files[0];
@@ -289,7 +273,6 @@ export class AddCollaboratorComponent {
           full_name:this.form.value["fullName"],
           mobile_no:this.collaboratorId ? this.collaboratorResData['mobile_no']:this.form.value["mobile"],
           email:this.collaboratorId ? this.collaboratorResData['email']: this.form.value["email"],
-
           country_id:this.collaboratorId ? this.collaboratorResData['country_id']:+this.form.value["country"],
           country:this.selectedCountryObj["name"]?this.selectedCountryObj["name"]:this.collaboratorResData['country'],
           country_code:this.selectedCountryObj["code"]?this.selectedCountryObj["code"]:this.collaboratorResData['country_code'],
@@ -298,7 +281,6 @@ export class AddCollaboratorComponent {
           city_id:+this.form.value["city"],
           city:"name" in this.selectedCityObj ?this.selectedCityObj["name"]:this.collaboratorResData['city'],
           address:this.form.value["address"],
-
           dob:this.collaboratorId ? this.collaboratorResData['dob'] : this.form.value["dob"],
           logo_image: this.form.value['logoImage'],
           is_active: this.collaboratorId ? this.collaboratorResData['is_active'] : 1,
@@ -342,12 +324,10 @@ export class AddCollaboratorComponent {
         fullName: "",
         email: "",
         mobile: "",
-
         country: "0",
         state: "0",
         city: "0",
         dob: "02-02-1996",
-
         refPeacekeeper:""
       });
       this.selectedImageBase64 = null;
@@ -357,10 +337,8 @@ export class AddCollaboratorComponent {
     }
   
     onCancel(): void {
-
       // this.router.navigate(['/dashboard/collaborator']);  
       this.location.back();
-
     }
 
     noFutureDateValidator(control: any) {

@@ -551,17 +551,6 @@ export class PeacekeeperUserComponent implements OnInit {
     this.userPermissions = this.permissionsService.getStoredPermissions();
 
   }
-  this.allPeacekeeper();
-}
-
-
-
-
-
-
-
-
-
 
   openLink(link: any) {
     window.open(link, '_blank');
