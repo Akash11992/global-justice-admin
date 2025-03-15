@@ -19,7 +19,7 @@
           
 
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
 
               <form>
                 <div class="row">
@@ -28,7 +28,12 @@
                       <option *ngFor="let option of rowOptions" [value]="option.value">{{ option.label }}</option>
                     </select>
                   </div>
-                  <div class="col-md-9 d-flex">
+                  <div class="col-md-3">
+                    <select #selectType (change)="onTypeSelectionChange(selectType.value)"  style="cursor: pointer;" class="form-control" aria-label="Default select example">
+                      <option *ngFor="let type of typeOptions" [value]="type.value">{{ type.label }}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 d-flex">
                     <input   #searchInput
                     class="form-control"
                     type="search"
@@ -48,7 +53,7 @@
 
 
             </div>
-            <div class="col-md-6" id="exportcolmd">
+            <div class="col-md-4" id="exportcolmd">
               <button
                 class="btn"
                 type="button"
@@ -99,29 +104,29 @@
                                 (change)="checkUncheckAll()"
                       /></th>
                       <th>SN</th>
-                      <th (click)="onSort('first_name')" [ngStyle]="sortBy === 'first_name'?{'cursor': 'pointer'}:{}">Name 
-                          <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'first_name' && order === 'asc'"></i>
-                          <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'first_name' && order === 'desc'"></i>  
+                      <th (click)="onSort('full_name')" [ngStyle]="sortBy === 'full_name'?{'cursor': 'pointer'}:{}">Name 
+                          <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'full_name' && order === 'asc'"></i>
+                          <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'desc'"></i>  
                         </th>
                       <th (click)="onSort('dob')"  [ngStyle]="sortBy === 'dob'?{'cursor': 'pointer'}:{}">DOB
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'dob' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'dob' && order === 'desc'"></i>
                        </th>
-                      <th (click)="onSort('email_id')"  [ngStyle]="sortBy === 'email_id'?{'cursor': 'pointer'}:{}">Email 
-                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email_id' && order === 'asc'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email_id' && order === 'desc'"></i>                     
+                      <th (click)="onSort('email')"  [ngStyle]="sortBy === 'email'?{'cursor': 'pointer'}:{}">Email 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email' && order === 'desc'"></i>                     
                        </th>
-                      <th  (click)="onSort('mobile_number')"  [ngStyle]="sortBy === 'mobile_number'?{'cursor': 'pointer'}:{}">Mobile
-                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_number' && order === 'asc'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_number' && order === 'desc'"></i>
+                      <th  (click)="onSort('mobile_no')"  [ngStyle]="sortBy === 'mobile_no'?{'cursor': 'pointer'}:{}">Mobile
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_no' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_no' && order === 'desc'"></i>
                        </th>
                       <th (click)="onSort('country')"  [ngStyle]="sortBy === 'country'?{'cursor': 'pointer'}:{}">Country
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'desc'"></i>
                        </th>
-                      <th  (click)="onSort('profession_1')"  [ngStyle]="sortBy === 'profession_1'?{'cursor': 'pointer'}:{}">Profession
-                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'profession_1' && order === 'asc'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'profession_1' && order === 'desc'"></i>
+                      <th  (click)="onSort('profession')"  [ngStyle]="sortBy === 'profession'?{'cursor': 'pointer'}:{}">Profession
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'profession' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'profession' && order === 'desc'"></i>
                        </th>
                       <th  (click)="onSort('organization_name')"  [ngStyle]="sortBy === 'organization_name'?{'cursor': 'pointer'}:{}">Organization Name
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'organization_name' && order === 'asc'"></i>
@@ -154,7 +159,7 @@
                       </td>
                       <td>{{ i + 1 }}</td>
                       <td>
-                        {{ all.title }} {{ all.first_name }} {{ all.last_name }}
+                        {{ all.full_name }}
                       </td>
                       <td>{{all.dob | date:'dd-MM-yyyy'}}</td>
 
@@ -165,18 +170,18 @@
                               overflow: hidden;
                               white-space: nowrap;
                               width: 230px;
-                             ">{{all.email_id}} <i class="bi bi-person-fill"></i></span>
+                             ">{{all.email}} <i class="bi bi-person-fill"></i></span>
                       </td>
-                      <td>{{ all.mobile_number }}</td>
+                      <td>{{ all.mobile_no }}</td>
                       <td>{{ all.country }}</td>
-                      <td>{{ all.profession_1 }}</td>
+                      <td>{{ all.profession }}</td>
                       <td>{{ all.organization_name }}</td>
                       <td
                         [ngClass]="
-                          all.TUD_STATUS == 'paid' ? 'success' : 'pending'
+                          all.TUD_STATUS == 'paid' || all.TUD_STATUS == 'paid-online' ? 'success' : 'pending'
                         "
                       >
-                        {{ all.TUD_STATUS == "paid" ? "SUCCESS" : "PENDING" }}
+                        {{ all.TUD_STATUS == "paid" || all.TUD_STATUS == "paid-online" ? "SUCCESS" : "PENDING" }}
                       </td>
                       <td>
                         {{

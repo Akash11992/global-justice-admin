@@ -3,6 +3,7 @@ import { AdminService } from '../../../services/admin.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { environment } from 'src/environments/environment';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 
 @Component({
   selector: 'app-list-visitor',
@@ -31,14 +32,20 @@ export class ListVisitorComponent implements OnInit{
   typeOptions: any[] = []; // Replace with your actual types
   selectedType: string = '';
   disabledItems = new Set<string>();
+  userPermissions: any;
 
   constructor(
                   private adminService: AdminService,
                   private ngxService: NgxUiLoaderService,
-                  private SharedService: SharedService
+                  private SharedService: SharedService,
+                  private permissionsService: UserPermissionsService
+
                 ) {}
   
     ngOnInit() {
+
+     this.getUserPermission();
+
       this.setupType();
       this.loadVisitors();
     }
@@ -209,4 +216,14 @@ export class ListVisitorComponent implements OnInit{
       this.SharedService.downloadFile(filePath, fileName);
     }
   
+
+    async getUserPermission() {
+      let userData = JSON.parse(localStorage.getItem('userDetails'));
+      this.permissionsService.getUserPermissions(userData.email);
+  
+      // Use in-memory permissions instead of localStorage to prevent tampering
+      this.userPermissions = this.permissionsService.getStoredPermissions();
+    }
+  
+
 }

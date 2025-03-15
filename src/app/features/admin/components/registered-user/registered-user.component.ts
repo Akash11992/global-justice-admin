@@ -57,7 +57,8 @@ export class RegisteredUserComponent {
   totalItems: number = 0;
   page: number = 1;
   limit: number = 25;
-  sortBy: string = 'created_date';
+  type: string = 'All';
+  sortBy: string = 'created_at';
   order: string = 'desc';
   search: string = '';
   totalPages: number = 0;
@@ -73,7 +74,13 @@ export class RegisteredUserComponent {
     { value: 50, label: '50' },
     { value: 100, label: '100' }
   ];
-
+  typeOptions = [
+    { value: 'All', label: 'All' },
+    { value: 'paid', label: 'Payment Done' },
+    { value: 'complete', label: 'Registered and Not Paid' },
+    { value: 'incomplete', label: 'Payment Done and Incomplete Profile' },
+    { value: 'complete', label: 'Complete Profile' }
+  ];
 
 
 
@@ -150,6 +157,10 @@ export class RegisteredUserComponent {
       search: this.search,
       page_size: this.limit,
       page_no: this.page,
+      p_filter:this.type, 
+      // p_type:'',
+      // p_reference_by  :''                     
+      //  --paid,   incomplete,    complete
     };
 
     if (this.isFromSponsorship) {
@@ -515,6 +526,12 @@ export class RegisteredUserComponent {
   onSelectionChange(selectedValue: string) {
     this.page = 1
     this.limit = +selectedValue;
+    this.allDelegate();
+  }
+
+  onTypeSelectionChange(selectedValue: string) {
+    this.page = 1
+    this.type = selectedValue;
     this.allDelegate();
   }
 
