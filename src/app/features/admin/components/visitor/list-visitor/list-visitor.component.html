@@ -155,13 +155,13 @@
                                 <a class="dropdown-item" style="cursor: pointer" (click)="resendTicket(item.id)"
                                 [class.disabled]="disabledItems.has('resend-' + item.id)" 
                                 [attr.aria-disabled]="disabledItems.has('resend-' + item.id)">
-                                  Resend Ticket</a
+                                  Resend Pass</a
                                 >
                               </li>
   
                               <li>
                                 <a class="dropdown-item" style="cursor: pointer" (click)="downloadFile(item.random_id, item.random_id+'.pdf','BADGE_PDF')">
-                                  Download Ticket</a
+                                  Download Pass</a
                                 >
                               </li>
                             </ul>
