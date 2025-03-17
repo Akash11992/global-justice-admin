@@ -34,34 +34,30 @@
                   <form>
                     <div class="row">
                       <div class="col-md-3">
-                        <select #mySelect (change)="onSelectionChange(mySelect.value)" class="form-control" style="cursor: pointer;" aria-label="Default select example">
+                        <select #mySelect (change)="onSelectionChange(mySelect.value)" class="form-control"
+                          style="cursor: pointer;" aria-label="Default select example">
                           <option *ngFor="let option of rowOptions" [value]="option.value">{{ option.label }}</option>
                         </select>
                       </div>
                       <div class="col-md-9 d-flex">
-                        <input   #searchInput
-                        class="form-control"
-                        type="search"
-                        id="inputsearch"
-                        maxlength="50"
-                        placeholder="Search..." (input)="preventFirstSpace(searchInput)"
-                        aria-label="Search" type="search" id="inputsearch"
-                  placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
-                <button class="btn "  (click)="onSearchClick(searchInput.value)" id="btncolor">Search</button>
-                &nbsp; &nbsp;
-                <button class="btn " (click)="onSearchClick('')" type="reset" id="btncolor">Reset</button>
+                        <input #searchInput class="form-control" type="search" id="inputsearch" maxlength="50"
+                          placeholder="Search..." (input)="preventFirstSpace(searchInput)" aria-label="Search"
+                          type="search" id="inputsearch" placeholder="Search..." aria-label="Search">&nbsp;&nbsp;
+                        <button class="btn " (click)="onSearchClick(searchInput.value)" id="btncolor">Search</button>
+                        &nbsp; &nbsp;
+                        <button class="btn " (click)="onSearchClick('')" type="reset" id="btncolor">Reset</button>
                       </div>
                     </div>
-                    
-                    
+
+
                   </form>
                 </div>
               </div>
             </div>
 
-          
 
-     
+
+
             <div class="col-md-6 " id="exportcolmd"> <button class="btn " type="button" id="exportbtn"
                 (click)="export()"><i class="bi bi-file-earmark-excel"></i> Export</button></div>
           </div>
@@ -72,14 +68,14 @@
 
       <div class="row m-1" *ngIf="peacekeeperList.length > 0 else noDataTemplate;">
         <div class="col-md-12 row">
-                <div class="col-sm-10">
-                  <p>
-                    * Data will be auto refreshed in every 60 secs 
-                    <img *ngIf="isSpinner == 1" src="assets/UIComponents/images/loading.gif"width="2%" alt="Loading">
-                  </p>
-                </div>
+          <div class="col-sm-10">
+            <p>
+              * Data will be auto refreshed in every 60 secs
+              <img *ngIf="isSpinner == 1" src="assets/UIComponents/images/loading.gif" width="2%" alt="Loading">
+            </p>
+          </div>
 
-              </div>
+        </div>
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-0">
@@ -88,26 +84,23 @@
                   <thead>
                     <tr>
                       <th>
-                              <input 
-                                type="checkbox" 
-                                [(ngModel)]="masterSelected" 
-                                (change)="checkUncheckAll()"
-                              />
-                            </th>
+                        <input type="checkbox" [(ngModel)]="masterSelected" (change)="checkUncheckAll()" />
+                      </th>
                       <th>SN</th>
-                      <th (click)="onSort('full_name')" [ngStyle]="sortBy === 'full_name'?{'cursor': 'pointer'}:{}">Name 
+                      <th (click)="onSort('full_name')" [ngStyle]="sortBy === 'full_name'?{'cursor': 'pointer'}:{}">Name
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'full_name' && order === 'asc'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'desc'"></i>  
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'desc'"></i>
                       </th>
-                      <th (click)="onSort('dob')" [ngStyle]="sortBy === 'dob'?{'cursor': 'pointer'}:{}">DOB 
+                      <th (click)="onSort('dob')" [ngStyle]="sortBy === 'dob'?{'cursor': 'pointer'}:{}">DOB
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'dob' && order === 'asc'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'dob' && order === 'desc'"></i> 
-                     </th>
-                      <th (click)="onSort('email_id')" [ngStyle]="sortBy === 'email_id'?{'cursor': 'pointer'}:{}">Email 
-                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email_id' && order === 'asc'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email_id' && order === 'desc'"></i> 
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'dob' && order === 'desc'"></i>
                       </th>
-                      <th (click)="onSort('mobile_number')" [ngStyle]="sortBy === 'mobile_number'?{'cursor': 'pointer'}:{}">Mobile
+                      <th (click)="onSort('email_id')" [ngStyle]="sortBy === 'email_id'?{'cursor': 'pointer'}:{}">Email
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email_id' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email_id' && order === 'desc'"></i>
+                      </th>
+                      <th (click)="onSort('mobile_number')"
+                        [ngStyle]="sortBy === 'mobile_number'?{'cursor': 'pointer'}:{}">Mobile
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_number' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_number' && order === 'desc'"></i>
                       </th>
@@ -115,33 +108,32 @@
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'country' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'country' && order === 'desc'"></i>
                       </th>
-                      <th (click)="onSort('Id_no')" [ngStyle]="sortBy === 'Id_no'?{'cursor': 'pointer'}:{}">Peacekeeper ID
+                      <th (click)="onSort('Id_no')" [ngStyle]="sortBy === 'Id_no'?{'cursor': 'pointer'}:{}">Peacekeeper
+                        ID
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'Id_no' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'Id_no' && order === 'desc'"></i>
                       </th>
                       <th>Coupon <br>Discount% </th>
-                      <th (click)="onSort('coupon_code')" [ngStyle]="sortBy === 'coupon_code'?{'cursor': 'pointer'}:{}">Coupon Code 
+                      <th (click)="onSort('coupon_code')" [ngStyle]="sortBy === 'coupon_code'?{'cursor': 'pointer'}:{}">
+                        Coupon Code
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'coupon_code' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'coupon_code' && order === 'desc'"></i>
                       </th>
                       <th>Image</th>
                       <th>QR URL</th>
-                      <th (click)="onSort('created_at')" [ngStyle]="sortBy === 'created_at'?{'cursor': 'pointer'}:{}">Created Date 
+                      <th (click)="onSort('created_at')" [ngStyle]="sortBy === 'created_at'?{'cursor': 'pointer'}:{}">
+                        Created Date
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'created_at' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'created_at' && order === 'desc'"></i>
-                       </th>
+                      </th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let all of peacekeeperList let i = index;">
                       <td>
-                              <input 
-                                type="checkbox" 
-                                [(ngModel)]="all.selected" 
-                                (change)="isAllSelected()"
-                              />
-                            </td>
+                        <input type="checkbox" [(ngModel)]="all.selected" (change)="isAllSelected()" />
+                      </td>
                       <td>{{i+1}}</td>
                       <td>{{all.full_name}}</td>
                       <td>{{all.dob | date : 'dd-MM-yyyy'}}</td>
@@ -159,7 +151,8 @@
                       <td>{{all.Id_no}}</td>
                       <td>{{all.coupon_discount}}{{all.coupon_discount?'%':''}}</td>
                       <td>{{all.coupon_code}}</td>
-                      <td class="p-0"><img class="p-1" [src]="all.file_name" style="cursor: pointer;" (click)="openImage(all.file_name)" width="50px" alt=""></td>
+                      <td class="p-0"><img class="p-1" [src]="all.file_name" style="cursor: pointer;"
+                          (click)="openImage(all.file_name)" width="50px" alt=""></td>
                       <td tooltip="{{all.QR_CODE}}" [options]="myOptions" style="
                             display: block;
                             text-overflow: ellipsis;
@@ -167,7 +160,7 @@
                             white-space: pre-wrap;
                             font: -webkit-control;
                             width: 250px;
-                           "><a  (click)="openLink(all.QR_CODE)" style="color: #0056b3;
+                           "><a (click)="openLink(all.QR_CODE)" style="color: #0056b3;
                            text-decoration: none;cursor: pointer;">{{all.QR_CODE}}</a></td>
                       <td>{{all.created_at | date:'dd-MM-yyyy'}}</td>
                       <!-- <td>{{all.designation}}</td>
@@ -190,14 +183,24 @@
                                               </li>
                                           
                                               </li> -->
-                            
+
                             <li><a class="dropdown-item" style="cursor: pointer;" type="button"
                                 (click)="resendBadge(all.peacekeeper_id,all.url)">
                                 <i class="bi bi-envelope-fill"></i> Resend Badge</a></li>
                             <!-- <li><a class="dropdown-item" style="cursor: pointer;" (click)="sendmail(all.peacekeeper_id)" >
                                                 <i class="bi bi-envelope-fill"></i> Resend Reg. Mail</a></li> -->
 
+                            <li>
+                              <a class="dropdown-item" style="cursor: pointer"
+                                (click)="downloadFile(all.qr_code_photo, all.Id_no,'QR')">
+                                <i class="bi bi-qr-code"></i> Download QR</a>
+                            </li>
 
+                            <li>
+                              <a class="dropdown-item" style="cursor: pointer"
+                                (click)="downloadFile(all.batch_photo, all.Id_no,'BADGE_IMG'); downloadFile(all.batch_pdf, all.Id_no,'BADGE_PDF')">
+                                <i class="bi bi-file-image-fill"></i> Download Badge (Image & Pdf)</a>
+                            </li>
 
 
                             <li><a *ngIf="userPermissions.update" class="dropdown-item" style="cursor: pointer;"
@@ -211,20 +214,19 @@
 
                   </tbody>
                 </table>
-              
-              </div>
-              
 
-              
+              </div>
+
+
+
               <nav aria-label="...">
                 <ul class="pagination">
                   <li class="page-item " (click)="changePage(page - 1)" [disabled]="page === 1">
                     <span class="page-link">Previous</span>
                   </li>
-                  <li class="page-item" *ngFor="let p of [].constructor(totalPages); let i = index" 
-                  (click)="changePage(i + 1)" 
-                  [class.active]="page === i + 1" >
-                  <span class="page-link">{{ i + 1 }}</span>
+                  <li class="page-item" *ngFor="let p of [].constructor(totalPages); let i = index"
+                    (click)="changePage(i + 1)" [class.active]="page === i + 1">
+                    <span class="page-link">{{ i + 1 }}</span>
                   </li>
                   <li class="page-item">
                     <a class="page-link" (click)="changePage(page + 1)" [disabled]="page === totalPages">Next</a>
@@ -235,52 +237,52 @@
             </div>
           </div>
 
-           </div>
-            </div>
-
-            <ng-container *ngIf="isLoading">
-              <div class="table-responsive" >
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>SN</th>
-                      <th >Name</th>
-                      <th>DOB </th>
-                      <th >Country</th>
-                      <th >Mobile </th>
-                      <th>Email </th>
-                      <th>Peacekeeper ID </th>
-                      <th>Coupon <br>Discount% </th>
-                      <th >Coupon Code </th>
-                      <th>Image</th>
-                      <th>QR URL</th>
-                      <th>Created Date</th>
-                    </tr>
-                  </thead>
-                <tbody>
-                  <tr>
-                    <td colspan="12">
-                      <br>
-                      <br>
-                      <br>
-                      <div class="d-flex justify-content-center no_data">
-                        <img src="assets/UIComponents/images/fetchingdata.svg" alt="" width="150px" />
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              </div>
-            </ng-container>
-          </div>
-          
-          
         </div>
-        <!------------------------------------------- Page Content end ----------------------------------------->
+      </div>
 
-        <ng-template #noDataTemplate >
-          <h5 *ngIf="!isLoading" style="text-align: center"><span >No Data Found</span></h5>
-        </ng-template>
+      <ng-container *ngIf="isLoading">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>SN</th>
+                <th>Name</th>
+                <th>DOB </th>
+                <th>Country</th>
+                <th>Mobile </th>
+                <th>Email </th>
+                <th>Peacekeeper ID </th>
+                <th>Coupon <br>Discount% </th>
+                <th>Coupon Code </th>
+                <th>Image</th>
+                <th>QR URL</th>
+                <th>Created Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="12">
+                  <br>
+                  <br>
+                  <br>
+                  <div class="d-flex justify-content-center no_data">
+                    <img src="assets/UIComponents/images/fetchingdata.svg" alt="" width="150px" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+    </div>
+
+
+  </div>
+  <!------------------------------------------- Page Content end ----------------------------------------->
+
+  <ng-template #noDataTemplate>
+    <h5 *ngIf="!isLoading" style="text-align: center"><span>No Data Found</span></h5>
+  </ng-template>
 </div>
 
 
@@ -294,15 +296,13 @@
 <!-- Modal -->
 
 
-  <!-- Image Viewer -->
+<!-- Image Viewer -->
 
-  <div *ngIf="isViewerOpen" class="image-modal">
-    <div class="modal-content">
-         <!-- Close Button -->
+<div *ngIf="isViewerOpen" class="image-modal">
+  <div class="modal-content">
+    <!-- Close Button -->
     <button class="close-btn" (click)="closeViewer()">✖</button>
-      <ngx-image-viewer  [fullscreen]="false" 
-        [src]="[selectedImage]" 
-        (close)="isViewerOpen = false">
-      </ngx-image-viewer>
-    </div>
+    <ngx-image-viewer [fullscreen]="false" [src]="[selectedImage]" (close)="isViewerOpen = false">
+    </ngx-image-viewer>
   </div>
+</div>
