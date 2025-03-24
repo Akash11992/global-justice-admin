@@ -158,6 +158,11 @@
                                   Resend Pass</a
                                 >
                               </li>
+                              <li>
+                                <a class="dropdown-item" style="cursor: pointer"
+                                  (click)="downloadFile(item.qr_photo_url, item.random_id,'QR')">
+                                   Download QR</a>
+                              </li>
   
                               <li>
                                 <a class="dropdown-item" style="cursor: pointer" (click)="downloadFile(item.random_id, item.random_id+'.pdf','BADGE_PDF')">

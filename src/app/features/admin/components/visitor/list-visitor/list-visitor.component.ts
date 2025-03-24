@@ -201,7 +201,7 @@ export class ListVisitorComponent implements OnInit{
     downloadFile(filePath: string, fileName: string,fileType:string) {
       switch(fileType){
         case 'QR':
-        filePath = environment.fileAccessUrl+'/visitor/ticket_qr/'+fileName;
+        filePath = filePath;
         break;
 
         case 'BADGE_IMG':
