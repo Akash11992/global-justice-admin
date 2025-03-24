@@ -178,10 +178,10 @@
                       <td>{{ all.organization_name }}</td>
                       <td
                         [ngClass]="
-                          all.TUD_STATUS == 'paid' || all.TUD_STATUS == 'paid-online' ? 'success' : 'pending'
+                          all.TUD_STATUS == 'paid' || all.TUD_STATUS == 'paid-online'  || all.TUD_STATUS == 'APPROVED' ? 'success' : 'pending'
                         "
                       >
-                        {{ all.TUD_STATUS == "paid" || all.TUD_STATUS == "paid-online" ? "SUCCESS" : "PENDING" }}
+                        {{ all.TUD_STATUS == "paid" || all.TUD_STATUS == "paid-online"  || all.TUD_STATUS == "APPROVED" ? "SUCCESS" : "PENDING" }}
                       </td>
                       <td>
                         {{
