@@ -39,10 +39,12 @@ export class ListVisitorComponent implements OnInit{
                   private ngxService: NgxUiLoaderService,
                   private SharedService: SharedService,
                   private permissionsService: UserPermissionsService
+
                 ) {}
   
     ngOnInit() {
-     this.getUserPermission(); 
+
+     this.getUserPermission();
 
       this.setupType();
       this.loadVisitors();
@@ -114,7 +116,7 @@ export class ListVisitorComponent implements OnInit{
 
     disableButtonTemporarily(id: string) {
       this.disabledItems.add(id); // Disable the button
-      setTimeout(() => this.disabledItems.delete(id), 120000); // Enable after 2 min
+      setTimeout(() => this.disabledItems.delete(id), 30000); // Enable after 2 min
     }
 
     onActivateDeactiveToggle(item:any):void{
@@ -214,10 +216,14 @@ export class ListVisitorComponent implements OnInit{
       this.SharedService.downloadFile(filePath, fileName);
     }
   
+
     async getUserPermission() {
       let userData = JSON.parse(localStorage.getItem('userDetails'));
       this.permissionsService.getUserPermissions(userData.email);
+  
       // Use in-memory permissions instead of localStorage to prevent tampering
       this.userPermissions = this.permissionsService.getStoredPermissions();
     }
+  
+
 }

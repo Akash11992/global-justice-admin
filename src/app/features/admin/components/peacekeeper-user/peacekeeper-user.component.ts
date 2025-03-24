@@ -560,7 +560,23 @@ export class PeacekeeperUserComponent implements OnInit {
 
 
 
+  downloadFile(filePath: string, fileName: string, fileType: string) {
+    switch (fileType) {
+      case 'QR':
+        filePath = filePath;
+        break;
 
+      case 'BADGE_IMG':
+        filePath = filePath;
+        break;
+
+      case 'BADGE_PDF':
+        filePath = filePath;
+        break;
+
+    }
+    this.SharedService.downloadFile(filePath, fileName);
+  }
 
 
   openLink(link: any) {

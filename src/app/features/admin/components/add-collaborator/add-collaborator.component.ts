@@ -27,7 +27,6 @@ export class AddCollaboratorComponent {
   selectedStateObj:any ={};
   selectedCityObj:any ={};
 
-  selectedCountryObj:any={};
 
   selectedPeacekeeperObj:any ={};
 
@@ -72,8 +71,7 @@ export class AddCollaboratorComponent {
 
       if(this.collaboratorId) this.collaboratorDataById();
       
-
-      const namePattern = /^[a-zA-Z0-9' -]{1,50}$/;
+      const namePattern = /^[a-zA-Z0-9' .-]{1,50}$/;
       const mobilePattern = /^\+[1-9]\d{9,14}$/;
       const addressPattern = /^[a-zA-Z0-9\s,.'\-/#]{1,100}$/;
 
@@ -253,6 +251,7 @@ export class AddCollaboratorComponent {
         console.log(error);
       }
       )
+    }
 
     onFileSelected(event: any) {
       const file = event.target.files[0];
@@ -357,10 +356,8 @@ export class AddCollaboratorComponent {
     }
   
     onCancel(): void {
-
-      // this.router.navigate(['/dashboard/collaborator']);  
-      this.location.back();
-
+      this.router.navigate(['dashboard/collaborator']);  
+      // this.location.back();
     }
 
     noFutureDateValidator(control: any) {
