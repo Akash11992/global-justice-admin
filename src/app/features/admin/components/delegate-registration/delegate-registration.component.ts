@@ -143,6 +143,26 @@ export class DelegateRegistrationComponent {
     return this.mainForm.get('delegateForms') as FormArray;
   }
 
+  titleValidateAlpha(event: KeyboardEvent) {
+    debugger
+    const input = event.target as HTMLInputElement;
+    const key = event.key;
+    const currentValue = input.value;
+    const cursorPos = input.selectionStart;
+ 
+    // Block space at the beginning
+    if (key === ' ' && (cursorPos === 0 || currentValue === '')) {
+      event.preventDefault();
+      return;
+    }
+ 
+    // Allow letters, spaces (not at start),
+    const allowedPattern = /^[a-zA-Z\s\.'‘]$/;
+    if (!allowedPattern.test(key)) {
+      event.preventDefault();
+    }
+  }
+
   createDelegateForm(): FormGroup {
     
     const namePattern = /^[a-zA-Z0-9 -]{1,50}$/;

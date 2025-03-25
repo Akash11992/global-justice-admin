@@ -18,7 +18,7 @@
                     <div class="row">
                       <div class="form-group col-md-4 mb-3">
                         <label for="title">Title <span class="text-danger">*</span></label>
-                        <input type="text" id="title" class="form-control" formControlName="title" />
+                        <input type="text" id="title" class="form-control" formControlName="title" (keypress)="titleValidateAlpha($event)"/>
                         <div *ngIf="registrationForm.get('title')?.touched && (registrationForm.get('title')?.invalid || registrationForm.get('title').errors?.leadingTrailingSpaces)" class="text-danger">
                           Title is required and should be at most 15 characters.
                         </div>
