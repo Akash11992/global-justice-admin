@@ -136,6 +136,10 @@
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'TUD_STATUS' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'TUD_STATUS' && order === 'desc'"></i>
                        </th>
+                       <th  (click)="onSort('is_complete')"  [ngStyle]="sortBy === 'is_complete'?{'cursor': 'pointer'}:{}">Profile Status 
+                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'is_complete' && order === 'asc'"></i>
+                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'is_complete' && order === 'desc'"></i>
+                       </th>
                       <th  (click)="onSort('TUD_TRANSCATION_ID')"  [ngStyle]="sortBy === 'TUD_TRANSCATION_ID'?{'cursor': 'pointer'}:{}">Payment Transaction Id  
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'TUD_TRANSCATION_ID' && order === 'asc'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'TUD_TRANSCATION_ID' && order === 'desc'"></i>                     
@@ -179,10 +183,17 @@
                       <td>{{ all.organization_name }}</td>
                       <td
                         [ngClass]="
-                          all.TUD_STATUS == 'paid' || all.TUD_STATUS == 'paid-online' ? 'success' : 'pending'
+                          all.TUD_STATUS == 'paid' || all.TUD_STATUS == 'paid-online'  || all.TUD_STATUS == 'APPROVED' ? 'success' : 'pending'
                         "
                       >
-                        {{ all.TUD_STATUS == "paid" || all.TUD_STATUS == "paid-online" ? "SUCCESS" : "PENDING" }}
+                        {{ all.TUD_STATUS == "paid" || all.TUD_STATUS == "paid-online"  || all.TUD_STATUS == "APPROVED" ? "SUCCESS" : "PENDING" }}
+                      </td>
+                      <td>
+                        {{
+                          all.is_complete == 1
+                            ? 'Complete' : 'Incomplete'
+                            
+                        }}
                       </td>
                       <td>
                         {{

@@ -68,7 +68,7 @@ export class AddEditVisitorComponent implements OnInit {
     visitorData.forEach((visitor: any) => {
       visitorForms.push(this.fb.group({
         full_name: [visitor.full_name, [Validators.required, Validators.pattern(/^[a-zA-Z0-9 -]{1,50}$/)]],
-        mobile_no: [visitor.mobile_no, [Validators.required, Validators.pattern(/^\+[1-9]\d{9,14}$/)]],
+        mobile_no: [visitor.mobile_no, [ Validators.pattern(/^\+[1-9]\d{9,14}$/)]],
         email: [visitor.email, [Validators.required, Validators.pattern(/^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)]],
         country: [visitor.country, Validators.required],
         country_id: [visitor.country_id, Validators.required],
@@ -129,7 +129,7 @@ export class AddEditVisitorComponent implements OnInit {
 
     return this.fb.group({
       full_name: ['', [Validators.required, Validators.pattern(namePattern)]],
-      mobile_no: ['', [Validators.required, Validators.pattern(mobilePattern)]],
+      mobile_no: ['', [Validators.pattern(mobilePattern)]],
       email: ['', [Validators.required, Validators.pattern(emailPattern)]],
       country: ['', Validators.required],
       country_id: ['', Validators.required],

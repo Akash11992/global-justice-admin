@@ -58,6 +58,7 @@
                           class="form-control"
                           formControlName="title"
                           placeholder="Title"
+                          (keypress)="titleValidateAlpha($event)"
                         />
                         <div *ngIf="delegateForm.get('title')?.invalid && delegateForm.get('title')?.touched" class="text-danger small">
                           Title is required.

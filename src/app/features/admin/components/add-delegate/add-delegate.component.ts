@@ -48,7 +48,7 @@ export class AddDelegateComponent implements OnInit {
     // Define the form group with controls and validations
     this.registrationForm = this.fb.group({
       // Personal Information Section
-      title: ['', [Validators.required, Validators.maxLength(15),strictStringValidator()]],
+      title: ['', [Validators.required, Validators.maxLength(15)]],
       first_name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(115),strictStringValidator()]],
       last_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(115),strictStringValidator()]],
       dob: ['', [Validators.required,this.noFutureDateValidator]],
@@ -121,6 +121,26 @@ export class AddDelegateComponent implements OnInit {
     this.registrationForm.controls['city'].setValue('');
 
     this.callStateByIdApi(selectedElement.value);
+  }
+
+  titleValidateAlpha(event: KeyboardEvent) {
+    debugger
+    const input = event.target as HTMLInputElement;
+    const key = event.key;
+    const currentValue = input.value;
+    const cursorPos = input.selectionStart;
+ 
+    // Block space at the beginning
+    if (key === ' ' && (cursorPos === 0 || currentValue === '')) {
+      event.preventDefault();
+      return;
+    }
+ 
+    // Allow letters, spaces (not at start),
+    const allowedPattern = /^[a-zA-Z\s\.'‘]$/;
+    if (!allowedPattern.test(key)) {
+      event.preventDefault();
+    }
   }
 
   callStateByIdApi(selectedId:any){
