@@ -86,6 +86,7 @@
                   <option value="0">Select State</option>
                   <option *ngFor="let state of states" [value]="state['id']" [attr.data-name]="state['name']">{{state['name']}}</option>
 
+                </select>
                 <label for="Country" class="form-label">Country <span class="error text-danger">*</span></label>
                 <select formControlName="country" (change)="onCountryChange($event)" class="form-control" aria-label="Default select example">
                   <option value="">Select Country</option>

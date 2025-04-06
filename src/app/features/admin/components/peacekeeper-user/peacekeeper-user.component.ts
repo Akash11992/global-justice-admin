@@ -551,14 +551,6 @@ export class PeacekeeperUserComponent implements OnInit {
     this.userPermissions = this.permissionsService.getStoredPermissions();
 
   }
-  this.allPeacekeeper();
-}
-
-
-
-
-
-
 
   downloadFile(filePath: string, fileName: string, fileType: string) {
     switch (fileType) {

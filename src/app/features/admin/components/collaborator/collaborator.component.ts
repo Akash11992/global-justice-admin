@@ -182,9 +182,5 @@ export class CollaboratorComponent implements OnInit {
   }
 
 
-
-      }
-      this.SharedService.downloadFile(filePath, fileName);
-    }
   
 }
