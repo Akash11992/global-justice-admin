@@ -17,7 +17,8 @@
       </div>
 
       <div class="card" id="uppercard">
-        <div class="card-body">
+        <div class="card-body"    
+        >
           <div class="row">
             <div class="col-md-8">
               <div class="row">
@@ -82,13 +83,17 @@
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'full_name' && order === 'DESC'"></i>
                       </th>
 
-                      <th (click)="onSort('mobile_no')">
+                      <th (click)="onSort('mobile_no')" 
+                      *ngIf="userPermissions.view"
+                      >
                         Mobile No.
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'mobile_no' && order === 'ASC'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'mobile_no' && order === 'DESC'"></i>
                       </th>
 
-                      <th (click)="onSort('email')">
+                      <th (click)="onSort('email')"
+                      *ngIf="userPermissions.view"
+                      >
                         E-mail
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'email' && order === 'ASC'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'email' && order === 'DESC'"></i>
@@ -122,8 +127,12 @@
                     <tr *ngFor="let item of visitors ; let i=index">
                       <td class="text-center">{{ (page - 1) * limit + i + 1 }}</td>
                       <td>{{item.full_name}}</td>
-                      <td>{{item.mobile_no}}</td>
-                      <td>{{item.email}}</td>
+                      <td    
+                      *ngIf="userPermissions.view"
+                      >{{item.mobile_no}}</td>
+                      <td
+                      *ngIf="userPermissions.view"
+                      >{{item.email}}</td>
                       <td>{{item.country}}</td>
                       <td>{{item.type}}</td>
                       <td>{{item.random_id}}</td>
@@ -136,7 +145,8 @@
                             <img src="/assets/images/orangemenuicon.png" id="hamburgericon" />
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li>
+                            <li     *ngIf="userPermissions.view"
+                            >
                               <a class="dropdown-item" style="cursor: pointer"
                                 [routerLink]="['/dashboard/edit-visitor', item.id]">
                                 Edit</a>

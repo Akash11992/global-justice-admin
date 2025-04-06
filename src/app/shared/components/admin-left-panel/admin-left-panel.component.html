@@ -47,39 +47,26 @@
 <!------------------------------------------- Sidebar end---------------------------------------------->
 
 <div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()"
-    >&times;</a
-  >
+  <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
   <ul class="list-unstyled components mb-5">
-    <li
-      [routerLinkActive]="['active']"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <a routerLink="/dashboard" id="sidebarDashboard"
-        ><img src="assets/img/speedmeter.png" id="speedmeter" /> &nbsp; &nbsp;
-        <span>Dashboard</span></a
-      >
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/dashboard" id="sidebarDashboard"><img src="assets/img/speedmeter.png" id="speedmeter" /> &nbsp;
+        &nbsp;
+        <span>Dashboard</span></a>
     </li>
-    <li
-      [routerLinkActive]="['active']"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <a routerLink="/dashboard/peacekeeper" id="sidebarDashboard"
-        ><img src="assets/img/usericon.png" id="speedmeter" /> &nbsp;
-        &nbsp;<span>Registered Peacekeeper</span></a
-      >
+    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/dashboard/peacekeeper" id="sidebarDashboard"><img src="assets/img/usericon.png" id="speedmeter" />
+        &nbsp;
+        &nbsp;<span>Registered Peacekeeper</span></a>
     </li>
     <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a routerLink="/dashboard/non-registered-user" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
               id="speedmeter">
               &nbsp;  &nbsp;<span>Non - Approved Users </span></a>
         </li> -->
-    <li
-      [routerLinkActive]="['active']"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <a routerLink="/dashboard/registered-user" id="sidebarDashboard"
-        ><img src="assets/img/usericon.png" id="speedmeter" />
+    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/dashboard/registered-user" id="sidebarDashboard"><img src="assets/img/usericon.png"
+          id="speedmeter" />
 
         &nbsp; &nbsp;<span>Delegate</span>
       </a>
@@ -94,14 +81,10 @@
       >
     </li> -->
 
-    <li
-      [routerLinkActive]="['active']"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <a routerLink="/dashboard/sponsor" id="sidebarDashboard"
-        ><img src="assets/img/nonregisteruse.png" id="speedmeter" /> &nbsp;
-        &nbsp;<span>Sponsor</span></a
-      >
+    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/dashboard/sponsor" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
+          id="speedmeter" /> &nbsp;
+        &nbsp;<span>Sponsor</span></a>
     </li>
 
     <!-- <li
@@ -114,45 +97,28 @@
       >
     </li> -->
 
-    <li
-      [routerLinkActive]="['active']"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <a routerLink="/dashboard/collaborator" id="sidebarDashboard"
-        ><img src="assets/img/nonregisteruse.png" id="speedmeter" /> &nbsp;
-        &nbsp;<span>Collaborator</span></a
-      >
+    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/dashboard/collaborator" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
+          id="speedmeter" /> &nbsp;
+        &nbsp;<span>Collaborator</span></a>
     </li>
 
-    <li
-      [routerLinkActive]="['active']"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <a routerLink="/dashboard/visitor" id="sidebarDashboard"
-        ><img src="assets/img/usericon.png" id="speedmeter" /> &nbsp;
-        &nbsp;<span>Visitor</span></a
-      >
+    <li *ngIf="userPermissions.isVisitor" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/dashboard/visitor" id="sidebarDashboard"><img src="assets/img/usericon.png" id="speedmeter" />
+        &nbsp;
+        &nbsp;<span>Visitor</span></a>
     </li>
 
 
-    <li
-      [routerLinkActive]="['active']"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <a routerLink="/dashboard/contact-us" id="sidebarDashboard"
-        ><img src="assets/img/usericon.png" id="speedmeter" /> &nbsp;
-        &nbsp;<span>Contact Us</span></a
-      >
+    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/dashboard/contact-us" id="sidebarDashboard"><img src="assets/img/usericon.png" id="speedmeter" />
+        &nbsp;
+        &nbsp;<span>Contact Us</span></a>
     </li>
 
-    <li
-      [routerLinkActive]="['active']"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <a href="javascript:void(0)"  id="sidebarDashboard" (click)="confirmLogout()">
-        <i class="fa fa-sign-out" aria-hidden="true" style="font-size: 25px"></i
-        >&nbsp; &nbsp;<span>Logout</span></a
-      >
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+      <a href="javascript:void(0)" id="sidebarDashboard" (click)="confirmLogout()">
+        <i class="fa fa-sign-out" aria-hidden="true" style="font-size: 25px"></i>&nbsp; &nbsp;<span>Logout</span></a>
     </li>
   </ul>
 </div>
