@@ -85,7 +85,6 @@ export class LoginComponent implements AfterViewInit  {
     }
 
     // Log the loginData object for debugging purposes
-    console.log(loginData + "loginData");
 
     this.ngxService.start();
     // Call the ProfileService to post the OTP and password data

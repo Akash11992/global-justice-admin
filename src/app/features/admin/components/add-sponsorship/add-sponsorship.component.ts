@@ -110,7 +110,7 @@ export class AddSponsorshipComponent implements OnInit{
       this.sponsorshipTypes = data['data'];
     },
     (error: any) => {
-      console.log(error);
+      // console.log(error);
     }
     )
   }
@@ -126,7 +126,7 @@ export class AddSponsorshipComponent implements OnInit{
       }
     },
     (error: any) => {
-      console.log(error);
+      // console.log(error);
     }
     )
   }
@@ -176,7 +176,7 @@ export class AddSponsorshipComponent implements OnInit{
 
     },
     (error: any) => {
-      console.log(error);
+      // console.log(error);
     }
     )
   }
@@ -239,7 +239,7 @@ export class AddSponsorshipComponent implements OnInit{
       }
     },
     (error: any) => {
-      console.log(error);
+      // console.log(error);
     }
     )
   }
@@ -255,7 +255,7 @@ export class AddSponsorshipComponent implements OnInit{
         }
       },
       (error: any) => {
-        console.log(error);
+        // console.log(error);
       }
       )
   }
@@ -321,9 +321,7 @@ export class AddSponsorshipComponent implements OnInit{
   }
 
   onSubmit():void {
-    console.log(this.form);
     if (this.form.valid) {
-      console.log("payload", this.form.value);
 
       const payload = {
         sponsorship_type_id:this.form.value["sponsorshipType"],

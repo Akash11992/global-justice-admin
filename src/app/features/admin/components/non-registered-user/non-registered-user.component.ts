@@ -73,7 +73,6 @@ export class NonRegisteredUserComponent {
 
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
-        console.log('refreshing......')
         this.allDelegate();
       }, this.RefreshInterval);
     }
@@ -94,14 +93,12 @@ export class NonRegisteredUserComponent {
   allDelegate() {
     // this.ngxService.start();
     this.AdminService.getDelegate().subscribe((data: any) => {
-      console.log("data", data.data[0]);
       this.nonregist = data.data[0]
       // this.ngxService.stop();
       if (this.nonregist.length === 0) {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false");
       }
       this.searchForm.reset();
       this.delegate = true
@@ -113,14 +110,12 @@ export class NonRegisteredUserComponent {
   allPartner() {
     // this.ngxService.start();
     this.AdminService.getPartner().subscribe((data: any) => {
-      console.log("data", data.data[0]);
       this.nonregist = data.data[0]
       // this.ngxService.stop();
       if (this.nonregist.length === 0) {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false");
       }
       this.searchForm.reset();
       this.partner = true;
@@ -132,14 +127,12 @@ export class NonRegisteredUserComponent {
   allSpeaker() {
     // this.ngxService.start();
     this.AdminService.getSpeaker().subscribe((data: any) => {
-      console.log("data", data.data[0]);
       this.nonregist = data.data[0]
       // this.ngxService.stop();
       if (this.nonregist.length === 0) {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false");
       }
       this.searchForm.reset();
       this.speaker = true;
@@ -151,7 +144,6 @@ export class NonRegisteredUserComponent {
   // Function to update selectedUserIds array when a row is clicked
   updateSelectedUsers(userId: any, userName: any, userEmail: any, company: any, designation: any, urn: any, qr_code: any, user_number: any) {
     // Check if the user ID is already selected, and toggle selection
-    console.log(userId, userName, userEmail);
     this.userName = userName;
     this.userEmail = userEmail;
     this.company = company;
@@ -184,17 +176,6 @@ export class NonRegisteredUserComponent {
 
     }
 
-    console.log('selectedUserIds:', this.selectedUserIds);
-    console.log('selectedUserNames:', this.selectedUserNames);
-
-    console.log('selectedUserEmails:', this.selectedUserEmails);
-    console.log('selectedCompanies:', this.selectedCompanies);
-
-    console.log('selectedDesignations:', this.selectedDesignations);
-    console.log('selectedURNs:', this.selectedURNs);
-
-    console.log('selectedQRCodes:', this.selectedQRCodes);
-    console.log('selectedUserNumbers:', this.selectedUserNumbers);
   }
 
   approveAndRegisterSelected(): void {
@@ -207,15 +188,12 @@ export class NonRegisteredUserComponent {
 
     switch (true) {
       case this.delegate === true:
-        console.log("active tab name delegate", this.delegate);
         this.form_name = "delegate"
         break;
       case this.partner === true:
-        console.log("active tab name partner", this.partner);
         this.form_name = "partner"
         break;
       case this.speaker === true:
-        console.log("active tab name speaker", this.speaker,);
         this.form_name = "speaker"
 
         break;
@@ -243,7 +221,6 @@ export class NonRegisteredUserComponent {
       form_name: this.form_name
 
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -259,20 +236,15 @@ export class NonRegisteredUserComponent {
       this.selectedUserNumbers = [];
       setTimeout(() => {
         this.router.navigate(['dashboard/non-registered-user']);
-        console.log("active tab name delegate", this.delegate);
-        console.log("active tab name partner", this.partner);
-        console.log("active tab name speaker", this.speaker,);
+  
         switch (true) {
           case this.delegate === true:
-            console.log("active tab name delegate", this.delegate);
             this.allDelegate();
             break;
           case this.partner === true:
-            console.log("active tab name partner", this.partner);
             this.allPartner();
             break;
           case this.speaker === true:
-            console.log("active tab name speaker", this.speaker,);
             this.allSpeaker();
             break;
         }
@@ -289,15 +261,12 @@ export class NonRegisteredUserComponent {
     }
     switch (true) {
       case this.delegate === true:
-        console.log("active tab name delegate", this.delegate);
         this.form_name = "delegate"
         break;
       case this.partner === true:
-        console.log("active tab name partner", this.partner);
         this.form_name = "partner"
         break;
       case this.speaker === true:
-        console.log("active tab name speaker", this.speaker,);
         this.form_name = "speaker"
 
         break;
@@ -326,16 +295,11 @@ export class NonRegisteredUserComponent {
 
     };
 
-    console.log("active tab name delegate", this.delegate);
-    console.log("active tab name partner", this.partner);
-    console.log("active tab name speaker", this.speaker,);
 
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('', data.message, 'success');
-      console.log(data.message);
 
       // Clear the selected arrays after successful unapprove
       this.selectedUserIds = [];
@@ -350,19 +314,15 @@ export class NonRegisteredUserComponent {
       setTimeout(() => {
         this.router.navigate(['dashboard/non-registered-user']);
         this.selectAll = false;
-        console.log("active tab name speaker", this.speaker);
         this.selectedUserIds = [];
         switch (true) {
           case this.delegate === true:
-            console.log("active tab name delegate", this.delegate);
             this.allDelegate();
             break;
           case this.partner === true:
-            console.log("active tab name partner", this.partner);
             this.allPartner();
             break;
           case this.speaker === true:
-            console.log("active tab name speaker", this.speaker,);
             this.allSpeaker();
             break;
         }
@@ -375,12 +335,10 @@ export class NonRegisteredUserComponent {
     this.selectAll = !this.selectAll;
 
     // If selectAll is true, add all user_ids to the selectedUserIds array
-    console.log(this.selectAll);
 
     if (this.selectAll) {
       // this.selectedUserIds = this.nonregist.map(user => user.user_id.toString());
       this.selectedUserIds = this.nonregist.map(user => user.user_id);
-      console.log(this.selectedUserIds);
 
     } else {
       // If selectAll is false, clear the AllselectedUserIds array
@@ -426,11 +384,9 @@ export class NonRegisteredUserComponent {
   }
   deleteUser(userId: number, userName: any, userEmail: any, company: any, designation: any, urn: any, qr_code: any, user_number: any): void {
     this.updateSelectedUsers(userId, userName, userEmail, company, designation, urn, qr_code, user_number);
-    console.log("delete called", userId);
     const payload = {
       user_id: userId
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.DeleteUser(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -440,15 +396,12 @@ export class NonRegisteredUserComponent {
         this.router.navigate(['dashboard/non-registered-user']);
         switch (true) {
           case this.delegate === true:
-            console.log("active tab name delegate", this.delegate);
             this.allDelegate();
             break;
           case this.partner === true:
-            console.log("active tab name partner", this.partner);
             this.allPartner();
             break;
           case this.speaker === true:
-            console.log("active tab name speaker", this.speaker,);
             this.allSpeaker();
             break;
         }
@@ -460,7 +413,6 @@ export class NonRegisteredUserComponent {
 
   searchDelegateNonUser(): void {
     const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue, this.searchForm.get('searchInput').value);
     // Check if searchValue is an empty string
     if (searchValue === null || searchValue.trim() === '') {
       // Display an error toaster here
@@ -470,7 +422,6 @@ export class NonRegisteredUserComponent {
     const payload = {
       search: searchValue
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.SearchDelegateNonUser(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -478,12 +429,10 @@ export class NonRegisteredUserComponent {
       this.nonregist = data.data[0]
       if (this.nonregist.length === 0) {
         this.notFound = true;
-        console.log("true");
 
       }
       else {
         this.notFound = false;
-        console.log("false");
       }
       // setTimeout(() => {
       //   this.router.navigate(['dashboard/non-registered-user']);
@@ -494,7 +443,6 @@ export class NonRegisteredUserComponent {
 
   SearchPartnerNonUser(): void {
     const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
     if (searchValue === null || searchValue.trim() === '') {
       // Display an error toaster here
       this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
@@ -503,7 +451,6 @@ export class NonRegisteredUserComponent {
     const payload = {
       search: searchValue
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.SearchPartnernNonUser(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -513,7 +460,6 @@ export class NonRegisteredUserComponent {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false");
       }
       // setTimeout(() => {
       //   this.router.navigate(['dashboard/non-registered-user']);
@@ -522,7 +468,6 @@ export class NonRegisteredUserComponent {
   }
   SearchSpeakerNonUser(): void {
     const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
     if (searchValue === null || searchValue.trim() === '') {
       // Display an error toaster here
       this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
@@ -531,18 +476,15 @@ export class NonRegisteredUserComponent {
     const payload = {
       search: searchValue
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.SearchSpeakerNonUser(payload).subscribe((data: any) => {
       this.ngxService.stop();
       this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
       this.nonregist = data.data[0]
-      console.log("array length", this.nonregist.length);
       if (this.nonregist.length === 0) {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false");
       }
       // setTimeout(() => {
       //   this.router.navigate(['dashboard/non-registered-user']);
@@ -554,9 +496,6 @@ export class NonRegisteredUserComponent {
 
     this.searchForm.reset();
 
-    console.log("active tab name delegate", this.delegate);
-    console.log("active tab name partner", this.partner);
-    console.log("active tab name speaker", this.speaker,);
     switch (true) {
       case this.delegate === true:
         this.allDelegate();
@@ -572,9 +511,7 @@ export class NonRegisteredUserComponent {
   }
   searchUsers() {
 
-    console.log("active tab name delegate", this.delegate);
-    console.log("active tab name partner", this.partner);
-    console.log("active tab name speaker", this.speaker,);
+
 
     switch (true) {
       case this.delegate === true:
@@ -662,8 +599,7 @@ export class NonRegisteredUserComponent {
 
       }
       let modifiedstatus = item.status; // Initialize with the original value
-      console.log(modifiedstatus === "1");
-      console.log(typeof modifiedstatus);
+
 
       if (item.status === "1") {
         // Modify 'registration_type' based on your condition

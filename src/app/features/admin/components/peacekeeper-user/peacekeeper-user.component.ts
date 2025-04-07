@@ -153,7 +153,6 @@ export class PeacekeeperUserComponent implements OnInit {
       peace_id: this.peacekeeperID,
 
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.postPeacekeeper(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -195,7 +194,6 @@ export class PeacekeeperUserComponent implements OnInit {
 
       // this.peacekeeperList = decreptedUser
       this.peacekeeperList = data.peacekeepers.Data
-      console.log(this.peacekeeperList, 'peaceList');
 
       if (this.masterSelected) {
         this.peacekeeperList.forEach(item => (item.selected = this.masterSelected));
@@ -254,7 +252,6 @@ export class PeacekeeperUserComponent implements OnInit {
 
 
   resendBadge(peaceID: number, url: any) {
-    console.log(this.peacekeeperList);
     this.referralUrl = url;
     this.peacekeeperID = peaceID;
     this.onSave();
@@ -269,7 +266,6 @@ export class PeacekeeperUserComponent implements OnInit {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    console.log(payload);
 
     // Make the HTTP request to download the PDF
     this.AdminService.Download_Badge(payload)

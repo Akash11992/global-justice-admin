@@ -127,7 +127,6 @@ export class ContactUsComponent implements OnInit {
       this.intervalId = setInterval(async () => {
         this.isSpinner = 1; // Show spinner before fetching data
 
-        console.log('refreshing......')
         this.allContactUs();
       }, this.RefreshInterval);
     }
@@ -181,7 +180,6 @@ export class ContactUsComponent implements OnInit {
 
       // this.totalRecords = this.contactUsList.length;
 
-      // console.log(this.totalRecords, 'totalRecords');
 
 
       // let pag = Math.ceil(this.totalRecords / this.pageSize);
@@ -199,7 +197,6 @@ export class ContactUsComponent implements OnInit {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false");
       }
       // this.searchForm.reset();
       // this.ngxService.stop();

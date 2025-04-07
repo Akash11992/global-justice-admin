@@ -43,7 +43,6 @@ referralUrl:any ='https://globaljusticeuat.cylsys.com/delegate-registration?code
     const emailChars = email.substring(0, 2).toUpperCase();
     const mobileStart = mobile.substring(0, 2);
     const mobileEnd = mobile.slice(-2);
-console.log(mobile.length,'mobile');
 
     // Combine the parts into a 16-character code
     if(firstName!==""&&lastName!==""&&country!==""&&email!==""&&mobile!==""&&mobile.length>9&&!this.couponForm.get('qrCode')?.value){
@@ -72,16 +71,13 @@ console.log(mobile.length,'mobile');
 
   onGenerateQR(): void {
     const qrData = this.couponForm.value;
-    console.log('QR Data:', qrData);
     // Logic to generate QR code can go here.
   }
 
   onSave(): void {
     if (this.couponForm.valid) {
-      console.log('Form Data:', this.couponForm.value);
       // Logic to save the data can go here.
     } else {
-      console.log('Form is invalid');
     }
   }
 }

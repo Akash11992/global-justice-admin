@@ -39,10 +39,8 @@ export class ViewTrackingListComponent {
   GetAlltrackingListdata() {
     // this.ngxService.start();
     this.AdminService.getAllTracking().subscribe((data: any) => {
-      console.log("data", data.data);
       if (data && data.data !== undefined) {
         this.trackingListdata = data.data;
-        console.log(this.trackingListdata);
         // for (let i of this.trackingListdata) {
         //   this.qrCodeSrc = this.bufferToDataURL(i.qr_code.data);
         // }
@@ -76,7 +74,6 @@ export class ViewTrackingListComponent {
  // Function to update selectedUserIds array when a row is clicked
  updateSelectedData(userId: any) {
   // Check if the user ID is already selected, and toggle selection
-  console.log(userId);
   
   // Convert userId to a number
   const id = Number(userId);
@@ -88,7 +85,6 @@ export class ViewTrackingListComponent {
     this.selectedUserIds.push(id);
   }
 
-  console.log('selectedUserIds:', this.selectedUserIds);
 
 }
 
@@ -104,7 +100,6 @@ DeleteSelected(): void {
   const payload = {
     tracking_link_id: this.selectedUserIds.join(','), // Convert array to comma-separated string
   };
-  console.log("payload", payload);
   this.ngxService.start();
   this.AdminService.DeleteTracking(payload).subscribe((data: any) => {
     this.ngxService.stop();
@@ -118,12 +113,10 @@ toggleSelectAll() {
   this.selectAll = !this.selectAll;
 
   // If selectAll is true, add all user_ids to the selectedUserIds array
-  console.log(this.selectAll);
 
   if (this.selectAll) {
     // this.selectedUserIds = this.nonregist.map(user => user.user_id.toString());
     this.selectedUserIds = this.trackingListdata.map((user:any) => user.tracking_link_id);
-    console.log(this.selectedUserIds);
 
   } else {
     // If selectAll is false, clear the AllselectedUserIds array
@@ -146,7 +139,6 @@ resetForm(): void {
 }
 search(): void {
   const searchValue = this.searchForm.get('searchInput').value;
-  console.log("search called", searchValue);
   if ( searchValue===null ||searchValue.trim() === '' ) {
     // Display an error toaster here
     this.SharedService.ToastPopup('',"Search value cannot be empty", 'error')
@@ -155,7 +147,6 @@ search(): void {
   const payload = {
     search: searchValue
   };
-  console.log("payload", payload);
   this.ngxService.start();
   this.AdminService.SearchTracking(payload).subscribe((data: any) => {
     this.ngxService.stop();  
@@ -167,7 +158,6 @@ search(): void {
       this.trackingListdata= data.data[0];
           this.SharedService.ToastPopup('', 'data fetched successfully', 'success')
 
-      console.log("false");
     }
 // Manually trigger change detection to update the view
 this.cd.detectChanges();

@@ -56,7 +56,7 @@ export class ListVisitorComponent implements OnInit{
           this.typeOptions = data['data'];
         },
         (error: any) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     }

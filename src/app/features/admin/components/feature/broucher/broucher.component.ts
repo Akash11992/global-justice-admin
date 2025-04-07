@@ -32,16 +32,13 @@ export class BroucherComponent {
   getBroucher() {
     // this.ngxService.start();
     this.AdminService.getBroucherEndpoint().subscribe((data: any) => {
-      console.log("data", data.data);
       this.nonregist = data.data
-      console.log("this.broucherdata", this.broucherdata);
       if (this.nonregist.length > 0) {
         this.notFound = false;
 
       } else {
         this.notFound = true;
 
-        console.log("false");
       }
     });
   }
@@ -49,7 +46,6 @@ export class BroucherComponent {
 
   SearchSpeakerUser(): void {
     const searchValue = this.searchForm.get('searchInput').value;
-    console.log("search called", searchValue);
     if (searchValue === null || searchValue.trim() === '') {
       // Display an error toaster here
       this.SharedService.ToastPopup('', "Search value cannot be empty", 'error')
@@ -58,7 +54,6 @@ export class BroucherComponent {
     const payload = {
       search: searchValue
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.Searchbroucher(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -68,7 +63,6 @@ export class BroucherComponent {
         this.notFound = true;
       } else {
         this.notFound = false;
-        console.log("false");
       }
       // setTimeout(() => {
       //   this.router.navigate(['dashboard/registered-user']);
@@ -174,11 +168,9 @@ const ws = XLSX.utils.json_to_sheet(columnsToExport);
 
   deleteUser(brochure_id: number): void {
 
-    console.log("delete called", brochure_id);
     const payload = {
       brochure_id: brochure_id
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.DeleteBroucher(payload).subscribe((data: any) => {
       this.ngxService.stop();

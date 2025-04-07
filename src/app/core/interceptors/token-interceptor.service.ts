@@ -25,12 +25,9 @@ export class TokenInterceptorService {
       });
       return next.handle(reqWithHeader).pipe(
         catchError((err: HttpErrorResponse) => {
-          console.log('Error caught:', err);
           if ([401, 403, 503].includes(err.status)) {
-            console.log("Redirecting to login page");
             this._router.navigate(['/login']);
           } else if (err.error !== null) {
-            console.log("Interceptor error:", err);
             this._ngxLoader.stop();
             this._sharedService.isLoading = false ;
             this._sharedService.ToastPopup(err.error.message, '', 'error');

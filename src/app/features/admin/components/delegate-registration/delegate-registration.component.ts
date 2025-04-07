@@ -56,7 +56,7 @@ export class DelegateRegistrationComponent {
         this.countries = data['data'];
       },
       (error: any) => {
-        console.log(error);
+        // console.log(error);
       }
     );
   }
@@ -93,7 +93,7 @@ export class DelegateRegistrationComponent {
         this.delegateStates[formIndex] = data['data'];
       },
       (error: any) => {
-        console.log(error);
+        // console.log(error);
       }
     );
   }
@@ -124,7 +124,7 @@ export class DelegateRegistrationComponent {
         this.delegateCities[formIndex] = data['data'];
       },
       (error: any) => {
-        console.log(error);
+        // console.log(error);
       }
     );
   }
@@ -246,7 +246,7 @@ export class DelegateRegistrationComponent {
 
     if (this.mainForm.valid) {
       this.ngxService.start();
-      console.log('Form Submitted', this.mainForm.value);
+      // console.log('Form Submitted', this.mainForm.value);
       const payload ={
         delegateForms: this.mainForm.value.delegateForms.map((delegate: any) => ({
           ...delegate, // Spread the existing properties
@@ -271,7 +271,7 @@ export class DelegateRegistrationComponent {
       )
       // Add your API call here to submit the form
     } else {
-      console.log('Form Invalid');
+      // console.log('Form Invalid');
       console.error('Form is invalid');
     }
   }

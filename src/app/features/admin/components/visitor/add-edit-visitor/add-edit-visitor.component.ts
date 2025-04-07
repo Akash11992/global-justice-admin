@@ -195,7 +195,7 @@ export class AddEditVisitorComponent implements OnInit {
         );
       }
     } else {
-      console.error('Form is invalid');
+      // console.error('Form is invalid');
     }
   }
 

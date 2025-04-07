@@ -71,7 +71,6 @@ export class SendEmailOtpComponent {
     // Call the ProfileService to post the OTP and password data
     
     this.adminService.otpsend(loginData).subscribe((res: any) => {
-      console.log("hggfgfgfc",res);
      
       
       

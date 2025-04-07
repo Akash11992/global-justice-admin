@@ -31,7 +31,6 @@ export class AddTrackingListComponent {
   allRefrence() {
     // this.ngxService.start();
     this.AdminService.getAllFormsEndpoint().subscribe((data: any) => {
-      console.log("data",data.data);
       this.formsdata= data.data
     });
   }
@@ -63,19 +62,17 @@ export class AddTrackingListComponent {
 updateTrackingURL() {
   const selectedFormId = this.form.get('selectform').value;
 
-  console.log("selectedFormId", selectedFormId);
+
   
   // console.log("Form IDs in formsdata:", this.formsdata.map((form:any) => form.form_id));
   // Filter the formsdata array based on the selected form_id
   const filteredFormData = this.formsdata.filter((form: any) => form.form_id == selectedFormId);
 
-  console.log("filteredFormData", filteredFormData);
 
   if (filteredFormData.length > 0) {
       const selectedFormData = filteredFormData[0];
         // Append ?tracking_key=<value> to the form_url
         const trackingKey = this.form.get('tracking_key').value; // Get the tracking_key value
-        console.log(trackingKey);
         
         const modifiedFormUrl = selectedFormData.form_url + `?ref=${trackingKey}`;
 
@@ -92,7 +89,6 @@ updateTrackingURL() {
   submitForm() {
     this.submitted = true; 
     if (this.form.valid) {
-      console.log("valid form");
       
       let payload={
         
@@ -103,17 +99,14 @@ updateTrackingURL() {
   "tiny_url": "",
   "created_by": "admin"
       }
-      console.log(payload);
       
      
         // this.ngxService.start();
         this.AdminService.TrackingLink(payload).subscribe((res: any) => {
-          console.log("data",res);
           this.SharedService.ToastPopup('',res.message,'success')
           this.router.navigateByUrl('/dashboard/tracking-link');
 
         }, (err:any) => {
-          console.log("Err",err, err.message);
           this.SharedService.ToastPopup('','This details already exist!','error')
         //  this.ngxService.stop();
         });
@@ -123,7 +116,6 @@ updateTrackingURL() {
     } else {
       // Form is not valid, mark all fields as touched to display validation errors
       this.form.markAllAsTouched();
-      console.log("invalid form");
       
     }
   }

@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Location, PlatformLocation } from "@angular/common";
 import { Subscription, SubscriptionLike } from "rxjs";
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
+
 
 Chart.register(...registerables)
 
@@ -40,6 +42,9 @@ export class DashboardComponent {
   completedData: any;
   pendingData: any;
   colorMapping:any;
+  userPermissions: any;
+  isMobileView = false;
+
 
   private locationSubscription: SubscriptionLike;
   isLoginYN: boolean = false;
@@ -51,14 +56,17 @@ export class DashboardComponent {
      private _router: Router,
      private route : ActivatedRoute,
      private _location: Location,
-     private platformLocation: PlatformLocation
+     private platformLocation: PlatformLocation,
+    private permissionsService: UserPermissionsService
+
     ) {
   }
   chartOptions: any;
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.getUserPermission();
+
     this.graph = true;
     this.getDelegatePieChart();
-console.log('route',this.route);
 
     this.getDelegateRefrenceChart();
     this.rendergraph('donutChart', 'doughnut',)
@@ -73,6 +81,7 @@ console.log('route',this.route);
       }
     };
   }
+
 
   rendergraph(id: any, type: any,) {
 
@@ -94,14 +103,12 @@ console.log('route',this.route);
   this.colorMapping = { 'Completed': '#64B5F6',  'Cancel': '#FC6D6D','Pending': 'orange'} // Assign the same color for "cancel"    
    // Map the colors to the labels  
    backgroundColors = labels.map((label:any) => this.colorMapping[label]);
-      console.log("inside pie chart", labels, data);
     } else {
       // Default colors for other charts (donutChart, LineChart)
       backgroundColors = ['#477593', '#c26364', '#00cc99'];   
      labels = this.refrence_pie_chart_label;
       data = this.refrence_pie_chart_label_count;
-      console.log("inside refrence pie chart", labels, data);
-    }
+   }
     new Chart(id, {
       type: type,
       data: {
@@ -130,12 +137,10 @@ console.log('route',this.route);
     this.AdminService.getDelegatePieChart().subscribe((data: any) => {
 
       this.pie_chart = data.data
-      console.log("delegate", this.pie_chart);
       // Extract labels and data from the API response
       this.pie_chart_label = this.pie_chart.map((item: any) => item.registration_status);
       this.pie_chart_label_count = this.pie_chart.map((item: any) => item.count);
-      console.log("delegate Labels:", this.pie_chart_label);
-      console.log("delegate Data:", this.pie_chart_label_count);
+
 
       this.rendergraph('pieChart', 'pie')
       this.delegate = true;
@@ -149,20 +154,16 @@ console.log('route',this.route);
       // Handle the error appropriately, e.g., display an error message to the user
     });
     //bar graph................
-    console.log("b ar graph start");
 
     this.AdminService.getDelegateVerticalBarChart().subscribe((data: any) => {
 
       this.bar_chart = data.data
-      console.log("delegate bar chart", this.bar_chart);
 
       // Extract labels and data from the API response
       this.bar_chart_label_date_range = this.bar_chart.map((item: any) => item.date_range);
       this.bar_chart_label_pending_count = this.bar_chart.map((item: any) => item.pending_count);
       this.bar_chart_label_complete_count = this.bar_chart.map((item: any) => item.complete_count);
-      console.log("delegate Labels:bar_chart_label_date_range", this.bar_chart_label_date_range);
-      console.log("delegate Labels:bar_chart_label_complete_count", this.bar_chart_label_complete_count);
-      console.log("delegate Data:bar_chart_label_pending_count", this.bar_chart_label_pending_count);
+
 
       // and this.dateArray is your array of dates
       const completedataPoints = this.bar_chart_label_complete_count.map((count: number, index: number) => ({
@@ -175,9 +176,7 @@ console.log('route',this.route);
       }));
 
 
-      console.log("completedataPoints.........", completedataPoints);
-
-      console.log("pendingdataPoints..........", pendingdataPoints);
+  
 
 
       this.chartoption2 = {
@@ -481,12 +480,10 @@ getDelegateRefrenceChart(){
   this.AdminService.getDelegateRefrencePieChart().subscribe((data: any) => {
 
     this.refrence_pie_chart = data.data
-    console.log("delegate refrence", this.refrence_pie_chart);
     // Extract labels and data from the API response
     this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
     this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
-    console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
-    console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
+
 
     this.rendergraph('donutChart', 'doughnut')
     this.speaker = false
@@ -549,22 +546,13 @@ getDelegateRefrenceChart(){
 //   });
 // }
   switchTab() {
-    console.log("active tab name delegate", this.delegate);
     // console.log("active tab name partner", this.partner);
     // console.log("active tab name speaker", this.speaker,);
     switch (true) {
       case this.delegate === true:
-        console.log("active tab name delegate", this.delegate);
         this.value = "Delegate"
         break;
-      // case this.partner === true:
-      //   console.log("active tab name partner", this.partner);
-      //   this.value = "Partner"
-      //   break;
-      // case this.speaker === true:
-      //   console.log("active tab name speaker", this.speaker,);
-      //   this.value = "Speaker"
-      //   break;
+
     }
   }
 
@@ -615,6 +603,14 @@ getDelegateRefrenceChart(){
   ngOnDestroy(): void {
     // Cleanup event listener when the component is destroyed
     window.onpopstate = null;
+  }
+
+  async getUserPermission() {
+    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    this.permissionsService.getUserPermissions(userData.email);
+
+    // Use in-memory permissions instead of localStorage to prevent tampering
+    this.userPermissions = this.permissionsService.getStoredPermissions();
   }
 
 }

@@ -139,7 +139,7 @@ export class AddCollaboratorComponent {
           this.peacekeepers = data['data'];
         },
         (error: any) => {
-          console.log(error);
+          // console.log(error);
         }
         )
     }
@@ -167,7 +167,7 @@ export class AddCollaboratorComponent {
         }
       },
       (error: any) => {
-        console.log(error);
+        // console.log(error);
       }
       )
     }
@@ -206,7 +206,7 @@ export class AddCollaboratorComponent {
   
       },
       (error: any) => {
-        console.log(error);
+        // console.log(error);
       }
       )
     }
@@ -248,7 +248,7 @@ export class AddCollaboratorComponent {
         }
       },
       (error: any) => {
-        console.log(error);
+        // console.log(error);
       }
       )
     }
@@ -280,9 +280,7 @@ export class AddCollaboratorComponent {
     }
 
     onSubmit():void {
-      console.log(this.form);
       if (this.form.valid) {
-        console.log("payload", this.form.value);
   
         const payload = {
           full_name:this.form.value["fullName"],

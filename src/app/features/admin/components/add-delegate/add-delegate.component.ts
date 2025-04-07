@@ -148,7 +148,7 @@ export class AddDelegateComponent implements OnInit {
       this.states = data['data'];
     },
     (error: any) => {
-      console.log(error);
+      // console.log(error);
     }
     )
   }
@@ -173,7 +173,7 @@ export class AddDelegateComponent implements OnInit {
       this.cities = data['data'];
     },
     (error: any) => {
-      console.log(error);
+      // console.log(error);
     }
     )
   }
@@ -192,7 +192,6 @@ export class AddDelegateComponent implements OnInit {
   // Called when the form is submitted
   onSubmit(): void {
     if (this.registrationForm.valid) {
-      console.log('Form Submitted Successfully:', this.registrationForm.value);
       const formData = this.registrationForm.value;
         // Conference Interests Section: using a nested FormGroup for checkboxes
 
@@ -260,7 +259,7 @@ export class AddDelegateComponent implements OnInit {
       this.countries = data['data'];
     },
     (error: any) => {
-      console.log(error);
+      // console.log(error);
     }
     )
   }
@@ -276,7 +275,7 @@ export class AddDelegateComponent implements OnInit {
         }));
       },
       (err: any) => {
-        console.log('error', err);
+        // console.log('error', err);
       }
     );
   }

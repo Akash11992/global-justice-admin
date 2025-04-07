@@ -135,7 +135,6 @@ export class RegisteredUserComponent {
     if (this.RefreshInterval) {
       this.intervalId = setInterval(async () => {
         this.isSpinner = 1; // Show spinner before fetching data
-        console.log('refreshing......')
         this.allDelegate();
       }, this.RefreshInterval);
     }
@@ -181,7 +180,6 @@ export class RegisteredUserComponent {
 
       // this.registeredDelegateList = decreptedUser totalCount
       this.registeredDelegateList = data.data
-      console.log("data", this.registeredDelegateList);
 
 
       if (this.masterSelected) {
@@ -235,18 +233,15 @@ export class RegisteredUserComponent {
   // Function to update selectedUserIds array when a row is clicked
   updateSelectedUsers(userId: any, userName: any, userEmail: any, userNumber: any) {
     // Check if the user ID is already selected, and toggle selection
-    console.log(userId, userName, userEmail, userNumber);
     this.userId = userId;
     this.userName = userName;
     this.userEmail = userEmail;
     this.userNumber = userNumber
     if (this.selectedUserIds.includes(userId)) {
       this.selectedUserIds = this.selectedUserIds.filter(id => id !== userId);
-      console.log("a", this.selectedUserIds);
 
     } else {
       this.selectedUserIds.push(userId);
-      console.log("b", this.selectedUserIds);
     }
   }
 
@@ -267,7 +262,6 @@ export class RegisteredUserComponent {
       user_email: this.userEmail,
       user_number: this.userNumber
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.ApprovedUnapproveStatusRegistration(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -294,12 +288,10 @@ export class RegisteredUserComponent {
 
   deleteUser(userId: number, userName: any, userEmail: any, userNumber: any): void {
     this.updateSelectedUsers(userId, userName, userEmail, userNumber);
-    console.log("delete called", userId);
 
     const payload = {
       user_id: userId
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.DeleteUser(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -367,7 +359,6 @@ export class RegisteredUserComponent {
 
     switch (true) {
       case this.delegate === true:
-        console.log("active tab name delegate", this.delegate);
         this.form_name = "delegate"
         break;
 
@@ -385,7 +376,6 @@ export class RegisteredUserComponent {
       form_name: this.form_name
 
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.Send_Email(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -411,7 +401,6 @@ export class RegisteredUserComponent {
 
     switch (true) {
       case this.delegate === true:
-        console.log("active tab name delegate", this.delegate);
         this.form_name = "delegate"
         break;
 
@@ -428,7 +417,6 @@ export class RegisteredUserComponent {
       company: company,
       form_name: this.form_name
     };
-    console.log("payload", payload);
     this.ngxService.start();
     this.AdminService.Generate_Badge(payload).subscribe((data: any) => {
       this.ngxService.stop();
@@ -458,7 +446,6 @@ export class RegisteredUserComponent {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    console.log(payload);
 
     // Make the HTTP request to download the PDF
     this.AdminService.Download_Badge(payload)
@@ -584,7 +571,6 @@ export class RegisteredUserComponent {
   }
 
   onActivateDeactiveToggle(item: any): any {
-    console.log(item);
     this.ngxService.start();
     const payload = {
       tu_type: item.tu_type,

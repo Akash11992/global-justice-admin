@@ -20,6 +20,7 @@ export class SharedService {
   private refreshPeacekeeperSubject = new Subject<boolean>();
   refresh$ = this.refreshPermissionSubject.asObservable();
   refreshPeacekeeper$ = this.refreshPeacekeeperSubject.asObservable();
+  isMobileView = new Subject();
 
 
   constructor(

@@ -102,7 +102,6 @@ get f() { return this.registrationForm.controls; }
           // console.log("data", data.data);
           if (data && data.data !== undefined) {
             this.getdata = data.data[0][0];
-            console.log("getbyid_editdetails",this.getdata);
             this.registrationForm.patchValue({
               title: this.getdata.title,
               first_name: this.getdata.first_name,
@@ -134,7 +133,6 @@ get f() { return this.registrationForm.controls; }
             });
             this.notchangeCountry();
             this.notchangeStates(this.getdata.state);
-console.log("a",this.registrationForm.value);
 
           }
         }, (err) => {
@@ -145,10 +143,8 @@ console.log("a",this.registrationForm.value);
     
   this.route.queryParams.subscribe(queryParams => {
     this.refer = queryParams['refer'];
-    console.log("........page...",this.refer);
     
     if (this.refer==='non-registered-user') {
-      console.log(".....true");
       
       this.is_registered_user=false;
     }
@@ -183,13 +179,10 @@ console.log("a",this.registrationForm.value);
     this.country_id = e.target.value;
     this.country_id = e.target.value;
     this.isOthersSelected = this.country_id === '247'; // Set a flag for "Others"
-    console.log(this.country_id);
     if(this.country_id==='247'){
-      console.log("hii",this.country_id);
       this.SharedService.getAllStates(this.country_id).subscribe((res: any) => {
         this.ngxService.stop();
         this.statesData = res.data;
-        console.log(this.statesData[0].state_name);
       this.othervalstate=this.statesData[0].state_name;
       this.othervalstate_id=this.statesData[0].state_id;
       this.registrationForm.patchValue({
@@ -199,25 +192,20 @@ console.log("a",this.registrationForm.value);
         this.SharedService.getAllCities(this.othervalstate_id).subscribe((res: any) => {
           this.ngxService.stop();
           this.cityData = res.data;
-          console.log(this.cityData[0].city_name);
           this.othervalcity=this.cityData[0].city_name;
           this.othervalcity_id=this.cityData[0].city_id;
           this.registrationForm.patchValue({
               city:this.cityData[0].city_id
             })
   
-            console.log("c",this.registrationForm.value.city,this.othervalcity_id,this.othervalcity);
   
           }, (err: any) => {
-            console.log("Err", err);
             this.ngxService.stop();
           });
   
     // this.otherval=    this.registrationForm.get('state')?.setValue(this.statesData[0].state_name);
-      console.log("s",this.registrationForm.value.state,this.othervalstate_id,this.othervalstate);
       
       }, (err: any) => {
-        console.log("Err", err);
         this.ngxService.stop();
       });
       
@@ -228,14 +216,12 @@ console.log("a",this.registrationForm.value);
       this.othervalstate = '';
       this.othervalcity_id='';
       this.othervalcity='';
-      console.log(typeof(this.othervalcity),this.othervalstate);
     this.ngxService.start();
     this.ngxService.start();
     this.SharedService.getAllStates(this.country_id).subscribe((res: any) => {
       this.ngxService.stop();
       this.statesData = res.data;
     }, (err: any) => {
-      console.log("Err", err);
       this.ngxService.stop();
     });
   }
@@ -247,7 +233,6 @@ console.log("a",this.registrationForm.value);
       this.ngxService.stop();
       this.statesData = res.data;
     }, (err: any) => {
-      console.log("Err", err);
       this.ngxService.stop();
     });
   }
@@ -264,30 +249,26 @@ console.log("a",this.registrationForm.value);
   
   notchangeStates(e:any) {
     this.state_id = e;
-    console.log("this.getdata.city",e);
     
     this.ngxService.start();
     this.SharedService.getAllCities(this.state_id).subscribe((res: any) => {
       this.ngxService.stop();
       this.cityData = res.data;
-      console.log(this.cityData.city_id);
       
       this.changeCity(this.cityData.city_id)
     });
   }
   changeCity(e: any) {
     this.city_id = e;
-    console.log("city", e);
   }
   submitForm(){
    
-    console.log(this.registrationForm.value);
 
     this.submitted = true;
     if (this.registrationForm.invalid) {
       this.SharedService.ToastPopup('','Please fill the required fields!', 'error')
 
-      return console.log('Invalid Details');
+      return 
     }
     if (this.submitted) {
 
@@ -296,20 +277,17 @@ console.log("a",this.registrationForm.value);
       const { valid } =
         this.registrationForm;
       if (valid) {
-console.log(this.registrationForm.value.terms_condition,this.registrationForm.value.terms_condition);
-console.log("events",this.registrationForm.value.events);
+
 
         if (this.registrationForm.value.terms_condition===0 ||this.registrationForm.value.terms_condition===false ) {
           // Display an error message for terms not accepted
           this.SharedService.ToastPopup('','Please accept the terms and conditions.!', 'error')
 
-          console.log('Please accept the terms and conditions.');
           return;
         }
         else if(this.registrationForm.value.is_whatsapp_number===0||this.registrationForm.value.is_whatsapp_number===false ){
           this.SharedService.ToastPopup('','Please check the whatsapp number!', 'error')
 
-          console.log('Please check the whatsapp number!');
         }
 else{
 
@@ -318,12 +296,10 @@ else{
           ...this.registrationForm.value,
       updated_by:"admin"
         };
-        console.log("this.registrationForm.value", this.registrationForm.value);
 
         this.ngxService.start();
         this.AdminService.update_user_details(payload).subscribe(async (result: any) => {
           if (result.success) {
-            console.log("result", result);
             this.ngxService.stop();
             // this.SharedService.ToastPopup('Delegate added successfully','', 'success')
             this.SharedService.ToastPopup('', result.message, 'success')
@@ -348,7 +324,6 @@ else{
 
   onKeyDown(event: KeyboardEvent, inputValue: string): void {
     // Check if the pressed key is the space bar and the input is empty
-    console.log("key");
     
     if (event.key === ' ' && inputValue.trim() === '') {
       event.preventDefault(); // Prevent the space character from being typed
@@ -357,7 +332,6 @@ else{
   
   getAllCountrycode() {
     this.SharedService.getAllCountrycode().subscribe((res: any) => {
-      console.log("code", res.data);
       this.code = res.data;
       // Define the country name you want to find (e.g., "India (+91)")
 // const countryToFind = "India (+91)";
@@ -370,16 +344,13 @@ else{
 //         country_code :indiaCodeObject.country_mobile_code
 //       })
     }, (err: any) => {
-      console.log("error", err);
     });
   }
 
   getAllCountries() {
     this.SharedService.getAllCountries().subscribe((res: any) => {
-      console.log("CountryData1", res.data);
       this.countryData = res.data;
     }, (err: any) => {
-      console.log("error", err);
     });
   }
 
