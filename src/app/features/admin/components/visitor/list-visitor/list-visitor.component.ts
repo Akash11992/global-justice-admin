@@ -68,7 +68,9 @@ export class ListVisitorComponent implements OnInit{
         sort:this.sortBy,
         order:this.order,
         search:this.search,
-        type:this.selectedType
+        type:this.selectedType,
+        is_admin:this.userPermissions.view?0:1
+
       };
   
       this.ngxService.start();
@@ -95,7 +97,8 @@ export class ListVisitorComponent implements OnInit{
         sort:this.sortBy,
         order:this.order,
         search:this.search,
-        type:this.selectedType
+        type:this.selectedType,
+        is_admin:this.userPermissions.view?0:1
       };
   
       this.ngxService.start();

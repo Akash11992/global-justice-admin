@@ -553,6 +553,7 @@ export class ApiEndpointsService {
         qs.push('sortOrder', queryParamsObj['order']),
         qs.push('search', queryParamsObj['search'])
         qs.push('type', queryParamsObj['type'])
+        qs.push('is_admin', queryParamsObj['is_admin'])
       });
   }
 
@@ -567,6 +568,7 @@ export class ApiEndpointsService {
         qs.push('sortOrder', queryParamsObj['order']),
         qs.push('search', queryParamsObj['search'])
         qs.push('type', queryParamsObj['type'])
+        qs.push('is_admin', queryParamsObj['is_admin'])
       });
   }
 
