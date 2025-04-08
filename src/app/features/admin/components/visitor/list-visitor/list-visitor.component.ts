@@ -4,14 +4,16 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { environment } from 'src/environments/environment';
 import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
-
+import { DatePipe } from '@angular/common';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-list-visitor',
   templateUrl: './list-visitor.component.html',
   styleUrls: ['./list-visitor.component.css']
 })
 
-export class ListVisitorComponent implements OnInit{
+export class ListVisitorComponent implements OnInit {
 
   visitors: any[] = [];
   totalItems: number = 0;
@@ -33,206 +35,276 @@ export class ListVisitorComponent implements OnInit{
   typeOptions: any[] = []; // Replace with your actual types
   selectedType: string = '';
   disabledItems = new Set<string>();
+  form: any
 
   constructor(
-                  private adminService: AdminService,
-                  private ngxService: NgxUiLoaderService,
-                  private SharedService: SharedService,
-                  private permissionsService: UserPermissionsService
+    private datePipe: DatePipe,
+    private adminService: AdminService,
+    private ngxService: NgxUiLoaderService,
+    private SharedService: SharedService,
+    private permissionsService: UserPermissionsService
 
-                ) {}
-  
-    ngOnInit() {
+  ) { }
 
-     this.getUserPermission();
+  ngOnInit() {
 
-      this.setupType();
-      this.loadVisitors();
+    this.getUserPermission();
+
+    this.setupType();
+    this.loadVisitors();
+  }
+
+  setupType(): void {
+    this.adminService.listVisitorType().subscribe(
+      (data: any) => {
+        this.typeOptions = data['data'];
+      },
+      (error: any) => {
+        // console.log(error);
+      }
+    );
+  }
+
+  // onClickExport(){
+  //   const payload = {
+  //     page:this.page,
+  //     limit:this.limit,
+  //     sort:this.sortBy,
+  //     order:this.order,
+  //     search:this.search,
+  //     type:this.selectedType,
+  //     is_admin:this.userPermissions.view?0:1
+
+  //   };
+
+  //   this.ngxService.start();
+
+  //   this.adminService.exportVisitor(payload).subscribe((blob: Blob) => {
+  //     this.ngxService.stop();
+  //     const link = document.createElement('a');
+  //     link.href = window.URL.createObjectURL(blob);
+  //     link.download = `visitors_${new Date().toISOString().split('T')[0]}.csv`; // Set the file name
+  //     link.click(); // Trigger the download
+  //     window.URL.revokeObjectURL(link.href); 
+  //   },
+  //   (error: any) => {
+  //     this.ngxService.stop();
+  //     this.SharedService.ToastPopup('Oops failed to list visitor', 'Visitors', 'error');
+  //   }
+  //   )
+
+  // }
+
+  onClickExport() {
+    const hasViewPermission = this.userPermissions?.view === true;
+
+    let headers: string[];
+    let columnsToExport: any[][];
+
+    if (hasViewPermission) {
+      headers = [
+        'Full name', 'Mobile number', 'Email', 'Country',
+        'Type', 'Random-id', 'Created Date'
+      ];
+
+      columnsToExport = this.visitors.map(item => {
+        const createdDate = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
+        return [
+          item.full_name,
+          item.mobile_no,
+          item.email,
+          item.country,
+          item.type,
+          item.random_id,
+          createdDate
+        ];
+      });
+    } else {
+      headers = ['Full name', 'Country', 'Type', 'Random-id', 'Created Date'];
+
+      columnsToExport = this.visitors.map(item => {
+        const createdDate = this.datePipe.transform(item.created_at, 'yyyy-MM-dd hh:mm a');
+        return [
+          item.full_name,
+          item.country,
+          item.type,
+          item.random_id,
+          createdDate
+        ];
+      });
     }
 
-    setupType(): void {
-      this.adminService.listVisitorType().subscribe(
-        (data: any) => {
-          this.typeOptions = data['data'];
-        },
-        (error: any) => {
-          // console.log(error);
-        }
+    // Add headers to the top of the data
+    columnsToExport.unshift(headers);
+
+    // Convert array of arrays to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(columnsToExport);
+
+    // Adjust column width based on content
+    const columnWidths = headers.map((header, colIndex) => {
+      const maxLength = Math.max(
+        header.length,
+        ...columnsToExport.map(row => (row[colIndex] ? row[colIndex].toString().length : 0))
       );
-    }
+      return { wch: maxLength + 2 };
+    });
 
-    onClickExport(){
-      const payload = {
-        page:this.page,
-        limit:this.limit,
-        sort:this.sortBy,
-        order:this.order,
-        search:this.search,
-        type:this.selectedType,
-        is_admin:this.userPermissions.view?0:1
+    ws['!cols'] = columnWidths;
 
-      };
-  
-      this.ngxService.start();
-  
-      this.adminService.exportVisitor(payload).subscribe((blob: Blob) => {
-        this.ngxService.stop();
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `visitors_${new Date().toISOString().split('T')[0]}.csv`; // Set the file name
-        link.click(); // Trigger the download
-        window.URL.revokeObjectURL(link.href); 
-      },
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, this.form);
+
+    wb.Props = {
+      Title: 'visitors - ' + this.form,
+    };
+
+    XLSX.writeFile(wb, `visitors_${new Date().toISOString().split('T')[0]}.xlsx`);
+
+    this.SharedService.ToastPopup('Data export successful.', '', 'success');
+  }
+
+  loadVisitors() {
+    const payload = {
+      page: this.page,
+      limit: this.limit,
+      sort: this.sortBy,
+      order: this.order,
+      search: this.search,
+      type: this.selectedType,
+      is_admin: this.userPermissions.view ? 0 : 1
+    };
+
+    this.ngxService.start();
+
+    this.adminService.listVisitor(payload).subscribe((res: any) => {
+      this.ngxService.stop();
+      this.visitors = res.data;
+      this.totalItems = res.totalItems;
+      this.totalPages = Math.ceil(this.totalItems / this.limit);
+
+    },
       (error: any) => {
         this.ngxService.stop();
         this.SharedService.ToastPopup('Oops failed to list visitor', 'Visitors', 'error');
       }
-      )
-    }
-  
-    loadVisitors() {
-      const payload = {
-        page:this.page,
-        limit:this.limit,
-        sort:this.sortBy,
-        order:this.order,
-        search:this.search,
-        type:this.selectedType,
-        is_admin:this.userPermissions.view?0:1
-      };
-  
-      this.ngxService.start();
-  
-      this.adminService.listVisitor(payload).subscribe((res: any) => {
-        this.ngxService.stop();
-        this.visitors = res.data;
-        this.totalItems = res.totalItems;
-        this.totalPages = Math.ceil(this.totalItems / this.limit);
-  
-      },
-      (error: any) => {
-        this.ngxService.stop();
-        this.SharedService.ToastPopup('Oops failed to list visitor', 'Visitors', 'error');
-      }
-      )
-    }
+    )
+  }
 
-    disableButtonTemporarily(id: string) {
-      this.disabledItems.add(id); // Disable the button
-      setTimeout(() => this.disabledItems.delete(id), 30000); // Enable after 2 min
-    }
+  disableButtonTemporarily(id: string) {
+    this.disabledItems.add(id); // Disable the button
+    setTimeout(() => this.disabledItems.delete(id), 30000); // Enable after 2 min
+  }
 
-    onActivateDeactiveToggle(item:any):void{
-      if (this.disabledItems.has(`toggle-${item.id}`)) return; // Prevent duplicate clicks
-        this.disableButtonTemporarily(`toggle-${item.id}`);
+  onActivateDeactiveToggle(item: any): void {
+    if (this.disabledItems.has(`toggle-${item.id}`)) return; // Prevent duplicate clicks
+    this.disableButtonTemporarily(`toggle-${item.id}`);
 
-      this.ngxService.start();
-      const { id, created_at,updated_at, qr_unique_code,qr_code_url,...newItem } = item;
-      item['is_active'] = +!item['is_active'];
-      newItem['is_active'] = +!newItem['is_active'];
-      newItem['domain_url'] = environment.domainUrl;
-      newItem['logo_image'] = '';
-      newItem['is_updated_by_activated'] = 1;
-      this.updateVisitorData(item['id'],newItem);
-    }
+    this.ngxService.start();
+    const { id, created_at, updated_at, qr_unique_code, qr_code_url, ...newItem } = item;
+    item['is_active'] = +!item['is_active'];
+    newItem['is_active'] = +!newItem['is_active'];
+    newItem['domain_url'] = environment.domainUrl;
+    newItem['logo_image'] = '';
+    newItem['is_updated_by_activated'] = 1;
+    this.updateVisitorData(item['id'], newItem);
+  }
 
-    updateVisitorData(id:string,data:any){
-      this.adminService.deactivateVisitor(id,data).subscribe((data: any) => {
-        this.ngxService.stop();
-        this.SharedService.ToastPopup('Visitors updated successfully', 'Visitor', 'success');
-      },
+  updateVisitorData(id: string, data: any) {
+    this.adminService.deactivateVisitor(id, data).subscribe((data: any) => {
+      this.ngxService.stop();
+      this.SharedService.ToastPopup('Visitors updated successfully', 'Visitor', 'success');
+    },
       (error: any) => {
         this.ngxService.stop();
         this.SharedService.ToastPopup('Oops failed to update visitor', 'Visitor', 'error');
       }
-      )
-    }
+    )
+  }
 
-    onSelectionChange(selectedValue: string) {
-      this.limit = +selectedValue;
+  onSelectionChange(selectedValue: string) {
+    this.limit = +selectedValue;
+    this.loadVisitors();
+  }
+
+  onTypeFilterChange(type: string): void {
+    this.selectedType = type;
+    this.loadVisitors();
+  }
+
+  onSearchClick(searchValue: string) {
+    this.search = searchValue ? searchValue.trim() : "";
+    this.loadVisitors();
+  }
+
+  changePage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
       this.loadVisitors();
     }
+  }
 
-    onTypeFilterChange(type: string): void {
-      this.selectedType = type;
-      this.loadVisitors();
-    }
-  
-    onSearchClick(searchValue: string) {
-      this.search = searchValue ? searchValue.trim() : "";
-      this.loadVisitors();
-    }
-  
-    changePage(newPage: number) {
-      if (newPage >= 1 && newPage <= this.totalPages) {
-        this.page = newPage;
-        this.loadVisitors();
-      }
-    }
-  
-    onSort(column: string): void {
+  onSort(column: string): void {
 
-      if (this.sortBy === column) {
-        // If the column is already sorted, toggle the direction
-        this.order = this.order === 'ASC' ? 'DESC' : 'ASC';
-      } else {
-        // Otherwise, sort by the new column in ascending order by default
-        this.sortBy = column;
-        this.order = 'ASC';
-      }
-
-      // Implement actual sorting logic here
-      this.loadVisitors();
-  
+    if (this.sortBy === column) {
+      // If the column is already sorted, toggle the direction
+      this.order = this.order === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      // Otherwise, sort by the new column in ascending order by default
+      this.sortBy = column;
+      this.order = 'ASC';
     }
 
-    resendTicket(id:string){
-      if (this.disabledItems.has(`resend-${id}`)) return; // Prevent duplicate clicks
-        this.disableButtonTemporarily(`resend-${id}`);
+    // Implement actual sorting logic here
+    this.loadVisitors();
 
-      this.adminService.resentTicketVisitor(id).subscribe((data: any) => {
-        this.ngxService.stop();
-        this.SharedService.ToastPopup('The ticket has been sent successfully', 'Visitor', 'success');
-      },
+  }
+
+  resendTicket(id: string) {
+    if (this.disabledItems.has(`resend-${id}`)) return; // Prevent duplicate clicks
+    this.disableButtonTemporarily(`resend-${id}`);
+
+    this.adminService.resentTicketVisitor(id).subscribe((data: any) => {
+      this.ngxService.stop();
+      this.SharedService.ToastPopup('The ticket has been sent successfully', 'Visitor', 'success');
+    },
       (error: any) => {
         this.ngxService.stop();
         this.SharedService.ToastPopup('Oops failed to send ticket visitor', 'Visitor', 'error');
       }
-      )
-    }
+    )
+  }
 
-    downloadFile(filePath: string, fileName: string,fileType:string) {
-      switch(fileType){
-        case 'QR':
+  downloadFile(filePath: string, fileName: string, fileType: string) {
+    switch (fileType) {
+      case 'QR':
         filePath = filePath;
         break;
 
-        case 'BADGE_IMG':
-          filePath = environment.fileAccessUrl+'/visitor/ticket_photo/'+fileName;
+      case 'BADGE_IMG':
+        filePath = environment.fileAccessUrl + '/visitor/ticket_photo/' + fileName;
         break;
 
-        case 'BADGE_PDF':
-          filePath = environment.fileAccessUrl+'/visitor/ticket_pdf/'+fileName;
+      case 'BADGE_PDF':
+        filePath = environment.fileAccessUrl + '/visitor/ticket_pdf/' + fileName;
         break;
 
-      }
-      this.SharedService.downloadFile(filePath, fileName);
     }
-  
+    this.SharedService.downloadFile(filePath, fileName);
+  }
 
-    async getUserPermission() {
+
+  async getUserPermission() {
     // Get user data from localStorage
     const decryptUserData = this.SharedService.decryptData(localStorage.getItem('userDetails') || '{}');
     const userData = JSON.parse(decryptUserData);
     // let userData = JSON.parse(localStorage.getItem('userDetails'));
-    
+
     this.permissionsService.getUserPermissions(userData.email);
-  
-      // Use in-memory permissions instead of localStorage to prevent tampering
-      this.userPermissions = this.permissionsService.getStoredPermissions();
-      console.log(this.userPermissions);
-      
-    }
-  
+
+    // Use in-memory permissions instead of localStorage to prevent tampering
+    this.userPermissions = this.permissionsService.getStoredPermissions();
+
+  }
+
 
 }

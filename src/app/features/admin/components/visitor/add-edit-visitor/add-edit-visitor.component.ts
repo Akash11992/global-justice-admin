@@ -27,7 +27,7 @@ export class AddEditVisitorComponent implements OnInit {
     private ngxService: NgxUiLoaderService,
     private SharedService: SharedService,
     private route: ActivatedRoute,
-    private router:Router,
+    private router: Router,
     private location: Location
   ) {
     this.mainForm = this.fb.group({
@@ -66,9 +66,11 @@ export class AddEditVisitorComponent implements OnInit {
     visitorForms.clear(); // Clear existing forms
 
     visitorData.forEach((visitor: any) => {
+      // const defaultCountry = 'United Arab Emirates';
+      // const defaultCountryObj = this.countries.find(c => c.name === defaultCountry);
       visitorForms.push(this.fb.group({
         full_name: [visitor.full_name, [Validators.required, Validators.pattern(/^[a-zA-Z0-9 -]{1,50}$/)]],
-        mobile_no: [visitor.mobile_no, [ Validators.pattern(/^\+[1-9]\d{9,14}$/)]],
+        mobile_no: [visitor.mobile_no, [Validators.pattern(/^\+[1-9]\d{9,14}$/)]],
         email: [visitor.email, [Validators.required, Validators.pattern(/^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)]],
         country: [visitor.country, Validators.required],
         country_id: [visitor.country_id, Validators.required],
@@ -76,12 +78,50 @@ export class AddEditVisitorComponent implements OnInit {
         type_id: [visitor.type_id, Validators.required]
       }));
     });
+
+    // country: [visitor.country || defaultCountry, Validators.required],
+    // country_id: [visitor.country_id || defaultCountryObj?.id, Validators.required],
   }
 
   setupCountry(): void {
     this.adminService.listCountry().subscribe(
       (data: any) => {
+
         this.countries = data['data'];
+
+
+        // const allCountries = data['data'];
+
+        // // Manually extract UAE and India in desired order
+        // const uaeCountry = allCountries.find((c: { name: string }) => c.name === 'United Arab Emirates');
+        // const indiaCountry = allCountries.find((c: { name: string }) => c.name === 'India');
+
+        // // Filter out UAE and India from the rest
+        // const restCountries: { name: string }[] = allCountries.filter(
+        //   (c: { name: string }) => c.name !== 'United Arab Emirates' && c.name !== 'India'
+        // );
+
+        // // Sort rest alphabetically
+        // restCountries.sort((a, b) => a.name.localeCompare(b.name));
+
+        // // Merge countries: UAE first, India second, then rest
+        // this.countries = [];
+        // if (uaeCountry) this.countries.push(uaeCountry);
+        // if (indiaCountry) this.countries.push(indiaCountry);
+        // this.countries.push(...restCountries);
+
+        // // Set default selected value as UAE
+        // const visitorForms = this.mainForm.get('visitorForms') as FormArray;
+        // if (visitorForms.length > 0) {
+        //   const firstForm = visitorForms.at(0);
+        //   const uaeCountry = this.countries.find(country => country.name === 'United Arab Emirates');
+        //   if (uaeCountry) {
+        //     firstForm.get('country')?.setValue(uaeCountry.name);
+        //     firstForm.get('country_id')?.setValue(uaeCountry.id);
+        //   }
+        // }
+
+        
       },
       (error: any) => {
         console.log(error);
@@ -122,7 +162,7 @@ export class AddEditVisitorComponent implements OnInit {
   }
 
   createVisitorForm(): FormGroup {
-    
+
     const namePattern = /^(?=.*[a-zA-Z0-9])[a-zA-Z0-9 .-]{1,50}$/;
     const emailPattern = /^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     const mobilePattern = /^\+[1-9]\d{9,14}$/;
@@ -137,7 +177,7 @@ export class AddEditVisitorComponent implements OnInit {
       type_id: ['', Validators.required]
     });
   }
-  
+
 
   addForm(): void {
     if (this.visitorFormsArray.length < this.maxForms) {
@@ -155,7 +195,7 @@ export class AddEditVisitorComponent implements OnInit {
   isAddDisabled(): boolean {
     return this.visitorFormsArray.length >= this.maxForms;
   }
-  
+
 
   onSubmitAll(): void {
     this.mainForm.markAllAsTouched();
@@ -203,7 +243,7 @@ export class AddEditVisitorComponent implements OnInit {
     this.mainForm.reset(); // Resets all values in the form
     this.setDefaultVisitorForm(); // Ensures at least one Visitor form remains
   }
-  
+
   setDefaultVisitorForm() {
     const visitorForms = this.mainForm.get('visitorForms') as FormArray;
     visitorForms.clear(); // Remove all existing Visitor forms
@@ -217,7 +257,7 @@ export class AddEditVisitorComponent implements OnInit {
 
 
   onCancel(): void {
-    this.router.navigate(['dashboard/visitor']);  
+    this.router.navigate(['dashboard/visitor']);
     // this.location.back();
   }
 }
