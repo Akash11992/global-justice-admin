@@ -54,7 +54,7 @@
         &nbsp;
         <span>Dashboard</span></a>
     </li>
-    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+    <li *ngIf="userPermissions?.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/dashboard/peacekeeper" id="sidebarDashboard"><img src="assets/img/usericon.png" id="speedmeter" />
         &nbsp;
         &nbsp;<span>Registered Peacekeeper</span></a>
@@ -64,7 +64,7 @@
               id="speedmeter">
               &nbsp;  &nbsp;<span>Non - Approved Users </span></a>
         </li> -->
-    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+    <li *ngIf="userPermissions?.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/dashboard/registered-user" id="sidebarDashboard"><img src="assets/img/usericon.png"
           id="speedmeter" />
 
@@ -81,7 +81,7 @@
       >
     </li> -->
 
-    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+    <li *ngIf="userPermissions?.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/dashboard/sponsor" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
           id="speedmeter" /> &nbsp;
         &nbsp;<span>Sponsor</span></a>
@@ -97,20 +97,20 @@
       >
     </li> -->
 
-    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+    <li *ngIf="userPermissions?.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/dashboard/collaborator" id="sidebarDashboard"><img src="assets/img/nonregisteruse.png"
           id="speedmeter" /> &nbsp;
         &nbsp;<span>Collaborator</span></a>
     </li>
 
-    <li *ngIf="userPermissions.isVisitor" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+    <li *ngIf="userPermissions?.isVisitor" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/dashboard/visitor" id="sidebarDashboard"><img src="assets/img/usericon.png" id="speedmeter" />
         &nbsp;
         &nbsp;<span>Visitor</span></a>
     </li>
 
 
-    <li *ngIf="userPermissions.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+    <li *ngIf="userPermissions?.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/dashboard/contact-us" id="sidebarDashboard"><img src="assets/img/usericon.png" id="speedmeter" />
         &nbsp;
         &nbsp;<span>Contact Us</span></a>

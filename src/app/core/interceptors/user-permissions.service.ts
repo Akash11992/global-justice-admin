@@ -51,7 +51,7 @@ export class UserPermissionsService {
       };
     }
     // Store general user permissions
-    localStorage.setItem('userPermission', JSON.stringify(this.userPermission));
+    // localStorage.setItem('userPermission', JSON.stringify(this.userPermission));
 
   }
 

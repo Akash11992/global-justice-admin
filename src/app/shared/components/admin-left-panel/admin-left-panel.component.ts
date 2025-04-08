@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 
 @Component({
@@ -12,9 +13,11 @@ export class AdminLeftPanelComponent implements OnInit {
   userPermissions: any;
 
   constructor(private router: Router,
-    private permissionsService: UserPermissionsService
+    private permissionsService: UserPermissionsService,
+    private SharedService: SharedService,
 
-  ) {}
+
+  ) { }
   ngOnInit(): void {
     this.getUserPermission();
   }
@@ -27,7 +30,11 @@ export class AdminLeftPanelComponent implements OnInit {
   }
 
   async getUserPermission() {
-    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    // Get user data from localStorage
+    const decryptUserData = this.SharedService.decryptData(localStorage.getItem('userDetails') || '{}');
+    const userData = JSON.parse(decryptUserData);
+
+    // let userData = JSON.parse(localStorage.getItem('userDetails'));
     this.permissionsService.getUserPermissions(userData.email);
 
     // Use in-memory permissions instead of localStorage to prevent tampering

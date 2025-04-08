@@ -24,9 +24,9 @@ export class DashboardComponent {
   notFound: boolean = false;
   joinmailing: boolean = false
   broucher: boolean = false
-  refrence_pie_chart:any;
-  refrence_pie_chart_label_count:any;
-  refrence_pie_chart_label:any;
+  refrence_pie_chart: any;
+  refrence_pie_chart_label_count: any;
+  refrence_pie_chart_label: any;
   salesbroucher: boolean = false
   pie_chart: any;
   bar_chart: any;
@@ -41,7 +41,7 @@ export class DashboardComponent {
   bar_chart_label_pending_count: any;
   completedData: any;
   pendingData: any;
-  colorMapping:any;
+  colorMapping: any;
   userPermissions: any;
   isMobileView = false;
 
@@ -51,15 +51,15 @@ export class DashboardComponent {
 
   constructor(
     private AdminService: AdminService,
-     private SharedService: SharedService, 
-     private httpClient: HttpClient,
-     private _router: Router,
-     private route : ActivatedRoute,
-     private _location: Location,
-     private platformLocation: PlatformLocation,
+    private SharedService: SharedService,
+    private httpClient: HttpClient,
+    private _router: Router,
+    private route: ActivatedRoute,
+    private _location: Location,
+    private platformLocation: PlatformLocation,
     private permissionsService: UserPermissionsService
 
-    ) {
+  ) {
   }
   chartOptions: any;
   async ngOnInit(): Promise<void> {
@@ -95,20 +95,20 @@ export class DashboardComponent {
     let labels;
     let data;
     if (id === 'pieChart') {
-     // Specify colors for the pieChart
-    //  backgroundColors = ['#64B5F6', '#FC6D6D', 'orange'];
-     labels = this.pie_chart_label;
-     data = this.pie_chart_label_count;  
+      // Specify colors for the pieChart
+      //  backgroundColors = ['#64B5F6', '#FC6D6D', 'orange'];
+      labels = this.pie_chart_label;
+      data = this.pie_chart_label_count;
       // Create an array of colors corresponding to the labels  
-  this.colorMapping = { 'Completed': '#64B5F6',  'Cancel': '#FC6D6D','Pending': 'orange'} // Assign the same color for "cancel"    
-   // Map the colors to the labels  
-   backgroundColors = labels.map((label:any) => this.colorMapping[label]);
+      this.colorMapping = { 'Completed': '#64B5F6', 'Cancel': '#FC6D6D', 'Pending': 'orange' } // Assign the same color for "cancel"    
+      // Map the colors to the labels  
+      backgroundColors = labels.map((label: any) => this.colorMapping[label]);
     } else {
       // Default colors for other charts (donutChart, LineChart)
-      backgroundColors = ['#477593', '#c26364', '#00cc99'];   
-     labels = this.refrence_pie_chart_label;
+      backgroundColors = ['#477593', '#c26364', '#00cc99'];
+      labels = this.refrence_pie_chart_label;
       data = this.refrence_pie_chart_label_count;
-   }
+    }
     new Chart(id, {
       type: type,
       data: {
@@ -176,7 +176,7 @@ export class DashboardComponent {
       }));
 
 
-  
+
 
 
       this.chartoption2 = {
@@ -476,75 +476,75 @@ export class DashboardComponent {
 
 
 
-getDelegateRefrenceChart(){
-  this.AdminService.getDelegateRefrencePieChart().subscribe((data: any) => {
+  getDelegateRefrenceChart() {
+    this.AdminService.getDelegateRefrencePieChart().subscribe((data: any) => {
 
-    this.refrence_pie_chart = data.data
-    // Extract labels and data from the API response
-    this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
-    this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
+      this.refrence_pie_chart = data.data
+      // Extract labels and data from the API response
+      this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
+      this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
 
 
-    this.rendergraph('donutChart', 'doughnut')
-    this.speaker = false
-    this.partner = false;
-    this.delegate = true;
-    this.graph = true;
-    this.switchTab()
+      this.rendergraph('donutChart', 'doughnut')
+      this.speaker = false
+      this.partner = false;
+      this.delegate = true;
+      this.graph = true;
+      this.switchTab()
 
-  }, (err) => {
-    console.error("An error occurred while fetching data:", err);
-    // Handle the error appropriately, e.g., display an error message to the user
-  });
-}
+    }, (err) => {
+      console.error("An error occurred while fetching data:", err);
+      // Handle the error appropriately, e.g., display an error message to the user
+    });
+  }
 
-// getPartnerRefrenceChart(){
-//   this.AdminService.getPartnerRefrencePieChart().subscribe((data: any) => {
+  // getPartnerRefrenceChart(){
+  //   this.AdminService.getPartnerRefrencePieChart().subscribe((data: any) => {
 
-//     this.refrence_pie_chart = data.data
-//     console.log("delegate refrence", this.refrence_pie_chart);
-//     // Extract labels and data from the API response
-//     this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
-//     this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
-//     console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
-//     console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
+  //     this.refrence_pie_chart = data.data
+  //     console.log("delegate refrence", this.refrence_pie_chart);
+  //     // Extract labels and data from the API response
+  //     this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
+  //     this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
+  //     console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
+  //     console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
 
-//     this.rendergraph('donutChart', 'doughnut')
-//     this.speaker = false
-//     this.partner = true;
-//     this.delegate = false;
-//     this.graph = true;
-//     this.switchTab()
+  //     this.rendergraph('donutChart', 'doughnut')
+  //     this.speaker = false
+  //     this.partner = true;
+  //     this.delegate = false;
+  //     this.graph = true;
+  //     this.switchTab()
 
-//   }, (err) => {
-//     console.error("An error occurred while fetching data:", err);
-//     // Handle the error appropriately, e.g., display an error message to the user
-//   });
-// }
+  //   }, (err) => {
+  //     console.error("An error occurred while fetching data:", err);
+  //     // Handle the error appropriately, e.g., display an error message to the user
+  //   });
+  // }
 
-// getSpeakerRefrenceChart(){
-//   this.AdminService.getSpeakerRefrencePieChart().subscribe((data: any) => {
+  // getSpeakerRefrenceChart(){
+  //   this.AdminService.getSpeakerRefrencePieChart().subscribe((data: any) => {
 
-//     this.refrence_pie_chart = data.data
-//     console.log("delegate refrence", this.refrence_pie_chart);
-//     // Extract labels and data from the API response
-//     this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
-//     this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
-//     console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
-//     console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
+  //     this.refrence_pie_chart = data.data
+  //     console.log("delegate refrence", this.refrence_pie_chart);
+  //     // Extract labels and data from the API response
+  //     this.refrence_pie_chart_label = this.refrence_pie_chart.map((item: any) => item.ref);
+  //     this.refrence_pie_chart_label_count = this.refrence_pie_chart.map((item: any) => item.count_s);
+  //     console.log("delegate refrence Labels:", this.refrence_pie_chart_label);
+  //     console.log("delegate refrence Data:", this.refrence_pie_chart_label_count);
 
-//     this.rendergraph('donutChart', 'doughnut')
-//     this.speaker = true
-//     this.partner = false;
-//     this.delegate = false;
-//     this.graph = true;
-//     this.switchTab()
+  //     this.rendergraph('donutChart', 'doughnut')
+  //     this.speaker = true
+  //     this.partner = false;
+  //     this.delegate = false;
+  //     this.graph = true;
+  //     this.switchTab()
 
-//   }, (err) => {
-//     console.error("An error occurred while fetching data:", err);
-//     // Handle the error appropriately, e.g., display an error message to the user
-//   });
-// }
+  //   }, (err) => {
+  //     console.error("An error occurred while fetching data:", err);
+  //     // Handle the error appropriately, e.g., display an error message to the user
+  //   });
+  // }
   switchTab() {
     // console.log("active tab name partner", this.partner);
     // console.log("active tab name speaker", this.speaker,);
@@ -606,7 +606,11 @@ getDelegateRefrenceChart(){
   }
 
   async getUserPermission() {
-    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    // Get user data from localStorage
+    const decryptUserData = this.SharedService.decryptData(localStorage.getItem('userDetails') || '{}');
+    const userData = JSON.parse(decryptUserData);
+
+    // let userData = JSON.parse(localStorage.getItem('userDetails'));
     this.permissionsService.getUserPermissions(userData.email);
 
     // Use in-memory permissions instead of localStorage to prevent tampering

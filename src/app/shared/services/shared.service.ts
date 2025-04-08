@@ -126,8 +126,15 @@ export class SharedService {
   }
 
   setUserDetails(userDetails: any) {
-    sessionStorage.setItem('userDetails', userDetails);
-    localStorage.setItem('userDetails', userDetails);
+
+    // Encrypt the user details before storing
+    const encryptedUserDetails = this.encryptData(userDetails);
+    // Store the encrypted user details in sessionStorage and localStorage
+    sessionStorage.setItem('userDetails', encryptedUserDetails);
+    localStorage.setItem('userDetails', encryptedUserDetails);
+
+    // sessionStorage.setItem('userDetails', userDetails);
+    // localStorage.setItem('userDetails', userDetails);
   }
 
   downloadFile(filePath: string, fileName: string) {

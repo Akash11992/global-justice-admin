@@ -591,8 +591,13 @@ export class RegisteredUserComponent {
 
 
   async getUserPermission() {
-    let userData = JSON.parse(localStorage.getItem('userDetails'));
+    // Get user data from localStorage
+    const decryptUserData = this.SharedService.decryptData(localStorage.getItem('userDetails') || '{}');
+    const userData = JSON.parse(decryptUserData);
+
+    // let userData = JSON.parse(localStorage.getItem('userDetails'));
     this.permissionsService.getUserPermissions(userData.email);
+
 
     // Use in-memory permissions instead of localStorage to prevent tampering
     this.userPermissions = this.permissionsService.getStoredPermissions();
