@@ -110,10 +110,8 @@
                         <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'type' && order === 'ASC'"></i>
                         <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'type' && order === 'DESC'"></i>
                       </th>
-                      <th (click)="onSort('random_id')">
+                      <th>
                         Random-id
-                        <i class="bi bi-caret-up-fill" *ngIf="sortBy === 'random_id' && order === 'ASC'"></i>
-                        <i class="bi bi-caret-down-fill" *ngIf="sortBy === 'random_id' && order === 'DESC'"></i>
                       </th>
                       <th (click)="onSort('created_at')">
                         Created Date

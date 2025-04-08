@@ -5,6 +5,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { Location } from '@angular/common';
+import { UserPermissionsService } from 'src/app/core/interceptors/user-permissions.service';
 
 @Component({
   selector: 'app-add-edit-visitor',
@@ -17,7 +18,7 @@ export class AddEditVisitorComponent implements OnInit {
   maxForms: number = 9;
   isEditMode: boolean = false; // Flag to check if the form is in edit mode
   visitorId!: string;
-
+  userPermissions: any;
   countries: any[] = [];
   types: any[] = [];
 
@@ -28,14 +29,20 @@ export class AddEditVisitorComponent implements OnInit {
     private SharedService: SharedService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private permissionsService: UserPermissionsService
+
   ) {
+    this.getUserPermission();
+
     this.mainForm = this.fb.group({
       visitorForms: this.fb.array([this.createVisitorForm()])
     });
   }
 
   ngOnInit(): void {
+    this.getUserPermission();
+
     this.visitorId = this.route.snapshot.paramMap.get('id');
     this.setupCountry();
     this.setupType();
@@ -66,62 +73,63 @@ export class AddEditVisitorComponent implements OnInit {
     visitorForms.clear(); // Clear existing forms
 
     visitorData.forEach((visitor: any) => {
-      // const defaultCountry = 'United Arab Emirates';
-      // const defaultCountryObj = this.countries.find(c => c.name === defaultCountry);
+      const defaultCountry = 'United Arab Emirates';
+      const defaultCountryObj = this.countries.find(c => c.name === defaultCountry);
       visitorForms.push(this.fb.group({
         full_name: [visitor.full_name, [Validators.required, Validators.pattern(/^[a-zA-Z0-9 -]{1,50}$/)]],
         mobile_no: [visitor.mobile_no, [Validators.pattern(/^\+[1-9]\d{9,14}$/)]],
         email: [visitor.email, [Validators.required, Validators.pattern(/^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)]],
-        country: [visitor.country, Validators.required],
-        country_id: [visitor.country_id, Validators.required],
+        country: [visitor.country || defaultCountry, Validators.required],
+        country_id: [visitor.country_id || defaultCountryObj?.id, Validators.required],
         type: [visitor.type, Validators.required],
-        type_id: [visitor.type_id, Validators.required]
+        type_id: [visitor.type_id, Validators.required],
+        is_admin:[this.userPermissions.view ? 0 : 1]
+
       }));
     });
 
-    // country: [visitor.country || defaultCountry, Validators.required],
-    // country_id: [visitor.country_id || defaultCountryObj?.id, Validators.required],
+
   }
 
   setupCountry(): void {
     this.adminService.listCountry().subscribe(
       (data: any) => {
 
-        this.countries = data['data'];
+        // this.countries = data['data'];
 
 
-        // const allCountries = data['data'];
+        const allCountries = data['data'];
 
-        // // Manually extract UAE and India in desired order
-        // const uaeCountry = allCountries.find((c: { name: string }) => c.name === 'United Arab Emirates');
-        // const indiaCountry = allCountries.find((c: { name: string }) => c.name === 'India');
+        // Manually extract UAE and India in desired order
+        const uaeCountry = allCountries.find((c: { name: string }) => c.name === 'United Arab Emirates');
+        const indiaCountry = allCountries.find((c: { name: string }) => c.name === 'India');
 
-        // // Filter out UAE and India from the rest
-        // const restCountries: { name: string }[] = allCountries.filter(
-        //   (c: { name: string }) => c.name !== 'United Arab Emirates' && c.name !== 'India'
-        // );
+        // Filter out UAE and India from the rest
+        const restCountries: { name: string }[] = allCountries.filter(
+          (c: { name: string }) => c.name !== 'United Arab Emirates' && c.name !== 'India'
+        );
 
-        // // Sort rest alphabetically
-        // restCountries.sort((a, b) => a.name.localeCompare(b.name));
+        // Sort rest alphabetically
+        restCountries.sort((a, b) => a.name.localeCompare(b.name));
 
-        // // Merge countries: UAE first, India second, then rest
-        // this.countries = [];
-        // if (uaeCountry) this.countries.push(uaeCountry);
-        // if (indiaCountry) this.countries.push(indiaCountry);
-        // this.countries.push(...restCountries);
+        // Merge countries: UAE first, India second, then rest
+        this.countries = [];
+        if (uaeCountry) this.countries.push(uaeCountry);
+        if (indiaCountry) this.countries.push(indiaCountry);
+        this.countries.push(...restCountries);
 
-        // // Set default selected value as UAE
-        // const visitorForms = this.mainForm.get('visitorForms') as FormArray;
-        // if (visitorForms.length > 0) {
-        //   const firstForm = visitorForms.at(0);
-        //   const uaeCountry = this.countries.find(country => country.name === 'United Arab Emirates');
-        //   if (uaeCountry) {
-        //     firstForm.get('country')?.setValue(uaeCountry.name);
-        //     firstForm.get('country_id')?.setValue(uaeCountry.id);
-        //   }
-        // }
+        // Set default selected value as UAE
+        const visitorForms = this.mainForm.get('visitorForms') as FormArray;
+        if (visitorForms.length > 0) {
+          const firstForm = visitorForms.at(0);
+          const uaeCountry = this.countries.find(country => country.name === 'United Arab Emirates');
+          if (uaeCountry) {
+            firstForm.get('country')?.setValue(uaeCountry.name);
+            firstForm.get('country_id')?.setValue(uaeCountry.id);
+          }
+        }
 
-        
+
       },
       (error: any) => {
         console.log(error);
@@ -166,15 +174,18 @@ export class AddEditVisitorComponent implements OnInit {
     const namePattern = /^(?=.*[a-zA-Z0-9])[a-zA-Z0-9 .-]{1,50}$/;
     const emailPattern = /^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     const mobilePattern = /^\+[1-9]\d{9,14}$/;
+    const defaultCountry = 'United Arab Emirates';
+    const defaultCountryObj = this.countries.find(c => c.name === defaultCountry);
 
     return this.fb.group({
       full_name: ['', [Validators.required, Validators.pattern(namePattern)]],
       mobile_no: ['', [Validators.pattern(mobilePattern)]],
       email: ['', [Validators.required, Validators.pattern(emailPattern)]],
-      country: ['', Validators.required],
-      country_id: ['', Validators.required],
+      country: [defaultCountry, Validators.required],
+      country_id: [defaultCountryObj?.id, Validators.required],
       type: ['', Validators.required],
-      type_id: ['', Validators.required]
+      type_id: ['', Validators.required],
+      is_admin:[this.userPermissions.view ? 0 : 1]
     });
   }
 
@@ -259,5 +270,17 @@ export class AddEditVisitorComponent implements OnInit {
   onCancel(): void {
     this.router.navigate(['dashboard/visitor']);
     // this.location.back();
+  }
+  async getUserPermission() {
+    // Get user data from localStorage
+    const decryptUserData = this.SharedService.decryptData(localStorage.getItem('userDetails') || '{}');
+    const userData = JSON.parse(decryptUserData);
+    // let userData = JSON.parse(localStorage.getItem('userDetails'));
+
+    this.permissionsService.getUserPermissions(userData.email);
+
+    // Use in-memory permissions instead of localStorage to prevent tampering
+    this.userPermissions = this.permissionsService.getStoredPermissions();
+
   }
 }
