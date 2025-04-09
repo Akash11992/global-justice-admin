@@ -60,18 +60,21 @@ export class DashboardComponent {
     private permissionsService: UserPermissionsService
 
   ) {
+     this.getUserPermission();
+
   }
   chartOptions: any;
   async ngOnInit(): Promise<void> {
     await this.getUserPermission();
 
-    this.graph = true;
+    if(this.userPermissions.view === true){
+      this.graph = true;
     this.getDelegatePieChart();
 
     this.getDelegateRefrenceChart();
     this.rendergraph('donutChart', 'doughnut',)
     //  this.rendergraph('LineChart',"bar")
-
+  }
     history.pushState(null, '', window.location.href);
 
     // Listen for browser back button press
