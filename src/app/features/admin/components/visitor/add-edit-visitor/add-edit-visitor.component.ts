@@ -173,7 +173,7 @@ export class AddEditVisitorComponent implements OnInit {
 
     const namePattern = /^(?=.*[a-zA-Z0-9])[a-zA-Z0-9 .-]{1,50}$/;
     const emailPattern = /^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    const mobilePattern = /^\+[1-9]\d{9,14}$/;
+    const mobilePattern = /^[1-9]\d{9,14}$/;
     const defaultCountry = 'United Arab Emirates';
     const defaultCountryObj = this.countries.find(c => c.name === defaultCountry);
 
