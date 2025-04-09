@@ -103,15 +103,17 @@ const routes: Routes = [
     ],
   },
   {
-    path: "user",
+    path: "visitor",
     component: AdminMainComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: "viewdetails/:user_id", component: ViewDetailsComponent ,canActivate: [AuthGuard],},
-      { path: "editdetails/:user_id", component: EditDetailsComponent ,canActivate: [AuthGuard],},
+      { path: "", component: ListVisitorComponent, canActivate: [AuthGuard] },
+
+      // { path: "viewdetails/:user_id", component: ViewDetailsComponent ,canActivate: [AuthGuard],},
+      // { path: "editdetails/:user_id", component: EditDetailsComponent ,canActivate: [AuthGuard],},
 
       // {path:'reset-password',component:ResetPasswordComponent},
-      { path: "", redirectTo: "viewdetails", pathMatch: "full" },
+      { path: "", redirectTo: "visitor", pathMatch: "full" },
     ],
   },
 ];

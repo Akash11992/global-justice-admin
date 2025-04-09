@@ -49,7 +49,7 @@
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
   <ul class="list-unstyled components mb-5">
-    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+    <li *ngIf="userPermissions?.view" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/dashboard" id="sidebarDashboard"><img src="assets/img/speedmeter.png" id="speedmeter" /> &nbsp;
         &nbsp;
         <span>Dashboard</span></a>

@@ -85,7 +85,6 @@ export class LoginComponent implements AfterViewInit  {
     }
 
     // Log the loginData object for debugging purposes
-
     this.ngxService.start();
     // Call the ProfileService to post the OTP and password data
     this.adminService.login(loginData).subscribe((res: any) => {
@@ -93,7 +92,6 @@ export class LoginComponent implements AfterViewInit  {
       // localStorage.setItem(this.AUTH_KEY, 'true');
       localStorage.setItem('authToken', res.token);
       // Display success message after successful OTP submission
-      this.SharedService.ToastPopup('You have logged in successfully!', '', 'success');
       this.isAuthenticatedSubject.next(true);
       const decreptedToken = this.SharedService.decryptData(res.token);
       const decreptedUser = JSON.parse(this.SharedService.decryptData(res.data))
@@ -102,7 +100,8 @@ export class LoginComponent implements AfterViewInit  {
         email : decreptedUser.email,
         admin_id : decreptedUser.admin_id,
       }
-      this.userPermissions = this.permissionsService.getUserPermissions(decreptedUser.email);
+      this.permissionsService.getUserPermissions(decreptedUser.email);
+      this.userPermissions = this.permissionsService.getStoredPermissions();
       // Store the encrypted token
       this.SharedService.setJWTToken(decreptedToken);
       this.SharedService.setUserDetails(JSON.stringify(userData));
@@ -112,8 +111,14 @@ export class LoginComponent implements AfterViewInit  {
 
       // Redirect to the login page after a delay
       setTimeout(() => {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['/dashboard']));
+        if(this.userPermissions.view === true){
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['/dashboard']));   
+        }else{
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['/visitor']));   
+        }
+        this.SharedService.ToastPopup('You have logged in successfully!', '', 'success');
       }, 2000);
+
     }, (err) => {
       this.ngxService.stop();
 

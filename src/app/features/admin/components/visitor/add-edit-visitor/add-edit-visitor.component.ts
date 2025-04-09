@@ -40,12 +40,12 @@ export class AddEditVisitorComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.getUserPermission();
+  async ngOnInit(): Promise<void> {
+    await this.getUserPermission();
 
     this.visitorId = this.route.snapshot.paramMap.get('id');
-    this.setupCountry();
-    this.setupType();
+   await this.setupCountry();
+   await this.setupType();
 
     // Check if the form is in edit mode
     if (this.visitorId) {
@@ -83,7 +83,7 @@ export class AddEditVisitorComponent implements OnInit {
         country_id: [visitor.country_id || defaultCountryObj?.id, Validators.required],
         type: [visitor.type, Validators.required],
         type_id: [visitor.type_id, Validators.required],
-        is_admin:[this.userPermissions.view ? 0 : 1]
+        is_admin: [this.userPermissions.view ? 0 : 1]
 
       }));
     });
@@ -91,7 +91,7 @@ export class AddEditVisitorComponent implements OnInit {
 
   }
 
-  setupCountry(): void {
+ async setupCountry(): Promise<void> {
     this.adminService.listCountry().subscribe(
       (data: any) => {
 
@@ -137,7 +137,7 @@ export class AddEditVisitorComponent implements OnInit {
     );
   }
 
-  setupType(): void {
+  async setupType(): Promise<void> {
     this.adminService.listVisitorType().subscribe(
       (data: any) => {
         this.types = data['data'];
@@ -173,7 +173,7 @@ export class AddEditVisitorComponent implements OnInit {
 
     const namePattern = /^(?=.*[a-zA-Z0-9])[a-zA-Z0-9 .-]{1,50}$/;
     const emailPattern = /^[A-Za-z0-9]+([._%+-]*[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    const mobilePattern = /^[1-9]\d{9,14}$/;
+    const mobilePattern = /^[0-9]\d{9,14}$/;
     const defaultCountry = 'United Arab Emirates';
     const defaultCountryObj = this.countries.find(c => c.name === defaultCountry);
 
@@ -185,7 +185,7 @@ export class AddEditVisitorComponent implements OnInit {
       country_id: [defaultCountryObj?.id, Validators.required],
       type: ['', Validators.required],
       type_id: ['', Validators.required],
-      is_admin:[this.userPermissions.view ? 0 : 1]
+      is_admin: [this.userPermissions.view ? 0 : 1]
     });
   }
 
@@ -225,6 +225,9 @@ export class AddEditVisitorComponent implements OnInit {
           (data: any) => {
             this.ngxService.stop();
             this.SharedService.ToastPopup('Visitor updated successfully', 'Visitor', 'success');
+
+              // Redirect to the visitor list page after a delay
+              this.router.navigate(['dashboard/visitor']);
           },
           (error: any) => {
             this.ngxService.stop();
@@ -238,6 +241,9 @@ export class AddEditVisitorComponent implements OnInit {
             this.ngxService.stop();
             this.resetForm();
             this.SharedService.ToastPopup('Visitor added successfully', 'Visitor', 'success');
+                  
+              // Redirect to the visitor list page after a delay
+              this.router.navigate(['dashboard/visitor']);
           },
           (error: any) => {
             this.ngxService.stop();
@@ -245,7 +251,6 @@ export class AddEditVisitorComponent implements OnInit {
           }
         );
       }
-      window.location.reload();
     } else {
       // console.error('Form is invalid');
     }
