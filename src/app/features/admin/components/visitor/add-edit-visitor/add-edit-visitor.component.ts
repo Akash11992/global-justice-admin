@@ -245,6 +245,7 @@ export class AddEditVisitorComponent implements OnInit {
           }
         );
       }
+      window.location.reload();
     } else {
       // console.error('Form is invalid');
     }
