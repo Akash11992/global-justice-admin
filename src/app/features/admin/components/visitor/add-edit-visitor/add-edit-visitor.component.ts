@@ -303,7 +303,7 @@ export class AddEditVisitorComponent implements OnInit {
     }
 
     // Allow letters, spaces (not at start),
-    const allowedPattern = /^[a-zA-Z\s\'‘]$/;
+    const allowedPattern = /^[a-zA-Z\s\.\'‘]$/;
     if (!allowedPattern.test(key)) {
       event.preventDefault();
     }
