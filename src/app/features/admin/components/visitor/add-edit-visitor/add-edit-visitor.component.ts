@@ -179,7 +179,7 @@ export class AddEditVisitorComponent implements OnInit {
 
     return this.fb.group({
       full_name: ['', [Validators.required, Validators.pattern(namePattern)]],
-      mobile_no: ['', [Validators.pattern(mobilePattern)]],
+      mobile_no: ['',],
       email: ['', [Validators.required, Validators.pattern(emailPattern)]],
       country: [defaultCountry, Validators.required],
       country_id: [defaultCountryObj?.id, Validators.required],
@@ -288,5 +288,46 @@ export class AddEditVisitorComponent implements OnInit {
     // Use in-memory permissions instead of localStorage to prevent tampering
     this.userPermissions = this.permissionsService.getStoredPermissions();
 
+  }
+
+  validateAlpha(event: KeyboardEvent) {
+    const input = event.target as HTMLInputElement;
+    const key = event.key;
+    const currentValue = input.value;
+    const cursorPos = input.selectionStart;
+
+    // Block space at the beginning
+    if (key === ' ' && (cursorPos === 0 || currentValue === '')) {
+      event.preventDefault();
+      return;
+    }
+
+    // Allow letters, spaces (not at start),
+    const allowedPattern = /^[a-zA-Z\s\'‘]$/;
+    if (!allowedPattern.test(key)) {
+      event.preventDefault();
+    }
+  }
+
+  keyPressNumbers(event: KeyboardEvent) {
+    const input = event.target as HTMLInputElement;
+    const key = event.key;
+    const currentValue = input.value;
+    const cursorPos = input.selectionStart;
+
+    // Block space at the beginning
+    if (key === ' ' && (cursorPos === 0 || currentValue === '')) {
+      event.preventDefault();
+      return;
+    }
+ 
+    // Allow Backspace, Delete, Arrow keys for user convenience
+    const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (allowedKeys.includes(event.key)) {
+      return; // Allow these keys
+    }
+    if (!/^[0-9]$/.test(event.key) && event.key !== '+') {
+      event.preventDefault();
+    }
   }
 }
